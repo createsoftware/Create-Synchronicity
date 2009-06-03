@@ -1,0 +1,525 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class Settings
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
+        Me.Settings_FromTextBox = New System.Windows.Forms.TextBox
+        Me.Settings_DirectoriesBox = New System.Windows.Forms.GroupBox
+        Me.Settings_BrowseRButton = New System.Windows.Forms.Button
+        Me.Settings_BrowseLButton = New System.Windows.Forms.Button
+        Me.Settings_ToTextBox = New System.Windows.Forms.TextBox
+        Me.Settings_ToLabel = New System.Windows.Forms.Label
+        Me.Settings_FromLabel = New System.Windows.Forms.Label
+        Me.Settings_ViewsLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+        Me.Settings_LeftView = New System.Windows.Forms.TreeView
+        Me.Settings_TreeViewMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Settings_SynchronizeAllSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.Settings_DontSynchronizeSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.Settings_RightView = New System.Windows.Forms.TreeView
+        Me.Settings_ReloadButton = New System.Windows.Forms.Button
+        Me.Settings_LeftViewLabel = New System.Windows.Forms.Label
+        Me.Settings_RightViewLabel = New System.Windows.Forms.Label
+        Me.Settings_SubdirectoriesBox = New System.Windows.Forms.GroupBox
+        Me.Settings_SynchrpnizationMethodBox = New System.Windows.Forms.GroupBox
+        Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+        Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
+        Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
+        Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton
+        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
+        Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox
+        Me.Settings_IncludeExcludeCheckBox = New System.Windows.Forms.CheckBox
+        Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+        Me.Settings_IncludedTypesTextBox = New System.Windows.Forms.TextBox
+        Me.Settings_ExcludedTypesTextBox = New System.Windows.Forms.TextBox
+        Me.Settings_IncludeFilesOption = New System.Windows.Forms.RadioButton
+        Me.Settings_ExcludeFilesOption = New System.Windows.Forms.RadioButton
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
+        Me.Settings_CancelButton = New System.Windows.Forms.Button
+        Me.Settings_SaveButton = New System.Windows.Forms.Button
+        Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
+        Me.Settings_DirectoriesBox.SuspendLayout()
+        Me.Settings_ViewsLayoutPanel.SuspendLayout()
+        Me.Settings_TreeViewMenuStrip.SuspendLayout()
+        Me.Settings_SubdirectoriesBox.SuspendLayout()
+        Me.Settings_SynchrpnizationMethodBox.SuspendLayout()
+        Me.Settings_MethodLayoutPanel.SuspendLayout()
+        Me.Settings_IncludeExcludeBox.SuspendLayout()
+        Me.Settings_IncludeExcludeLayoutPanel.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'Settings_FromTextBox
+        '
+        Me.Settings_FromTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_FromTextBox.Location = New System.Drawing.Point(62, 19)
+        Me.Settings_FromTextBox.Name = "Settings_FromTextBox"
+        Me.Settings_FromTextBox.Size = New System.Drawing.Size(571, 21)
+        Me.Settings_FromTextBox.TabIndex = 0
+        '
+        'Settings_DirectoriesBox
+        '
+        Me.Settings_DirectoriesBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_BrowseRButton)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_BrowseLButton)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_ToTextBox)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_FromTextBox)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_ToLabel)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_FromLabel)
+        Me.Settings_DirectoriesBox.Location = New System.Drawing.Point(12, 12)
+        Me.Settings_DirectoriesBox.Name = "Settings_DirectoriesBox"
+        Me.Settings_DirectoriesBox.Size = New System.Drawing.Size(674, 71)
+        Me.Settings_DirectoriesBox.TabIndex = 1
+        Me.Settings_DirectoriesBox.TabStop = False
+        Me.Settings_DirectoriesBox.Text = "Directories"
+        '
+        'Settings_BrowseRButton
+        '
+        Me.Settings_BrowseRButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_BrowseRButton.Location = New System.Drawing.Point(639, 44)
+        Me.Settings_BrowseRButton.Name = "Settings_BrowseRButton"
+        Me.Settings_BrowseRButton.Size = New System.Drawing.Size(29, 24)
+        Me.Settings_BrowseRButton.TabIndex = 3
+        Me.Settings_BrowseRButton.Text = "..."
+        Me.Settings_BrowseRButton.UseVisualStyleBackColor = True
+        '
+        'Settings_BrowseLButton
+        '
+        Me.Settings_BrowseLButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_BrowseLButton.Location = New System.Drawing.Point(639, 18)
+        Me.Settings_BrowseLButton.Name = "Settings_BrowseLButton"
+        Me.Settings_BrowseLButton.Size = New System.Drawing.Size(29, 24)
+        Me.Settings_BrowseLButton.TabIndex = 2
+        Me.Settings_BrowseLButton.Text = "..."
+        Me.Settings_BrowseLButton.UseVisualStyleBackColor = True
+        '
+        'Settings_ToTextBox
+        '
+        Me.Settings_ToTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ToTextBox.Location = New System.Drawing.Point(62, 45)
+        Me.Settings_ToTextBox.Name = "Settings_ToTextBox"
+        Me.Settings_ToTextBox.Size = New System.Drawing.Size(571, 21)
+        Me.Settings_ToTextBox.TabIndex = 1
+        '
+        'Settings_ToLabel
+        '
+        Me.Settings_ToLabel.Location = New System.Drawing.Point(7, 44)
+        Me.Settings_ToLabel.Name = "Settings_ToLabel"
+        Me.Settings_ToLabel.Size = New System.Drawing.Size(58, 21)
+        Me.Settings_ToLabel.TabIndex = 4
+        Me.Settings_ToLabel.Text = "To: "
+        Me.Settings_ToLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Settings_FromLabel
+        '
+        Me.Settings_FromLabel.Location = New System.Drawing.Point(7, 18)
+        Me.Settings_FromLabel.Name = "Settings_FromLabel"
+        Me.Settings_FromLabel.Size = New System.Drawing.Size(58, 21)
+        Me.Settings_FromLabel.TabIndex = 2
+        Me.Settings_FromLabel.Text = "From: "
+        Me.Settings_FromLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Settings_ViewsLayoutPanel
+        '
+        Me.Settings_ViewsLayoutPanel.ColumnCount = 3
+        Me.Settings_ViewsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_ViewsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
+        Me.Settings_ViewsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_LeftView, 0, 1)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_RightView, 2, 1)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_ReloadButton, 1, 1)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_LeftViewLabel, 0, 0)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_RightViewLabel, 2, 0)
+        Me.Settings_ViewsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_ViewsLayoutPanel.Location = New System.Drawing.Point(3, 17)
+        Me.Settings_ViewsLayoutPanel.Name = "Settings_ViewsLayoutPanel"
+        Me.Settings_ViewsLayoutPanel.RowCount = 2
+        Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(668, 141)
+        Me.Settings_ViewsLayoutPanel.TabIndex = 3
+        '
+        'Settings_LeftView
+        '
+        Me.Settings_LeftView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_LeftView.CheckBoxes = True
+        Me.Settings_LeftView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
+        Me.Settings_LeftView.Location = New System.Drawing.Point(3, 16)
+        Me.Settings_LeftView.Name = "Settings_LeftView"
+        Me.Settings_LeftView.Size = New System.Drawing.Size(310, 122)
+        Me.Settings_LeftView.TabIndex = 2
+        '
+        'Settings_TreeViewMenuStrip
+        '
+        Me.Settings_TreeViewMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Settings_SynchronizeAllSubfoldersMenuItem, Me.Settings_DontSynchronizeSubfoldersMenuItem})
+        Me.Settings_TreeViewMenuStrip.Name = "Settings_TreeViewMenuStrip"
+        Me.Settings_TreeViewMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.Settings_TreeViewMenuStrip.ShowImageMargin = False
+        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(199, 48)
+        '
+        'Settings_SynchronizeAllSubfoldersMenuItem
+        '
+        Me.Settings_SynchronizeAllSubfoldersMenuItem.Name = "Settings_SynchronizeAllSubfoldersMenuItem"
+        Me.Settings_SynchronizeAllSubfoldersMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.Settings_SynchronizeAllSubfoldersMenuItem.Text = "Synchronize all subfolders"
+        '
+        'Settings_DontSynchronizeSubfoldersMenuItem
+        '
+        Me.Settings_DontSynchronizeSubfoldersMenuItem.Name = "Settings_DontSynchronizeSubfoldersMenuItem"
+        Me.Settings_DontSynchronizeSubfoldersMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.Settings_DontSynchronizeSubfoldersMenuItem.Text = "Don't Synchronize subfolders"
+        '
+        'Settings_RightView
+        '
+        Me.Settings_RightView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_RightView.CheckBoxes = True
+        Me.Settings_RightView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
+        Me.Settings_RightView.Location = New System.Drawing.Point(354, 16)
+        Me.Settings_RightView.Name = "Settings_RightView"
+        Me.Settings_RightView.Size = New System.Drawing.Size(311, 122)
+        Me.Settings_RightView.TabIndex = 3
+        '
+        'Settings_ReloadButton
+        '
+        Me.Settings_ReloadButton.Location = New System.Drawing.Point(319, 16)
+        Me.Settings_ReloadButton.Name = "Settings_ReloadButton"
+        Me.Settings_ReloadButton.Size = New System.Drawing.Size(29, 29)
+        Me.Settings_ReloadButton.TabIndex = 4
+        Me.Settings_ReloadButton.UseVisualStyleBackColor = True
+        '
+        'Settings_LeftViewLabel
+        '
+        Me.Settings_LeftViewLabel.AutoSize = True
+        Me.Settings_LeftViewLabel.Location = New System.Drawing.Point(3, 0)
+        Me.Settings_LeftViewLabel.Name = "Settings_LeftViewLabel"
+        Me.Settings_LeftViewLabel.Size = New System.Drawing.Size(60, 13)
+        Me.Settings_LeftViewLabel.TabIndex = 5
+        Me.Settings_LeftViewLabel.Text = "Left side:"
+        '
+        'Settings_RightViewLabel
+        '
+        Me.Settings_RightViewLabel.AutoSize = True
+        Me.Settings_RightViewLabel.Location = New System.Drawing.Point(354, 0)
+        Me.Settings_RightViewLabel.Name = "Settings_RightViewLabel"
+        Me.Settings_RightViewLabel.Size = New System.Drawing.Size(68, 13)
+        Me.Settings_RightViewLabel.TabIndex = 6
+        Me.Settings_RightViewLabel.Text = "Right side:"
+        '
+        'Settings_SubdirectoriesBox
+        '
+        Me.Settings_SubdirectoriesBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_SubdirectoriesBox.Controls.Add(Me.Settings_ViewsLayoutPanel)
+        Me.Settings_SubdirectoriesBox.Location = New System.Drawing.Point(12, 89)
+        Me.Settings_SubdirectoriesBox.Name = "Settings_SubdirectoriesBox"
+        Me.Settings_SubdirectoriesBox.Size = New System.Drawing.Size(674, 161)
+        Me.Settings_SubdirectoriesBox.TabIndex = 4
+        Me.Settings_SubdirectoriesBox.TabStop = False
+        Me.Settings_SubdirectoriesBox.Text = "Subdirectories"
+        '
+        'Settings_SynchrpnizationMethodBox
+        '
+        Me.Settings_SynchrpnizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_SynchrpnizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
+        Me.Settings_SynchrpnizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
+        Me.Settings_SynchrpnizationMethodBox.Location = New System.Drawing.Point(12, 256)
+        Me.Settings_SynchrpnizationMethodBox.Name = "Settings_SynchrpnizationMethodBox"
+        Me.Settings_SynchrpnizationMethodBox.Size = New System.Drawing.Size(674, 90)
+        Me.Settings_SynchrpnizationMethodBox.TabIndex = 5
+        Me.Settings_SynchrpnizationMethodBox.TabStop = False
+        Me.Settings_SynchrpnizationMethodBox.Text = "Synchronicityization method"
+        '
+        'Settings_MethodLayoutPanel
+        '
+        Me.Settings_MethodLayoutPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_MethodLayoutPanel.ColumnCount = 3
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
+        Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_TwoWaysIncrementalMethodOption, 2, 0)
+        Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
+        Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
+        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(6, 20)
+        Me.Settings_MethodLayoutPanel.Name = "Settings_MethodLayoutPanel"
+        Me.Settings_MethodLayoutPanel.RowCount = 1
+        Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_MethodLayoutPanel.Size = New System.Drawing.Size(662, 23)
+        Me.Settings_MethodLayoutPanel.TabIndex = 6
+        '
+        'Settings_TwoWaysIncrementalMethodOption
+        '
+        Me.Settings_TwoWaysIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Settings_TwoWaysIncrementalMethodOption.AutoSize = True
+        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(474, 3)
+        Me.Settings_TwoWaysIncrementalMethodOption.Name = "Settings_TwoWaysIncrementalMethodOption"
+        Me.Settings_TwoWaysIncrementalMethodOption.Size = New System.Drawing.Size(153, 17)
+        Me.Settings_TwoWaysIncrementalMethodOption.TabIndex = 2
+        Me.Settings_TwoWaysIncrementalMethodOption.Tag = "%s copies all files both ways, without deleting any.\nNew and modified files are " & _
+            "copied both ways, nothing is deleted."
+        Me.Settings_TwoWaysIncrementalMethodOption.Text = "Two-ways incremental"
+        Me.Settings_TwoWaysIncrementalMethodOption.UseVisualStyleBackColor = True
+        '
+        'Settings_LRIncrementalMethodOption
+        '
+        Me.Settings_LRIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Settings_LRIncrementalMethodOption.AutoSize = True
+        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(241, 3)
+        Me.Settings_LRIncrementalMethodOption.Name = "Settings_LRIncrementalMethodOption"
+        Me.Settings_LRIncrementalMethodOption.Size = New System.Drawing.Size(177, 17)
+        Me.Settings_LRIncrementalMethodOption.TabIndex = 1
+        Me.Settings_LRIncrementalMethodOption.Tag = "%s saves source files to destination.\nNew and modified files are copied left to " & _
+            "right, but no files are deleted."
+        Me.Settings_LRIncrementalMethodOption.Text = "Left to Right (Incremental)"
+        Me.Settings_LRIncrementalMethodOption.UseVisualStyleBackColor = True
+        '
+        'Settings_LRMirrorMethodOption
+        '
+        Me.Settings_LRMirrorMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Settings_LRMirrorMethodOption.AutoSize = True
+        Me.Settings_LRMirrorMethodOption.Checked = True
+        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(39, 3)
+        Me.Settings_LRMirrorMethodOption.Name = "Settings_LRMirrorMethodOption"
+        Me.Settings_LRMirrorMethodOption.Size = New System.Drawing.Size(142, 17)
+        Me.Settings_LRMirrorMethodOption.TabIndex = 0
+        Me.Settings_LRMirrorMethodOption.TabStop = True
+        Me.Settings_LRMirrorMethodOption.Tag = "%s creates a clone of the left side on the right and copies all files from source" & _
+            " to destination.\nNew and modified files are copied left to right, deletes on th" & _
+            "e left are repeated on the right."
+        Me.Settings_LRMirrorMethodOption.Text = "Left to Right (Mirror)"
+        Me.Settings_LRMirrorMethodOption.UseVisualStyleBackColor = True
+        '
+        'Settings_DescriptionLabel
+        '
+        Me.Settings_DescriptionLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 50)
+        Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
+        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 37)
+        Me.Settings_DescriptionLabel.TabIndex = 1
+        Me.Settings_DescriptionLabel.Tag = "Move your mouse over an option to see a more detailed description"
+        Me.Settings_DescriptionLabel.Text = "Move your mouse over an option to see a more detailed description"
+        '
+        'Settings_IncludeExcludeBox
+        '
+        Me.Settings_IncludeExcludeBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeCheckBox)
+        Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeLayoutPanel)
+        Me.Settings_IncludeExcludeBox.Location = New System.Drawing.Point(12, 352)
+        Me.Settings_IncludeExcludeBox.Name = "Settings_IncludeExcludeBox"
+        Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(674, 100)
+        Me.Settings_IncludeExcludeBox.TabIndex = 6
+        Me.Settings_IncludeExcludeBox.TabStop = False
+        Me.Settings_IncludeExcludeBox.Text = "Include or exclude file types"
+        '
+        'Settings_IncludeExcludeCheckBox
+        '
+        Me.Settings_IncludeExcludeCheckBox.AutoSize = True
+        Me.Settings_IncludeExcludeCheckBox.Location = New System.Drawing.Point(9, 20)
+        Me.Settings_IncludeExcludeCheckBox.Name = "Settings_IncludeExcludeCheckBox"
+        Me.Settings_IncludeExcludeCheckBox.Size = New System.Drawing.Size(139, 17)
+        Me.Settings_IncludeExcludeCheckBox.TabIndex = 5
+        Me.Settings_IncludeExcludeCheckBox.Text = "Do not copy all files"
+        Me.Settings_IncludeExcludeCheckBox.UseVisualStyleBackColor = True
+        '
+        'Settings_IncludeExcludeLayoutPanel
+        '
+        Me.Settings_IncludeExcludeLayoutPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_IncludeExcludeLayoutPanel.ColumnCount = 2
+        Me.Settings_IncludeExcludeLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_IncludeExcludeLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_IncludedTypesTextBox, 0, 1)
+        Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_ExcludedTypesTextBox, 0, 1)
+        Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_IncludeFilesOption, 0, 0)
+        Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_ExcludeFilesOption, 1, 0)
+        Me.Settings_IncludeExcludeLayoutPanel.Enabled = False
+        Me.Settings_IncludeExcludeLayoutPanel.Location = New System.Drawing.Point(6, 43)
+        Me.Settings_IncludeExcludeLayoutPanel.Name = "Settings_IncludeExcludeLayoutPanel"
+        Me.Settings_IncludeExcludeLayoutPanel.RowCount = 2
+        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.Settings_IncludeExcludeLayoutPanel.Size = New System.Drawing.Size(662, 51)
+        Me.Settings_IncludeExcludeLayoutPanel.TabIndex = 4
+        '
+        'Settings_IncludedTypesTextBox
+        '
+        Me.Settings_IncludedTypesTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_IncludedTypesTextBox.Location = New System.Drawing.Point(3, 26)
+        Me.Settings_IncludedTypesTextBox.Name = "Settings_IncludedTypesTextBox"
+        Me.Settings_IncludedTypesTextBox.Size = New System.Drawing.Size(325, 21)
+        Me.Settings_IncludedTypesTextBox.TabIndex = 8
+        '
+        'Settings_ExcludedTypesTextBox
+        '
+        Me.Settings_ExcludedTypesTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ExcludedTypesTextBox.Location = New System.Drawing.Point(334, 26)
+        Me.Settings_ExcludedTypesTextBox.Name = "Settings_ExcludedTypesTextBox"
+        Me.Settings_ExcludedTypesTextBox.Size = New System.Drawing.Size(325, 21)
+        Me.Settings_ExcludedTypesTextBox.TabIndex = 7
+        '
+        'Settings_IncludeFilesOption
+        '
+        Me.Settings_IncludeFilesOption.AutoSize = True
+        Me.Settings_IncludeFilesOption.Location = New System.Drawing.Point(3, 3)
+        Me.Settings_IncludeFilesOption.Name = "Settings_IncludeFilesOption"
+        Me.Settings_IncludeFilesOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_IncludeFilesOption.TabIndex = 9
+        Me.Settings_IncludeFilesOption.TabStop = True
+        Me.Settings_IncludeFilesOption.Text = "Include these files only:"
+        Me.Settings_IncludeFilesOption.UseVisualStyleBackColor = True
+        '
+        'Settings_ExcludeFilesOption
+        '
+        Me.Settings_ExcludeFilesOption.AutoSize = True
+        Me.Settings_ExcludeFilesOption.Location = New System.Drawing.Point(334, 3)
+        Me.Settings_ExcludeFilesOption.Name = "Settings_ExcludeFilesOption"
+        Me.Settings_ExcludeFilesOption.Size = New System.Drawing.Size(136, 17)
+        Me.Settings_ExcludeFilesOption.TabIndex = 10
+        Me.Settings_ExcludeFilesOption.TabStop = True
+        Me.Settings_ExcludeFilesOption.Text = "Exclude these files:"
+        Me.Settings_ExcludeFilesOption.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.Settings_CancelButton, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Settings_SaveButton, 0, 0)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(486, 458)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 1
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(200, 31)
+        Me.TableLayoutPanel1.TabIndex = 7
+        '
+        'Settings_CancelButton
+        '
+        Me.Settings_CancelButton.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_CancelButton.Location = New System.Drawing.Point(103, 3)
+        Me.Settings_CancelButton.Name = "Settings_CancelButton"
+        Me.Settings_CancelButton.Size = New System.Drawing.Size(94, 25)
+        Me.Settings_CancelButton.TabIndex = 1
+        Me.Settings_CancelButton.Text = "Cancel"
+        Me.Settings_CancelButton.UseVisualStyleBackColor = True
+        '
+        'Settings_SaveButton
+        '
+        Me.Settings_SaveButton.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_SaveButton.Location = New System.Drawing.Point(3, 3)
+        Me.Settings_SaveButton.Name = "Settings_SaveButton"
+        Me.Settings_SaveButton.Size = New System.Drawing.Size(94, 25)
+        Me.Settings_SaveButton.TabIndex = 0
+        Me.Settings_SaveButton.Text = "Save"
+        Me.Settings_SaveButton.UseVisualStyleBackColor = True
+        '
+        'Settings_FolderBrowser
+        '
+        Me.Settings_FolderBrowser.Description = "Select a folder to copy the files %."
+        Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
+        '
+        'Settings
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(698, 501)
+        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Controls.Add(Me.Settings_IncludeExcludeBox)
+        Me.Controls.Add(Me.Settings_SynchrpnizationMethodBox)
+        Me.Controls.Add(Me.Settings_SubdirectoriesBox)
+        Me.Controls.Add(Me.Settings_DirectoriesBox)
+        Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+        Me.Name = "Settings"
+        Me.Text = "Settings"
+        Me.Settings_DirectoriesBox.ResumeLayout(False)
+        Me.Settings_DirectoriesBox.PerformLayout()
+        Me.Settings_ViewsLayoutPanel.ResumeLayout(False)
+        Me.Settings_ViewsLayoutPanel.PerformLayout()
+        Me.Settings_TreeViewMenuStrip.ResumeLayout(False)
+        Me.Settings_SubdirectoriesBox.ResumeLayout(False)
+        Me.Settings_SynchrpnizationMethodBox.ResumeLayout(False)
+        Me.Settings_MethodLayoutPanel.ResumeLayout(False)
+        Me.Settings_MethodLayoutPanel.PerformLayout()
+        Me.Settings_IncludeExcludeBox.ResumeLayout(False)
+        Me.Settings_IncludeExcludeBox.PerformLayout()
+        Me.Settings_IncludeExcludeLayoutPanel.ResumeLayout(False)
+        Me.Settings_IncludeExcludeLayoutPanel.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.ResumeLayout(False)
+
+    End Sub
+    Friend WithEvents Settings_FromTextBox As System.Windows.Forms.TextBox
+    Friend WithEvents Settings_DirectoriesBox As System.Windows.Forms.GroupBox
+    Friend WithEvents Settings_ToTextBox As System.Windows.Forms.TextBox
+    Friend WithEvents Settings_BrowseRButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_BrowseLButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_FromLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_ToLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_ViewsLayoutPanel As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Settings_LeftView As System.Windows.Forms.TreeView
+    Friend WithEvents Settings_RightView As System.Windows.Forms.TreeView
+    Friend WithEvents Settings_ReloadButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_LeftViewLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_RightViewLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_SubdirectoriesBox As System.Windows.Forms.GroupBox
+    Friend WithEvents Settings_SynchrpnizationMethodBox As System.Windows.Forms.GroupBox
+    Friend WithEvents Settings_DescriptionLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_LRMirrorMethodOption As System.Windows.Forms.RadioButton
+    Friend WithEvents Settings_MethodLayoutPanel As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Settings_LRIncrementalMethodOption As System.Windows.Forms.RadioButton
+    Friend WithEvents Settings_TwoWaysIncrementalMethodOption As System.Windows.Forms.RadioButton
+    Friend WithEvents Settings_IncludeExcludeBox As System.Windows.Forms.GroupBox
+    Friend WithEvents Settings_IncludeExcludeLayoutPanel As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Settings_ExcludedTypesTextBox As System.Windows.Forms.TextBox
+    Friend WithEvents Settings_IncludedTypesTextBox As System.Windows.Forms.TextBox
+    Friend WithEvents Settings_IncludeExcludeCheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_IncludeFilesOption As System.Windows.Forms.RadioButton
+    Friend WithEvents Settings_ExcludeFilesOption As System.Windows.Forms.RadioButton
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Settings_CancelButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_SaveButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_FolderBrowser As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents Settings_TreeViewMenuStrip As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents Settings_SynchronizeAllSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Settings_DontSynchronizeSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
+End Class
