@@ -115,15 +115,16 @@
 
 #Region " Syncing code "
     Sub Synchronize()
-        Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
-        Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
-        Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
-        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
-        Dim SetElapsedTimeCallBack As New SetElapsedTimeCallBack(AddressOf SetElapsedTime)
-
         StartTime = DateTime.Now
         SyncingTimeCounter.Start()
+
+        Do_FirstStep(Handler.GetSetting("From"), Handler.GetSetting("To"))
+        Do_SecondThirdStep(Handler.GetSetting("From"), Handler.GetSetting("To"))
+    End Sub
+
+    Sub Do_FirstStep(ByVal Left As String, ByVal Right As String)
         Dim Context As New SyncingAction
+        Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
 
         SyncingList.Clear()
         SyncingList.Add(SideOfSource.Left, New List(Of SyncingItem))
@@ -147,9 +148,14 @@
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
         Me.Invoke(TaskDoneDelegate, 1)
+    End Sub
 
-        Dim Left As String = Handler.GetSetting("From")
-        Dim Right As String = Handler.GetSetting("To")
+    Sub Do_SecondThirdStep(ByVal Left As String, ByVal Right As String)
+        Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
+        Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
+        Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
+        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+        'Dim SetElapsedTimeCallBack As New SetElapsedTimeCallBack(AddressOf SetElapsedTime)
 
         Try
             Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
@@ -188,11 +194,10 @@
                                     Case Else
                                         If IO.Directory.GetFiles(Right & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Right & Entry.Path)
                                 End Select
-
                         End Select
                 End Select
 
-                'Me.Invoke(SetProgessDelegate, New Object() {3, 1})
+                Me.Invoke(SetProgessDelegate, New Object() {3, 1})
                 Me.Invoke(LabelDelegate, New Object() {3, Right & Entry.Path})
             Next
             Me.Invoke(TaskDoneDelegate, 3)
