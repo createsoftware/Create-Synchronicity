@@ -78,43 +78,40 @@
         End Select
     End Function
 
-
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ChangeSettingsMenuItem.Click
         Dim SettingsForm As New Settings(Main_Actions.SelectedItems(0).Text)
-        Main_ActionsMenu.Close()
+        'Main_ActionsMenu.Close()
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
-    End Sub
-
-    Sub Main_Start_Synchronicityization()
-        If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
-        If Main_Actions.SelectedIndices(0) = 0 Then
-            Main_Actions.LabelEdit = True
-            Main_Actions.SelectedItems(0).BeginEdit()
-        End If
     End Sub
 
     Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
         Dim SettingsForm As New Settings(e.Label)
         e.CancelEdit() = True
         Main_Actions.LabelEdit = False
-        Main_ActionsMenu.Close()
+        'Main_ActionsMenu.Close()
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
 
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
-        Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text)
-        Main_ActionsMenu.Close()
+        Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, False)
+        'Main_ActionsMenu.Close()
+        SyncForm.ShowDialog()
+        SyncForm.Dispose()
+    End Sub
+
+    Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
+        Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, True)
+        'Main_ActionsMenu.Close()
         SyncForm.ShowDialog()
     End Sub
 
-    Private Sub Main_ActionsMenu_Closing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolStripDropDownClosingEventArgs) Handles Main_ActionsMenu.Closing
-        'If Not (e.CloseReason = ToolStripDropDownCloseReason.CloseCalled Or e.CloseReason = ToolStripDropDownCloseReason.AppFocusChange Or e.CloseReason = ToolStripDropDownCloseReason.AppClicked) Then e.Cancel = True
-    End Sub
-
     Private Sub Main_Actions_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Actions.DoubleClick
-        Main_Start_Synchronicityization()
+        If Main_Actions.SelectedItems.Count = 0 OrElse Not Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
+
+        Main_Actions.LabelEdit = True
+        Main_Actions.SelectedItems(0).BeginEdit()
     End Sub
 
     Private Sub Main_AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles Main_AboutLinkLabel.LinkClicked

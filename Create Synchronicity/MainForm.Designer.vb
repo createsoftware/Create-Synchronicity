@@ -274,7 +274,7 @@ Partial Class MainForm
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.ToolStripSeparator1, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(165, 120)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(165, 142)
         '
         'PreviewMenuItem
         '

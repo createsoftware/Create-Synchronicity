@@ -40,11 +40,17 @@ Partial Class SynchronizeForm
         Me.Step1ProgressBar = New System.Windows.Forms.ProgressBar
         Me.Step1Label = New System.Windows.Forms.Label
         Me.ButtonsLayoutPanel = New System.Windows.Forms.TableLayoutPanel
+        Me.SyncBtn = New System.Windows.Forms.Button
         Me.StopBtn = New System.Windows.Forms.Button
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
+        Me.StatisticsPanel = New System.Windows.Forms.TableLayoutPanel
         Me.ElapsedTime = New System.Windows.Forms.Label
         Me.ElapsedTimeLabel = New System.Windows.Forms.Label
         Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
+        Me.PreviewList = New System.Windows.Forms.ListView
+        Me.PathColumn = New System.Windows.Forms.ColumnHeader
+        Me.TypeColumn = New System.Windows.Forms.ColumnHeader
+        Me.ActionColumn = New System.Windows.Forms.ColumnHeader
+        Me.DirectionColumn = New System.Windows.Forms.ColumnHeader
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
         Me.TableLayoutPanel6.SuspendLayout()
@@ -53,7 +59,7 @@ Partial Class SynchronizeForm
         Me.Step1LayoutPanel.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
         Me.ButtonsLayoutPanel.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.StatisticsPanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'MainLayoutPanel
@@ -74,7 +80,7 @@ Partial Class SynchronizeForm
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.MainLayoutPanel.Size = New System.Drawing.Size(482, 249)
+        Me.MainLayoutPanel.Size = New System.Drawing.Size(474, 263)
         Me.MainLayoutPanel.TabIndex = 0
         '
         'Step3LayoutPanel
@@ -85,12 +91,12 @@ Partial Class SynchronizeForm
         Me.Step3LayoutPanel.Controls.Add(Me.TableLayoutPanel6, 0, 1)
         Me.Step3LayoutPanel.Controls.Add(Me.Step3Label, 0, 0)
         Me.Step3LayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step3LayoutPanel.Location = New System.Drawing.Point(4, 168)
+        Me.Step3LayoutPanel.Location = New System.Drawing.Point(4, 178)
         Me.Step3LayoutPanel.Name = "Step3LayoutPanel"
         Me.Step3LayoutPanel.RowCount = 2
         Me.Step3LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.Step3LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step3LayoutPanel.Size = New System.Drawing.Size(474, 77)
+        Me.Step3LayoutPanel.Size = New System.Drawing.Size(466, 81)
         Me.Step3LayoutPanel.TabIndex = 2
         '
         'TableLayoutPanel6
@@ -105,7 +111,7 @@ Partial Class SynchronizeForm
         Me.TableLayoutPanel6.RowCount = 2
         Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.TableLayoutPanel6.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel6.Size = New System.Drawing.Size(464, 42)
+        Me.TableLayoutPanel6.Size = New System.Drawing.Size(456, 46)
         Me.TableLayoutPanel6.TabIndex = 0
         '
         'Step3StatusLabel
@@ -114,7 +120,7 @@ Partial Class SynchronizeForm
         Me.Step3StatusLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step3StatusLabel.Location = New System.Drawing.Point(3, 0)
         Me.Step3StatusLabel.Name = "Step3StatusLabel"
-        Me.Step3StatusLabel.Size = New System.Drawing.Size(458, 13)
+        Me.Step3StatusLabel.Size = New System.Drawing.Size(450, 13)
         Me.Step3StatusLabel.TabIndex = 2
         Me.Step3StatusLabel.Text = "Waiting..."
         '
@@ -123,7 +129,7 @@ Partial Class SynchronizeForm
         Me.Step3ProgressBar.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step3ProgressBar.Location = New System.Drawing.Point(3, 16)
         Me.Step3ProgressBar.Name = "Step3ProgressBar"
-        Me.Step3ProgressBar.Size = New System.Drawing.Size(458, 23)
+        Me.Step3ProgressBar.Size = New System.Drawing.Size(450, 27)
         Me.Step3ProgressBar.TabIndex = 3
         '
         'Step3Label
@@ -133,7 +139,7 @@ Partial Class SynchronizeForm
         Me.Step3Label.Location = New System.Drawing.Point(5, 2)
         Me.Step3Label.Name = "Step3Label"
         Me.Step3Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
-        Me.Step3Label.Size = New System.Drawing.Size(464, 23)
+        Me.Step3Label.Size = New System.Drawing.Size(456, 23)
         Me.Step3Label.TabIndex = 1
         Me.Step3Label.Text = "Step 3 : Cleaning up"
         '
@@ -145,12 +151,12 @@ Partial Class SynchronizeForm
         Me.Step2LayoutPanel.Controls.Add(Me.TableLayoutPanel4, 0, 1)
         Me.Step2LayoutPanel.Controls.Add(Me.Step2Label, 0, 0)
         Me.Step2LayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step2LayoutPanel.Location = New System.Drawing.Point(4, 86)
+        Me.Step2LayoutPanel.Location = New System.Drawing.Point(4, 91)
         Me.Step2LayoutPanel.Name = "Step2LayoutPanel"
         Me.Step2LayoutPanel.RowCount = 2
         Me.Step2LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.Step2LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step2LayoutPanel.Size = New System.Drawing.Size(474, 75)
+        Me.Step2LayoutPanel.Size = New System.Drawing.Size(466, 80)
         Me.Step2LayoutPanel.TabIndex = 1
         '
         'TableLayoutPanel4
@@ -165,7 +171,7 @@ Partial Class SynchronizeForm
         Me.TableLayoutPanel4.RowCount = 2
         Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel4.Size = New System.Drawing.Size(464, 40)
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(456, 45)
         Me.TableLayoutPanel4.TabIndex = 0
         '
         'Step2StatusLabel
@@ -174,7 +180,7 @@ Partial Class SynchronizeForm
         Me.Step2StatusLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step2StatusLabel.Location = New System.Drawing.Point(3, 0)
         Me.Step2StatusLabel.Name = "Step2StatusLabel"
-        Me.Step2StatusLabel.Size = New System.Drawing.Size(458, 13)
+        Me.Step2StatusLabel.Size = New System.Drawing.Size(450, 13)
         Me.Step2StatusLabel.TabIndex = 2
         Me.Step2StatusLabel.Text = "Waiting..."
         '
@@ -183,7 +189,7 @@ Partial Class SynchronizeForm
         Me.Step2ProgressBar.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step2ProgressBar.Location = New System.Drawing.Point(3, 16)
         Me.Step2ProgressBar.Name = "Step2ProgressBar"
-        Me.Step2ProgressBar.Size = New System.Drawing.Size(458, 21)
+        Me.Step2ProgressBar.Size = New System.Drawing.Size(450, 26)
         Me.Step2ProgressBar.TabIndex = 3
         '
         'Step2Label
@@ -193,7 +199,7 @@ Partial Class SynchronizeForm
         Me.Step2Label.Location = New System.Drawing.Point(5, 2)
         Me.Step2Label.Name = "Step2Label"
         Me.Step2Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
-        Me.Step2Label.Size = New System.Drawing.Size(464, 23)
+        Me.Step2Label.Size = New System.Drawing.Size(456, 23)
         Me.Step2Label.TabIndex = 1
         Me.Step2Label.Text = "Step 2 : Copying files both ways"
         '
@@ -210,7 +216,7 @@ Partial Class SynchronizeForm
         Me.Step1LayoutPanel.RowCount = 2
         Me.Step1LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.Step1LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step1LayoutPanel.Size = New System.Drawing.Size(474, 75)
+        Me.Step1LayoutPanel.Size = New System.Drawing.Size(466, 80)
         Me.Step1LayoutPanel.TabIndex = 0
         '
         'TableLayoutPanel2
@@ -225,7 +231,7 @@ Partial Class SynchronizeForm
         Me.TableLayoutPanel2.RowCount = 2
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(464, 40)
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(456, 45)
         Me.TableLayoutPanel2.TabIndex = 0
         '
         'Step1StatusLabel
@@ -234,7 +240,7 @@ Partial Class SynchronizeForm
         Me.Step1StatusLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step1StatusLabel.Location = New System.Drawing.Point(3, 0)
         Me.Step1StatusLabel.Name = "Step1StatusLabel"
-        Me.Step1StatusLabel.Size = New System.Drawing.Size(458, 13)
+        Me.Step1StatusLabel.Size = New System.Drawing.Size(450, 13)
         Me.Step1StatusLabel.TabIndex = 2
         Me.Step1StatusLabel.Text = "Waiting..."
         '
@@ -244,7 +250,7 @@ Partial Class SynchronizeForm
         Me.Step1ProgressBar.Location = New System.Drawing.Point(3, 16)
         Me.Step1ProgressBar.MarqueeAnimationSpeed = 50
         Me.Step1ProgressBar.Name = "Step1ProgressBar"
-        Me.Step1ProgressBar.Size = New System.Drawing.Size(458, 21)
+        Me.Step1ProgressBar.Size = New System.Drawing.Size(450, 26)
         Me.Step1ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.Step1ProgressBar.TabIndex = 3
         Me.Step1ProgressBar.Value = 100
@@ -256,7 +262,7 @@ Partial Class SynchronizeForm
         Me.Step1Label.Location = New System.Drawing.Point(5, 2)
         Me.Step1Label.Name = "Step1Label"
         Me.Step1Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
-        Me.Step1Label.Size = New System.Drawing.Size(464, 23)
+        Me.Step1Label.Size = New System.Drawing.Size(456, 23)
         Me.Step1Label.TabIndex = 1
         Me.Step1Label.Text = "Step 1 : Building files list"
         '
@@ -265,53 +271,68 @@ Partial Class SynchronizeForm
         Me.ButtonsLayoutPanel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonsLayoutPanel.ColumnCount = 1
         Me.ButtonsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.ButtonsLayoutPanel.Controls.Add(Me.StopBtn, 0, 0)
-        Me.ButtonsLayoutPanel.Location = New System.Drawing.Point(370, 301)
+        Me.ButtonsLayoutPanel.Controls.Add(Me.SyncBtn, 0, 0)
+        Me.ButtonsLayoutPanel.Controls.Add(Me.StopBtn, 0, 1)
+        Me.ButtonsLayoutPanel.Location = New System.Drawing.Point(362, 281)
         Me.ButtonsLayoutPanel.Name = "ButtonsLayoutPanel"
-        Me.ButtonsLayoutPanel.RowCount = 1
-        Me.ButtonsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.ButtonsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
-        Me.ButtonsLayoutPanel.Size = New System.Drawing.Size(124, 35)
+        Me.ButtonsLayoutPanel.RowCount = 2
+        Me.ButtonsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.ButtonsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.ButtonsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.ButtonsLayoutPanel.Size = New System.Drawing.Size(124, 69)
         Me.ButtonsLayoutPanel.TabIndex = 1
+        '
+        'SyncBtn
+        '
+        Me.SyncBtn.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SyncBtn.Location = New System.Drawing.Point(3, 3)
+        Me.SyncBtn.Name = "SyncBtn"
+        Me.SyncBtn.Size = New System.Drawing.Size(118, 28)
+        Me.SyncBtn.TabIndex = 4
+        Me.SyncBtn.Tag = ""
+        Me.SyncBtn.Text = "Synchronize"
+        Me.SyncBtn.UseVisualStyleBackColor = True
         '
         'StopBtn
         '
         Me.StopBtn.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.StopBtn.Location = New System.Drawing.Point(3, 3)
+        Me.StopBtn.Location = New System.Drawing.Point(3, 37)
         Me.StopBtn.Name = "StopBtn"
         Me.StopBtn.Size = New System.Drawing.Size(118, 29)
         Me.StopBtn.TabIndex = 1
-        Me.StopBtn.Tag = "Stop;Done!"
-        Me.StopBtn.Text = "Stop"
+        Me.StopBtn.Tag = "Cancel;Close"
+        Me.StopBtn.Text = "Cancel"
         Me.StopBtn.UseVisualStyleBackColor = True
         '
-        'TableLayoutPanel1
+        'StatisticsPanel
         '
-        Me.TableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TableLayoutPanel1.ColumnCount = 4
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.ElapsedTime, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.ElapsedTimeLabel, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(12, 267)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 4
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(352, 69)
-        Me.TableLayoutPanel1.TabIndex = 2
+        Me.StatisticsPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.StatisticsPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.StatisticsPanel.ColumnCount = 4
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.StatisticsPanel.Controls.Add(Me.ElapsedTime, 1, 0)
+        Me.StatisticsPanel.Controls.Add(Me.ElapsedTimeLabel, 0, 0)
+        Me.StatisticsPanel.Location = New System.Drawing.Point(12, 281)
+        Me.StatisticsPanel.Name = "StatisticsPanel"
+        Me.StatisticsPanel.RowCount = 4
+        Me.StatisticsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.StatisticsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.StatisticsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.StatisticsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.StatisticsPanel.Size = New System.Drawing.Size(330, 69)
+        Me.StatisticsPanel.TabIndex = 2
         '
         'ElapsedTime
         '
         Me.ElapsedTime.AutoSize = True
         Me.ElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ElapsedTime.Location = New System.Drawing.Point(109, 1)
+        Me.ElapsedTime.Location = New System.Drawing.Point(102, 1)
         Me.ElapsedTime.Name = "ElapsedTime"
-        Me.ElapsedTime.Size = New System.Drawing.Size(63, 16)
+        Me.ElapsedTime.Size = New System.Drawing.Size(59, 16)
         Me.ElapsedTime.TabIndex = 1
         Me.ElapsedTime.Text = "0s."
         Me.ElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -322,7 +343,7 @@ Partial Class SynchronizeForm
         Me.ElapsedTimeLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ElapsedTimeLabel.Location = New System.Drawing.Point(4, 1)
         Me.ElapsedTimeLabel.Name = "ElapsedTimeLabel"
-        Me.ElapsedTimeLabel.Size = New System.Drawing.Size(98, 16)
+        Me.ElapsedTimeLabel.Size = New System.Drawing.Size(91, 16)
         Me.ElapsedTimeLabel.TabIndex = 0
         Me.ElapsedTimeLabel.Text = "Elapsed time:"
         Me.ElapsedTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -332,12 +353,52 @@ Partial Class SynchronizeForm
         Me.SyncingTimeCounter.Enabled = True
         Me.SyncingTimeCounter.Interval = 1000
         '
+        'PreviewList
+        '
+        Me.PreviewList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PreviewList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.PathColumn, Me.TypeColumn, Me.ActionColumn, Me.DirectionColumn})
+        Me.PreviewList.FullRowSelect = True
+        Me.PreviewList.GridLines = True
+        Me.PreviewList.Location = New System.Drawing.Point(12, 12)
+        Me.PreviewList.Name = "PreviewList"
+        Me.PreviewList.Size = New System.Drawing.Size(474, 263)
+        Me.PreviewList.TabIndex = 4
+        Me.PreviewList.UseCompatibleStateImageBehavior = False
+        Me.PreviewList.View = System.Windows.Forms.View.Details
+        Me.PreviewList.Visible = False
+        '
+        'PathColumn
+        '
+        Me.PathColumn.DisplayIndex = 3
+        Me.PathColumn.Text = "Path"
+        Me.PathColumn.Width = 237
+        '
+        'TypeColumn
+        '
+        Me.TypeColumn.DisplayIndex = 0
+        Me.TypeColumn.Text = "Type"
+        Me.TypeColumn.Width = 56
+        '
+        'ActionColumn
+        '
+        Me.ActionColumn.DisplayIndex = 1
+        Me.ActionColumn.Text = "Action"
+        '
+        'DirectionColumn
+        '
+        Me.DirectionColumn.DisplayIndex = 2
+        Me.DirectionColumn.Text = "Direction"
+        Me.DirectionColumn.Width = 78
+        '
         'SynchronizeForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(506, 348)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.ClientSize = New System.Drawing.Size(498, 362)
+        Me.Controls.Add(Me.PreviewList)
+        Me.Controls.Add(Me.StatisticsPanel)
         Me.Controls.Add(Me.ButtonsLayoutPanel)
         Me.Controls.Add(Me.MainLayoutPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!)
@@ -355,8 +416,8 @@ Partial Class SynchronizeForm
         Me.Step1LayoutPanel.PerformLayout()
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ButtonsLayoutPanel.ResumeLayout(False)
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.StatisticsPanel.ResumeLayout(False)
+        Me.StatisticsPanel.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -378,8 +439,14 @@ Partial Class SynchronizeForm
     Friend WithEvents Step1Label As System.Windows.Forms.Label
     Friend WithEvents ButtonsLayoutPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents StopBtn As System.Windows.Forms.Button
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents StatisticsPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents ElapsedTimeLabel As System.Windows.Forms.Label
     Friend WithEvents ElapsedTime As System.Windows.Forms.Label
     Friend WithEvents SyncingTimeCounter As System.Windows.Forms.Timer
+    Friend WithEvents SyncBtn As System.Windows.Forms.Button
+    Friend WithEvents PreviewList As System.Windows.Forms.ListView
+    Friend WithEvents PathColumn As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ActionColumn As System.Windows.Forms.ColumnHeader
+    Friend WithEvents DirectionColumn As System.Windows.Forms.ColumnHeader
+    Friend WithEvents TypeColumn As System.Windows.Forms.ColumnHeader
 End Class
