@@ -177,6 +177,7 @@
         Handler.SetSetting("LimitedCopy", Settings_IncludeExcludeCheckBox.Checked, LoadToForm)
         Handler.SetSetting("IncludedTypes", Settings_IncludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting("ExcludedTypes", Settings_ExcludedTypesTextBox.Text, LoadToForm)
+        Handler.SetSetting("ReplicateEmptyDirectories", Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
 
         Dim Restrictions As String = (If(Settings_IncludeExcludeCheckBox.Checked, 1, 0) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
         Dim Method As String = (If(Settings_LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(Settings_TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString

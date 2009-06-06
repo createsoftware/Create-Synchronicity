@@ -227,6 +227,7 @@
         Dim Right As String = Handler.GetSetting("To")
 
         'Try
+        'TODO: Factor out the code
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
         For Each Entry As SyncingItem In SyncingList(SideOfSource.Left)
             Select Case Entry.Type
@@ -249,6 +250,7 @@
                         Case TypeOfAction.Create
                             CopyFile(Entry.Path, Right, Left)
                         Case TypeOfAction.Delete
+                            IO.File.SetAttributes(Right & Entry.Path, IO.FileAttributes.Normal)
                             IO.File.Delete(Right & Entry.Path)
                     End Select
 
@@ -257,12 +259,13 @@
                         Case TypeOfAction.Create
                             IO.Directory.CreateDirectory(Left & Entry.Path)
                         Case TypeOfAction.Delete
-                            Select Case Handler.GetSetting("Restrictions")
-                                Case "0"
-                                    If Not IO.Directory.Exists(Left & Entry.Path) Then IO.Directory.Delete(Right & Entry.Path)
-                                Case Else
-                                    If IO.Directory.GetFiles(Right & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Right & Entry.Path)
-                            End Select
+                            'Select Case Handler.GetSetting("Restrictions")
+                            'Case "0"
+                            '     If Not IO.Directory.Exists(Left & Entry.Path) Then IO.Directory.Delete(Right & Entry.Path)
+                            '  Case Else
+                            '       If IO.Directory.GetFiles(Right & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Right & Entry.Path)
+                            'End Select
+                            If IO.Directory.GetFiles(Right & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Right & Entry.Path)
                     End Select
             End Select
 
@@ -283,42 +286,49 @@
         Next
     End Sub
 
-    Function BuildList(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction) As Boolean 'Returns whether all files/folders in the directory have been modified.
-        Dim AllFilesTreated As Boolean = True
+    Sub BuildList(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction) ' As Boolean 'Returns whether the directory (or its subdirectories) contains files.
+        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         If Not Folder.StartsWith("\") Then Folder = "\" & Folder
         Dim AbsolutePath As String = Context.SourcePath & Folder
 
-        If Recursive Then
-            For Each SubFolder As String In IO.Directory.GetDirectories(AbsolutePath)
-                AllFilesTreated = AllFilesTreated And BuildList(SubFolder.Substring(Context.SourcePath.Length), True, Context)
-            Next
-        End If
+        Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
+
+        Dim ModifyDirectory As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
+        If ModifyDirectory And Not Context.Type = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Type))
 
         For Each File As String In IO.Directory.GetFiles(AbsolutePath)
             Dim SourceFile As String = File
             Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
-            If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then
-                AllFilesTreated = False
-                Continue For
-            End If
+            If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
 
             SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Type))
         Next
 
-        Dim CreateFolder As Boolean
-        If Context.Type = TypeOfAction.Delete Then
-            CreateFolder = AllFilesTreated And Not IO.Directory.Exists(Context.DestinationPath & Folder)
-            If CreateFolder Then
-                Dim A As String = ""
-            End If
-        Else
-            CreateFolder = Not IO.Directory.Exists(Context.DestinationPath & Folder)
+        If Recursive Then
+            For Each SubFolder As String In IO.Directory.GetDirectories(AbsolutePath)
+                BuildList(SubFolder.Substring(Context.SourcePath.Length), True, Context)
+            Next
         End If
 
-        If CreateFolder Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Type))
-        Return AllFilesTreated
-    End Function
+        'Dim ModifyFolder As Boolean
+        'If Context.Type = TypeOfAction.Delete Then
+        ' ModifyFolder = AllFilesTreated And Not IO.Directory.Exists(Context.DestinationPath & Folder)
+        'Else
+        ' ModifyFolder = Not IO.Directory.Exists(Context.DestinationPath & Folder)
+        'End If
+
+        'LOTS OF TESTING NEEDED...
+        If ModifyDirectory AndAlso Handler.GetSetting("ReplicateEmptyDirectories", "False") = "False" Then
+            If Context.Type = TypeOfAction.Delete Then
+                'TODO: when deleting, check if a folder is empty... !!
+                SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Type))
+            Else
+                If SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
+            End If
+        End If
+        'Return AllFilesTreated
+    End Sub
 
     Function HasValidExtension(ByVal Path As String) As Boolean
         Select Case Handler.GetSetting("Restrictions")

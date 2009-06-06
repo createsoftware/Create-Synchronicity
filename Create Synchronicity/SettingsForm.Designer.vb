@@ -57,6 +57,7 @@ Partial Class Settings
         Me.Settings_CancelButton = New System.Windows.Forms.Button
         Me.Settings_SaveButton = New System.Windows.Forms.Button
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
+        Me.Settings_ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -125,18 +126,18 @@ Partial Class Settings
         '
         'Settings_ToLabel
         '
-        Me.Settings_ToLabel.Location = New System.Drawing.Point(7, 44)
+        Me.Settings_ToLabel.Location = New System.Drawing.Point(6, 44)
         Me.Settings_ToLabel.Name = "Settings_ToLabel"
-        Me.Settings_ToLabel.Size = New System.Drawing.Size(58, 21)
+        Me.Settings_ToLabel.Size = New System.Drawing.Size(59, 21)
         Me.Settings_ToLabel.TabIndex = 4
         Me.Settings_ToLabel.Text = "To: "
         Me.Settings_ToLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Settings_FromLabel
         '
-        Me.Settings_FromLabel.Location = New System.Drawing.Point(7, 18)
+        Me.Settings_FromLabel.Location = New System.Drawing.Point(3, 18)
         Me.Settings_FromLabel.Name = "Settings_FromLabel"
-        Me.Settings_FromLabel.Size = New System.Drawing.Size(58, 21)
+        Me.Settings_FromLabel.Size = New System.Drawing.Size(62, 21)
         Me.Settings_FromLabel.TabIndex = 2
         Me.Settings_FromLabel.Text = "From: "
         Me.Settings_FromLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -179,18 +180,18 @@ Partial Class Settings
         Me.Settings_TreeViewMenuStrip.Name = "Settings_TreeViewMenuStrip"
         Me.Settings_TreeViewMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Settings_TreeViewMenuStrip.ShowImageMargin = False
-        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(199, 48)
+        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(200, 48)
         '
         'Settings_SynchronizeAllSubfoldersMenuItem
         '
         Me.Settings_SynchronizeAllSubfoldersMenuItem.Name = "Settings_SynchronizeAllSubfoldersMenuItem"
-        Me.Settings_SynchronizeAllSubfoldersMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.Settings_SynchronizeAllSubfoldersMenuItem.Size = New System.Drawing.Size(199, 22)
         Me.Settings_SynchronizeAllSubfoldersMenuItem.Text = "Synchronize all subfolders"
         '
         'Settings_DontSynchronizeSubfoldersMenuItem
         '
         Me.Settings_DontSynchronizeSubfoldersMenuItem.Name = "Settings_DontSynchronizeSubfoldersMenuItem"
-        Me.Settings_DontSynchronizeSubfoldersMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.Settings_DontSynchronizeSubfoldersMenuItem.Size = New System.Drawing.Size(199, 22)
         Me.Settings_DontSynchronizeSubfoldersMenuItem.Text = "Don't Synchronize subfolders"
         '
         'Settings_RightView
@@ -259,8 +260,6 @@ Partial Class Settings
         '
         'Settings_MethodLayoutPanel
         '
-        Me.Settings_MethodLayoutPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_MethodLayoutPanel.ColumnCount = 3
         Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
@@ -268,18 +267,19 @@ Partial Class Settings
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_TwoWaysIncrementalMethodOption, 2, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
-        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(6, 20)
+        Me.Settings_MethodLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 17)
         Me.Settings_MethodLayoutPanel.Name = "Settings_MethodLayoutPanel"
         Me.Settings_MethodLayoutPanel.RowCount = 1
         Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-        Me.Settings_MethodLayoutPanel.Size = New System.Drawing.Size(662, 23)
+        Me.Settings_MethodLayoutPanel.Size = New System.Drawing.Size(668, 23)
         Me.Settings_MethodLayoutPanel.TabIndex = 6
         '
         'Settings_TwoWaysIncrementalMethodOption
         '
         Me.Settings_TwoWaysIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_TwoWaysIncrementalMethodOption.AutoSize = True
-        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(474, 3)
+        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(479, 3)
         Me.Settings_TwoWaysIncrementalMethodOption.Name = "Settings_TwoWaysIncrementalMethodOption"
         Me.Settings_TwoWaysIncrementalMethodOption.Size = New System.Drawing.Size(153, 17)
         Me.Settings_TwoWaysIncrementalMethodOption.TabIndex = 2
@@ -292,7 +292,7 @@ Partial Class Settings
         '
         Me.Settings_LRIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_LRIncrementalMethodOption.AutoSize = True
-        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(241, 3)
+        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(244, 3)
         Me.Settings_LRIncrementalMethodOption.Name = "Settings_LRIncrementalMethodOption"
         Me.Settings_LRIncrementalMethodOption.Size = New System.Drawing.Size(177, 17)
         Me.Settings_LRIncrementalMethodOption.TabIndex = 1
@@ -306,7 +306,7 @@ Partial Class Settings
         Me.Settings_LRMirrorMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_LRMirrorMethodOption.AutoSize = True
         Me.Settings_LRMirrorMethodOption.Checked = True
-        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(39, 3)
+        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(40, 3)
         Me.Settings_LRMirrorMethodOption.Name = "Settings_LRMirrorMethodOption"
         Me.Settings_LRMirrorMethodOption.Size = New System.Drawing.Size(142, 17)
         Me.Settings_LRMirrorMethodOption.TabIndex = 0
@@ -322,9 +322,9 @@ Partial Class Settings
         Me.Settings_DescriptionLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 50)
+        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 43)
         Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
-        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 37)
+        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 44)
         Me.Settings_DescriptionLabel.TabIndex = 1
         Me.Settings_DescriptionLabel.Tag = "Move your mouse over an option to see a more detailed description"
         Me.Settings_DescriptionLabel.Text = "Move your mouse over an option to see a more detailed description"
@@ -335,9 +335,10 @@ Partial Class Settings
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeCheckBox)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeLayoutPanel)
+        Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_ReplicateEmptyDirectoriesOption)
         Me.Settings_IncludeExcludeBox.Location = New System.Drawing.Point(12, 352)
         Me.Settings_IncludeExcludeBox.Name = "Settings_IncludeExcludeBox"
-        Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(674, 100)
+        Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(674, 97)
         Me.Settings_IncludeExcludeBox.TabIndex = 6
         Me.Settings_IncludeExcludeBox.TabStop = False
         Me.Settings_IncludeExcludeBox.Text = "Include or exclude file types"
@@ -345,7 +346,7 @@ Partial Class Settings
         'Settings_IncludeExcludeCheckBox
         '
         Me.Settings_IncludeExcludeCheckBox.AutoSize = True
-        Me.Settings_IncludeExcludeCheckBox.Location = New System.Drawing.Point(9, 20)
+        Me.Settings_IncludeExcludeCheckBox.Location = New System.Drawing.Point(6, 20)
         Me.Settings_IncludeExcludeCheckBox.Name = "Settings_IncludeExcludeCheckBox"
         Me.Settings_IncludeExcludeCheckBox.Size = New System.Drawing.Size(139, 17)
         Me.Settings_IncludeExcludeCheckBox.TabIndex = 5
@@ -354,8 +355,6 @@ Partial Class Settings
         '
         'Settings_IncludeExcludeLayoutPanel
         '
-        Me.Settings_IncludeExcludeLayoutPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_IncludeExcludeLayoutPanel.ColumnCount = 2
         Me.Settings_IncludeExcludeLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_IncludeExcludeLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -363,14 +362,15 @@ Partial Class Settings
         Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_ExcludedTypesTextBox, 0, 1)
         Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_IncludeFilesOption, 0, 0)
         Me.Settings_IncludeExcludeLayoutPanel.Controls.Add(Me.Settings_ExcludeFilesOption, 1, 0)
+        Me.Settings_IncludeExcludeLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.Settings_IncludeExcludeLayoutPanel.Enabled = False
-        Me.Settings_IncludeExcludeLayoutPanel.Location = New System.Drawing.Point(6, 43)
+        Me.Settings_IncludeExcludeLayoutPanel.Location = New System.Drawing.Point(3, 43)
         Me.Settings_IncludeExcludeLayoutPanel.Name = "Settings_IncludeExcludeLayoutPanel"
         Me.Settings_IncludeExcludeLayoutPanel.RowCount = 2
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.Settings_IncludeExcludeLayoutPanel.Size = New System.Drawing.Size(662, 51)
+        Me.Settings_IncludeExcludeLayoutPanel.Size = New System.Drawing.Size(668, 51)
         Me.Settings_IncludeExcludeLayoutPanel.TabIndex = 4
         '
         'Settings_IncludedTypesTextBox
@@ -379,16 +379,16 @@ Partial Class Settings
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_IncludedTypesTextBox.Location = New System.Drawing.Point(3, 26)
         Me.Settings_IncludedTypesTextBox.Name = "Settings_IncludedTypesTextBox"
-        Me.Settings_IncludedTypesTextBox.Size = New System.Drawing.Size(325, 21)
+        Me.Settings_IncludedTypesTextBox.Size = New System.Drawing.Size(328, 21)
         Me.Settings_IncludedTypesTextBox.TabIndex = 8
         '
         'Settings_ExcludedTypesTextBox
         '
         Me.Settings_ExcludedTypesTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_ExcludedTypesTextBox.Location = New System.Drawing.Point(334, 26)
+        Me.Settings_ExcludedTypesTextBox.Location = New System.Drawing.Point(337, 26)
         Me.Settings_ExcludedTypesTextBox.Name = "Settings_ExcludedTypesTextBox"
-        Me.Settings_ExcludedTypesTextBox.Size = New System.Drawing.Size(325, 21)
+        Me.Settings_ExcludedTypesTextBox.Size = New System.Drawing.Size(328, 21)
         Me.Settings_ExcludedTypesTextBox.TabIndex = 7
         '
         'Settings_IncludeFilesOption
@@ -405,7 +405,7 @@ Partial Class Settings
         'Settings_ExcludeFilesOption
         '
         Me.Settings_ExcludeFilesOption.AutoSize = True
-        Me.Settings_ExcludeFilesOption.Location = New System.Drawing.Point(334, 3)
+        Me.Settings_ExcludeFilesOption.Location = New System.Drawing.Point(337, 3)
         Me.Settings_ExcludeFilesOption.Name = "Settings_ExcludeFilesOption"
         Me.Settings_ExcludeFilesOption.Size = New System.Drawing.Size(136, 17)
         Me.Settings_ExcludeFilesOption.TabIndex = 10
@@ -457,13 +457,25 @@ Partial Class Settings
         Me.Settings_FolderBrowser.Description = "Select a folder to copy the files %."
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
         '
+        'Settings_ReplicateEmptyDirectoriesOption
+        '
+        Me.Settings_ReplicateEmptyDirectoriesOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(489, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(182, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 8
+        Me.Settings_ReplicateEmptyDirectoriesOption.Text = "Replicate empty directories"
+        Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Settings_ReplicateEmptyDirectoriesOption.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(698, 501)
-        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Settings_IncludeExcludeBox)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Settings_SynchrpnizationMethodBox)
         Me.Controls.Add(Me.Settings_SubdirectoriesBox)
         Me.Controls.Add(Me.Settings_DirectoriesBox)
@@ -522,4 +534,5 @@ Partial Class Settings
     Friend WithEvents Settings_TreeViewMenuStrip As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents Settings_SynchronizeAllSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_DontSynchronizeSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
 End Class
