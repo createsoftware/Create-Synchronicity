@@ -12,8 +12,8 @@
 
     Function LoadConfigFile() As Boolean
         Dim ConfigString As String = ""
-        If Not IO.File.Exists(ConfigPath & ConfigName & ".sync") Then Exit Function
-        Dim FileReader As New IO.StreamReader(ConfigPath & ConfigName & ".sync")
+        If Not IO.File.Exists(GetConfigFilePath()) Then Exit Function
+        Dim FileReader As New IO.StreamReader(GetConfigFilePath())
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
@@ -50,7 +50,7 @@
     Function SaveConfigFile() As Boolean
         Try
             Dim ConfigString As String = ""
-            Dim FileWriter As New IO.StreamWriter(ConfigPath & ConfigName & ".sync")
+            Dim FileWriter As New IO.StreamWriter(GetConfigFilePath())
 
             For Each Setting As KeyValuePair(Of String, String) In Configuration
                 FileWriter.WriteLine(Setting.Key & "=" & Setting.Value)
@@ -63,16 +63,24 @@
         End Try
     End Function
 
+    Sub DeleteConfigFile()
+        IO.File.Delete(GetConfigFilePath())
+    End Sub
+
+    Function GetConfigFilePath() As String
+        Return ConfigPath & ConfigName & ".sync"
+    End Function
+
+    Sub SetSetting(ByVal SettingName As String, ByVal Value As Object)
+        Configuration(SettingName) = Value
+    End Sub
+
     Sub SetSetting(ByVal SettingName As String, ByRef SettingField As Object, ByVal LoadSetting As Boolean)
         If LoadSetting Then
             SettingField = GetSetting(SettingName, SettingField)
         Else
             Configuration(SettingName) = SettingField
         End If
-    End Sub
-
-    Sub SetSetting(ByVal SettingName As String, ByVal Value As Object)
-        Configuration(SettingName) = Value
     End Sub
 
     Function GetSetting(ByVal SettingName As String, Optional ByRef DefaultVal As Object = Nothing) As String

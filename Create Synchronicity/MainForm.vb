@@ -124,7 +124,8 @@
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
         If Microsoft.VisualBasic.MsgBox("Do you really want to delete """ & Main_Actions.SelectedItems(0).Text & """ profile ?", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
-            IO.File.Delete(Get_BaseFolder() & "\" & Main_Actions.SelectedItems(0).Text)
+            SettingsArray(Main_Actions.SelectedItems(0).Text).DeleteConfigFile()
+            SettingsArray(Main_Actions.SelectedItems(0).Text) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
         End If
     End Sub
