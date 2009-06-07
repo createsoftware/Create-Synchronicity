@@ -43,6 +43,12 @@ Partial Class SynchronizeForm
         Me.SyncBtn = New System.Windows.Forms.Button
         Me.StopBtn = New System.Windows.Forms.Button
         Me.StatisticsPanel = New System.Windows.Forms.TableLayoutPanel
+        Me.TotalCount = New System.Windows.Forms.Label
+        Me.TotalCountLabel = New System.Windows.Forms.Label
+        Me.Done = New System.Windows.Forms.Label
+        Me.DoneLabel = New System.Windows.Forms.Label
+        Me.Speed = New System.Windows.Forms.Label
+        Me.SpeedLabel = New System.Windows.Forms.Label
         Me.ElapsedTime = New System.Windows.Forms.Label
         Me.ElapsedTimeLabel = New System.Windows.Forms.Label
         Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
@@ -141,7 +147,7 @@ Partial Class SynchronizeForm
         Me.Step3Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
         Me.Step3Label.Size = New System.Drawing.Size(456, 23)
         Me.Step3Label.TabIndex = 1
-        Me.Step3Label.Text = "Step 3 : Cleaning up"
+        Me.Step3Label.Text = "Step 3 : Cleaning up and copying files right to left"
         '
         'Step2LayoutPanel
         '
@@ -201,7 +207,7 @@ Partial Class SynchronizeForm
         Me.Step2Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
         Me.Step2Label.Size = New System.Drawing.Size(456, 23)
         Me.Step2Label.TabIndex = 1
-        Me.Step2Label.Text = "Step 2 : Copying files both ways"
+        Me.Step2Label.Text = "Step 2 : Copying files left to right"
         '
         'Step1LayoutPanel
         '
@@ -310,10 +316,16 @@ Partial Class SynchronizeForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.StatisticsPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
         Me.StatisticsPanel.ColumnCount = 4
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.StatisticsPanel.Controls.Add(Me.TotalCount, 3, 1)
+        Me.StatisticsPanel.Controls.Add(Me.TotalCountLabel, 2, 1)
+        Me.StatisticsPanel.Controls.Add(Me.Done, 1, 1)
+        Me.StatisticsPanel.Controls.Add(Me.DoneLabel, 0, 1)
+        Me.StatisticsPanel.Controls.Add(Me.Speed, 3, 0)
+        Me.StatisticsPanel.Controls.Add(Me.SpeedLabel, 2, 0)
         Me.StatisticsPanel.Controls.Add(Me.ElapsedTime, 1, 0)
         Me.StatisticsPanel.Controls.Add(Me.ElapsedTimeLabel, 0, 0)
         Me.StatisticsPanel.Location = New System.Drawing.Point(12, 281)
@@ -326,13 +338,77 @@ Partial Class SynchronizeForm
         Me.StatisticsPanel.Size = New System.Drawing.Size(330, 69)
         Me.StatisticsPanel.TabIndex = 2
         '
+        'TotalCount
+        '
+        Me.TotalCount.AutoSize = True
+        Me.TotalCount.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TotalCount.Location = New System.Drawing.Point(250, 18)
+        Me.TotalCount.Name = "TotalCount"
+        Me.TotalCount.Size = New System.Drawing.Size(76, 16)
+        Me.TotalCount.TabIndex = 7
+        Me.TotalCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'TotalCountLabel
+        '
+        Me.TotalCountLabel.AutoSize = True
+        Me.TotalCountLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TotalCountLabel.Location = New System.Drawing.Point(168, 18)
+        Me.TotalCountLabel.Name = "TotalCountLabel"
+        Me.TotalCountLabel.Size = New System.Drawing.Size(75, 16)
+        Me.TotalCountLabel.TabIndex = 6
+        Me.TotalCountLabel.Text = "Total:"
+        Me.TotalCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Done
+        '
+        Me.Done.AutoSize = True
+        Me.Done.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Done.Location = New System.Drawing.Point(96, 18)
+        Me.Done.Name = "Done"
+        Me.Done.Size = New System.Drawing.Size(65, 16)
+        Me.Done.TabIndex = 5
+        Me.Done.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'DoneLabel
+        '
+        Me.DoneLabel.AutoSize = True
+        Me.DoneLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.DoneLabel.Location = New System.Drawing.Point(4, 18)
+        Me.DoneLabel.Name = "DoneLabel"
+        Me.DoneLabel.Size = New System.Drawing.Size(85, 16)
+        Me.DoneLabel.TabIndex = 4
+        Me.DoneLabel.Text = "Done:"
+        Me.DoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Speed
+        '
+        Me.Speed.AutoSize = True
+        Me.Speed.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Speed.Location = New System.Drawing.Point(250, 1)
+        Me.Speed.Name = "Speed"
+        Me.Speed.Size = New System.Drawing.Size(76, 16)
+        Me.Speed.TabIndex = 3
+        Me.Speed.Text = "0MB/s"
+        Me.Speed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'SpeedLabel
+        '
+        Me.SpeedLabel.AutoSize = True
+        Me.SpeedLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SpeedLabel.Location = New System.Drawing.Point(168, 1)
+        Me.SpeedLabel.Name = "SpeedLabel"
+        Me.SpeedLabel.Size = New System.Drawing.Size(75, 16)
+        Me.SpeedLabel.TabIndex = 2
+        Me.SpeedLabel.Text = "Speed:"
+        Me.SpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'ElapsedTime
         '
         Me.ElapsedTime.AutoSize = True
         Me.ElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ElapsedTime.Location = New System.Drawing.Point(102, 1)
+        Me.ElapsedTime.Location = New System.Drawing.Point(96, 1)
         Me.ElapsedTime.Name = "ElapsedTime"
-        Me.ElapsedTime.Size = New System.Drawing.Size(59, 16)
+        Me.ElapsedTime.Size = New System.Drawing.Size(65, 16)
         Me.ElapsedTime.TabIndex = 1
         Me.ElapsedTime.Text = "0s."
         Me.ElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -343,7 +419,7 @@ Partial Class SynchronizeForm
         Me.ElapsedTimeLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ElapsedTimeLabel.Location = New System.Drawing.Point(4, 1)
         Me.ElapsedTimeLabel.Name = "ElapsedTimeLabel"
-        Me.ElapsedTimeLabel.Size = New System.Drawing.Size(91, 16)
+        Me.ElapsedTimeLabel.Size = New System.Drawing.Size(85, 16)
         Me.ElapsedTimeLabel.TabIndex = 0
         Me.ElapsedTimeLabel.Text = "Elapsed time:"
         Me.ElapsedTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -449,4 +525,10 @@ Partial Class SynchronizeForm
     Friend WithEvents ActionColumn As System.Windows.Forms.ColumnHeader
     Friend WithEvents DirectionColumn As System.Windows.Forms.ColumnHeader
     Friend WithEvents TypeColumn As System.Windows.Forms.ColumnHeader
+    Friend WithEvents SpeedLabel As System.Windows.Forms.Label
+    Friend WithEvents TotalCount As System.Windows.Forms.Label
+    Friend WithEvents TotalCountLabel As System.Windows.Forms.Label
+    Friend WithEvents Done As System.Windows.Forms.Label
+    Friend WithEvents DoneLabel As System.Windows.Forms.Label
+    Friend WithEvents Speed As System.Windows.Forms.Label
 End Class

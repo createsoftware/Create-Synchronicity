@@ -24,10 +24,30 @@ Public Class SyncingItem
         Type = _Type
         Action = _Action
     End Sub
+
+    Function FormatType() As String
+        Select Case Type
+            Case TypeOfItem.File
+                Return "File"
+            Case Else
+                Return "Folder"
+        End Select
+    End Function
+
+    Function FormatAction() As String
+        Select Case Action
+            Case TypeOfAction.Create
+                Return "Create"
+            Case TypeOfAction.Delete
+                Return "Delete"
+            Case Else
+                Return "None"
+        End Select
+    End Function
 End Class
 
 Public Class SyncingAction
-    Public Type As TypeOfAction
+    Public Action As TypeOfAction
     Public Source As SideOfSource
     Public SourcePath As String
     Public DestinationPath As String

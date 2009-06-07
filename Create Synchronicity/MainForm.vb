@@ -23,6 +23,8 @@
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        IO.Directory.CreateDirectory(Get_LogFolder())
+        IO.Directory.CreateDirectory(Get_ConfigFolder())
         Main_ReloadConfigs()
     End Sub
 
@@ -31,9 +33,7 @@
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
         Main_Actions.Items.Clear() : Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
-        IO.Directory.CreateDirectory(Get_BaseFolder())
-
-        For Each ConfigFile As String In IO.Directory.GetFiles(Get_BaseFolder(), "*.sync")
+        For Each ConfigFile As String In IO.Directory.GetFiles(Get_ConfigFolder(), "*.sync")
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
 
@@ -46,8 +46,12 @@
         Next
     End Sub
 
-    Function Get_BaseFolder() As String
+    Function Get_ConfigFolder() As String
         Return Application.StartupPath & "\config"
+    End Function
+
+    Function Get_LogFolder() As String
+        Return Application.StartupPath & "\log"
     End Function
 
     Sub Main_Display_Options(ByVal Name As String, ByVal Clear As Boolean)
@@ -83,7 +87,6 @@
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ChangeSettingsMenuItem.Click
         Dim SettingsForm As New Settings(Main_Actions.SelectedItems(0).Text)
-        'Main_ActionsMenu.Close()
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
@@ -92,21 +95,18 @@
         Dim SettingsForm As New Settings(e.Label)
         e.CancelEdit() = True
         Main_Actions.LabelEdit = False
-        'Main_ActionsMenu.Close()
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
 
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
         Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, False)
-        'Main_ActionsMenu.Close()
         SyncForm.ShowDialog()
         SyncForm.Dispose()
     End Sub
 
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, True)
-        'Main_ActionsMenu.Close()
         SyncForm.ShowDialog()
     End Sub
 
@@ -128,5 +128,9 @@
             SettingsArray(Main_Actions.SelectedItems(0).Text) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
         End If
+    End Sub
+
+    Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
+        Diagnostics.Process.Start("notepad", Get_LogFolder() & "\" & Main_Actions.SelectedItems(0).Text & ".log")
     End Sub
 End Class

@@ -1,19 +1,25 @@
 ﻿Public Class SynchronizeForm
-    Dim StartTime As Date
-    Dim Handler As SettingsHandler
     Dim Log As LogHandler
+    Dim Handler As SettingsHandler
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
 
+    Dim Status_StartTime As Date
+    Dim Status_BytesCopied As Integer
+    Dim Status_ActionsDone As Integer
+    Dim Status_TimeElapsed As TimeSpan
+    Dim Status_MillisecondsSpeed As Double
+    Dim Status_TotalActionsCount As Integer
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
+
     Dim SyncThread As New Threading.Thread(AddressOf Synchronize)
     Dim SecondarySyncThread As New Threading.Thread(AddressOf Do_SecondThirdStep)
 
-    Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
-    Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
-    Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
-    Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
-    Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
     Delegate Sub UpdateListCallBack()
+    Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
+    Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
+    Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
+    Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
+    Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
 #Region " Events "
     Sub New(ByVal ConfigName As String, ByVal ShowPreview As Boolean)
@@ -24,12 +30,16 @@
         DisplayPreview = ShowPreview
         PreviewFinished = Not ShowPreview
 
-        SyncBtn.Visible = ShowPreview
         SyncBtn.Enabled = False
+        SyncBtn.Visible = ShowPreview
+
+        Status_BytesCopied = 0
+        Status_ActionsDone = 0
+        Status_TotalActionsCount = 0
+        Status_StartTime = DateTime.Now
 
         Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
-        StartTime = DateTime.Now
         SyncThread.Start()
     End Sub
 
@@ -44,8 +54,34 @@
         End Select
     End Sub
 
+    Private Sub SyncBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncBtn.Click
+        PreviewList.Dispose()
+        SyncBtn.Visible = False
+        StopBtn.Text = StopBtn.Tag.Split(";"c)(0)
+
+        SyncingTimeCounter.Start()
+        SecondarySyncThread.Start()
+    End Sub
+
     Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimeCounter.Tick
-        ElapsedTime.Text = If((DateTime.Now - StartTime).Hours = 0, "", (DateTime.Now - StartTime).Hours.ToString & "h, ") & If((DateTime.Now - StartTime).Minutes = 0, "", (DateTime.Now - StartTime).Minutes.ToString & "m, ") & (DateTime.Now - StartTime).Seconds.ToString & "s."
+        UpdateStatuses()
+    End Sub
+
+    Sub UpdateStatuses()
+        Status_TimeElapsed = DateTime.Now - Status_StartTime
+        Status_MillisecondsSpeed = Status_BytesCopied / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)
+        Done.Text = Status_ActionsDone
+
+        Select Case Status_MillisecondsSpeed
+            Case Is > 1024 * 1000
+                Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
+            Case Is > 1024
+                Speed.Text = Math.Round(Status_MillisecondsSpeed / 1024, 2).ToString & "kB/s"
+            Case Else
+                Speed.Text = Math.Round(Status_MillisecondsSpeed, 2).ToString & "B/s"
+        End Select
+
+        ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
     End Sub
 #End Region
 
@@ -112,6 +148,7 @@
                     UpdateList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
+                TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
             Case 2
                 UpdateLabel(2, "Done !")
                 Step2ProgressBar.Maximum = 100
@@ -124,6 +161,7 @@
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
                 SyncingTimeCounter.Stop()
+                UpdateStatuses()
                 Log.SaveAndDispose()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
         End Select
@@ -146,23 +184,8 @@
         Dim NewItem As New ListViewItem
         NewItem = PreviewList.Items.Add(Item.Path)
 
-        Dim TypeString As String = ""
-        Select Case Item.Type
-            Case TypeOfItem.File
-                TypeString = "File"
-            Case TypeOfItem.Folder
-                TypeString = "Folder"
-        End Select
-        NewItem.SubItems.Add(TypeString)
-
-        Dim ActionString As String = ""
-        Select Case Item.Action
-            Case TypeOfAction.Create
-                ActionString = "Create"
-            Case TypeOfAction.Delete
-                ActionString = "Delete"
-        End Select
-        NewItem.SubItems.Add(ActionString)
+        NewItem.SubItems.Add(Item.FormatType)
+        NewItem.SubItems.Add(Item.FormatAction)
 
         Dim DirectionString As String = ""
         Select Case Side
@@ -171,10 +194,8 @@
             Case SideOfSource.Right
                 DirectionString = "Right->Left"
         End Select
+
         NewItem.SubItems.Add(DirectionString)
-    End Sub
-    Sub SetElapsedTime(ByVal CurrentTimeSpan As TimeSpan)
-        ElapsedTime.Text = CurrentTimeSpan.ToString
     End Sub
 #End Region
 
@@ -203,7 +224,7 @@
         Context.Source = SideOfSource.Left
         Context.SourcePath = Handler.GetSetting("From")
         Context.DestinationPath = Handler.GetSetting("To")
-        Context.Type = TypeOfAction.Create
+        Context.Action = TypeOfAction.Create
         Init_Synchronization(Handler.LeftCheckedNodes, Context)
 
         Context.Source = SideOfSource.Right
@@ -211,10 +232,10 @@
         Context.DestinationPath = Handler.GetSetting("From")
         Select Case Handler.GetSetting("Method")
             Case "0"
-                Context.Type = TypeOfAction.Delete
+                Context.Action = TypeOfAction.Delete
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
             Case "2"
-                Context.Type = TypeOfAction.Create
+                Context.Action = TypeOfAction.Create
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
         Me.Invoke(TaskDoneDelegate, 1)
@@ -244,6 +265,8 @@
 
         For Each Entry As SyncingItem In ListOfActions
             Try
+                Me.Invoke(LabelDelegate, New Object() {CurrentStep, Destination & Entry.Path})
+
                 Select Case Entry.Type
                     Case TypeOfItem.File
                         Select Case Entry.Action
@@ -262,6 +285,7 @@
                                 If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Source & Entry.Path)
                         End Select
                 End Select
+                Status_ActionsDone += 1
                 Log.LogAction(Entry, True)
 
             Catch ex As Exception
@@ -269,7 +293,6 @@
 
             Finally
                 Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
-                Me.Invoke(LabelDelegate, New Object() {CurrentStep, Destination & Entry.Path})
             End Try
         Next
     End Sub
@@ -290,14 +313,14 @@
         Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
 
         Dim ModifyDirectory As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
-        If ModifyDirectory And Not Context.Type = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Type))
+        If ModifyDirectory And Not Context.Action = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
 
         For Each File As String In IO.Directory.GetFiles(AbsolutePath)
             Dim SourceFile As String = File
             Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
             If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
 
-            SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Type))
+            SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
         Next
 
         If Recursive Then
@@ -306,22 +329,14 @@
             Next
         End If
 
-        'Dim ModifyFolder As Boolean
-        'If Context.Type = TypeOfAction.Delete Then
-        ' ModifyFolder = AllFilesTreated And Not IO.Directory.Exists(Context.DestinationPath & Folder)
-        'Else
-        ' ModifyFolder = Not IO.Directory.Exists(Context.DestinationPath & Folder)
-        'End If
-
         'LOTS OF TESTING NEEDED...
         If ModifyDirectory AndAlso Handler.GetSetting("ReplicateEmptyDirectories", "False") = "False" Then
-            If Context.Type = TypeOfAction.Delete Then
-                SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Type))
+            If Context.Action = TypeOfAction.Delete Then
+                SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
             Else
                 If SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
             End If
         End If
-        'Return AllFilesTreated
     End Sub
 
     Function HasValidExtension(ByVal Path As String) As Boolean
@@ -338,6 +353,7 @@
         Try
             IO.Directory.CreateDirectory(Dest & Path.Substring(0, Path.LastIndexOf("\") + 1))
             IO.File.Copy(Source & Path, Dest & Path)
+            Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
         Catch Ex As Exception
             Log.HandleError(Ex)
         End Try
@@ -361,12 +377,4 @@
     End Function
 #End Region
 
-    Private Sub SyncBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncBtn.Click
-        PreviewList.Dispose()
-        SyncBtn.Visible = False
-        StopBtn.Text = StopBtn.Tag.Split(";"c)(0)
-
-        SyncingTimeCounter.Start()
-        SecondarySyncThread.Start()
-    End Sub
 End Class
