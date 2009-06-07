@@ -32,7 +32,7 @@ Partial Class MainForm
         Me.Main_MethodsColumn = New System.Windows.Forms.ColumnHeader
         Me.Main_SyncIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.Main_InfoPanel = New System.Windows.Forms.Panel
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
+        Me.Main_InfoLayout = New System.Windows.Forms.TableLayoutPanel
         Me.Main_Destination = New System.Windows.Forms.Label
         Me.Main_DestinationLabel = New System.Windows.Forms.Label
         Me.Main_Source = New System.Windows.Forms.Label
@@ -49,13 +49,12 @@ Partial Class MainForm
         Me.PreviewMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.SynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Main_ChangeSettingsMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.Main_ActionsMenuToolStripSeparator = New System.Windows.Forms.ToolStripSeparator
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker
         Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
         Me.Main_InfoPanel.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -101,50 +100,50 @@ Partial Class MainForm
         '
         'Main_InfoPanel
         '
-        Me.Main_InfoPanel.Controls.Add(Me.TableLayoutPanel1)
+        Me.Main_InfoPanel.Controls.Add(Me.Main_InfoLayout)
         Me.Main_InfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.Main_InfoPanel.Location = New System.Drawing.Point(0, 268)
         Me.Main_InfoPanel.Name = "Main_InfoPanel"
         Me.Main_InfoPanel.Size = New System.Drawing.Size(355, 132)
         Me.Main_InfoPanel.TabIndex = 1
         '
-        'TableLayoutPanel1
+        'Main_InfoLayout
         '
-        Me.TableLayoutPanel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.Main_InfoLayout.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
-        Me.TableLayoutPanel1.ColumnCount = 4
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_Destination, 1, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_DestinationLabel, 0, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_Source, 1, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_SourceLabel, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_FileTypes, 3, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_FileTypesLabel, 2, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_Method, 1, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_MethodLabel, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_LimitedCopy, 3, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_LimitedCopyLabel, 2, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_Name, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Main_NameLabel, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(12, 6)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 4
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(331, 114)
-        Me.TableLayoutPanel1.TabIndex = 0
+        Me.Main_InfoLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
+        Me.Main_InfoLayout.ColumnCount = 4
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
+        Me.Main_InfoLayout.Controls.Add(Me.Main_Destination, 1, 3)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_DestinationLabel, 0, 3)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_Source, 1, 2)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_SourceLabel, 0, 2)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_FileTypes, 3, 1)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_FileTypesLabel, 2, 1)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_Method, 1, 1)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_MethodLabel, 0, 1)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_LimitedCopy, 3, 0)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_LimitedCopyLabel, 2, 0)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_Name, 1, 0)
+        Me.Main_InfoLayout.Controls.Add(Me.Main_NameLabel, 0, 0)
+        Me.Main_InfoLayout.Location = New System.Drawing.Point(12, 6)
+        Me.Main_InfoLayout.Name = "Main_InfoLayout"
+        Me.Main_InfoLayout.RowCount = 4
+        Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.Main_InfoLayout.Size = New System.Drawing.Size(331, 114)
+        Me.Main_InfoLayout.TabIndex = 0
         '
         'Main_Destination
         '
         Me.Main_Destination.AutoSize = True
-        Me.TableLayoutPanel1.SetColumnSpan(Me.Main_Destination, 3)
+        Me.Main_InfoLayout.SetColumnSpan(Me.Main_Destination, 3)
         Me.Main_Destination.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Main_Destination.Location = New System.Drawing.Point(87, 85)
         Me.Main_Destination.Name = "Main_Destination"
@@ -166,7 +165,7 @@ Partial Class MainForm
         'Main_Source
         '
         Me.Main_Source.AutoSize = True
-        Me.TableLayoutPanel1.SetColumnSpan(Me.Main_Source, 3)
+        Me.Main_InfoLayout.SetColumnSpan(Me.Main_Source, 3)
         Me.Main_Source.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Main_Source.Location = New System.Drawing.Point(87, 57)
         Me.Main_Source.Name = "Main_Source"
@@ -271,7 +270,7 @@ Partial Class MainForm
         '
         'Main_ActionsMenu
         '
-        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.ToolStripSeparator1, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem})
+        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Main_ActionsMenu.Size = New System.Drawing.Size(165, 142)
@@ -300,10 +299,10 @@ Partial Class MainForm
         Me.Main_ChangeSettingsMenuItem.Size = New System.Drawing.Size(164, 22)
         Me.Main_ChangeSettingsMenuItem.Text = "Change Settings"
         '
-        'ToolStripSeparator1
+        'Main_ActionsMenuToolStripSeparator
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(161, 6)
+        Me.Main_ActionsMenuToolStripSeparator.Name = "Main_ActionsMenuToolStripSeparator"
+        Me.Main_ActionsMenuToolStripSeparator.Size = New System.Drawing.Size(161, 6)
         '
         'DeleteToolStripMenuItem
         '
@@ -320,10 +319,6 @@ Partial Class MainForm
         Me.ViewLogMenuItem.Name = "ViewLogMenuItem"
         Me.ViewLogMenuItem.Size = New System.Drawing.Size(164, 22)
         Me.ViewLogMenuItem.Text = "View log"
-        '
-        'BackgroundWorker1
-        '
-        Me.BackgroundWorker1.WorkerSupportsCancellation = True
         '
         'Main_AboutLinkLabel
         '
@@ -350,8 +345,8 @@ Partial Class MainForm
         Me.Name = "MainForm"
         Me.Text = "Create Synchronicity"
         Me.Main_InfoPanel.ResumeLayout(False)
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.Main_InfoLayout.ResumeLayout(False)
+        Me.Main_InfoLayout.PerformLayout()
         Me.Main_ActionsMenu.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -359,7 +354,7 @@ Partial Class MainForm
     End Sub
     Friend WithEvents Main_Actions As System.Windows.Forms.ListView
     Friend WithEvents Main_InfoPanel As System.Windows.Forms.Panel
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Main_InfoLayout As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Main_Name As System.Windows.Forms.Label
     Friend WithEvents Main_NameLabel As System.Windows.Forms.Label
     Friend WithEvents Main_Destination As System.Windows.Forms.Label
@@ -380,8 +375,7 @@ Partial Class MainForm
     Friend WithEvents Main_SyncIcons As System.Windows.Forms.ImageList
     Friend WithEvents Actions_NameColumn As System.Windows.Forms.ColumnHeader
     Friend WithEvents Main_MethodsColumn As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents Main_ActionsMenuToolStripSeparator As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
     Friend WithEvents Main_AboutLinkLabel As System.Windows.Forms.LinkLabel
 End Class

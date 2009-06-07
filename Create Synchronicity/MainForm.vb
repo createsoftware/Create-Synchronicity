@@ -31,10 +31,9 @@
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
         Main_Actions.Items.Clear() : Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
-        Dim ConfigDir As String = Application.StartupPath & "\config"
-        IO.Directory.CreateDirectory(ConfigDir)
+        IO.Directory.CreateDirectory(Get_BaseFolder())
 
-        For Each ConfigFile As String In IO.Directory.GetFiles(ConfigDir, "*.sync")
+        For Each ConfigFile As String In IO.Directory.GetFiles(Get_BaseFolder(), "*.sync")
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
 
@@ -46,6 +45,10 @@
             NewItem.SubItems.Add(GetMethodName(Name)).ForeColor = Drawing.Color.DarkGray
         Next
     End Sub
+
+    Function Get_BaseFolder() As String
+        Return Application.StartupPath & "\config"
+    End Function
 
     Sub Main_Display_Options(ByVal Name As String, ByVal Clear As Boolean)
         Main_Name.Text = Name
@@ -117,5 +120,12 @@
     Private Sub Main_AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles Main_AboutLinkLabel.LinkClicked
         Dim About As New AboutForm
         About.Show()
+    End Sub
+
+    Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
+        If Microsoft.VisualBasic.MsgBox("Do you really want to delete """ & Main_Actions.SelectedItems(0).Text & """ profile ?", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+            IO.File.Delete(Get_BaseFolder() & "\" & Main_Actions.SelectedItems(0).Text)
+            Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
+        End If
     End Sub
 End Class

@@ -1,6 +1,7 @@
 ﻿Public Class SynchronizeForm
     Dim StartTime As Date
     Dim Handler As SettingsHandler
+    Dim Log As LogHandler
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
 
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
@@ -26,6 +27,7 @@
         SyncBtn.Visible = ShowPreview
         SyncBtn.Enabled = False
 
+        Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
         StartTime = DateTime.Now
         SyncThread.Start()
@@ -122,6 +124,7 @@
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
                 SyncingTimeCounter.Stop()
+                Log.SaveAndDispose()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
         End Select
     End Sub
@@ -226,59 +229,51 @@
         Dim Left As String = Handler.GetSetting("From")
         Dim Right As String = Handler.GetSetting("To")
 
-        'Try
-        'TODO: Factor out the code
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
-        For Each Entry As SyncingItem In SyncingList(SideOfSource.Left)
-            Select Case Entry.Type
-                Case TypeOfItem.File
-                    CopyFile(Entry.Path, Left, Right)
-                Case TypeOfItem.Folder
-                    IO.Directory.CreateDirectory(Right & Entry.Path)
-            End Select
-
-            Me.Invoke(SetProgessDelegate, New Object() {2, 1})
-            Me.Invoke(LabelDelegate, New Object() {2, Right & Entry.Path})
-        Next
+        Do_Task(SyncingList(SideOfSource.Left), Left, Right, 2)
         Me.Invoke(TaskDoneDelegate, 2)
 
         Me.Invoke(ProgessSetMaxCallBack, New Object() {3, SyncingList(SideOfSource.Right).Count})
-        For Each Entry As SyncingItem In SyncingList(SideOfSource.Right)
-            Select Case Entry.Type
-                Case TypeOfItem.File
-                    Select Case Entry.Action
-                        Case TypeOfAction.Create
-                            CopyFile(Entry.Path, Right, Left)
-                        Case TypeOfAction.Delete
-                            IO.File.SetAttributes(Right & Entry.Path, IO.FileAttributes.Normal)
-                            IO.File.Delete(Right & Entry.Path)
-                    End Select
-
-                Case TypeOfItem.Folder
-                    Select Case Entry.Action
-                        Case TypeOfAction.Create
-                            IO.Directory.CreateDirectory(Left & Entry.Path)
-                        Case TypeOfAction.Delete
-                            'Select Case Handler.GetSetting("Restrictions")
-                            'Case "0"
-                            '     If Not IO.Directory.Exists(Left & Entry.Path) Then IO.Directory.Delete(Right & Entry.Path)
-                            '  Case Else
-                            '       If IO.Directory.GetFiles(Right & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Right & Entry.Path)
-                            'End Select
-                            If IO.Directory.GetFiles(Right & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Right & Entry.Path)
-                    End Select
-            End Select
-
-            Me.Invoke(SetProgessDelegate, New Object() {3, 1})
-            Me.Invoke(LabelDelegate, New Object() {3, Right & Entry.Path})
-        Next
+        Do_Task(SyncingList(SideOfSource.Right), Right, Left, 3)
         Me.Invoke(TaskDoneDelegate, 3)
-        'Catch Ex As Exception
-        'ErrorHandler.HandleError(Ex)
-        'Finally
-
-        'End Try
     End Sub
+
+    Sub Do_Task(ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
+        Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
+        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+
+        For Each Entry As SyncingItem In ListOfActions
+            Try
+                Select Case Entry.Type
+                    Case TypeOfItem.File
+                        Select Case Entry.Action
+                            Case TypeOfAction.Create
+                                CopyFile(Entry.Path, Source, Destination)
+                            Case TypeOfAction.Delete
+                                IO.File.SetAttributes(Source & Entry.Path, IO.FileAttributes.Normal)
+                                IO.File.Delete(Source & Entry.Path)
+                        End Select
+
+                    Case TypeOfItem.Folder
+                        Select Case Entry.Action
+                            Case TypeOfAction.Create
+                                IO.Directory.CreateDirectory(Destination & Entry.Path)
+                            Case TypeOfAction.Delete
+                                If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Source & Entry.Path)
+                        End Select
+                End Select
+                Log.LogAction(Entry, True)
+
+            Catch ex As Exception
+                Log.LogAction(Entry, False)
+
+            Finally
+                Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
+                Me.Invoke(LabelDelegate, New Object() {CurrentStep, Destination & Entry.Path})
+            End Try
+        Next
+    End Sub
+
 
     Sub Init_Synchronization(ByRef FoldersList As SortedList(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
@@ -321,7 +316,6 @@
         'LOTS OF TESTING NEEDED...
         If ModifyDirectory AndAlso Handler.GetSetting("ReplicateEmptyDirectories", "False") = "False" Then
             If Context.Type = TypeOfAction.Delete Then
-                'TODO: when deleting, check if a folder is empty... !!
                 SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Type))
             Else
                 If SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
@@ -345,7 +339,7 @@
             IO.Directory.CreateDirectory(Dest & Path.Substring(0, Path.LastIndexOf("\") + 1))
             IO.File.Copy(Source & Path, Dest & Path)
         Catch Ex As Exception
-            ErrorHandler.HandleError(Ex)
+            Log.HandleError(Ex)
         End Try
     End Sub
 #End Region
@@ -372,6 +366,7 @@
         SyncBtn.Visible = False
         StopBtn.Text = StopBtn.Tag.Split(";"c)(0)
 
+        SyncingTimeCounter.Start()
         SecondarySyncThread.Start()
     End Sub
 End Class
