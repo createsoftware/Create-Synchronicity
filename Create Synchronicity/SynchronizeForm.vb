@@ -3,6 +3,7 @@
     Dim Handler As SettingsHandler
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
 
+    Dim [STOP] As Boolean
     Dim Status_StartTime As Date
     Dim Status_BytesCopied As Integer
     Dim Status_ActionsDone As Integer
@@ -11,10 +12,12 @@
     Dim Status_TotalActionsCount As Integer
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
 
-    Dim SyncThread As New Threading.Thread(AddressOf Synchronize)
-    Dim SecondarySyncThread As New Threading.Thread(AddressOf Do_SecondThirdStep)
+    Dim FullSyncThread As New Threading.Thread(AddressOf Synchronize)
+    Dim FirstSyncThread As New Threading.Thread(AddressOf Do_FirstStep)
+    Dim SecondSyncThread As New Threading.Thread(AddressOf Do_SecondThirdStep)
 
     Delegate Sub UpdateListCallBack()
+    Delegate Sub LaunchTimerCallBack()
     Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
     Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
@@ -22,32 +25,36 @@
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal ShowPreview As Boolean)
+    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        DisplayPreview = ShowPreview
-        PreviewFinished = Not ShowPreview
+        DisplayPreview = _DisplayPreview
+        PreviewFinished = Not DisplayPreview
 
         SyncBtn.Enabled = False
-        SyncBtn.Visible = ShowPreview
+        SyncBtn.Visible = DisplayPreview
 
         Status_BytesCopied = 0
         Status_ActionsDone = 0
         Status_TotalActionsCount = 0
-        Status_StartTime = DateTime.Now
 
         Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
-        SyncThread.Start()
+
+        If DisplayPreview Then
+            FirstSyncThread.Start()
+        Else
+            FullSyncThread.Start()
+        End If
     End Sub
 
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
         Select Case StopBtn.Text
             Case StopBtn.Tag.ToString.Split(";"c)(0)
-                SyncThread.Abort()
-                SecondarySyncThread.Abort()
+                FullSyncThread.Abort()
+                SecondSyncThread.Abort()
                 TaskDone(1) : TaskDone(2) : TaskDone(3)
             Case StopBtn.Tag.ToString.Split(";"c)(1)
                 Close()
@@ -59,8 +66,7 @@
         SyncBtn.Visible = False
         StopBtn.Text = StopBtn.Tag.Split(";"c)(0)
 
-        SyncingTimeCounter.Start()
-        SecondarySyncThread.Start()
+        SecondSyncThread.Start()
     End Sub
 
     Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimeCounter.Tick
@@ -148,21 +154,24 @@
                     UpdateList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
+                SyncingTimeCounter.Stop()
                 TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
+
             Case 2
                 UpdateLabel(2, "Done !")
                 Step2ProgressBar.Maximum = 100
                 Step2ProgressBar.Value = Step2ProgressBar.Maximum
                 Step2ProgressBar.Style = ProgressBarStyle.Blocks
+
             Case 3
                 UpdateLabel(3, "Done !")
                 Step3ProgressBar.Maximum = 100
                 Step3ProgressBar.Value = Step3ProgressBar.Maximum
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
-                SyncingTimeCounter.Stop()
                 UpdateStatuses()
                 Log.SaveAndDispose()
+                SyncingTimeCounter.Stop()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
         End Select
     End Sub
@@ -176,17 +185,22 @@
         For Each Item As SyncingItem In SyncingList(SideOfSource.Right)
             AddItem(Item, SideOfSource.Right)
         Next
+        If Not PreviewList.Items.Count = 0 Then
+            For Each C As ColumnHeader In PreviewList.Columns
+                C.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
+            Next
+        End If
+
         PreviewFinished = True
         SyncBtn.Enabled = True
     End Sub
 
     Sub AddItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
-        Dim NewItem As New ListViewItem
-        NewItem = PreviewList.Items.Add(Item.Path)
+        Dim ListItem As New ListViewItem
+        ListItem = PreviewList.Items.Add(Item.FormatType)
 
-        NewItem.SubItems.Add(Item.FormatType)
-        NewItem.SubItems.Add(Item.FormatAction)
 
+        ListItem.SubItems.Add(Item.FormatAction)
         Dim DirectionString As String = ""
         Select Case Side
             Case SideOfSource.Left
@@ -194,21 +208,36 @@
             Case SideOfSource.Right
                 DirectionString = "Right->Left"
         End Select
+        ListItem.SubItems.Add(DirectionString)
+        ListItem.SubItems.Add(Item.Path)
 
-        NewItem.SubItems.Add(DirectionString)
+        Select Case Item.Action
+            Case TypeOfAction.Create
+                If Item.Type = TypeOfItem.Folder Then ListItem.ImageIndex = 3
+                If Item.Type = TypeOfItem.File Then
+                    Select Case Side
+                        Case SideOfSource.Left
+                            ListItem.ImageIndex = 0
+                        Case SideOfSource.Right
+                            ListItem.ImageIndex = 1
+                    End Select
+                End If
+            Case TypeOfAction.Delete
+                If Item.Type = TypeOfItem.Folder Then ListItem.ImageIndex = 3
+                If Item.Type = TypeOfItem.File Then ListItem.ImageIndex = 2
+        End Select
+    End Sub
+
+    Sub LaunchTimer()
+        Status_StartTime = DateTime.Now
+        SyncingTimeCounter.Start()
     End Sub
 #End Region
 
 #Region " Syncing code "
     Sub Synchronize()
-        SyncingTimeCounter.Start()
         Do_FirstStep()
-
-        If DisplayPreview Then
-            SyncingTimeCounter.Stop()
-        Else
-            Do_SecondThirdStep()
-        End If
+        Do_SecondThirdStep()
     End Sub
 
     Sub Do_FirstStep()
@@ -221,6 +250,7 @@
         SyncingList.Add(SideOfSource.Left, New List(Of SyncingItem))
         SyncingList.Add(SideOfSource.Right, New List(Of SyncingItem))
 
+        Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Context.Source = SideOfSource.Left
         Context.SourcePath = Handler.GetSetting("From")
         Context.DestinationPath = Handler.GetSetting("To")
@@ -250,6 +280,7 @@
         Dim Left As String = Handler.GetSetting("From")
         Dim Right As String = Handler.GetSetting("To")
 
+        Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
         Do_Task(SyncingList(SideOfSource.Left), Left, Right, 2)
         Me.Invoke(TaskDoneDelegate, 2)
@@ -292,7 +323,7 @@
                 Log.LogAction(Entry, False)
 
             Finally
-                Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
+                If Not [STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
             End Try
         Next
     End Sub
@@ -351,7 +382,8 @@
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         Try
-            IO.Directory.CreateDirectory(Dest & Path.Substring(0, Path.LastIndexOf("\") + 1))
+            'TODO: Remove
+            'IO.Directory.CreateDirectory(Dest & Path.Substring(0, Path.LastIndexOf("\") + 1))
             IO.File.Copy(Source & Path, Dest & Path)
             Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
         Catch Ex As Exception
@@ -376,5 +408,4 @@
         Return False
     End Function
 #End Region
-
 End Class
