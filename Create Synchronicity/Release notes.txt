@@ -1,0 +1,17 @@
+-- Create Synchronicity --
+* Information
+Language:		English
+Created on:		June 3, 2009
+Created by:		Clément Pit--Claudel
+License:		GNU GPL v3 or later (included as "COPYING")
+Coded in:		Visual Basic .Net
+Requires:		.Net Framework v2
+
+* Contact
+Website:		http://synchronicity.sourceforge.net
+Contact:		createsoftware@users.sourceforge.net
+SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
+
+--     Release Notes    --
+-          v0.1          -
+* First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
