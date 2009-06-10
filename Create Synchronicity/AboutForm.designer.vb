@@ -1,4 +1,12 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿'This file is part of Create Synchronicity.
+'
+'Create Synchronicity is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+'Create Synchronicity is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+'You should have received a copy of the GNU General Public License along with Create Synchronicity.  If not, see <http://www.gnu.org/licenses/>.
+'Created by:	Clément Pit--Claudel.
+'Web site:		http://synchronicity.sourceforge.net.
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class AboutForm
     Inherits System.Windows.Forms.Form
 
@@ -22,6 +30,7 @@ Partial Class AboutForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AboutForm))
         Me.About_Logo = New System.Windows.Forms.PictureBox
         Me.About_FlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel
         Me.About_LinkToProductPage = New System.Windows.Forms.LinkLabel
@@ -35,9 +44,11 @@ Partial Class AboutForm
         '
         'About_Logo
         '
-        Me.About_Logo.Location = New System.Drawing.Point(14, 12)
+        Me.About_Logo.Image = CType(resources.GetObject("About_Logo.Image"), System.Drawing.Image)
+        Me.About_Logo.Location = New System.Drawing.Point(12, 12)
         Me.About_Logo.Name = "About_Logo"
-        Me.About_Logo.Size = New System.Drawing.Size(149, 128)
+        Me.About_Logo.Size = New System.Drawing.Size(128, 129)
+        Me.About_Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.About_Logo.TabIndex = 0
         Me.About_Logo.TabStop = False
         '
@@ -48,9 +59,9 @@ Partial Class AboutForm
         Me.About_FlowLayoutPanel.Controls.Add(Me.About_VersionInfo)
         Me.About_FlowLayoutPanel.Controls.Add(Me.About_ContactLink)
         Me.About_FlowLayoutPanel.Controls.Add(Me.LinkLabel1)
-        Me.About_FlowLayoutPanel.Location = New System.Drawing.Point(170, 12)
+        Me.About_FlowLayoutPanel.Location = New System.Drawing.Point(146, 12)
         Me.About_FlowLayoutPanel.Name = "About_FlowLayoutPanel"
-        Me.About_FlowLayoutPanel.Size = New System.Drawing.Size(304, 129)
+        Me.About_FlowLayoutPanel.Size = New System.Drawing.Size(328, 129)
         Me.About_FlowLayoutPanel.TabIndex = 1
         '
         'About_LinkToProductPage
@@ -106,7 +117,7 @@ Partial Class AboutForm
         Me.LinkLabel1.Text = "Licensed under GNU GPL"
         Me.LinkLabel1.UseCompatibleTextRendering = True
         '
-        'About
+        'AboutForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -115,7 +126,7 @@ Partial Class AboutForm
         Me.Controls.Add(Me.About_Logo)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Name = "About"
+        Me.Name = "AboutForm"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "About"

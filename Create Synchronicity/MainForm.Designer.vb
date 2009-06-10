@@ -1,4 +1,12 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿'This file is part of Create Synchronicity.
+'
+'Create Synchronicity is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+'Create Synchronicity is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+'You should have received a copy of the GNU General Public License along with Create Synchronicity.  If not, see <http://www.gnu.org/licenses/>.
+'Created by:	Clément Pit--Claudel.
+'Web site:		http://synchronicity.sourceforge.net.
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class MainForm
     Inherits System.Windows.Forms.Form
 
@@ -273,7 +281,7 @@ Partial Class MainForm
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(165, 142)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(165, 120)
         '
         'PreviewMenuItem
         '
