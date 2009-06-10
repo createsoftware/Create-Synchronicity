@@ -15,9 +15,12 @@ Public Class SynchronizeForm
     Dim Status_StartTime As Date
     Dim Status_BytesCopied As Integer
     Dim Status_ActionsDone As Integer
+    Dim Status_CreatedFiles As Integer
+    Dim Status_CreatedFolders As Integer
+    Dim Status_TotalActionsCount As Integer
     Dim Status_TimeElapsed As TimeSpan
     Dim Status_MillisecondsSpeed As Double
-    Dim Status_TotalActionsCount As Integer
+
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
 
     Dim FullSyncThread As New Threading.Thread(AddressOf Synchronize)
@@ -38,6 +41,8 @@ Public Class SynchronizeForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
+        [STOP] = False
+
         DisplayPreview = _DisplayPreview
         PreviewFinished = Not DisplayPreview
 
@@ -46,6 +51,8 @@ Public Class SynchronizeForm
 
         Status_BytesCopied = 0
         Status_ActionsDone = 0
+        Status_CreatedFiles = 0
+        Status_CreatedFolders = 0
         Status_TotalActionsCount = 0
 
         Log = New LogHandler(ConfigName)
@@ -61,8 +68,9 @@ Public Class SynchronizeForm
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
         Select Case StopBtn.Text
             Case StopBtn.Tag.ToString.Split(";"c)(0)
+                [STOP] = True
                 FullSyncThread.Abort()
-                SecondSyncThread.Abort()
+                FirstSyncThread.Abort() : SecondSyncThread.Abort()
                 TaskDone(1) : TaskDone(2) : TaskDone(3)
             Case StopBtn.Tag.ToString.Split(";"c)(1)
                 Close()
@@ -82,10 +90,10 @@ Public Class SynchronizeForm
     End Sub
 
     Sub UpdateStatuses()
+        Done.Text = Status_ActionsDone : FilesCreated.Text = Status_CreatedFiles : FoldersCreated.Text = Status_CreatedFolders
+
         Status_TimeElapsed = DateTime.Now - Status_StartTime
         Status_MillisecondsSpeed = Status_BytesCopied / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)
-        Done.Text = Status_ActionsDone
-
         Select Case Status_MillisecondsSpeed
             Case Is > 1024 * 1000
                 Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
@@ -94,7 +102,6 @@ Public Class SynchronizeForm
             Case Else
                 Speed.Text = Math.Round(Status_MillisecondsSpeed, 2).ToString & "B/s"
         End Select
-
         ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
     End Sub
 #End Region
@@ -320,6 +327,7 @@ Public Class SynchronizeForm
                         Select Case Entry.Action
                             Case TypeOfAction.Create
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
+                                Status_CreatedFolders += 1
                             Case TypeOfAction.Delete
                                 If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Source & Entry.Path)
                         End Select
@@ -390,9 +398,8 @@ Public Class SynchronizeForm
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         Try
-            'TODO: Remove
-            'IO.Directory.CreateDirectory(Dest & Path.Substring(0, Path.LastIndexOf("\") + 1))
             IO.File.Copy(Source & Path, Dest & Path)
+            Status_CreatedFiles += 1
             Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
         Catch Ex As Exception
             Log.HandleError(Ex)
