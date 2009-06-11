@@ -58,6 +58,8 @@ Public Class SynchronizeForm
         Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
 
+        Me.CreateHandle()
+
         If DisplayPreview Then
             FirstSyncThread.Start()
         Else
