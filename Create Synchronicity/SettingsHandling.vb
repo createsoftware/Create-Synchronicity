@@ -75,6 +75,10 @@ Class SettingsHandler
         IO.File.Delete(GetConfigFilePath())
     End Sub
 
+    Function CheckConfigValidity()
+        Return IO.Directory.Exists(GetSetting("From")) And IO.Directory.Exists(GetSetting("To"))
+    End Function
+
     Function GetConfigFilePath() As String
         Return ConfigPath & ConfigName & ".sync"
     End Function

@@ -31,6 +31,7 @@ Partial Class Settings
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
         Me.Settings_FromTextBox = New System.Windows.Forms.TextBox
         Me.Settings_DirectoriesBox = New System.Windows.Forms.GroupBox
         Me.Settings_BrowseRButton = New System.Windows.Forms.Button
@@ -61,11 +62,11 @@ Partial Class Settings
         Me.Settings_ExcludedTypesTextBox = New System.Windows.Forms.TextBox
         Me.Settings_IncludeFilesOption = New System.Windows.Forms.RadioButton
         Me.Settings_ExcludeFilesOption = New System.Windows.Forms.RadioButton
+        Me.Settings_ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_CancelButton = New System.Windows.Forms.Button
         Me.Settings_SaveButton = New System.Windows.Forms.Button
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
-        Me.Settings_ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -216,6 +217,7 @@ Partial Class Settings
         '
         'Settings_ReloadButton
         '
+        Me.Settings_ReloadButton.Image = CType(resources.GetObject("Settings_ReloadButton.Image"), System.Drawing.Image)
         Me.Settings_ReloadButton.Location = New System.Drawing.Point(319, 16)
         Me.Settings_ReloadButton.Name = "Settings_ReloadButton"
         Me.Settings_ReloadButton.Size = New System.Drawing.Size(29, 29)
@@ -421,6 +423,18 @@ Partial Class Settings
         Me.Settings_ExcludeFilesOption.Text = "Exclude these files:"
         Me.Settings_ExcludeFilesOption.UseVisualStyleBackColor = True
         '
+        'Settings_ReplicateEmptyDirectoriesOption
+        '
+        Me.Settings_ReplicateEmptyDirectoriesOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(489, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(182, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 8
+        Me.Settings_ReplicateEmptyDirectoriesOption.Text = "Replicate empty directories"
+        Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Settings_ReplicateEmptyDirectoriesOption.UseVisualStyleBackColor = True
+        '
         'TableLayoutPanel1
         '
         Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -464,18 +478,7 @@ Partial Class Settings
         '
         Me.Settings_FolderBrowser.Description = "Select a folder to copy the files %."
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
-        '
-        'Settings_ReplicateEmptyDirectoriesOption
-        '
-        Me.Settings_ReplicateEmptyDirectoriesOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
-        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(489, 20)
-        Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
-        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(182, 17)
-        Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 8
-        Me.Settings_ReplicateEmptyDirectoriesOption.Text = "Replicate empty directories"
-        Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Settings_ReplicateEmptyDirectoriesOption.UseVisualStyleBackColor = True
+        Me.Settings_FolderBrowser.Tag = "Select a folder to copy the files %."
         '
         'Settings
         '

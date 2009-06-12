@@ -11,6 +11,15 @@ Public Class Settings
     Dim ProcessingNodes As Boolean = False
     Dim ClickedRightTreeView As Boolean = False
 
+    'Note:
+    'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "/", associated with booleans indicating whether all subfolders /path/ are to be synced.
+    'The boolean value is stored as a / appended at the end of the file name.
+    'In fact, we have two steps : 
+    '   1. Loading and saving the file
+    '       1.1 Saving: Booleans calculated as "/"
+    '       2.2 Loading: "/" are converted to booleans 
+    '   2. Searching the list, were pathes never end with "/"
+
 #Region " Events "
     Private Sub Settings_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_IncludeExcludeCheckBox.CheckedChanged, Settings_IncludeFilesOption.CheckedChanged, Settings_ExcludeFilesOption.CheckedChanged
         Settings_Update_Form_Enabled_Components()
@@ -28,13 +37,13 @@ Public Class Settings
     Private Sub Settings_BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseLButton.Click
         Settings_FolderBrowser.Description = Settings_FolderBrowser.Description.Replace("%", "from")
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_FromTextBox.Text = Settings_FolderBrowser.SelectedPath
-        Settings_FolderBrowser.Description = "Select a folder to copy the files %."
+        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag
     End Sub
 
     Private Sub Settings_BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseRButton.Click
         Settings_FolderBrowser.Description = Settings_FolderBrowser.Description.Replace("%", "to")
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
-        Settings_FolderBrowser.Description = "Select a folder to copy the files %."
+        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag
     End Sub
 
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
@@ -51,7 +60,7 @@ Public Class Settings
 
     Private Sub Settings_View_AfterCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_RightView.AfterCheck, Settings_LeftView.AfterCheck
         If ProcessingNodes Then Exit Sub
-        If Not (Settings_OverAllCheckStatus(e.Node) = CInt(e.Node.Checked)) And e.Node.Nodes.Count > 0 Then e.Node.FirstNode.EnsureVisible()
+        If Not (Settings_OverAllCheckStatus(e.Node) = If(e.Node.Checked, 1, 0)) And e.Node.Nodes.Count > 0 Then e.Node.FirstNode.EnsureVisible()
     End Sub
 
     Private Sub Settings_View_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Settings_RightView.MouseClick, Settings_LeftView.MouseClick
@@ -96,54 +105,56 @@ Public Class Settings
     Sub Settings_Update_CheckStatus(ByVal Checked As Boolean)
         ProcessingNodes = True
         If ClickedRightTreeView Then
-            Settings_RightView.SelectedNode.Checked = Checked
-            Settings_CheckChildNodes(Settings_RightView.SelectedNode)
+            Settings_CheckNodeAndSubNodes(Settings_RightView.SelectedNode, Checked)
+            Settings_RightView.SelectedNode.Expand()
         Else
-            Settings_LeftView.SelectedNode.Checked = Checked
-            Settings_CheckChildNodes(Settings_LeftView.SelectedNode)
+            Settings_CheckNodeAndSubNodes(Settings_LeftView.SelectedNode, Checked)
+            Settings_LeftView.SelectedNode.Expand()
         End If
         ProcessingNodes = False
     End Sub
 
-    Sub Settings_CheckChildNodes(ByVal Root As TreeNode)
+    Sub Settings_CheckNodeAndSubNodes(ByVal Root As TreeNode, ByVal Status As Boolean)
         For Each SubNode As TreeNode In Root.Nodes
-            SubNode.Checked = Root.Checked
-            Settings_CheckChildNodes(SubNode)
+            SubNode.Checked = Status
+            Settings_CheckNodeAndSubNodes(SubNode, Status)
         Next
+        Root.Checked = Status
     End Sub
 
-    Sub Settings_GetCheckedNodes(ByRef NodesList As SortedList(Of String, Boolean), ByRef Node As TreeNode)
-        Dim AppendedString As String = ""
+    Sub Settings_GetCheckedNodes(ByRef NodesList As SortedList(Of String, Boolean), ByVal Node As TreeNode)
         Dim OverAllNodeStatus As Integer = Settings_OverAllCheckStatus(Node)
 
-        Select Case OverAllNodeStatus
-            Case -1, 0
-                AppendedString = ""
-            Case 1
-                AppendedString = "/"
-        End Select
+        If Node.Checked OrElse Node.TreeView.CheckBoxes = False Then
+            If OverAllNodeStatus = 1 Then
+                NodesList.Add(Node.FullPath & "/", True)
+                Exit Sub
+            Else
+                NodesList.Add(Node.FullPath, False)
+            End If
+        Else
+            If OverAllNodeStatus = 0 Then Exit Sub 'No checked subnode
+        End If
 
-        If Node.Checked OrElse Node.TreeView.CheckBoxes = False Then NodesList.Add(Node.FullPath & AppendedString, True)
-
-        If OverAllNodeStatus = 1 And (Node.Checked OrElse Node.TreeView.CheckBoxes = False) Then Exit Sub
+        'If node isn't checked
         For NodeId As Integer = 0 To Node.Nodes.Count - 1
             If OverAllNodeStatus = 1 Then
-                NodesList.Add(Node.Nodes(NodeId).FullPath & AppendedString, True)
+                NodesList.Add(Node.Nodes(NodeId).FullPath & "/", True)
             Else
                 Settings_GetCheckedNodes(NodesList, Node.Nodes(NodeId))
             End If
         Next
     End Sub
 
-    Function Settings_OverAllCheckStatus(ByRef Node As TreeNode) As Integer '0 All clear, 1 All checked, -1 different states
+    Function Settings_OverAllCheckStatus(ByVal Node As TreeNode) As Integer '0 All clear, 1 All checked, -1 different states
         If Not Node.TreeView.CheckBoxes Then Return 1
         If (Node.Nodes.Count = 0) Then Return If(Node.Checked, 1, 0)
 
         Dim AllChecked As Boolean = True, AllClear As Boolean = True
         For Each SubNode As TreeNode In Node.Nodes
-            Dim CurrentStatus As Boolean = (Settings_OverAllCheckStatus(SubNode) = 1)
-            AllChecked = AllChecked And CurrentStatus
-            AllClear = AllClear And Not CurrentStatus
+            Dim CurrentStatus As Integer = Settings_OverAllCheckStatus(SubNode)
+            AllChecked = AllChecked And (CurrentStatus = 1)
+            AllClear = AllClear And (CurrentStatus = 0)
         Next
 
         If AllChecked Then Return 1
@@ -155,11 +166,11 @@ Public Class Settings
         Me.Settings_LeftView.Nodes.Clear()
         Me.Settings_RightView.Nodes.Clear()
 
-        Settings_LoadTree(Me.Settings_LeftView.Nodes.Add(""), Settings_FromTextBox.Text, Handler.LeftCheckedNodes)
-        Settings_LoadTree(Me.Settings_RightView.Nodes.Add(""), Settings_ToTextBox.Text, Handler.RightCheckedNodes)
+        Settings_LoadTree(Settings_LeftView.Nodes.Add(""), Settings_FromTextBox.Text, Handler.LeftCheckedNodes)
+        Settings_LoadTree(Settings_RightView.Nodes.Add(""), Settings_ToTextBox.Text, Handler.RightCheckedNodes)
     End Sub
 
-    Sub Settings_LoadTree(ByRef Node As TreeNode, ByVal Path As String, ByRef CheckedPathes As SortedList(Of String, Boolean)) 'TODO: Optimiser la recherche dans la liste
+    Sub Settings_LoadTree(ByVal Node As TreeNode, ByVal Path As String, ByRef CheckedPathes As SortedList(Of String, Boolean)) 'TODO: Optimiser la recherche dans la liste
         If Not IO.Directory.Exists(Path) Then Exit Sub
 
         Dim InsertedNode As TreeNode
@@ -169,12 +180,30 @@ Public Class Settings
         Next
 
         If CheckedPathes.ContainsKey(Node.FullPath) Then
-            Node.Checked = True
             If CheckedPathes(Node.FullPath) = True Then
-                Settings_CheckChildNodes(Node)
-                Node.Collapse()
+                Settings_CheckNodeAndSubNodes(Node, True)
+            Else
+                Node.Checked = True
             End If
+            If (Not (Node.Parent Is Nothing)) AndAlso Node.Parent.Checked <> Node.Checked Then Node.EnsureVisible()
         End If
+    End Sub
+
+    Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
+        If Path.Count = 0 Then
+            If FullCheck Then : Settings_CheckNodeAndSubNodes(BaseNode, True)
+            Else : BaseNode.Checked = True
+            End If
+            Exit Sub
+        End If
+
+        For Each Node As TreeNode In BaseNode.Nodes
+            If Node.Text = Path(0) Then
+                Path.RemoveAt(0)
+                Settings_CheckAccordingToPath(Node, Path, FullCheck)
+                Exit For
+            End If
+        Next
     End Sub
 #End Region
 

@@ -108,12 +108,23 @@ Public Class MainForm
     End Sub
 
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
+        If Not CheckValidity() Then Exit Sub
+
         Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, False)
         SyncForm.ShowDialog()
         SyncForm.Dispose()
     End Sub
 
+    Function CheckValidity() As Boolean
+        If Not SettingsArray(Main_Actions.SelectedItems(0).Text).CheckConfigValidity() Then
+            Microsoft.VisualBasic.MsgBox("Invalid Config !", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
+            Return False
+        End If
+        Return True
+    End Function
+
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
+        If Not CheckValidity() Then Exit Sub
         Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, True)
         SyncForm.ShowDialog()
     End Sub
