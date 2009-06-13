@@ -74,6 +74,16 @@ Public Class Settings
         End If
     End Sub
 
+    Private Sub Settings_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_LeftView.AfterExpand, Settings_RightView.AfterExpand
+        ClickedRightTreeView = (sender.Name = "Settings_RightView")
+        For Each Node As TreeNode In e.Node.Nodes
+            If Node.Nodes.Count <> 0 Then Continue For
+            For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Handler.GetSetting("To"), Handler.GetSetting("From")) & Node.FullPath)
+                Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+            Next
+        Next
+    End Sub
+
     Private Sub Settings_SynchronizeAllSubfoldersMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeAllSubfoldersMenuItem.Click
         Settings_Update_CheckStatus(True)
     End Sub
@@ -166,40 +176,50 @@ Public Class Settings
         Me.Settings_LeftView.Nodes.Clear()
         Me.Settings_RightView.Nodes.Clear()
 
-        Settings_LoadTree(Settings_LeftView.Nodes.Add(""), Settings_FromTextBox.Text, Handler.LeftCheckedNodes)
-        Settings_LoadTree(Settings_RightView.Nodes.Add(""), Settings_ToTextBox.Text, Handler.RightCheckedNodes)
-    End Sub
-
-    Sub Settings_LoadTree(ByVal Node As TreeNode, ByVal Path As String, ByRef CheckedPathes As SortedList(Of String, Boolean)) 'TODO: Optimiser la recherche dans la liste
-        If Not IO.Directory.Exists(Path) Then Exit Sub
-
-        Dim InsertedNode As TreeNode
-        For Each Dir As String In IO.Directory.GetDirectories(Path)
-            InsertedNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-            Settings_LoadTree(InsertedNode, Dir, CheckedPathes)
+        Settings_LeftView.Nodes.Add("") : Settings_RightView.Nodes.Add("")
+        For Each Dir As String In IO.Directory.GetDirectories(Handler.GetSetting("From"))
+            Settings_LeftView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+        Next
+        For Each Dir As String In IO.Directory.GetDirectories(Handler.GetSetting("To"))
+            Settings_RightView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
         Next
 
-        If CheckedPathes.ContainsKey(Node.FullPath) Then
-            If CheckedPathes(Node.FullPath) = True Then
-                Settings_CheckNodeAndSubNodes(Node, True)
-            Else
-                Node.Checked = True
-            End If
-            If (Not (Node.Parent Is Nothing)) AndAlso Node.Parent.Checked <> Node.Checked Then Node.EnsureVisible()
-        End If
+        Settings_LeftView.Nodes(0).Expand() : Settings_RightView.Nodes(0).Expand()
+        Settings_CheckTree(True)
+        Settings_CheckTree(False)
+    End Sub
+
+    Sub Settings_CheckTree(ByVal Left As Boolean)
+        Select Case Left
+            Case True
+                Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
+                For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.LeftCheckedNodes
+                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\")), CheckedPath.Value)
+                Next
+            Case False
+                Dim BaseNode As TreeNode = Settings_RightView.Nodes(0)
+                For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.RightCheckedNodes
+                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\")), CheckedPath.Value)
+                Next
+        End Select
     End Sub
 
     Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
+        If Path.Count <> 0 AndAlso Path(0) = "" Then Path.RemoveAt(0)
+
         If Path.Count = 0 Then
-            If FullCheck Then : Settings_CheckNodeAndSubNodes(BaseNode, True)
-            Else : BaseNode.Checked = True
+            If FullCheck Then
+                Settings_CheckNodeAndSubNodes(BaseNode, True)
+            Else
+                BaseNode.Checked = True
             End If
+
             Exit Sub
         End If
 
         For Each Node As TreeNode In BaseNode.Nodes
             If Node.Text = Path(0) Then
-                Path.RemoveAt(0)
+                Node.Expand() : Path.RemoveAt(0)
                 Settings_CheckAccordingToPath(Node, Path, FullCheck)
                 Exit For
             End If
