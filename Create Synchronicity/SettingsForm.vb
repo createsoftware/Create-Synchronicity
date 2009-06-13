@@ -132,7 +132,7 @@ Public Class Settings
         Root.Checked = Status
     End Sub
 
-    Sub Settings_GetCheckedNodes(ByRef NodesList As SortedList(Of String, Boolean), ByVal Node As TreeNode)
+    Sub Settings_BuildCheckedNodesList(ByRef NodesList As Dictionary(Of String, Boolean), ByVal Node As TreeNode)
         Dim OverAllNodeStatus As Integer = Settings_OverAllCheckStatus(Node)
 
         If Node.Checked OrElse Node.TreeView.CheckBoxes = False Then
@@ -151,7 +151,7 @@ Public Class Settings
             If OverAllNodeStatus = 1 Then
                 NodesList.Add(Node.Nodes(NodeId).FullPath & "/", True)
             Else
-                Settings_GetCheckedNodes(NodesList, Node.Nodes(NodeId))
+                Settings_BuildCheckedNodesList(NodesList, Node.Nodes(NodeId))
             End If
         Next
     End Sub
@@ -267,8 +267,8 @@ Public Class Settings
             Case False
                 Handler.LeftCheckedNodes.Clear()
                 Handler.RightCheckedNodes.Clear()
-                Settings_GetCheckedNodes(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
-                Settings_GetCheckedNodes(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
+                Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
+                Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
 
                 Handler.SetSetting("EnabledLeftSubFolders", Settings_GetString(Handler.LeftCheckedNodes))
                 Handler.SetSetting("EnabledRightSubFolders", Settings_GetString(Handler.RightCheckedNodes))
@@ -279,7 +279,7 @@ Public Class Settings
         If LoadToForm Then Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Function Settings_GetString(ByRef Table As SortedList(Of String, Boolean)) As String
+    Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
         Dim ListString As String = ""
         For Each Node As String In Table.Keys
             ListString &= Node & ";"

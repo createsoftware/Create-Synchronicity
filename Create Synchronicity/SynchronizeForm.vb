@@ -347,7 +347,7 @@ Public Class SynchronizeForm
     End Sub
 
 
-    Sub Init_Synchronization(ByRef FoldersList As SortedList(Of String, Boolean), ByVal Context As SyncingAction)
+    Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
             BuildList(Folder, FoldersList(Folder), Context)
         Next

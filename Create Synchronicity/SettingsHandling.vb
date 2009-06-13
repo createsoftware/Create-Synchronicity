@@ -9,8 +9,8 @@
 Class SettingsHandler
     Public ConfigName As String
     Public Configuration As New Dictionary(Of String, String)
-    Public LeftCheckedNodes As New SortedList(Of String, Boolean)
-    Public RightCheckedNodes As New SortedList(Of String, Boolean)
+    Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
+    Public RightCheckedNodes As New Dictionary(Of String, Boolean)
     Private ConfigPath As String = Application.StartupPath & "\config\"
 
     Public Sub New(ByVal Name As String)
