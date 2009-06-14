@@ -13,7 +13,7 @@ Public Class SynchronizeForm
 
     Dim [STOP] As Boolean
     Dim Status_StartTime As Date
-    Dim Status_BytesCopied As Integer
+    Dim Status_BytesCopied As Long
     Dim Status_ActionsDone As Integer
     Dim Status_CreatedFiles As Integer
     Dim Status_CreatedFolders As Integer
