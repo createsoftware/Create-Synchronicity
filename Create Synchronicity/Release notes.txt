@@ -12,6 +12,14 @@ Website:		http://synchronicity.sourceforge.net
 Contact:		createsoftware@users.sourceforge.net
 SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
---     Release Notes    --
--          v0.1          -
-* First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
+Release Notes
+--------------------------
+-- Version 0.2 --
+Jun. 14, 2009 - SYN: Many updates and bug fixes. An icon has been found :)
+Jun. 14, 2009 - FIX: Overflow bug.
+Jun. 13, 2009 - UPD: Sorted Lists are not used anymore, resulting in a performance gain as far as settings loading/saving are concerned.
+Jun. 13, 2009 - UPD: The full directory tree is not loaded anymore when displaying settings screen, so that lots of time is saved.
+Jun. 11, 2009 - FIX: Nodes were sometimes displayed twice or more in settings screen.
+Jun. 11, 2009 - FIX: Invoke was called before window handle was created, resulting in a crash.
+-- Version 0.1 --
+Jun. 10, 2009 - SYN: First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
