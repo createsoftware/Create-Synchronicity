@@ -78,7 +78,7 @@ Public Class Settings
         ClickedRightTreeView = (sender.Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
-            For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Handler.GetSetting("To"), Handler.GetSetting("From")) & Node.FullPath)
+            For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Settings_ToTextBox.Text, Settings_FromTextBox.Text) & Node.FullPath)
                 Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
             Next
         Next
@@ -176,17 +176,23 @@ Public Class Settings
         Me.Settings_LeftView.Nodes.Clear()
         Me.Settings_RightView.Nodes.Clear()
 
-        Settings_LeftView.Nodes.Add("") : Settings_RightView.Nodes.Add("")
-        For Each Dir As String In IO.Directory.GetDirectories(Handler.GetSetting("From"))
-            Settings_LeftView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-        Next
-        For Each Dir As String In IO.Directory.GetDirectories(Handler.GetSetting("To"))
-            Settings_RightView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-        Next
+        Settings_LeftView.Nodes.Add("")
+        If Not Settings_FromTextBox.Text = Nothing Then
+            For Each Dir As String In IO.Directory.GetDirectories(Settings_FromTextBox.Text)
+                Settings_LeftView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+            Next
+            Settings_LeftView.Nodes(0).Expand()
+            Settings_CheckTree(True)
+        End If
 
-        Settings_LeftView.Nodes(0).Expand() : Settings_RightView.Nodes(0).Expand()
-        Settings_CheckTree(True)
-        Settings_CheckTree(False)
+        Settings_RightView.Nodes.Add("")
+        If Not Settings_ToTextBox.Text = Nothing Then
+            For Each Dir As String In IO.Directory.GetDirectories(Settings_ToTextBox.Text)
+                Settings_RightView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+            Next
+            Settings_RightView.Nodes(0).Expand()
+            Settings_CheckTree(False)
+        End If
     End Sub
 
     Sub Settings_CheckTree(ByVal Left As Boolean)
