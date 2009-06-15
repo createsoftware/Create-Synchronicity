@@ -29,7 +29,11 @@ Public Class AboutForm
         Diagnostics.Process.Start("http://createsoftware.users.sourceforge.net/")
     End Sub
 
-    Private Sub LinkLabel1_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+    Private Sub About_LinkToLicense_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToLicense.LinkClicked
         Diagnostics.Process.Start("http://www.gnu.org/licenses/gpl.html")
+    End Sub
+
+    Private Sub About_BugReport_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_BugReport.LinkClicked
+        Diagnostics.Process.Start("http://sourceforge.net/tracker/?group_id=264348&atid=1130882")
     End Sub
 End Class

@@ -37,7 +37,8 @@ Partial Class AboutForm
         Me.About_LinkToWebsite = New System.Windows.Forms.LinkLabel
         Me.About_VersionInfo = New System.Windows.Forms.LinkLabel
         Me.About_ContactLink = New System.Windows.Forms.LinkLabel
-        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel
+        Me.About_LinkToLicense = New System.Windows.Forms.LinkLabel
+        Me.About_BugReport = New System.Windows.Forms.LinkLabel
         CType(Me.About_Logo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.About_FlowLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
@@ -58,7 +59,8 @@ Partial Class AboutForm
         Me.About_FlowLayoutPanel.Controls.Add(Me.About_LinkToWebsite)
         Me.About_FlowLayoutPanel.Controls.Add(Me.About_VersionInfo)
         Me.About_FlowLayoutPanel.Controls.Add(Me.About_ContactLink)
-        Me.About_FlowLayoutPanel.Controls.Add(Me.LinkLabel1)
+        Me.About_FlowLayoutPanel.Controls.Add(Me.About_LinkToLicense)
+        Me.About_FlowLayoutPanel.Controls.Add(Me.About_BugReport)
         Me.About_FlowLayoutPanel.Location = New System.Drawing.Point(146, 12)
         Me.About_FlowLayoutPanel.Name = "About_FlowLayoutPanel"
         Me.About_FlowLayoutPanel.Size = New System.Drawing.Size(328, 129)
@@ -106,16 +108,27 @@ Partial Class AboutForm
         Me.About_ContactLink.Text = "Contact the author (createcorpsoftware@yahoo.fr)"
         Me.About_ContactLink.UseCompatibleTextRendering = True
         '
-        'LinkLabel1
+        'About_LinkToLicense
         '
-        Me.LinkLabel1.LinkArea = New System.Windows.Forms.LinkArea(15, 7)
-        Me.LinkLabel1.Location = New System.Drawing.Point(3, 80)
-        Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(301, 20)
-        Me.LinkLabel1.TabIndex = 4
-        Me.LinkLabel1.TabStop = True
-        Me.LinkLabel1.Text = "Licensed under GNU GPL"
-        Me.LinkLabel1.UseCompatibleTextRendering = True
+        Me.About_LinkToLicense.LinkArea = New System.Windows.Forms.LinkArea(15, 7)
+        Me.About_LinkToLicense.Location = New System.Drawing.Point(3, 80)
+        Me.About_LinkToLicense.Name = "About_LinkToLicense"
+        Me.About_LinkToLicense.Size = New System.Drawing.Size(301, 20)
+        Me.About_LinkToLicense.TabIndex = 4
+        Me.About_LinkToLicense.TabStop = True
+        Me.About_LinkToLicense.Text = "Licensed under GNU GPL"
+        Me.About_LinkToLicense.UseCompatibleTextRendering = True
+        '
+        'About_BugReport
+        '
+        Me.About_BugReport.LinkArea = New System.Windows.Forms.LinkArea(0, 12)
+        Me.About_BugReport.Location = New System.Drawing.Point(3, 100)
+        Me.About_BugReport.Name = "About_BugReport"
+        Me.About_BugReport.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.About_BugReport.Size = New System.Drawing.Size(301, 20)
+        Me.About_BugReport.TabIndex = 5
+        Me.About_BugReport.TabStop = True
+        Me.About_BugReport.Text = "Report a bug"
         '
         'AboutForm
         '
@@ -141,5 +154,6 @@ Partial Class AboutForm
     Friend WithEvents About_LinkToWebsite As System.Windows.Forms.LinkLabel
     Friend WithEvents About_VersionInfo As System.Windows.Forms.LinkLabel
     Friend WithEvents About_ContactLink As System.Windows.Forms.LinkLabel
-    Friend WithEvents LinkLabel1 As System.Windows.Forms.LinkLabel
+    Friend WithEvents About_LinkToLicense As System.Windows.Forms.LinkLabel
+    Friend WithEvents About_BugReport As System.Windows.Forms.LinkLabel
 End Class
