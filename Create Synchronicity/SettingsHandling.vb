@@ -19,7 +19,6 @@ Class SettingsHandler
     End Sub
 
     Function LoadConfigFile() As Boolean
-        Dim ConfigString As String = ""
         If Not IO.File.Exists(GetConfigFilePath()) Then Exit Function
         Dim FileReader As New IO.StreamReader(GetConfigFilePath())
 
@@ -34,7 +33,7 @@ Class SettingsHandler
         LeftCheckedNodes.Clear()
         RightCheckedNodes.Clear()
         For Each Dir As String In Configuration("EnabledLeftSubFolders").Split(";"c)
-            If Not (Dir = "") Then
+            If Not ((Dir = "") AndAlso LeftCheckedNodes.ContainsKey("")) Then 'TODO
                 If Dir.EndsWith("/") Then
                     LeftCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
                 Else

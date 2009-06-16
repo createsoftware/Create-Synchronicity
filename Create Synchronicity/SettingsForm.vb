@@ -19,6 +19,7 @@ Public Class Settings
     '       1.1 Saving: Booleans calculated as "/"
     '       2.2 Loading: "/" are converted to booleans 
     '   2. Searching the list, were pathes never end with "/"
+    'The 'Tag' Property is used as a flag denoting that the treenode originally had all its subnodes checked.
 
 #Region " Events "
     Private Sub Settings_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_IncludeExcludeCheckBox.CheckedChanged, Settings_IncludeFilesOption.CheckedChanged, Settings_ExcludeFilesOption.CheckedChanged
@@ -78,9 +79,14 @@ Public Class Settings
         ClickedRightTreeView = (sender.Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
-            For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Settings_ToTextBox.Text, Settings_FromTextBox.Text) & Node.FullPath)
-                Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-            Next
+            Try
+                For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Settings_ToTextBox.Text, Settings_FromTextBox.Text) & Node.FullPath)
+                    Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+                    NewNode.Checked = (Node.ToolTipText = "*")
+                    NewNode.ToolTipText = Node.ToolTipText
+                Next
+            Catch Ex As Exception
+            End Try
         Next
     End Sub
 
@@ -125,6 +131,7 @@ Public Class Settings
     End Sub
 
     Sub Settings_CheckNodeAndSubNodes(ByVal Root As TreeNode, ByVal Status As Boolean)
+        Root.ToolTipText = "*"
         For Each SubNode As TreeNode In Root.Nodes
             SubNode.Checked = Status
             Settings_CheckNodeAndSubNodes(SubNode, Status)
@@ -160,7 +167,7 @@ Public Class Settings
         If Not Node.TreeView.CheckBoxes Then Return 1
         If (Node.Nodes.Count = 0) Then Return If(Node.Checked, 1, 0)
 
-        Dim AllChecked As Boolean = True, AllClear As Boolean = True
+        Dim AllChecked As Boolean = Node.Checked, AllClear As Boolean = Not Node.Checked
         For Each SubNode As TreeNode In Node.Nodes
             Dim CurrentStatus As Integer = Settings_OverAllCheckStatus(SubNode)
             AllChecked = AllChecked And (CurrentStatus = 1)
@@ -178,7 +185,7 @@ Public Class Settings
 
         Settings_LeftView.Nodes.Add("")
         If Not Settings_FromTextBox.Text = Nothing Then
-            For Each Dir As String In IO.Directory.GetDirectories(Settings_FromTextBox.Text)
+            For Each Dir As String In IO.Directory.GetDirectories(Settings_FromTextBox.Text & "\")
                 Settings_LeftView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
             Next
             Settings_LeftView.Nodes(0).Expand()
@@ -187,7 +194,7 @@ Public Class Settings
 
         Settings_RightView.Nodes.Add("")
         If Not Settings_ToTextBox.Text = Nothing Then
-            For Each Dir As String In IO.Directory.GetDirectories(Settings_ToTextBox.Text)
+            For Each Dir As String In IO.Directory.GetDirectories(Settings_ToTextBox.Text & "\")
                 Settings_RightView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
             Next
             Settings_RightView.Nodes(0).Expand()
@@ -215,7 +222,10 @@ Public Class Settings
 
         If Path.Count = 0 Then
             If FullCheck Then
+                ProcessingNodes = True
                 Settings_CheckNodeAndSubNodes(BaseNode, True)
+                BaseNode.Collapse()
+                ProcessingNodes = False
             Else
                 BaseNode.Checked = True
             End If
@@ -235,6 +245,9 @@ Public Class Settings
 
 #Region " Settings Handling "
     Sub Settings_Update(ByVal LoadToForm As Boolean)
+        Settings_FromTextBox.Text = Settings_FromTextBox.Text.Trim("\"c)
+        Settings_ToTextBox.Text = Settings_ToTextBox.Text.Trim("\"c)
+
         Handler.SetSetting("From", Settings_FromTextBox.Text, LoadToForm)
         Handler.SetSetting("To", Settings_ToTextBox.Text, LoadToForm)
         Handler.SetSetting("LimitedCopy", Settings_IncludeExcludeCheckBox.Checked, LoadToForm)

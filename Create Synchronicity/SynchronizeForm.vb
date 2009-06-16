@@ -26,6 +26,7 @@ Public Class SynchronizeForm
     Dim FullSyncThread As New Threading.Thread(AddressOf Synchronize)
     Dim FirstSyncThread As New Threading.Thread(AddressOf Do_FirstStep)
     Dim SecondSyncThread As New Threading.Thread(AddressOf Do_SecondThirdStep)
+    Dim UpdateListThread As New Threading.Thread(AddressOf Launch_ListUpdate)
 
     Delegate Sub UpdateListCallBack()
     Delegate Sub LaunchTimerCallBack()
@@ -168,7 +169,7 @@ Public Class SynchronizeForm
                 Step1ProgressBar.Value = Step1ProgressBar.Maximum
                 Step1ProgressBar.Style = ProgressBarStyle.Blocks
                 If Not PreviewFinished Then
-                    UpdateList()
+                    UpdateListThread.Start()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 SyncingTimeCounter.Stop()
@@ -191,6 +192,11 @@ Public Class SynchronizeForm
                 SyncingTimeCounter.Stop()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
         End Select
+    End Sub
+
+    Sub Launch_ListUpdate()
+        Dim UpdateListDelegate As New UpdateListCallBack(AddressOf UpdateList)
+        Me.Invoke(UpdateListDelegate)
     End Sub
 
     Sub UpdateList()
@@ -296,6 +302,7 @@ Public Class SynchronizeForm
 
         Dim Left As String = Handler.GetSetting("From")
         Dim Right As String = Handler.GetSetting("To")
+        UpdateListThread.Abort()
 
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
@@ -361,31 +368,34 @@ Public Class SynchronizeForm
 
         Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
 
-        Dim ModifyDirectory As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
-        If ModifyDirectory And Not Context.Action = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+        Try
+            Dim ModifyDirectory As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
+            If ModifyDirectory And Not Context.Action = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
 
-        For Each File As String In IO.Directory.GetFiles(AbsolutePath)
-            Dim SourceFile As String = File
-            Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
-            If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
+            For Each File As String In IO.Directory.GetFiles(AbsolutePath)
+                Dim SourceFile As String = File
+                Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
+                If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
 
-            SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
-        Next
-
-        If Recursive Then
-            For Each SubFolder As String In IO.Directory.GetDirectories(AbsolutePath)
-                BuildList(SubFolder.Substring(Context.SourcePath.Length), True, Context)
+                SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
             Next
-        End If
 
-        'LOTS OF TESTING NEEDED...
-        If ModifyDirectory AndAlso Handler.GetSetting("ReplicateEmptyDirectories", "False") = "False" Then
-            If Context.Action = TypeOfAction.Delete Then
-                SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
-            Else
-                If SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
+            If Recursive Then
+                For Each SubFolder As String In IO.Directory.GetDirectories(AbsolutePath)
+                    BuildList(SubFolder.Substring(Context.SourcePath.Length), True, Context)
+                Next
             End If
-        End If
+
+            'LOTS OF TESTING NEEDED...
+            If ModifyDirectory AndAlso Handler.GetSetting("ReplicateEmptyDirectories", "False") = "False" Then
+                If Context.Action = TypeOfAction.Delete Then
+                    SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+                Else
+                    If SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
+                End If
+            End If
+        Catch Ex As Exception
+        End Try
     End Sub
 
     Function HasValidExtension(ByVal Path As String) As Boolean
