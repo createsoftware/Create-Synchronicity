@@ -75,6 +75,14 @@ Public Class Settings
         End If
     End Sub
 
+    Private Sub Settings_Views_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter
+        Settings_Tips.Visible = True
+    End Sub
+
+    Private Sub Settings_Views_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave
+        Settings_Tips.Visible = False
+    End Sub
+
     Private Sub Settings_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_LeftView.AfterExpand, Settings_RightView.AfterExpand
         ClickedRightTreeView = (sender.Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes
@@ -180,25 +188,21 @@ Public Class Settings
     End Function
 
     Sub Settings_ReloadTrees()
-        Me.Settings_LeftView.Nodes.Clear()
-        Me.Settings_RightView.Nodes.Clear()
+        LoadTree(Settings_LeftView, Settings_FromTextBox.Text & "\")
+        LoadTree(Settings_RightView, Settings_ToTextBox.Text & "\")
+    End Sub
 
-        Settings_LeftView.Nodes.Add("")
-        If Not Settings_FromTextBox.Text = Nothing Then
+    Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
+        Tree.Nodes.Clear()
+
+        Tree.Enabled = IO.Directory.Exists(Path) AndAlso Path <> "\"
+        If Tree.Enabled Then
+            Tree.Nodes.Add("")
             For Each Dir As String In IO.Directory.GetDirectories(Settings_FromTextBox.Text & "\")
-                Settings_LeftView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+                Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
             Next
-            Settings_LeftView.Nodes(0).Expand()
-            Settings_CheckTree(True)
-        End If
-
-        Settings_RightView.Nodes.Add("")
-        If Not Settings_ToTextBox.Text = Nothing Then
-            For Each Dir As String In IO.Directory.GetDirectories(Settings_ToTextBox.Text & "\")
-                Settings_RightView.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-            Next
-            Settings_RightView.Nodes(0).Expand()
-            Settings_CheckTree(False)
+            Tree.Nodes(0).Expand()
+            Settings_CheckTree(Tree.Name = "Settings_LeftView")
         End If
     End Sub
 
@@ -284,13 +288,17 @@ Public Class Settings
 
         Select Case LoadToForm
             Case False
-                Handler.LeftCheckedNodes.Clear()
-                Handler.RightCheckedNodes.Clear()
-                Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
-                Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
+                If Settings_LeftView.Enabled Then
+                    Handler.LeftCheckedNodes.Clear()
+                    Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
+                    Handler.SetSetting("EnabledLeftSubFolders", Settings_GetString(Handler.LeftCheckedNodes))
+                End If
 
-                Handler.SetSetting("EnabledLeftSubFolders", Settings_GetString(Handler.LeftCheckedNodes))
-                Handler.SetSetting("EnabledRightSubFolders", Settings_GetString(Handler.RightCheckedNodes))
+                If Settings_RightView.Enabled Then
+                    Handler.RightCheckedNodes.Clear()
+                    Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
+                    Handler.SetSetting("EnabledRightSubFolders", Settings_GetString(Handler.RightCheckedNodes))
+                End If
             Case True
                 Settings_ReloadTrees()
         End Select

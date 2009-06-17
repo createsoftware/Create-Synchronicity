@@ -48,8 +48,9 @@ Partial Class Settings
         Me.Settings_ReloadButton = New System.Windows.Forms.Button
         Me.Settings_LeftViewLabel = New System.Windows.Forms.Label
         Me.Settings_RightViewLabel = New System.Windows.Forms.Label
-        Me.Settings_SubdirectoriesBox = New System.Windows.Forms.GroupBox
-        Me.Settings_SynchrpnizationMethodBox = New System.Windows.Forms.GroupBox
+        Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox
+        Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox
+        Me.Settings_Tips = New System.Windows.Forms.Label
         Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
@@ -70,8 +71,8 @@ Partial Class Settings
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
-        Me.Settings_SubdirectoriesBox.SuspendLayout()
-        Me.Settings_SynchrpnizationMethodBox.SuspendLayout()
+        Me.Settings_ViewsBox.SuspendLayout()
+        Me.Settings_SynchronizationMethodBox.SuspendLayout()
         Me.Settings_MethodLayoutPanel.SuspendLayout()
         Me.Settings_IncludeExcludeBox.SuspendLayout()
         Me.Settings_IncludeExcludeLayoutPanel.SuspendLayout()
@@ -242,31 +243,45 @@ Partial Class Settings
         Me.Settings_RightViewLabel.TabIndex = 6
         Me.Settings_RightViewLabel.Text = "Right side:"
         '
-        'Settings_SubdirectoriesBox
+        'Settings_ViewsBox
         '
-        Me.Settings_SubdirectoriesBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.Settings_ViewsBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_SubdirectoriesBox.Controls.Add(Me.Settings_ViewsLayoutPanel)
-        Me.Settings_SubdirectoriesBox.Location = New System.Drawing.Point(12, 89)
-        Me.Settings_SubdirectoriesBox.Name = "Settings_SubdirectoriesBox"
-        Me.Settings_SubdirectoriesBox.Size = New System.Drawing.Size(674, 161)
-        Me.Settings_SubdirectoriesBox.TabIndex = 4
-        Me.Settings_SubdirectoriesBox.TabStop = False
-        Me.Settings_SubdirectoriesBox.Text = "Subdirectories"
+        Me.Settings_ViewsBox.Controls.Add(Me.Settings_ViewsLayoutPanel)
+        Me.Settings_ViewsBox.Location = New System.Drawing.Point(12, 89)
+        Me.Settings_ViewsBox.Name = "Settings_ViewsBox"
+        Me.Settings_ViewsBox.Size = New System.Drawing.Size(674, 161)
+        Me.Settings_ViewsBox.TabIndex = 4
+        Me.Settings_ViewsBox.TabStop = False
+        Me.Settings_ViewsBox.Text = "Subdirectories"
         '
-        'Settings_SynchrpnizationMethodBox
+        'Settings_SynchronizationMethodBox
         '
-        Me.Settings_SynchrpnizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.Settings_SynchronizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_SynchrpnizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
-        Me.Settings_SynchrpnizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
-        Me.Settings_SynchrpnizationMethodBox.Location = New System.Drawing.Point(12, 256)
-        Me.Settings_SynchrpnizationMethodBox.Name = "Settings_SynchrpnizationMethodBox"
-        Me.Settings_SynchrpnizationMethodBox.Size = New System.Drawing.Size(674, 90)
-        Me.Settings_SynchrpnizationMethodBox.TabIndex = 5
-        Me.Settings_SynchrpnizationMethodBox.TabStop = False
-        Me.Settings_SynchrpnizationMethodBox.Text = "Synchronicityization method"
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_Tips)
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
+        Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 256)
+        Me.Settings_SynchronizationMethodBox.Name = "Settings_SynchronizationMethodBox"
+        Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 90)
+        Me.Settings_SynchronizationMethodBox.TabIndex = 5
+        Me.Settings_SynchronizationMethodBox.TabStop = False
+        Me.Settings_SynchronizationMethodBox.Text = "Synchronization method"
+        '
+        'Settings_Tips
+        '
+        Me.Settings_Tips.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_Tips.Location = New System.Drawing.Point(3, 17)
+        Me.Settings_Tips.Name = "Settings_Tips"
+        Me.Settings_Tips.Size = New System.Drawing.Size(668, 70)
+        Me.Settings_Tips.TabIndex = 8
+        Me.Settings_Tips.Text = resources.GetString("Settings_Tips.Text")
+        Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Settings_Tips.Visible = False
         '
         'Settings_MethodLayoutPanel
         '
@@ -487,8 +502,8 @@ Partial Class Settings
         Me.ClientSize = New System.Drawing.Size(698, 501)
         Me.Controls.Add(Me.Settings_IncludeExcludeBox)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.Settings_SynchrpnizationMethodBox)
-        Me.Controls.Add(Me.Settings_SubdirectoriesBox)
+        Me.Controls.Add(Me.Settings_SynchronizationMethodBox)
+        Me.Controls.Add(Me.Settings_ViewsBox)
         Me.Controls.Add(Me.Settings_DirectoriesBox)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
@@ -499,8 +514,8 @@ Partial Class Settings
         Me.Settings_ViewsLayoutPanel.ResumeLayout(False)
         Me.Settings_ViewsLayoutPanel.PerformLayout()
         Me.Settings_TreeViewMenuStrip.ResumeLayout(False)
-        Me.Settings_SubdirectoriesBox.ResumeLayout(False)
-        Me.Settings_SynchrpnizationMethodBox.ResumeLayout(False)
+        Me.Settings_ViewsBox.ResumeLayout(False)
+        Me.Settings_SynchronizationMethodBox.ResumeLayout(False)
         Me.Settings_MethodLayoutPanel.ResumeLayout(False)
         Me.Settings_MethodLayoutPanel.PerformLayout()
         Me.Settings_IncludeExcludeBox.ResumeLayout(False)
@@ -524,8 +539,8 @@ Partial Class Settings
     Friend WithEvents Settings_ReloadButton As System.Windows.Forms.Button
     Friend WithEvents Settings_LeftViewLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_RightViewLabel As System.Windows.Forms.Label
-    Friend WithEvents Settings_SubdirectoriesBox As System.Windows.Forms.GroupBox
-    Friend WithEvents Settings_SynchrpnizationMethodBox As System.Windows.Forms.GroupBox
+    Friend WithEvents Settings_ViewsBox As System.Windows.Forms.GroupBox
+    Friend WithEvents Settings_SynchronizationMethodBox As System.Windows.Forms.GroupBox
     Friend WithEvents Settings_DescriptionLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_LRMirrorMethodOption As System.Windows.Forms.RadioButton
     Friend WithEvents Settings_MethodLayoutPanel As System.Windows.Forms.TableLayoutPanel
@@ -546,4 +561,5 @@ Partial Class Settings
     Friend WithEvents Settings_SynchronizeAllSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_DontSynchronizeSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_Tips As System.Windows.Forms.Label
 End Class
