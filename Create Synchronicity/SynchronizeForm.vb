@@ -252,6 +252,7 @@ Public Class SynchronizeForm
     End Sub
 
     Sub LaunchTimer()
+        Status_BytesCopied = 0
         Status_StartTime = DateTime.Now
         SyncingTimeCounter.Start()
     End Sub
@@ -369,12 +370,14 @@ Public Class SynchronizeForm
         Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
 
         Try
-            Dim ModifyDirectory As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
-            If ModifyDirectory And Not Context.Action = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+            Dim IsSingularity As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
+            If IsSingularity And Not Context.Action = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
 
             For Each File As String In IO.Directory.GetFiles(AbsolutePath)
                 Dim SourceFile As String = File
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
+                Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
+
                 If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
 
                 SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
@@ -387,14 +390,26 @@ Public Class SynchronizeForm
             End If
 
             'LOTS OF TESTING NEEDED...
-            If ModifyDirectory AndAlso Handler.GetSetting("ReplicateEmptyDirectories", "False") = "False" Then
-                If Context.Action = TypeOfAction.Delete Then
-                    SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
-                Else
-                    If SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
+            'If the action is not a deletion
+            '   create the directory, unless, in case we don't want empty directories, it results in an empty dir being created
+            'Otherwise
+            '   If it is not present on the other side, delete the dir.
+            '   If it is, and it is empty on the other side, delete unless replicate_empty_directories.
+
+            Dim EmptyDirectoryReplication As Boolean = Handler.GetSetting("ReplicateEmptyDirectories", "False") = "True"
+
+            If Not Context.Action = TypeOfAction.Delete Then
+                If Not EmptyDirectoryReplication And SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then
+                    SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
                 End If
-            End If
+            Else
+                If IsSingularity OrElse ((Not EmptyDirectoryReplication) AndAlso IO.Directory.GetFiles(Context.DestinationPath & Folder).Length + IO.Directory.GetDirectories(Context.DestinationPath & Folder).Length = 0) Then
+                    SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+                End If
+             End If
+
         Catch Ex As Exception
+
         End Try
     End Sub
 
