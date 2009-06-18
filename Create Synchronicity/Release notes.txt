@@ -14,8 +14,9 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Release Notes
 --------------------------
+Jun. 18, 2009 - FIX: Deleted directories were emptied but not deleted.
 Jun. 16, 2009 - UPD: Load preview list in a separate thread, speeding up the display of the preview list.
-Jun. 16, 2009 - UPD: Fix settings loading bug.
+Jun. 16, 2009 - FIX: Fix settings loading bug.
 -- Version 0.2 --
 Jun. 14, 2009 - SYN: Many updates and bug fixes. An icon has been found :)
 Jun. 14, 2009 - FIX: Overflow bug.
