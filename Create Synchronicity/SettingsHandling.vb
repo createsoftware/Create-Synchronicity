@@ -58,29 +58,23 @@ Class SettingsHandler
 
         FileReader.Close()
 
-        LeftCheckedNodes.Clear()
-        RightCheckedNodes.Clear()
-        For Each Dir As String In Configuration(ConfigOptions.LeftSubFolders).Split(";"c)
-            If Not LeftCheckedNodes.ContainsKey(Dir) Then
-                If Dir.EndsWith("*") Then
-                    LeftCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
-                Else
-                    LeftCheckedNodes.Add(Dir, False)
-                End If
-            End If
-        Next
-        For Each Dir As String In Configuration(ConfigOptions.RightSubFolders).Split(";"c)
-            If Not RightCheckedNodes.ContainsKey(Dir) Then
-                If Dir.EndsWith("*") Then
-                    RightCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
-                Else
-                    RightCheckedNodes.Add(Dir, False)
-                End If
-            End If
-        Next
-
+        LoadSubFoldersList(ConfigOptions.LeftSubFolders, LeftCheckedNodes)
+        LoadSubFoldersList(ConfigOptions.RightSubFolders, RightCheckedNodes)
         Return True
     End Function
+
+    Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
+        Subfolders.Clear()
+        For Each Dir As String In Configuration(ConfigLine).Split(";"c)
+            If Not Subfolders.ContainsKey(Dir) Then
+                If Dir.EndsWith("*") Then
+                    Subfolders.Add(Dir.Substring(0, Dir.Length - 1), True)
+                Else
+                    Subfolders.Add(Dir, False)
+                End If
+            End If
+        Next
+    End Sub
 
     Function SaveConfigFile() As Boolean
         Try
