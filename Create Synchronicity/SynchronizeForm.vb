@@ -368,11 +368,13 @@ Public Class SynchronizeForm
         Dim AbsolutePath As String = Context.SourcePath & Folder
 
         Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
-        Dim CurrentActionsCount As Integer = SyncingList(Context.Source).Count
-
+       
         Try
             Dim IsSingularity As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
-            If IsSingularity And Not Context.Action = TypeOfAction.Delete Then SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+            If IsSingularity And Not Context.Action = TypeOfAction.Delete Then
+                SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+                SyncPreviewList(Context.Source, 1)
+            End If
 
             For Each File As String In IO.Directory.GetFiles(AbsolutePath)
                 Dim SourceFile As String = File
@@ -382,6 +384,7 @@ Public Class SynchronizeForm
                 If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
 
                 SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
+                SyncPreviewList(Context.Source, 1)
             Next
 
             If Recursive Then
@@ -397,24 +400,32 @@ Public Class SynchronizeForm
             '   If it is not present on the other side, delete the dir.
             '   If it is, and it is empty on the other side, delete unless replicate_empty_directories.
 
+            Dim CurrentActionsCount As Integer = SyncingList(Context.Source).Count
             Dim EmptyDirectoryReplication As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
 
             If Not Context.Action = TypeOfAction.Delete Then
                 If Not EmptyDirectoryReplication And SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then
                     SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
+                    SyncPreviewList(Context.Source, -1)
                 End If
             Else
                 If IsSingularity OrElse ((Not EmptyDirectoryReplication) AndAlso IO.Directory.GetFiles(Context.DestinationPath & Folder).Length + IO.Directory.GetDirectories(Context.DestinationPath & Folder).Length = 0) Then
                     SyncingList(Context.Source).Add(New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+                    SyncPreviewList(Context.Source, 1)
                 End If
-             End If
-
-            If DisplayPreview AndAlso CurrentActionsCount <> SyncingList(Context.Source).Count Then
-                AddPreviewItem(SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1), Context.Source)
             End If
+
         Catch Ex As Exception
 
         End Try
+    End Sub
+
+    Sub SyncPreviewList(ByVal Side As SideOfSource, ByVal Count As Integer)
+        If Count > 0 Then
+            AddPreviewItem(SyncingList(Side)(SyncingList(Side).Count - 1), Side)
+        ElseIf Count < 0 Then
+            PreviewList.Items.RemoveAt(PreviewList.Items.Count - 1)
+        End If
     End Sub
 
     Function HasValidExtension(ByVal Path As String) As Boolean
