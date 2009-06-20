@@ -6,16 +6,42 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Public Structure ConfigOptions
+    Const Source As String = "Source Directory"
+    Const Destination As String = "Destination Directory"
+    Const IncludedTypes As String = "Included Filetypes"
+    Const ExcludedTypes As String = "Excluded FileTypes"
+    Const ReplicateEmptyDirectories As String = "Replicate Empty Directories"
+    Const Method As String = "Synchronization Method"
+    Const Restrictions As String = "Files restrictions"
+    Const LeftSubFolders As String = "Source folders to be synchronized"
+    Const RightSubFolders As String = "Destination folders to be synchronized"
+    Dim _EMPTY_ As String
+End Structure
+
 Class SettingsHandler
     Public ConfigName As String
     Public Configuration As New Dictionary(Of String, String)
     Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
+
     Private ConfigPath As String = Application.StartupPath & "\config\"
+    Private PredicateConfigMatchingList As Dictionary(Of String, String)
 
     Public Sub New(ByVal Name As String)
         ConfigName = Name
         LoadConfigFile()
+
+        PredicateConfigMatchingList = New Dictionary(Of String, String)
+        PredicateConfigMatchingList.Add(ConfigOptions.IncludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
+        PredicateConfigMatchingList.Add(ConfigOptions.ExcludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
+        PredicateConfigMatchingList.Add(ConfigOptions.LeftSubFolders, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.Destination, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.Method, "[012]")
+        PredicateConfigMatchingList.Add(ConfigOptions.Restrictions, "[012]")
+        PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
     End Sub
 
     Function LoadConfigFile() As Boolean
@@ -25,14 +51,16 @@ Class SettingsHandler
         Configuration.Clear()
         While Not FileReader.EndOfStream
             Dim ConfigLine As String = FileReader.ReadLine()
-            Configuration.Add(ConfigLine.Split("="c)(0), ConfigLine.Split("="c)(1))
+            Dim Key As String = ConfigLine.Substring(0, ConfigLine.IndexOf(":"))
+            Dim Value As String = ConfigLine.Substring(ConfigLine.IndexOf(":") + 1)
+            If Not Configuration.ContainsKey(Key) Then Configuration.Add(Key, Value)
         End While
 
         FileReader.Close()
 
         LeftCheckedNodes.Clear()
         RightCheckedNodes.Clear()
-        For Each Dir As String In Configuration("EnabledLeftSubFolders").Split(";"c)
+        For Each Dir As String In Configuration(ConfigOptions.LeftSubFolders).Split(";"c)
             If Not ((Dir = "") AndAlso LeftCheckedNodes.ContainsKey("")) Then 'TODO
                 If Dir.EndsWith("/") Then
                     LeftCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
@@ -41,7 +69,7 @@ Class SettingsHandler
                 End If
             End If
         Next
-        For Each Dir As String In Configuration("EnabledRightSubFolders").Split(";"c)
+        For Each Dir As String In Configuration(ConfigOptions.RightSubFolders).Split(";"c)
             If Not (Dir = "") Then
                 If Dir.EndsWith("/") Then
                     RightCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
@@ -60,7 +88,7 @@ Class SettingsHandler
             Dim FileWriter As New IO.StreamWriter(GetConfigFilePath())
 
             For Each Setting As KeyValuePair(Of String, String) In Configuration
-                FileWriter.WriteLine(Setting.Key & "=" & Setting.Value)
+                FileWriter.WriteLine(Setting.Key & ":" & Setting.Value)
             Next
 
             FileWriter.Close()
@@ -70,13 +98,40 @@ Class SettingsHandler
         End Try
     End Function
 
+    Function ValidateConfigFile() As Boolean
+        Dim IsValid As Boolean = True
+        Dim InvalidListing As New List(Of String)
+
+        If Not IO.Directory.Exists(GetSetting(ConfigOptions.Source)) Then
+            InvalidListing.Add("Source directory is not valid.")
+            IsValid = False
+        End If
+
+        If Not IO.Directory.Exists(GetSetting(ConfigOptions.Destination)) Then
+            InvalidListing.Add("Destination directory is not valid.")
+            IsValid = False
+        End If
+
+        For Each Pair As KeyValuePair(Of String, String) In PredicateConfigMatchingList
+            If Not Configuration.ContainsKey(Pair.Key) Then
+                IsValid = False
+                InvalidListing.Add("""" & Pair.Key & """ setting is not set.")
+            Else
+                If Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
+                    IsValid = False
+                    InvalidListing.Add("Value for """ & Pair.Key & """ setting is invalid.")
+                End If
+            End If
+        Next
+        If Not IsValid Then
+            Microsoft.VisualBasic.MsgBox(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine), Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid configuration")
+        End If
+        Return IsValid
+    End Function
+
     Sub DeleteConfigFile()
         IO.File.Delete(GetConfigFilePath())
     End Sub
-
-    Function CheckConfigValidity()
-        Return IO.Directory.Exists(GetSetting("From")) And IO.Directory.Exists(GetSetting("To"))
-    End Function
 
     Function GetConfigFilePath() As String
         Return ConfigPath & ConfigName & ".sync"
@@ -100,5 +155,14 @@ Class SettingsHandler
         Else
             Return DefaultVal
         End If
+    End Function
+
+    Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
+        Dim ReturnStr As String = ""
+        For Each Str As String In StrList
+            ReturnStr &= Str & Separator
+        Next
+        If ReturnStr.EndsWith(Separator) Then ReturnStr = ReturnStr.Substring(0, ReturnStr.Length - 1)
+        Return ReturnStr
     End Function
 End Class

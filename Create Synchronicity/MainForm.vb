@@ -86,7 +86,7 @@ Public Class MainForm
     End Sub
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
-        Diagnostics.Process.Start("notepad", Get_LogFolder() & "\" & Main_Actions.SelectedItems(0).Text & ".log")
+        Diagnostics.Process.Start(Get_LogFolder() & "\" & Main_Actions.SelectedItems(0).Text & ".log")
     End Sub
 #End Region
 
@@ -104,7 +104,7 @@ Public Class MainForm
 
             Dim NewItem As ListViewItem = Main_Actions.Items.Add(Name)
             NewItem.Group = Main_Actions.Groups("Profiles")
-            NewItem.ImageIndex = CInt(SettingsArray(Name).GetSetting("Method"))
+            NewItem.ImageIndex = CInt(SettingsArray(Name).GetSetting(ConfigOptions.Method))
             NewItem.SubItems.Add(GetMethodName(Name)).ForeColor = Drawing.Color.DarkGray
         Next
     End Sub
@@ -123,11 +123,20 @@ Public Class MainForm
         End If
         Main_Method.Text = GetMethodName(Name)
 
-        Main_Source.Text = SettingsArray(Name).GetSetting("From")
-        Main_Destination.Text = SettingsArray(Name).GetSetting("To")
-        Main_LimitedCopy.Text = If(CBool(SettingsArray(Name).GetSetting("LimitedCopy", "False")), "Yes", "No")
-        If Main_LimitedCopy.Text = "Yes" Then Main_FileTypes.Text = If(CBool(SettingsArray(Name).GetSetting("CopyOnly", "False")), SettingsArray(Name).GetSetting("IncludedTypes", ""), "-" & SettingsArray(Name).GetSetting("ExcludedTypes", ""))
-    End Sub
+        Main_Source.Text = SettingsArray(Name).GetSetting(ConfigOptions.Source)
+        Main_Destination.Text = SettingsArray(Name).GetSetting(ConfigOptions.Destination)
+
+        Select Case CInt(SettingsArray(Name).GetSetting(ConfigOptions.Restrictions, "0"))
+            Case 0
+                Main_LimitedCopy.Text = "No"
+            Case 1, 2
+                Main_LimitedCopy.Text = "Yes"
+            Case 1
+                Main_FileTypes.Text = SettingsArray(Name).GetSetting(ConfigOptions.IncludedTypes, "")
+            Case 2
+                Main_FileTypes.Text = "-" & SettingsArray(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
+        End Select
+     End Sub
 
     Function Get_ConfigFolder() As String
         Return Application.StartupPath & "\config"
@@ -138,7 +147,7 @@ Public Class MainForm
     End Function
 
     Function GetMethodName(ByVal Name As String) As String
-        Select Case SettingsArray(Name).GetSetting("Method", "")
+        Select Case SettingsArray(Name).GetSetting(ConfigOptions.Method, "")
             Case "1"
                 Return "Left to Right (Incremental)"
             Case "2"
@@ -149,7 +158,7 @@ Public Class MainForm
     End Function
 
     Function CheckValidity() As Boolean
-        If Not SettingsArray(Main_Actions.SelectedItems(0).Text).CheckConfigValidity() Then
+        If Not SettingsArray(Main_Actions.SelectedItems(0).Text).ValidateConfigFile() Then
             Microsoft.VisualBasic.MsgBox("Invalid Config !", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
             Return False
         End If

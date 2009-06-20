@@ -22,13 +22,15 @@ Public Class Settings
     'The 'Tag' Property is used as a flag denoting that the treenode originally had all its subnodes checked.
 
 #Region " Events "
-    Private Sub Settings_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_IncludeExcludeCheckBox.CheckedChanged, Settings_IncludeFilesOption.CheckedChanged, Settings_ExcludeFilesOption.CheckedChanged
+    Private Sub Settings_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_CopyAllFilesCheckBox.CheckedChanged, Settings_IncludeFilesOption.CheckedChanged, Settings_ExcludeFilesOption.CheckedChanged
         Settings_Update_Form_Enabled_Components()
     End Sub
 
     Private Sub Settings_SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SaveButton.Click
         Settings_Update(False)
-        If Handler.SaveConfigFile() Then Me.Close()
+        If Handler.ValidateConfigFile() Then
+            If Handler.SaveConfigFile() Then Me.Close()
+        End If
     End Sub
 
     Private Sub Settings_CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_CancelButton.Click
@@ -121,7 +123,7 @@ Public Class Settings
 
 #Region " Form and TreeView manipulation "
     Sub Settings_Update_Form_Enabled_Components()
-        Settings_IncludeExcludeLayoutPanel.Enabled = Settings_IncludeExcludeCheckBox.Checked
+        Settings_IncludeExcludeLayoutPanel.Enabled = Not Settings_CopyAllFilesCheckBox.Checked
         Settings_IncludedTypesTextBox.Enabled = Settings_IncludeFilesOption.Checked
         Settings_ExcludedTypesTextBox.Enabled = Settings_ExcludeFilesOption.Checked
     End Sub
@@ -252,21 +254,20 @@ Public Class Settings
         Settings_FromTextBox.Text = Settings_FromTextBox.Text.Trim("\"c)
         Settings_ToTextBox.Text = Settings_ToTextBox.Text.Trim("\"c)
 
-        Handler.SetSetting("From", Settings_FromTextBox.Text, LoadToForm)
-        Handler.SetSetting("To", Settings_ToTextBox.Text, LoadToForm)
-        Handler.SetSetting("LimitedCopy", Settings_IncludeExcludeCheckBox.Checked, LoadToForm)
-        Handler.SetSetting("IncludedTypes", Settings_IncludedTypesTextBox.Text, LoadToForm)
-        Handler.SetSetting("ExcludedTypes", Settings_ExcludedTypesTextBox.Text, LoadToForm)
-        Handler.SetSetting("ReplicateEmptyDirectories", Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.Source, Settings_FromTextBox.Text, LoadToForm)
+        Handler.SetSetting(ConfigOptions.Destination, Settings_ToTextBox.Text, LoadToForm)
+        Handler.SetSetting(ConfigOptions.IncludedTypes, Settings_IncludedTypesTextBox.Text, LoadToForm)
+        Handler.SetSetting(ConfigOptions.ExcludedTypes, Settings_ExcludedTypesTextBox.Text, LoadToForm)
+        Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
 
-        Dim Restrictions As String = (If(Settings_IncludeExcludeCheckBox.Checked, 1, 0) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
+        Dim Restrictions As String = (If(Settings_CopyAllFilesCheckBox.Checked, 0, 1) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
         Dim Method As String = (If(Settings_LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(Settings_TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
         Select Case LoadToForm
             Case False
-                Handler.SetSetting("Method", Method)
-                Handler.SetSetting("Restrictions", Restrictions)
+                Handler.SetSetting(ConfigOptions.Method, Method)
+                Handler.SetSetting(ConfigOptions.Restrictions, Restrictions)
             Case True
-                Select Case Handler.GetSetting("Method")
+                Select Case Handler.GetSetting(ConfigOptions.Method)
                     Case "1"
                         Settings_LRIncrementalMethodOption.Checked = True
                     Case "2"
@@ -275,14 +276,14 @@ Public Class Settings
                         Settings_LRMirrorMethodOption.Checked = True
                 End Select
 
-                Settings_IncludeExcludeCheckBox.Checked = True
-                Select Case Handler.GetSetting("Restrictions")
+                Settings_CopyAllFilesCheckBox.Checked = False
+                Select Case Handler.GetSetting(ConfigOptions.Restrictions)
                     Case "1"
                         Settings_IncludeFilesOption.Checked = True
                     Case "2"
                         Settings_ExcludeFilesOption.Checked = True
                     Case Else
-                        Settings_IncludeExcludeCheckBox.Checked = False
+                        Settings_CopyAllFilesCheckBox.Checked = True
                 End Select
         End Select
 
@@ -291,13 +292,13 @@ Public Class Settings
                 If Settings_LeftView.Enabled Then
                     Handler.LeftCheckedNodes.Clear()
                     Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
-                    Handler.SetSetting("EnabledLeftSubFolders", Settings_GetString(Handler.LeftCheckedNodes))
+                    Handler.SetSetting(ConfigOptions.LeftSubFolders, Settings_GetString(Handler.LeftCheckedNodes))
                 End If
 
                 If Settings_RightView.Enabled Then
                     Handler.RightCheckedNodes.Clear()
                     Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
-                    Handler.SetSetting("EnabledRightSubFolders", Settings_GetString(Handler.RightCheckedNodes))
+                    Handler.SetSetting(ConfigOptions.RightSubFolders, Settings_GetString(Handler.RightCheckedNodes))
                 End If
             Case True
                 Settings_ReloadTrees()

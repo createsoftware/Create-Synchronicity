@@ -21,7 +21,6 @@ Public Enum SideOfSource As Integer
     Left = -1
     Right = 1
 End Enum
-
 Public Class SyncingItem
     Public Path As String
     Public Type As TypeOfItem

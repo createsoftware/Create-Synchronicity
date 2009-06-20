@@ -26,7 +26,6 @@ Public Class SynchronizeForm
     Dim FullSyncThread As New Threading.Thread(AddressOf Synchronize)
     Dim FirstSyncThread As New Threading.Thread(AddressOf Do_FirstStep)
     Dim SecondSyncThread As New Threading.Thread(AddressOf Do_SecondThirdStep)
-    Dim UpdateListThread As New Threading.Thread(AddressOf Launch_ListUpdate)
 
     Delegate Sub UpdateListCallBack()
     Delegate Sub LaunchTimerCallBack()
@@ -62,6 +61,7 @@ Public Class SynchronizeForm
         Me.CreateHandle()
 
         If DisplayPreview Then
+            PreviewList.Items.Clear()
             FirstSyncThread.Start()
         Else
             FullSyncThread.Start()
@@ -169,7 +169,7 @@ Public Class SynchronizeForm
                 Step1ProgressBar.Value = Step1ProgressBar.Maximum
                 Step1ProgressBar.Style = ProgressBarStyle.Blocks
                 If Not PreviewFinished Then
-                    UpdateListThread.Start()
+                    UpdateList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 SyncingTimeCounter.Stop()
@@ -194,20 +194,9 @@ Public Class SynchronizeForm
         End Select
     End Sub
 
-    Sub Launch_ListUpdate()
-        Dim UpdateListDelegate As New UpdateListCallBack(AddressOf UpdateList)
-        Me.Invoke(UpdateListDelegate)
-    End Sub
-
     Sub UpdateList()
-        PreviewList.Items.Clear()
         PreviewList.Visible = True
-        For Each Item As SyncingItem In SyncingList(SideOfSource.Left)
-            AddItem(Item, SideOfSource.Left)
-        Next
-        For Each Item As SyncingItem In SyncingList(SideOfSource.Right)
-            AddItem(Item, SideOfSource.Right)
-        Next
+
         If Not PreviewList.Items.Count = 0 Then
             For Each C As ColumnHeader In PreviewList.Columns
                 C.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
@@ -267,8 +256,8 @@ Public Class SynchronizeForm
     Sub Do_FirstStep()
         Dim Context As New SyncingAction
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
-        Dim Left As String = Handler.GetSetting("From")
-        Dim Right As String = Handler.GetSetting("To")
+        Dim Left As String = Handler.GetSetting(ConfigOptions.Source)
+        Dim Right As String = Handler.GetSetting(ConfigOptions.Destination)
 
         SyncingList.Clear()
         SyncingList.Add(SideOfSource.Left, New List(Of SyncingItem))
@@ -276,15 +265,15 @@ Public Class SynchronizeForm
 
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Context.Source = SideOfSource.Left
-        Context.SourcePath = Handler.GetSetting("From")
-        Context.DestinationPath = Handler.GetSetting("To")
+        Context.SourcePath = Handler.GetSetting(ConfigOptions.Source)
+        Context.DestinationPath = Handler.GetSetting(ConfigOptions.Destination)
         Context.Action = TypeOfAction.Create
         Init_Synchronization(Handler.LeftCheckedNodes, Context)
 
         Context.Source = SideOfSource.Right
-        Context.SourcePath = Handler.GetSetting("To")
-        Context.DestinationPath = Handler.GetSetting("From")
-        Select Case Handler.GetSetting("Method")
+        Context.SourcePath = Handler.GetSetting(ConfigOptions.Destination)
+        Context.DestinationPath = Handler.GetSetting(ConfigOptions.Source)
+        Select Case Handler.GetSetting(ConfigOptions.Method)
             Case "0"
                 Context.Action = TypeOfAction.Delete
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
@@ -301,9 +290,8 @@ Public Class SynchronizeForm
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
-        Dim Left As String = Handler.GetSetting("From")
-        Dim Right As String = Handler.GetSetting("To")
-        UpdateListThread.Abort()
+        Dim Left As String = Handler.GetSetting(ConfigOptions.Source)
+        Dim Right As String = Handler.GetSetting(ConfigOptions.Destination)
 
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
@@ -368,6 +356,7 @@ Public Class SynchronizeForm
         Dim AbsolutePath As String = Context.SourcePath & Folder
 
         Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
+        Dim CurrentActionsCount As Integer = SyncingList(Context.Source).Count
 
         Try
             Dim IsSingularity As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
@@ -396,7 +385,7 @@ Public Class SynchronizeForm
             '   If it is not present on the other side, delete the dir.
             '   If it is, and it is empty on the other side, delete unless replicate_empty_directories.
 
-            Dim EmptyDirectoryReplication As Boolean = Handler.GetSetting("ReplicateEmptyDirectories", "False") = "True"
+            Dim EmptyDirectoryReplication As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
 
             If Not Context.Action = TypeOfAction.Delete Then
                 If Not EmptyDirectoryReplication And SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then
@@ -408,17 +397,20 @@ Public Class SynchronizeForm
                 End If
              End If
 
+            If DisplayPreview AndAlso CurrentActionsCount <> SyncingList(Context.Source).Count Then
+                AddItem(SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1), Context.Source)
+            End If
         Catch Ex As Exception
 
         End Try
     End Sub
 
     Function HasValidExtension(ByVal Path As String) As Boolean
-        Select Case Handler.GetSetting("Restrictions")
+        Select Case Handler.GetSetting(ConfigOptions.Restrictions)
             Case "1"
-                Return InArray(GetExtension(Path), Handler.GetSetting("IncludedTypes").Split(";"c))
+                Return InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
             Case "2"
-                Return Not InArray(GetExtension(Path), Handler.GetSetting("ExcludedTypes").Split(";"c))
+                Return Not InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
         End Select
         Return True
     End Function

@@ -57,7 +57,7 @@ Partial Class Settings
         Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
         Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox
-        Me.Settings_IncludeExcludeCheckBox = New System.Windows.Forms.CheckBox
+        Me.Settings_CopyAllFilesCheckBox = New System.Windows.Forms.CheckBox
         Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_IncludedTypesTextBox = New System.Windows.Forms.TextBox
         Me.Settings_ExcludedTypesTextBox = New System.Windows.Forms.TextBox
@@ -358,7 +358,7 @@ Partial Class Settings
         '
         Me.Settings_IncludeExcludeBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeCheckBox)
+        Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_CopyAllFilesCheckBox)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeLayoutPanel)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_ReplicateEmptyDirectoriesOption)
         Me.Settings_IncludeExcludeBox.Location = New System.Drawing.Point(12, 352)
@@ -368,15 +368,17 @@ Partial Class Settings
         Me.Settings_IncludeExcludeBox.TabStop = False
         Me.Settings_IncludeExcludeBox.Text = "Include or exclude file types"
         '
-        'Settings_IncludeExcludeCheckBox
+        'Settings_CopyAllFilesCheckBox
         '
-        Me.Settings_IncludeExcludeCheckBox.AutoSize = True
-        Me.Settings_IncludeExcludeCheckBox.Location = New System.Drawing.Point(6, 20)
-        Me.Settings_IncludeExcludeCheckBox.Name = "Settings_IncludeExcludeCheckBox"
-        Me.Settings_IncludeExcludeCheckBox.Size = New System.Drawing.Size(139, 17)
-        Me.Settings_IncludeExcludeCheckBox.TabIndex = 5
-        Me.Settings_IncludeExcludeCheckBox.Text = "Do not copy all files"
-        Me.Settings_IncludeExcludeCheckBox.UseVisualStyleBackColor = True
+        Me.Settings_CopyAllFilesCheckBox.AutoSize = True
+        Me.Settings_CopyAllFilesCheckBox.Checked = True
+        Me.Settings_CopyAllFilesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Settings_CopyAllFilesCheckBox.Location = New System.Drawing.Point(6, 20)
+        Me.Settings_CopyAllFilesCheckBox.Name = "Settings_CopyAllFilesCheckBox"
+        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(100, 17)
+        Me.Settings_CopyAllFilesCheckBox.TabIndex = 5
+        Me.Settings_CopyAllFilesCheckBox.Text = "Copy all files"
+        Me.Settings_CopyAllFilesCheckBox.UseVisualStyleBackColor = True
         '
         'Settings_IncludeExcludeLayoutPanel
         '
@@ -442,6 +444,8 @@ Partial Class Settings
         '
         Me.Settings_ReplicateEmptyDirectoriesOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
+        Me.Settings_ReplicateEmptyDirectoriesOption.Checked = True
+        Me.Settings_ReplicateEmptyDirectoriesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(489, 20)
         Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
         Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(182, 17)
@@ -550,7 +554,7 @@ Partial Class Settings
     Friend WithEvents Settings_IncludeExcludeLayoutPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Settings_ExcludedTypesTextBox As System.Windows.Forms.TextBox
     Friend WithEvents Settings_IncludedTypesTextBox As System.Windows.Forms.TextBox
-    Friend WithEvents Settings_IncludeExcludeCheckBox As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_CopyAllFilesCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_IncludeFilesOption As System.Windows.Forms.RadioButton
     Friend WithEvents Settings_ExcludeFilesOption As System.Windows.Forms.RadioButton
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
