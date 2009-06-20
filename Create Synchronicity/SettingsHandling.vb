@@ -61,7 +61,7 @@ Class SettingsHandler
         LeftCheckedNodes.Clear()
         RightCheckedNodes.Clear()
         For Each Dir As String In Configuration(ConfigOptions.LeftSubFolders).Split(";"c)
-            If Not ((Dir = "") AndAlso LeftCheckedNodes.ContainsKey("")) Then 'TODO
+            If Not LeftCheckedNodes.ContainsKey(Dir) Then
                 If Dir.EndsWith("*") Then
                     LeftCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
                 Else
@@ -70,7 +70,7 @@ Class SettingsHandler
             End If
         Next
         For Each Dir As String In Configuration(ConfigOptions.RightSubFolders).Split(";"c)
-            If Not (Dir = "") Then
+            If Not RightCheckedNodes.ContainsKey(Dir) Then
                 If Dir.EndsWith("*") Then
                     RightCheckedNodes.Add(Dir.Substring(0, Dir.Length - 1), True)
                 Else
