@@ -12,13 +12,13 @@ Public Class Settings
     Dim ClickedRightTreeView As Boolean = False
 
     'Note:
-    'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "/", associated with booleans indicating whether all subfolders /path/ are to be synced.
+    'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
     'The boolean value is stored as a / appended at the end of the file name.
     'In fact, we have two steps : 
     '   1. Loading and saving the file
-    '       1.1 Saving: Booleans calculated as "/"
-    '       2.2 Loading: "/" are converted to booleans 
-    '   2. Searching the list, were pathes never end with "/"
+    '       1.1 Saving: Booleans calculated as "*"
+    '       2.2 Loading: "*" are converted to booleans 
+    '   2. Searching the list, were pathes never end with "*"
     'The 'Tag' Property is used as a flag denoting that the treenode originally had all its subnodes checked.
 
 #Region " Events "
@@ -154,7 +154,7 @@ Public Class Settings
 
         If Node.Checked OrElse Node.TreeView.CheckBoxes = False Then
             If OverAllNodeStatus = 1 Then
-                NodesList.Add(Node.FullPath & "/", True)
+                NodesList.Add(Node.FullPath & "*", True)
                 Exit Sub
             Else
                 NodesList.Add(Node.FullPath, False)
@@ -166,7 +166,7 @@ Public Class Settings
         'If node isn't checked
         For NodeId As Integer = 0 To Node.Nodes.Count - 1
             If OverAllNodeStatus = 1 Then
-                NodesList.Add(Node.Nodes(NodeId).FullPath & "/", True)
+                NodesList.Add(Node.Nodes(NodeId).FullPath & "*", True)
             Else
                 Settings_BuildCheckedNodesList(NodesList, Node.Nodes(NodeId))
             End If
