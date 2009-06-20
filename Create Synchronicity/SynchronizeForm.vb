@@ -169,7 +169,7 @@ Public Class SynchronizeForm
                 Step1ProgressBar.Value = Step1ProgressBar.Maximum
                 Step1ProgressBar.Style = ProgressBarStyle.Blocks
                 If Not PreviewFinished Then
-                    UpdateList()
+                    UpdatePreviewList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 SyncingTimeCounter.Stop()
@@ -188,13 +188,26 @@ Public Class SynchronizeForm
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
                 UpdateStatuses()
+                If Log.Errors.Count > 0 Then
+                    PreviewList.Visible = True
+                    PreviewList.Columns.Clear()
+                    Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add("Error detail")
+
+                    For Each Ex As Exception In Log.Errors
+                        Dim ErrorItem As ListViewItem = PreviewList.Items.Add(Ex.Message & "	" & Ex.StackTrace)
+                        ErrorItem.ImageIndex = 5
+                    Next
+
+                    ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
+                End If
+
                 Log.SaveAndDispose()
                 SyncingTimeCounter.Stop()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
         End Select
     End Sub
 
-    Sub UpdateList()
+    Sub UpdatePreviewList()
         PreviewList.Visible = True
 
         If Not PreviewList.Items.Count = 0 Then
@@ -207,10 +220,9 @@ Public Class SynchronizeForm
         SyncBtn.Enabled = True
     End Sub
 
-    Sub AddItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
+    Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
         Dim ListItem As New ListViewItem
         ListItem = PreviewList.Items.Add(Item.FormatType)
-
 
         ListItem.SubItems.Add(Item.FormatAction)
         Dim DirectionString As String = ""
@@ -235,7 +247,7 @@ Public Class SynchronizeForm
                     End Select
                 End If
             Case TypeOfAction.Delete
-                If Item.Type = TypeOfItem.Folder Then ListItem.ImageIndex = 3
+                If Item.Type = TypeOfItem.Folder Then ListItem.ImageIndex = 4
                 If Item.Type = TypeOfItem.File Then ListItem.ImageIndex = 2
         End Select
     End Sub
@@ -398,7 +410,7 @@ Public Class SynchronizeForm
              End If
 
             If DisplayPreview AndAlso CurrentActionsCount <> SyncingList(Context.Source).Count Then
-                AddItem(SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1), Context.Source)
+                AddPreviewItem(SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1), Context.Source)
             End If
         Catch Ex As Exception
 

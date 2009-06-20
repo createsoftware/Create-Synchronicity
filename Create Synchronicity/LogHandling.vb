@@ -8,8 +8,8 @@
 
 Class LogHandler
     Dim LogName As String
-    Dim Errors As List(Of Exception)
-    Dim Log As Dictionary(Of SyncingItem, Boolean)
+    Public Errors As List(Of Exception)
+    Public Log As Dictionary(Of SyncingItem, Boolean)
 
     Sub New(ByVal _LogName As String)
         LogName = _LogName

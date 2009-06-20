@@ -65,14 +65,14 @@ Partial Class SynchronizeForm
         Me.SpeedLabel = New System.Windows.Forms.Label
         Me.ElapsedTime = New System.Windows.Forms.Label
         Me.ElapsedTimeLabel = New System.Windows.Forms.Label
+        Me.BlankMargin = New System.Windows.Forms.Label
         Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
         Me.PreviewList = New System.Windows.Forms.ListView
-        Me.PathColumn = New System.Windows.Forms.ColumnHeader
         Me.TypeColumn = New System.Windows.Forms.ColumnHeader
         Me.ActionColumn = New System.Windows.Forms.ColumnHeader
         Me.DirectionColumn = New System.Windows.Forms.ColumnHeader
+        Me.PathColumn = New System.Windows.Forms.ColumnHeader
         Me.SyncingIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.BlankMargin = New System.Windows.Forms.Label
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
         Me.Step3_ProgressLayout.SuspendLayout()
@@ -485,6 +485,16 @@ Partial Class SynchronizeForm
         Me.ElapsedTimeLabel.Text = "Elapsed time:"
         Me.ElapsedTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'BlankMargin
+        '
+        Me.BlankMargin.AutoSize = True
+        Me.StatisticsPanel.SetColumnSpan(Me.BlankMargin, 4)
+        Me.BlankMargin.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.BlankMargin.Location = New System.Drawing.Point(3, 17)
+        Me.BlankMargin.Name = "BlankMargin"
+        Me.BlankMargin.Size = New System.Drawing.Size(338, 17)
+        Me.BlankMargin.TabIndex = 12
+        '
         'SyncingTimeCounter
         '
         Me.SyncingTimeCounter.Enabled = True
@@ -508,11 +518,6 @@ Partial Class SynchronizeForm
         Me.PreviewList.View = System.Windows.Forms.View.Details
         Me.PreviewList.Visible = False
         '
-        'PathColumn
-        '
-        Me.PathColumn.Text = "Path"
-        Me.PathColumn.Width = 230
-        '
         'TypeColumn
         '
         Me.TypeColumn.Text = "Type"
@@ -528,6 +533,11 @@ Partial Class SynchronizeForm
         Me.DirectionColumn.Text = "Direction"
         Me.DirectionColumn.Width = 80
         '
+        'PathColumn
+        '
+        Me.PathColumn.Text = "Path"
+        Me.PathColumn.Width = 230
+        '
         'SyncingIcons
         '
         Me.SyncingIcons.ImageStream = CType(resources.GetObject("SyncingIcons.ImageStream"), System.Windows.Forms.ImageListStreamer)
@@ -537,16 +547,7 @@ Partial Class SynchronizeForm
         Me.SyncingIcons.Images.SetKeyName(2, "list-remove.png")
         Me.SyncingIcons.Images.SetKeyName(3, "folder-new.png")
         Me.SyncingIcons.Images.SetKeyName(4, "delete-folder.png")
-        '
-        'BlankMargin
-        '
-        Me.BlankMargin.AutoSize = True
-        Me.StatisticsPanel.SetColumnSpan(Me.BlankMargin, 4)
-        Me.BlankMargin.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.BlankMargin.Location = New System.Drawing.Point(3, 17)
-        Me.BlankMargin.Name = "BlankMargin"
-        Me.BlankMargin.Size = New System.Drawing.Size(338, 17)
-        Me.BlankMargin.TabIndex = 12
+        Me.SyncingIcons.Images.SetKeyName(5, "process-stop.png")
         '
         'SynchronizeForm
         '
