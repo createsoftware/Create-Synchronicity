@@ -23,9 +23,9 @@ Public Class SynchronizeForm
 
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
 
-    Dim FullSyncThread As New Threading.Thread(AddressOf Synchronize)
-    Dim FirstSyncThread As New Threading.Thread(AddressOf Do_FirstStep)
-    Dim SecondSyncThread As New Threading.Thread(AddressOf Do_SecondThirdStep)
+    Dim FullSyncThread As Threading.Thread
+    Dim FirstSyncThread As Threading.Thread
+    Dim SecondSyncThread As Threading.Thread
 
     Delegate Sub UpdateListCallBack()
     Delegate Sub LaunchTimerCallBack()
@@ -57,6 +57,10 @@ Public Class SynchronizeForm
 
         Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
+
+        FullSyncThread = New Threading.Thread(AddressOf Synchronize)
+        FirstSyncThread = New Threading.Thread(AddressOf Do_FirstStep)
+        SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
 
@@ -223,7 +227,7 @@ Public Class SynchronizeForm
         End If
 
         PreviewFinished = True
-        SyncBtn.Enabled = True
+        If Not [STOP] Then SyncBtn.Enabled = True
     End Sub
 
     Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)

@@ -26,7 +26,7 @@ Class LogHandler
     End Sub
 
     Sub SaveAndDispose()
-        Dim LogWriter As New IO.StreamWriter(Application.StartupPath & "\log\" & LogName & ".log", True)
+        Dim LogWriter As New IO.StreamWriter(ConfigOptions.GetLogPath(LogName), True)
         LogWriter.WriteLine(" -- " & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & " -- ")
         For Each Pair As KeyValuePair(Of SyncingItem, Boolean) In Log
             LogWriter.WriteLine(If(Pair.Value, "Succeded", "Failed") & "	" & Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path)

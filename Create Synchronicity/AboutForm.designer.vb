@@ -139,9 +139,7 @@ Partial Class AboutForm
         Me.Controls.Add(Me.About_Logo)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "AboutForm"
-        Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "About"
         CType(Me.About_Logo, System.ComponentModel.ISupportInitialize).EndInit()

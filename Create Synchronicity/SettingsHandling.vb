@@ -18,10 +18,15 @@ Public Structure ConfigOptions
     Const RightSubFolders As String = "Destination folders to be synchronized"
 
     Dim _EMPTY_ As String
-    Shared ConfigPath As String = Application.StartupPath & "\config\"
+    Shared ConfigRootDir As String = Application.StartupPath & "\config\"
+    Shared LogRootDir As String = Application.StartupPath & "\log\"
 
     Shared Function GetConfigPath(ByVal Name As String) As String
-        Return ConfigPath & Name & ".sync"
+        Return ConfigRootDir & Name & ".sync"
+    End Function
+
+    Shared Function GetLogPath(ByVal Name As String) As String
+        Return LogRootDir & Name & ".log"
     End Function
 End Structure
 
@@ -130,6 +135,7 @@ Class SettingsHandler
 
     Sub DeleteConfigFile()
         IO.File.Delete(ConfigOptions.GetConfigPath(ConfigName))
+        IO.File.Delete(ConfigOptions.GetLogPath(ConfigName))
     End Sub
 
     Sub SetSetting(ByVal SettingName As String, ByVal Value As Object)
