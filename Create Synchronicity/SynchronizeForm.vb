@@ -20,6 +20,7 @@ Public Class SynchronizeForm
     Dim Status_TotalActionsCount As Integer
     Dim Status_TimeElapsed As TimeSpan
     Dim Status_MillisecondsSpeed As Double
+    Dim Status_BytesToCreate As Long
 
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
 
@@ -34,6 +35,7 @@ Public Class SynchronizeForm
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
     Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
+    Delegate Sub StatusUpdateCallBack()
 
 #Region " Events "
     Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean)
@@ -328,6 +330,7 @@ Public Class SynchronizeForm
     Sub Do_Task(ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
         Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+        Dim StatusUpdateDelegate As New StatusUpdateCallBack(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
             Try
@@ -392,7 +395,7 @@ Public Class SynchronizeForm
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
                 Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
 
-                If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile)) OrElse (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile)) Then Continue For
+                If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile) AndAlso (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile) Or Context.Action = TypeOfAction.Delete)) Then Continue For
 
                 SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
                 SyncPreviewList(Context.Source, 1)
@@ -449,7 +452,7 @@ Public Class SynchronizeForm
     End Function
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
-        IO.File.Copy(Source & Path, Dest & Path)
+        IO.File.Copy(Source & Path, Dest & Path, True)
         Status_CreatedFiles += 1
         Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
     End Sub
