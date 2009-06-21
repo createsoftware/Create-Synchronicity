@@ -16,7 +16,13 @@ Public Structure ConfigOptions
     Const Restrictions As String = "Files restrictions"
     Const LeftSubFolders As String = "Source folders to be synchronized"
     Const RightSubFolders As String = "Destination folders to be synchronized"
+
     Dim _EMPTY_ As String
+    Shared ConfigPath As String = Application.StartupPath & "\config\"
+
+    Shared Function GetConfigPath(ByVal Name As String) As String
+        Return ConfigPath & Name & ".sync"
+    End Function
 End Structure
 
 Class SettingsHandler
@@ -25,7 +31,6 @@ Class SettingsHandler
     Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
 
-    Private ConfigPath As String = Application.StartupPath & "\config\"
     Private PredicateConfigMatchingList As Dictionary(Of String, String)
 
     Public Sub New(ByVal Name As String)
@@ -45,8 +50,8 @@ Class SettingsHandler
     End Sub
 
     Function LoadConfigFile() As Boolean
-        If Not IO.File.Exists(GetConfigFilePath()) Then Exit Function
-        Dim FileReader As New IO.StreamReader(GetConfigFilePath())
+        If Not IO.File.Exists(ConfigOptions.GetConfigPath(ConfigName)) Then Exit Function
+        Dim FileReader As New IO.StreamReader(ConfigOptions.GetConfigPath(ConfigName))
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
@@ -79,7 +84,7 @@ Class SettingsHandler
     Function SaveConfigFile() As Boolean
         Try
             Dim ConfigString As String = ""
-            Dim FileWriter As New IO.StreamWriter(GetConfigFilePath())
+            Dim FileWriter As New IO.StreamWriter(ConfigOptions.GetConfigPath(ConfigName))
 
             For Each Setting As KeyValuePair(Of String, String) In Configuration
                 FileWriter.WriteLine(Setting.Key & ":" & Setting.Value)
@@ -124,12 +129,8 @@ Class SettingsHandler
     End Function
 
     Sub DeleteConfigFile()
-        IO.File.Delete(GetConfigFilePath())
+        IO.File.Delete(ConfigOptions.GetConfigPath(ConfigName))
     End Sub
-
-    Function GetConfigFilePath() As String
-        Return ConfigPath & ConfigName & ".sync"
-    End Function
 
     Sub SetSetting(ByVal SettingName As String, ByVal Value As Object)
         Configuration(SettingName) = Value

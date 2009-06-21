@@ -28,9 +28,12 @@ Public Class MainForm
     End Sub
 
     Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
-        Dim SettingsForm As New Settings(e.Label)
-        e.CancelEdit() = True
+        e.CancelEdit = True
         Main_Actions.LabelEdit = False
+        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 OrElse IO.File.Exists(ConfigOptions.GetConfigPath(e.Label)) Then
+            Exit Sub
+        End If
+        Dim SettingsForm As New Settings(e.Label)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
@@ -40,8 +43,6 @@ Public Class MainForm
             Main_Display_Options("", True)
         ElseIf Main_Actions.SelectedIndices(0) = 0 Then
             Main_Display_Options("Create a new profile", True)
-            Main_ActionsMenu.Close()
-            Exit Sub
         End If
 
         If Main_Actions.SelectedIndices.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then
