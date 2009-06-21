@@ -14,6 +14,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Release Notes
 --------------------------
+Jun. 21, 2009 - UPD: Better display for errors list.
 Jun. 20, 2009 - UPD: Speed up preview list display.
 Jun. 20, 2009 - UPD: Change settings file format a bit.
 Jun. 20, 2009 - FIX: Create settings validation function - better error handling.
