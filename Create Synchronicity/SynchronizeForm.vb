@@ -35,7 +35,6 @@ Public Class SynchronizeForm
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
     Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
-    Delegate Sub StatusUpdateCallBack()
 
 #Region " Events "
     Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean)
@@ -99,11 +98,12 @@ Public Class SynchronizeForm
     End Sub
 
     Sub UpdateStatuses()
-        Done.Text = Status_ActionsDone : FilesCreated.Text = Status_CreatedFiles : FoldersCreated.Text = Status_CreatedFolders
-
         Status_TimeElapsed = DateTime.Now - Status_StartTime
         Status_MillisecondsSpeed = Status_BytesCopied / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)
+        ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
         Select Case Status_MillisecondsSpeed
+            Case Is > 1024 * 1000 * 1000
+                Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
             Case Is > 1024 * 1000
                 Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
             Case Is > 1024
@@ -111,7 +111,8 @@ Public Class SynchronizeForm
             Case Else
                 Speed.Text = Math.Round(Status_MillisecondsSpeed, 2).ToString & "B/s"
         End Select
-        ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
+ 
+        Done.Text = Status_ActionsDone : FilesCreated.Text = Status_CreatedFiles : FoldersCreated.Text = Status_CreatedFolders
     End Sub
 #End Region
 
@@ -330,7 +331,6 @@ Public Class SynchronizeForm
     Sub Do_Task(ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
         Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
-        Dim StatusUpdateDelegate As New StatusUpdateCallBack(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
             Try
@@ -357,6 +357,8 @@ Public Class SynchronizeForm
                 End Select
                 Status_ActionsDone += 1
                 Log.LogAction(Entry, True)
+
+            Catch StopEx As System.Threading.ThreadAbortException
 
             Catch ex As Exception
                 Log.HandleError(ex)
