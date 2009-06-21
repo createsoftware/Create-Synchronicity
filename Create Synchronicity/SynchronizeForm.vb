@@ -81,7 +81,7 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub SyncBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncBtn.Click
-        PreviewList.Dispose()
+        PreviewList.Visible = False
         SyncBtn.Visible = False
         StopBtn.Text = StopBtn.Tag.Split(";"c)(0)
 
@@ -190,14 +190,20 @@ Public Class SynchronizeForm
                 UpdateStatuses()
                 If Log.Errors.Count > 0 Then
                     PreviewList.Visible = True
+                    PreviewList.Items.Clear()
                     PreviewList.Columns.Clear()
+                    PreviewList.Columns.Add("Error")
                     Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add("Error detail")
 
-                    For Each Ex As Exception In Log.Errors
-                        Dim ErrorItem As ListViewItem = PreviewList.Items.Add(Ex.Message & "	" & Ex.StackTrace)
+                    Dim ErrorsList As New List(Of Exception)(Log.Errors)
+                    For Each Ex As Exception In ErrorsList
+                        Dim ErrorItem As New ListViewItem(Ex.Source)
+                        ErrorItem.SubItems.Add(Ex.Message)
+                        PreviewList.Items.Add(ErrorItem)
                         ErrorItem.ImageIndex = 5
                     Next
 
+                    PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                 End If
 
@@ -346,6 +352,7 @@ Public Class SynchronizeForm
                 Log.LogAction(Entry, True)
 
             Catch ex As Exception
+                Log.HandleError(ex)
                 Log.LogAction(Entry, False)
 
             Finally
@@ -414,7 +421,6 @@ Public Class SynchronizeForm
                     SyncPreviewList(Context.Source, 1)
                 End If
             End If
-
         Catch Ex As Exception
 
         End Try
@@ -439,13 +445,9 @@ Public Class SynchronizeForm
     End Function
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
-        Try
-            IO.File.Copy(Source & Path, Dest & Path)
-            Status_CreatedFiles += 1
-            Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
-        Catch Ex As Exception
-            Log.HandleError(Ex)
-        End Try
+        IO.File.Copy(Source & Path, Dest & Path)
+        Status_CreatedFiles += 1
+        Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
     End Sub
 #End Region
 

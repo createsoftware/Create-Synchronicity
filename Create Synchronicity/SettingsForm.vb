@@ -200,11 +200,17 @@ Public Class Settings
         Tree.Enabled = IO.Directory.Exists(Path) AndAlso Path <> "\"
         If Tree.Enabled Then
             Tree.Nodes.Add("")
-            For Each Dir As String In IO.Directory.GetDirectories(Settings_FromTextBox.Text & "\")
-                Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-            Next
-            Tree.Nodes(0).Expand()
-            Settings_CheckTree(Tree.Name = "Settings_LeftView")
+            Try
+                For Each Dir As String In IO.Directory.GetDirectories(Path)
+                    Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+                Next
+
+                Tree.Nodes(0).Expand()
+                Settings_CheckTree(Tree.Name = "Settings_LeftView")
+            Catch Ex As Exception
+                Tree.Nodes.Clear()
+                Tree.Enabled = False
+            End Try
         End If
     End Sub
 

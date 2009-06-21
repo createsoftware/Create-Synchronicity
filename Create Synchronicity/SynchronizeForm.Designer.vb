@@ -31,7 +31,7 @@ Partial Class SynchronizeForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Folder"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Create", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!)), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Left->Right"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "C:\Documents\Clément\file.xxx", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Folder"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Create", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!)), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Left->Right"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "C:\Documents\file.xxx", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SynchronizeForm))
         Me.MainLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Step3LayoutPanel = New System.Windows.Forms.TableLayoutPanel
@@ -560,6 +560,7 @@ Partial Class SynchronizeForm
         Me.Controls.Add(Me.MainLayoutPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "SynchronizeForm"
         Me.Text = "Synchronizing"
         Me.MainLayoutPanel.ResumeLayout(False)
