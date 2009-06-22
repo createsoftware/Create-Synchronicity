@@ -12,8 +12,9 @@ Website:		http://synchronicity.sourceforge.net
 Contact:		createsoftware@users.sourceforge.net
 SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
-Release Notes
+Change Log
 --------------------------
+-- Version 1.0 --
 Jun. 21, 2009 - UPD: Better display for errors list.
 Jun. 20, 2009 - UPD: Speed up preview list display.
 Jun. 20, 2009 - UPD: Change settings file format a bit.

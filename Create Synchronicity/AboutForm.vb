@@ -22,7 +22,7 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_VersionInfo.LinkClicked
-        'Diagnostics.Process.Start("http://coversearch.sourceforge.net/create-coversearch/vercheck/ver=" & Application.ProductVersion)
+        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/create-synchronicity-vercheck_version=" & Application.ProductVersion)
     End Sub
 
     Private Sub About_ContactLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_ContactLink.LinkClicked
