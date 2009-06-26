@@ -475,5 +475,10 @@ Public Class SynchronizeForm
         Next
         Return False
     End Function
+
+    Shared Function ComputeHash(ByVal Path As String) As String
+        Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
+        Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
+    End Function
 #End Region
 End Class

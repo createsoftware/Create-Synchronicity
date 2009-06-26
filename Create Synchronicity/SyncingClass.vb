@@ -21,6 +21,14 @@ Public Enum SideOfSource As Integer
     Left = -1
     Right = 1
 End Enum
+
+Public Class SyncingAction
+    Public Action As TypeOfAction
+    Public Source As SideOfSource
+    Public SourcePath As String
+    Public DestinationPath As String
+End Class
+
 Public Class SyncingItem
     Public Path As String
     Public Type As TypeOfItem
@@ -51,11 +59,4 @@ Public Class SyncingItem
                 Return "None"
         End Select
     End Function
-End Class
-
-Public Class SyncingAction
-    Public Action As TypeOfAction
-    Public Source As SideOfSource
-    Public SourcePath As String
-    Public DestinationPath As String
 End Class
