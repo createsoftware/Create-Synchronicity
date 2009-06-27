@@ -14,6 +14,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Change Log
 --------------------------
+Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-explorer-related bug (when copying a file, 2 seconds are added to the actual last-write date)
+Jun. 21, 2009 - NEW: Option to calculate MD5 hashes
 -- Version 1.0 --
 Jun. 21, 2009 - UPD: Better display for errors list.
 Jun. 20, 2009 - UPD: Speed up preview list display.
