@@ -69,6 +69,7 @@ Partial Class Settings
         Me.Settings_SaveButton = New System.Windows.Forms.Button
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
         Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
+        Me.Settings_PropagateUpdatesOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -359,6 +360,7 @@ Partial Class Settings
         '
         Me.Settings_IncludeExcludeBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_CopyAllFilesCheckBox)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeLayoutPanel)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_ReplicateEmptyDirectoriesOption)
@@ -510,6 +512,19 @@ Partial Class Settings
         Me.Settings_ComputeHashOption.Text = "Compute hash of modified files before copying."
         Me.Settings_ComputeHashOption.UseVisualStyleBackColor = True
         '
+        'Settings_PropagateUpdatesOption
+        '
+        Me.Settings_PropagateUpdatesOption.Anchor = System.Windows.Forms.AnchorStyles.Top
+        Me.Settings_PropagateUpdatesOption.AutoSize = True
+        Me.Settings_PropagateUpdatesOption.Checked = True
+        Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(271, 20)
+        Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(133, 17)
+        Me.Settings_PropagateUpdatesOption.TabIndex = 9
+        Me.Settings_PropagateUpdatesOption.Text = "Propagate updates"
+        Me.Settings_PropagateUpdatesOption.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -581,4 +596,5 @@ Partial Class Settings
     Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_Tips As System.Windows.Forms.Label
     Friend WithEvents Settings_ComputeHashOption As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_PropagateUpdatesOption As System.Windows.Forms.CheckBox
 End Class

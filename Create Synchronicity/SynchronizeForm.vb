@@ -483,6 +483,7 @@ Public Class SynchronizeForm
     End Function
 
     Function FileHasBeenUpdated(ByVal Source As String, ByVal Destination As String)
+        If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
         If IO.File.GetLastWriteTime(Source) = IO.File.GetLastWriteTime(Destination) Then Return False
 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
@@ -492,4 +493,13 @@ Public Class SynchronizeForm
         End If
     End Function
 #End Region
+
+#If 0 Then
+    Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
+        If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
+        Dim Index As Integer = PreviewList.SelectedIndices(0)
+        Dim CopyFromLeft As Boolean = (PreviewList.SelectedItems(0).Text = "Left->Right") Xor PreviewList.SelectedItems(0).SubItems(0).Text = "Delete"
+        System.Diagnostics.Process.Start(If(CopyFromLeft, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Source) & SyncingList(
+    End Sub
+#End If
 End Class

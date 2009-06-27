@@ -17,6 +17,7 @@ Public Structure ConfigOptions
     Const LeftSubFolders As String = "Source folders to be synchronized"
     Const RightSubFolders As String = "Destination folders to be synchronized"
     Const ComputeHash As String = "Compute Hash"
+    Const PropagateUpdates As String = "Propagate Updates"
 
     Dim _EMPTY_ As String
     Shared ConfigRootDir As String = Application.StartupPath & "\config\"
