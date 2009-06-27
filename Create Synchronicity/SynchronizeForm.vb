@@ -397,7 +397,8 @@ Public Class SynchronizeForm
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
                 Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
 
-                If (Not HasValidExtension(File)) OrElse (IO.File.Exists(DestinationFile) AndAlso (IO.File.GetLastWriteTime(SourceFile) = IO.File.GetLastWriteTime(DestinationFile) Or Context.Action = TypeOfAction.Delete)) Then Continue For
+                If Not HasValidExtension(File) Then Continue For
+                If IO.File.Exists(DestinationFile) AndAlso (Not FileHasBeenUpdated(SourceFile, DestinationFile) Or Context.Action = TypeOfAction.Delete) Then Continue For
 
                 SyncingList(Context.Source).Add(New SyncingItem(File.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
                 SyncPreviewList(Context.Source, 1)
@@ -420,7 +421,7 @@ Public Class SynchronizeForm
             Dim EmptyDirectoryReplication As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
 
             If Not Context.Action = TypeOfAction.Delete Then
-                If Not EmptyDirectoryReplication And SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then
+                If Not EmptyDirectoryReplication AndAlso SyncingList(Context.Source)(SyncingList(Context.Source).Count - 1).Path = Folder Then
                     SyncingList(Context.Source).RemoveAt(SyncingList(Context.Source).Count - 1)
                     SyncPreviewList(Context.Source, -1)
                 End If
@@ -476,9 +477,19 @@ Public Class SynchronizeForm
         Return False
     End Function
 
-    Shared Function ComputeHash(ByVal Path As String) As String
+    Function ComputeFileHash(ByVal Path As String) As String
         Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
         Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
+    End Function
+
+    Function FileHasBeenUpdated(ByVal Source As String, ByVal Destination As String)
+        If IO.File.GetLastWriteTime(Source) = IO.File.GetLastWriteTime(Destination) Then Return False
+
+        If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
+            Return ComputeFileHash(Source) = ComputeFileHash(Destination)
+        Else
+            Return True
+        End If
     End Function
 #End Region
 End Class

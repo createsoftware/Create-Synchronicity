@@ -16,6 +16,7 @@ Public Structure ConfigOptions
     Const Restrictions As String = "Files restrictions"
     Const LeftSubFolders As String = "Source folders to be synchronized"
     Const RightSubFolders As String = "Destination folders to be synchronized"
+    Const ComputeHash As String = "Compute Hash"
 
     Dim _EMPTY_ As String
     Shared ConfigRootDir As String = Application.StartupPath & "\config\"

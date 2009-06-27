@@ -68,6 +68,7 @@ Partial Class Settings
         Me.Settings_CancelButton = New System.Windows.Forms.Button
         Me.Settings_SaveButton = New System.Windows.Forms.Button
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
+        Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -499,11 +500,22 @@ Partial Class Settings
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
         Me.Settings_FolderBrowser.Tag = "Select a folder to copy the files %."
         '
+        'Settings_ComputeHashOption
+        '
+        Me.Settings_ComputeHashOption.AutoSize = True
+        Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(18, 466)
+        Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
+        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(297, 17)
+        Me.Settings_ComputeHashOption.TabIndex = 8
+        Me.Settings_ComputeHashOption.Text = "Compute hash of modified files before copying."
+        Me.Settings_ComputeHashOption.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(698, 501)
+        Me.Controls.Add(Me.Settings_ComputeHashOption)
         Me.Controls.Add(Me.Settings_IncludeExcludeBox)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Settings_SynchronizationMethodBox)
@@ -529,6 +541,7 @@ Partial Class Settings
         Me.Settings_IncludeExcludeLayoutPanel.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Settings_FromTextBox As System.Windows.Forms.TextBox
@@ -567,4 +580,5 @@ Partial Class Settings
     Friend WithEvents Settings_DontSynchronizeSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_Tips As System.Windows.Forms.Label
+    Friend WithEvents Settings_ComputeHashOption As System.Windows.Forms.CheckBox
 End Class
