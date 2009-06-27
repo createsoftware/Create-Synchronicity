@@ -486,7 +486,7 @@ Public Class SynchronizeForm
         If IO.File.GetLastWriteTime(Source) = IO.File.GetLastWriteTime(Destination) Then Return False
 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
-            Return ComputeFileHash(Source) = ComputeFileHash(Destination)
+            Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
         Else
             Return True
         End If
