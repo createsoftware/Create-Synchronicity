@@ -328,4 +328,12 @@ Public Class Settings
         Me.Text = "Settings for " & Handler.ConfigName & " profile"
     End Sub
 #End Region
+
+    Private Sub Settings_PropagateUpdatesOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter
+        Settings_BottomDescLabel.Text = sender.Tag
+    End Sub
+
+    Private Sub Settings_PropagateUpdatesOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave
+        Settings_BottomDescLabel.Text = ""
+    End Sub
 End Class

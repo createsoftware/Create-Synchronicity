@@ -330,6 +330,7 @@ Partial Class MainForm
         '
         'Main_AboutLinkLabel
         '
+        Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Main_AboutLinkLabel.AutoSize = True
         Me.Main_AboutLinkLabel.BackColor = System.Drawing.SystemColors.Window
         Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(314, 3)
