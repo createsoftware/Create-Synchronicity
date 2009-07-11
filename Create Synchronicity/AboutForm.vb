@@ -9,8 +9,8 @@
 Public Class AboutForm
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
-        Dim LinkAreaStart As Integer = About_VersionInfo.Text.IndexOf("(") + 1
-        About_VersionInfo.LinkArea = New LinkArea(LinkAreaStart, About_VersionInfo.Text.Length - LinkAreaStart - 1)
+        About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
+        About_Updates.Checked = IO.File.Exists(Application.StartupPath & ConfigOptions.ConfigRootDir & "\autoupdates")
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked

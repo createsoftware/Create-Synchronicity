@@ -39,6 +39,7 @@ Partial Class AboutForm
         Me.About_ContactLink = New System.Windows.Forms.LinkLabel
         Me.About_LinkToLicense = New System.Windows.Forms.LinkLabel
         Me.About_BugReport = New System.Windows.Forms.LinkLabel
+        Me.About_Updates = New System.Windows.Forms.CheckBox
         CType(Me.About_Logo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.About_FlowLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
@@ -130,11 +131,22 @@ Partial Class AboutForm
         Me.About_BugReport.TabStop = True
         Me.About_BugReport.Text = "Report a bug"
         '
+        'About_Updates
+        '
+        Me.About_Updates.AutoSize = True
+        Me.About_Updates.Location = New System.Drawing.Point(12, 147)
+        Me.About_Updates.Name = "About_Updates"
+        Me.About_Updates.Size = New System.Drawing.Size(422, 17)
+        Me.About_Updates.TabIndex = 2
+        Me.About_Updates.Text = "Check for updates on startup requires a working internet connection)"
+        Me.About_Updates.UseVisualStyleBackColor = True
+        '
         'AboutForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(486, 153)
+        Me.ClientSize = New System.Drawing.Size(486, 170)
+        Me.Controls.Add(Me.About_Updates)
         Me.Controls.Add(Me.About_FlowLayoutPanel)
         Me.Controls.Add(Me.About_Logo)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -145,6 +157,7 @@ Partial Class AboutForm
         CType(Me.About_Logo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.About_FlowLayoutPanel.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents About_Logo As System.Windows.Forms.PictureBox
@@ -155,4 +168,5 @@ Partial Class AboutForm
     Friend WithEvents About_ContactLink As System.Windows.Forms.LinkLabel
     Friend WithEvents About_LinkToLicense As System.Windows.Forms.LinkLabel
     Friend WithEvents About_BugReport As System.Windows.Forms.LinkLabel
+    Friend WithEvents About_Updates As System.Windows.Forms.CheckBox
 End Class
