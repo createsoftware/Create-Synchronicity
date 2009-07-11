@@ -11,8 +11,8 @@ Public Class MainForm
 
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        IO.Directory.CreateDirectory(Get_LogFolder())
-        IO.Directory.CreateDirectory(Get_ConfigFolder())
+        IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
+        IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
         Main_ReloadConfigs()
     End Sub
 
@@ -87,7 +87,7 @@ Public Class MainForm
     End Sub
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
-        Diagnostics.Process.Start(Get_LogFolder() & "\" & Main_Actions.SelectedItems(0).Text & ".log")
+        Diagnostics.Process.Start(ConfigOptions.LogRootDir & "\" & Main_Actions.SelectedItems(0).Text & ".log")
     End Sub
 #End Region
 
@@ -97,7 +97,7 @@ Public Class MainForm
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
         Main_Actions.Items.Clear() : Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
-        For Each ConfigFile As String In IO.Directory.GetFiles(Get_ConfigFolder(), "*.sync")
+        For Each ConfigFile As String In IO.Directory.GetFiles(ConfigOptions.ConfigRootDir, "*.sync")
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
 
@@ -138,14 +138,6 @@ Public Class MainForm
                 Main_FileTypes.Text = "-" & SettingsArray(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
         End Select
      End Sub
-
-    Function Get_ConfigFolder() As String
-        Return Application.StartupPath & "\config"
-    End Function
-
-    Function Get_LogFolder() As String
-        Return Application.StartupPath & "\log"
-    End Function
 
     Function GetMethodName(ByVal Name As String) As String
         Select Case SettingsArray(Name).GetSetting(ConfigOptions.Method, "")
