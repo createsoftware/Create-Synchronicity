@@ -20,8 +20,8 @@ Public Structure ConfigOptions
     Const PropagateUpdates As String = "Propagate Updates"
 
     Dim _EMPTY_ As String
-    Shared ConfigRootDir As String = Application.StartupPath & "\config\"
-    Shared LogRootDir As String = Application.StartupPath & "\log\"
+    Shared ConfigRootDir As String = Application.StartupPath & "\config"
+    Shared LogRootDir As String = Application.StartupPath & "\log"
 
     Shared Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & Name & ".sync"
