@@ -108,8 +108,8 @@ Public Class Settings
         Settings_Update_CheckStatus(False)
     End Sub
 
-    Private Sub Settings_LRMirrorMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_LRMirrorMethodOption.CheckedChanged
-        Settings_RightView.CheckBoxes = Not Settings_LRMirrorMethodOption.Checked
+    Private Sub Settings_TwoWaysIncrementalMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.CheckedChanged
+        Settings_RightView.CheckBoxes = Settings_TwoWaysIncrementalMethodOption.Checked
     End Sub
 
     Public Sub New(ByVal Name As String)
