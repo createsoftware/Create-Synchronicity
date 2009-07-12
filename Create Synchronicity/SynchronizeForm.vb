@@ -495,6 +495,7 @@ Public Class SynchronizeForm
 #End Region
 
 #If 0 Then
+    ' This code won't be compiled.
     Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
         If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
         Dim Index As Integer = PreviewList.SelectedIndices(0)
