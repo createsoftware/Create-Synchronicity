@@ -25,11 +25,11 @@ Public Structure ConfigOptions
     Shared MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
 
     Shared Function GetConfigPath(ByVal Name As String) As String
-        Return ConfigRootDir & Name & ".sync"
+        Return ConfigRootDir & "\" & Name & ".sync"
     End Function
 
     Shared Function GetLogPath(ByVal Name As String) As String
-        Return LogRootDir & Name & ".log"
+        Return LogRootDir & "\" & Name & ".log"
     End Function
 
     Shared Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
@@ -114,10 +114,13 @@ Class SettingsHandler
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
-            Dim ConfigLine As String = FileReader.ReadLine()
-            Dim Key As String = ConfigLine.Substring(0, ConfigLine.IndexOf(":"))
-            Dim Value As String = ConfigLine.Substring(ConfigLine.IndexOf(":") + 1)
-            If Not Configuration.ContainsKey(Key) Then Configuration.Add(Key, Value)
+            Try
+                Dim ConfigLine As String = FileReader.ReadLine()
+                Dim Key As String = ConfigLine.Substring(0, ConfigLine.IndexOf(":"))
+                Dim Value As String = ConfigLine.Substring(ConfigLine.IndexOf(":") + 1)
+                If Not Configuration.ContainsKey(Key) Then Configuration.Add(Key, Value)
+            Catch ex As Exception 'TODO: Catch ex.
+            End Try
         End While
 
         FileReader.Close()
