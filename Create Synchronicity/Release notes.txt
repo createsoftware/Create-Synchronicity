@@ -14,9 +14,11 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Change Log
 --------------------------
+Jul. 13, 2009 - UPD: By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster.
+Jul. 12, 2009 - UPD: A new mechanism is used to store configuration.
 Jul. 12, 2009 - NEW: Create Synchronicity can now check for updates automatically.
-Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-explorer-related bug (when copying a file, 2 seconds are added to the actual last-write date)
-Jun. 21, 2009 - NEW: Option to calculate MD5 hashes
+Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-explorer-related bug (when copying a file, 2 seconds are added to the actual last-write date).
+Jun. 21, 2009 - NEW: Create Synchronicity can now compute MD5 hashes.
 -- Version 1.0 --
 Jun. 21, 2009 - UPD: Better display for errors list.
 Jun. 20, 2009 - UPD: Speed up preview list display.
