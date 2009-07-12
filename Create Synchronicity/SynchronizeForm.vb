@@ -14,6 +14,7 @@ Public Class SynchronizeForm
     Dim [STOP] As Boolean
     Dim Status_StartTime As Date
     Dim Status_BytesCopied As Long
+    Dim Status_FilesScanned As Long
     Dim Status_ActionsDone As Integer
     Dim Status_CreatedFiles As Integer
     Dim Status_CreatedFolders As Integer
@@ -51,6 +52,7 @@ Public Class SynchronizeForm
         SyncBtn.Visible = DisplayPreview
 
         Status_BytesCopied = 0
+        Status_FilesScanned = 0
         Status_ActionsDone = 0
         Status_CreatedFiles = 0
         Status_CreatedFolders = 0
@@ -101,17 +103,21 @@ Public Class SynchronizeForm
         Status_TimeElapsed = DateTime.Now - Status_StartTime
         Status_MillisecondsSpeed = Status_BytesCopied / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)
         ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
-        Select Case Status_MillisecondsSpeed
-            Case Is > 1024 * 1000 * 1000
-                Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
-            Case Is > 1024 * 1000
-                Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
-            Case Is > 1024
-                Speed.Text = Math.Round(Status_MillisecondsSpeed / 1024, 2).ToString & "kB/s"
-            Case Else
-                Speed.Text = Math.Round(Status_MillisecondsSpeed, 2).ToString & "B/s"
-        End Select
- 
+
+        If Not PreviewFinished Then
+            Speed.Text = Math.Round(Status_FilesScanned / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)).ToString & " files/s"
+        Else
+            Select Case Status_MillisecondsSpeed
+                Case Is > 1024 * 1000 * 1000
+                    Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
+                Case Is > 1024 * 1000
+                    Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
+                Case Is > 1024
+                    Speed.Text = Math.Round(Status_MillisecondsSpeed / 1024, 2).ToString & "kB/s"
+                Case Else
+                    Speed.Text = Math.Round(Status_MillisecondsSpeed, 2).ToString & "B/s"
+            End Select
+        End If
         Done.Text = Status_ActionsDone : FilesCreated.Text = Status_CreatedFiles : FoldersCreated.Text = Status_CreatedFolders
     End Sub
 #End Region
@@ -395,7 +401,8 @@ Public Class SynchronizeForm
             For Each File As String In IO.Directory.GetFiles(AbsolutePath)
                 Dim SourceFile As String = File
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
-                Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
+                'Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
+                Status_FilesScanned += 1
 
                 If Not HasValidExtension(File) Then Continue For
                 If IO.File.Exists(DestinationFile) AndAlso (Not FileHasBeenUpdated(SourceFile, DestinationFile) Or Context.Action = TypeOfAction.Delete) Then Continue For
