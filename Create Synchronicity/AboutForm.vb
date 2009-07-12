@@ -10,7 +10,7 @@ Public Class AboutForm
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
         About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
-        About_Updates.Checked = IO.File.Exists(Application.StartupPath & ConfigOptions.ConfigRootDir & "\autoupdates")
+        About_Updates.Checked = ConfigOptions.GetProgramSetting("AutoUpdates", False)
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked
@@ -22,7 +22,8 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_VersionInfo.LinkClicked
-        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/create-synchronicity-vercheck_version=" & Application.ProductVersion)
+        'Diagnostics.Process.Start("http://synchronicity.sourceforge.net/create-synchronicity-vercheck_version=" & Application.ProductVersion)
+        ConfigOptions.CheckForUpdates(False)
     End Sub
 
     Private Sub About_ContactLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_ContactLink.LinkClicked
@@ -35,5 +36,13 @@ Public Class AboutForm
 
     Private Sub About_BugReport_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_BugReport.LinkClicked
         Diagnostics.Process.Start("http://sourceforge.net/tracker/?group_id=264348&atid=1130882")
+    End Sub
+
+    Private Sub About_Updates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles About_Updates.CheckedChanged
+        If About_Updates.Checked Then
+            ConfigOptions.SetProgramSetting("AutoUpdates", "True")
+        Else
+            ConfigOptions.SetProgramSetting("AutoUpdates", "False")
+        End If
     End Sub
 End Class

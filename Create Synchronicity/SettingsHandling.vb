@@ -22,6 +22,7 @@ Public Structure ConfigOptions
     Dim _EMPTY_ As String
     Shared ConfigRootDir As String = Application.StartupPath & "\config"
     Shared LogRootDir As String = Application.StartupPath & "\log"
+    Shared MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
 
     Shared Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & Name & ".sync"
@@ -30,6 +31,57 @@ Public Structure ConfigOptions
     Shared Function GetLogPath(ByVal Name As String) As String
         Return LogRootDir & Name & ".log"
     End Function
+
+    Shared Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+        Try
+            Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
+            If CurrentVersion = "" Then Throw New Exception()
+            If (CurrentVersion <> Application.ProductVersion) Then
+                If Microsoft.VisualBasic.MsgBox("A new version of Create Synchronicity is available!" & Microsoft.VisualBasic.vbNewLine & "Installed version: " & Application.ProductVersion & Microsoft.VisualBasic.vbNewLine & "Current version: " & CurrentVersion & Microsoft.VisualBasic.vbNewLine & "Visit download website?", Microsoft.VisualBasic.MsgBoxStyle.Question + Microsoft.VisualBasic.MsgBoxStyle.YesNo, "New version available!") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
+                End If
+            Else
+                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox("No updates available", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Information)
+            End If
+        Catch Ex As Exception
+            Microsoft.VisualBasic.MsgBox("Unable to connect to ""http://synchronicity.sourceforge.net"". Disable searching for updates by clicking ""About"".", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Network error!")
+        End Try
+    End Sub
+
+    Shared Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
+        If Not IO.File.Exists(MainConfigFile) Then
+            IO.File.Create(MainConfigFile).Close()
+            Return DefaultVal
+        End If
+
+        Dim ConfigArray As List(Of String) = New List(Of String)(My.Computer.FileSystem.ReadAllText(MainConfigFile).Split(";"))
+        For Each Setting As String In ConfigArray
+            Dim Pair As String() = Setting.Split(":")
+            If Pair.Length() < 2 Then Continue For
+            If Pair(0) = Key Then Return Pair(1)
+        Next
+
+        Return DefaultVal
+    End Function
+
+    Shared Sub SetProgramSetting(ByVal Key As String, ByVal Val As String)
+        If Not IO.File.Exists(MainConfigFile) Then
+            IO.File.Create(MainConfigFile).Close()
+        End If
+
+        Dim ConfigString As String = ""
+
+        Dim ConfigArray As List(Of String) = New List(Of String)(My.Computer.FileSystem.ReadAllText(MainConfigFile).Split(";"))
+        For Each Setting As String In ConfigArray
+            Dim Pair As String() = Setting.Split(":")
+            If Pair.Length() < 2 Then Continue For
+
+            If Pair(0) <> Key Then ConfigString = ConfigString & Pair(0) & ":" & Pair(1) & ";"
+        Next
+
+        ConfigString = ConfigString & Key & ":" & Val
+        My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
+    End Sub
 End Structure
 
 Class SettingsHandler

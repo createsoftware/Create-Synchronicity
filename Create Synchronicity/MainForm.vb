@@ -13,6 +13,20 @@ Public Class MainForm
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
+
+        If Not IO.File.Exists(ConfigOptions.MainConfigFile) Then
+            If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                ConfigOptions.SetProgramSetting("AutoUpdates", "True")
+            Else
+                ConfigOptions.SetProgramSetting("AutoUpdates", "False")
+            End If
+        End If
+
+        If ConfigOptions.GetProgramSetting("AutoUpdates", "False") Then
+            Dim UpdateThread As New Threading.Thread(AddressOf ConfigOptions.CheckForUpdates)
+            UpdateThread.Start(True)
+        End If
+
         Main_ReloadConfigs()
     End Sub
 
@@ -137,7 +151,7 @@ Public Class MainForm
             Case 2
                 Main_FileTypes.Text = "-" & SettingsArray(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
         End Select
-     End Sub
+    End Sub
 
     Function GetMethodName(ByVal Name As String) As String
         Select Case SettingsArray(Name).GetSetting(ConfigOptions.Method, "")

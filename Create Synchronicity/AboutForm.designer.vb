@@ -136,9 +136,9 @@ Partial Class AboutForm
         Me.About_Updates.AutoSize = True
         Me.About_Updates.Location = New System.Drawing.Point(12, 147)
         Me.About_Updates.Name = "About_Updates"
-        Me.About_Updates.Size = New System.Drawing.Size(422, 17)
+        Me.About_Updates.Size = New System.Drawing.Size(427, 17)
         Me.About_Updates.TabIndex = 2
-        Me.About_Updates.Text = "Check for updates on startup requires a working internet connection)"
+        Me.About_Updates.Text = "Check for updates on startup (requires a working internet connection)"
         Me.About_Updates.UseVisualStyleBackColor = True
         '
         'AboutForm
