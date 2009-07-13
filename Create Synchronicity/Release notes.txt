@@ -2,7 +2,7 @@
 * Information
 Language:		English
 Created on:		June 3, 2009
-Created by:		Clément Pit--Claudel
+Created by:		ClÃ©ment Pit--Claudel
 License:		GNU GPL v3 or later (included as "COPYING")
 Coded in:		Visual Basic .Net
 Requires:		.Net Framework v2
