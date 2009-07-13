@@ -19,6 +19,7 @@ Public Class SynchronizeForm
     Dim Status_CreatedFiles As Integer
     Dim Status_CreatedFolders As Integer
     Dim Status_TotalActionsCount As Integer
+    Dim Status_CurrentStep As Integer
     Dim Status_TimeElapsed As TimeSpan
     Dim Status_MillisecondsSpeed As Double
     Dim Status_BytesToCreate As Long
@@ -57,6 +58,7 @@ Public Class SynchronizeForm
         Status_CreatedFiles = 0
         Status_CreatedFolders = 0
         Status_TotalActionsCount = 0
+        Status_CurrentStep = 1
 
         Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
@@ -104,7 +106,7 @@ Public Class SynchronizeForm
         Status_MillisecondsSpeed = Status_BytesCopied / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)
         ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
 
-        If Not PreviewFinished Then
+        If Status_CurrentStep = 1 Then
             Speed.Text = Math.Round(Status_FilesScanned / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)).ToString & " files/s"
         Else
             Select Case Status_MillisecondsSpeed
@@ -186,6 +188,7 @@ Public Class SynchronizeForm
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 SyncingTimeCounter.Stop()
+                Status_CurrentStep = 2
                 TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
 
             Case 2
@@ -193,6 +196,7 @@ Public Class SynchronizeForm
                 Step2ProgressBar.Maximum = 100
                 Step2ProgressBar.Value = Step2ProgressBar.Maximum
                 Step2ProgressBar.Style = ProgressBarStyle.Blocks
+                Status_CurrentStep = 3
 
             Case 3
                 UpdateLabel(3, "Done !")
@@ -491,7 +495,7 @@ Public Class SynchronizeForm
 
     Function FileHasBeenUpdated(ByVal Source As String, ByVal Destination As String)
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
-        If IO.File.GetLastWriteTime(Source) = IO.File.GetLastWriteTime(Destination) Then Return False
+        If IO.File.GetLastWriteTime(Source).Ticks - IO.File.GetLastWriteTime(Destination).Ticks < 10000000 Then Return False
 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
             Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
