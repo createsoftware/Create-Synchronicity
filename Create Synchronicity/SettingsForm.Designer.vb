@@ -460,7 +460,6 @@ Partial Class Settings
         '
         'Settings_PropagateUpdatesOption
         '
-        Me.Settings_PropagateUpdatesOption.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.Settings_PropagateUpdatesOption.AutoSize = True
         Me.Settings_PropagateUpdatesOption.Checked = True
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
@@ -531,6 +530,8 @@ Partial Class Settings
         '
         'Settings_AdvancedBox
         '
+        Me.Settings_AdvancedBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_ComputeHashOption)
         Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 460)
