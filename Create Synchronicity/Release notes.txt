@@ -14,12 +14,15 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Change Log
 --------------------------
+Jul. 13, 2009 - FIX: If the time difference between files is below 1.0s, consider it is a windows bug and the files are the same (windows has lots of difficulties handling time/date on different hard drives).
+Jul. 13, 2009 - FIX: Windows is packed up with bugs of all kinds: allow multiple instances of the application to run, as the opposite made the application unstable on some copies of XP.
 Jul. 13, 2009 - UPD: By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster.
 Jul. 12, 2009 - UPD: A new mechanism is used to store configuration.
 Jul. 12, 2009 - NEW: Create Synchronicity can now check for updates automatically.
 Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-explorer-related bug (when copying a file, 2 seconds are added to the actual last-write date).
 Jun. 21, 2009 - NEW: Create Synchronicity can now compute MD5 hashes.
 -- Version 1.0 --
+Jun. 22, 2009 - SYN: First stable release, including lots of bug fixes, and speedups.
 Jun. 21, 2009 - UPD: Better display for errors list.
 Jun. 20, 2009 - UPD: Speed up preview list display.
 Jun. 20, 2009 - UPD: Change settings file format a bit.
@@ -28,7 +31,7 @@ Jun. 18, 2009 - FIX: Deleted directories were emptied but not deleted.
 Jun. 16, 2009 - UPD: Load preview list in a separate thread, speeding up the display of the preview list.
 Jun. 16, 2009 - FIX: Fix settings loading bug.
 -- Version 0.2 --
-Jun. 14, 2009 - SYN: Many updates and bug fixes. An icon has been found :)
+Jun. 14, 2009 - SYN: Many updates and bug fixes. An icon was found :)
 Jun. 14, 2009 - FIX: Overflow bug.
 Jun. 13, 2009 - UPD: Sorted Lists are not used anymore, resulting in a performance gain as far as settings loading/saving are concerned.
 Jun. 13, 2009 - UPD: The full directory tree is not loaded anymore when displaying settings screen, so that lots of time is saved.
