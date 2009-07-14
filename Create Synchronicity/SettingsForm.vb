@@ -92,7 +92,7 @@ Public Class Settings
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Settings_ToTextBox.Text, Settings_FromTextBox.Text) & Node.FullPath)
                     Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
-                    NewNode.Checked = (Node.ToolTipText = "*")
+                    NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
                 Next
             Catch Ex As Exception
@@ -132,10 +132,8 @@ Public Class Settings
         ProcessingNodes = True
         If ClickedRightTreeView Then
             Settings_CheckNodeAndSubNodes(Settings_RightView.SelectedNode, Checked)
-            Settings_RightView.SelectedNode.Expand()
         Else
             Settings_CheckNodeAndSubNodes(Settings_LeftView.SelectedNode, Checked)
-            Settings_LeftView.SelectedNode.Expand()
         End If
         ProcessingNodes = False
     End Sub

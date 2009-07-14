@@ -14,6 +14,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Change Log
 --------------------------
+Jul. 14, 2009 - FIX: More accurate folder selection.
 Jul. 13, 2009 - FIX: If the time difference between files is below 1.0s, consider it is a windows bug and the files are the same (windows has lots of difficulties handling time/date on different hard drives).
 Jul. 13, 2009 - FIX: Windows is packed up with bugs of all kinds: allow multiple instances of the application to run, as the opposite made the application unstable on some copies of XP.
 Jul. 13, 2009 - UPD: By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster.
