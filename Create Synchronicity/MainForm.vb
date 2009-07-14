@@ -14,12 +14,14 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
 
-        If Not IO.File.Exists(ConfigOptions.MainConfigFile) Then
+        ConfigOptions.LoadProgramSettings()
+        If Not ConfigOptions.ProgramSettingsSet() Then
             If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
-                ConfigOptions.SetProgramSetting("AutoUpdates", "True")
+                ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
             Else
-                ConfigOptions.SetProgramSetting("AutoUpdates", "False")
+                ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
             End If
+            ConfigOptions.SaveProgramSettings()
         End If
 
         If ConfigOptions.GetProgramSetting("AutoUpdates", "False") Then

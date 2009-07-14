@@ -6,33 +6,37 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Public Structure ConfigOptions
-    Const Source As String = "Source Directory"
-    Const Destination As String = "Destination Directory"
-    Const IncludedTypes As String = "Included Filetypes"
-    Const ExcludedTypes As String = "Excluded FileTypes"
-    Const ReplicateEmptyDirectories As String = "Replicate Empty Directories"
-    Const Method As String = "Synchronization Method"
-    Const Restrictions As String = "Files restrictions"
-    Const LeftSubFolders As String = "Source folders to be synchronized"
-    Const RightSubFolders As String = "Destination folders to be synchronized"
-    Const ComputeHash As String = "Compute Hash"
-    Const PropagateUpdates As String = "Propagate Updates"
+Public Module ConfigOptions
+    Public Const Source As String = "Source Directory"
+    Public Const Destination As String = "Destination Directory"
+    Public Const IncludedTypes As String = "Included Filetypes"
+    Public Const ExcludedTypes As String = "Excluded FileTypes"
+    Public Const ReplicateEmptyDirectories As String = "Replicate Empty Directories"
+    Public Const Method As String = "Synchronization Method"
+    Public Const Restrictions As String = "Files restrictions"
+    Public Const LeftSubFolders As String = "Source folders to be synchronized"
+    Public Const RightSubFolders As String = "Destination folders to be synchronized"
+    Public Const ComputeHash As String = "Compute Hash"
+    Public Const PropagateUpdates As String = "Propagate Updates"
 
-    Dim _EMPTY_ As String
-    Shared ConfigRootDir As String = Application.StartupPath & "\config"
-    Shared LogRootDir As String = Application.StartupPath & "\log"
-    Shared MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
+    Public Const AutoUpdates = "Auto updates"
 
-    Shared Function GetConfigPath(ByVal Name As String) As String
+    Dim ProgramSettingsLoaded As Boolean = False
+    Public ConfigRootDir As String = Application.StartupPath & "\config"
+    Public LogRootDir As String = Application.StartupPath & "\log"
+    Public MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
+
+    Dim ProgramSettings As New Dictionary(Of String, String)
+
+    Public Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & "\" & Name & ".sync"
     End Function
 
-    Shared Function GetLogPath(ByVal Name As String) As String
+    Public Function GetLogPath(ByVal Name As String) As String
         Return LogRootDir & "\" & Name & ".log"
     End Function
 
-    Shared Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
         Try
             Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
             If CurrentVersion = "" Then Throw New Exception()
@@ -48,41 +52,51 @@ Public Structure ConfigOptions
         End Try
     End Sub
 
-    Shared Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
-        If Not IO.File.Exists(MainConfigFile) Then
-            IO.File.Create(MainConfigFile).Close()
+    Public Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
+        If (ProgramSettings.ContainsKey(Key)) Then
+            Return ProgramSettings(Key)
+        Else
             Return DefaultVal
         End If
-
-        Dim ConfigArray As List(Of String) = New List(Of String)(My.Computer.FileSystem.ReadAllText(MainConfigFile).Split(";"))
-        For Each Setting As String In ConfigArray
-            Dim Pair As String() = Setting.Split(":")
-            If Pair.Length() < 2 Then Continue For
-            If Pair(0) = Key Then Return Pair(1)
-        Next
-
-        Return DefaultVal
     End Function
 
-    Shared Sub SetProgramSetting(ByVal Key As String, ByVal Val As String)
+    Public Sub SetProgramSetting(ByVal Key As String, ByVal Value As String)
+        ProgramSettings(Key) = Value
+    End Sub
+
+    Public Sub LoadProgramSettings()
+        If ProgramSettingsLoaded Then Exit Sub
+
         If Not IO.File.Exists(MainConfigFile) Then
             IO.File.Create(MainConfigFile).Close()
+            Exit Sub
         End If
 
-        Dim ConfigString As String = ""
-
-        Dim ConfigArray As List(Of String) = New List(Of String)(My.Computer.FileSystem.ReadAllText(MainConfigFile).Split(";"))
+        Dim ConfigString As String = My.Computer.FileSystem.ReadAllText(MainConfigFile)
+        Dim ConfigArray As New List(Of String)(ConfigString.Split(";"))
         For Each Setting As String In ConfigArray
             Dim Pair As String() = Setting.Split(":")
             If Pair.Length() < 2 Then Continue For
-
-            If Pair(0) <> Key Then ConfigString = ConfigString & Pair(0) & ":" & Pair(1) & ";"
+            ProgramSettings.Add(Pair(0), Pair(1))
         Next
 
-        ConfigString = ConfigString & Key & ":" & Val
+        ProgramSettingsLoaded = True
+    End Sub
+
+    Public Sub SaveProgramSettings()
+        Dim ConfigString As String = ""
+
+        For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
+            ConfigString = ConfigString & Setting.Key & ":" & Setting.Value & ";"
+        Next
+
         My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
     End Sub
-End Structure
+
+    Public Function ProgramSettingsSet() As Boolean
+        Return ProgramSettings.ContainsKey(ConfigOptions.AutoUpdates)
+    End Function
+End Module
 
 Class SettingsHandler
     Public ConfigName As String
