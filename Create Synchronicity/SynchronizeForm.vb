@@ -77,13 +77,14 @@ Public Class SynchronizeForm
         End If
     End Sub
 
+    Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+        EndAll()
+    End Sub
+
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
         Select Case StopBtn.Text
             Case StopBtn.Tag.ToString.Split(";"c)(0)
-                [STOP] = True
-                FullSyncThread.Abort()
-                FirstSyncThread.Abort() : SecondSyncThread.Abort()
-                TaskDone(1) : TaskDone(2) : TaskDone(3)
+                EndAll()
             Case StopBtn.Tag.ToString.Split(";"c)(1)
                 Close()
         End Select
@@ -279,6 +280,13 @@ Public Class SynchronizeForm
         Status_BytesCopied = 0
         Status_StartTime = DateTime.Now
         SyncingTimeCounter.Start()
+    End Sub
+
+    Sub EndAll()
+        [STOP] = True
+        FullSyncThread.Abort()
+        FirstSyncThread.Abort() : SecondSyncThread.Abort()
+        TaskDone(1) : TaskDone(2) : TaskDone(3)
     End Sub
 #End Region
 
