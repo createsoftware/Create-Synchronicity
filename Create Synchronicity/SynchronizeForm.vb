@@ -503,7 +503,15 @@ Public Class SynchronizeForm
 
     Function FileHasBeenUpdated(ByVal Source As String, ByVal Destination As String)
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
-        If IO.File.GetLastWriteTime(Source).Ticks - IO.File.GetLastWriteTime(Destination).Ticks < 10000000 Then Return False
+        If IO.File.GetLastWriteTime(Source) = IO.File.GetLastWriteTime(Destination) Then Return False
+
+        'TODO: Do no check if transfering from NTFS to NTFS: 
+        'Stupid fat filesystem.
+        If NTFSToFATTime(IO.File.GetLastWriteTime(Source)) = IO.File.GetLastWriteTime(Destination) Then Return False
+        If NTFSToFATTime(IO.File.GetLastWriteTime(Destination)) = IO.File.GetLastWriteTime(Source) Then Return False
+
+        'More violent version
+        'If ToEvenSeconds(IO.File.GetLastWriteTime(Source)) = ToEvenSeconds(IO.File.GetLastWriteTime(Destination)) Then Return False
 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
             Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
@@ -511,15 +519,22 @@ Public Class SynchronizeForm
             Return True
         End If
     End Function
+
+    Function ToEvenSeconds(ByVal T As Date) As Long
+        Dim TotalSeconds As Decimal = T.Ticks / 100000000
+        Return 2 * Math.Round(TotalSeconds / 2)
+    End Function
+
+    Function NTFSToFATTime(ByVal NTFSTime As Date)
+        Return New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second + If(NTFSTime.Second Mod 2 = 0, If(NTFSTime.Millisecond = 0, 0, 2), 1))
+    End Function
 #End Region
 
-#If 0 Then
     ' This code won't be compiled.
-    Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
-        If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
-        Dim Index As Integer = PreviewList.SelectedIndices(0)
-        Dim CopyFromLeft As Boolean = (PreviewList.SelectedItems(0).Text = "Left->Right") Xor PreviewList.SelectedItems(0).SubItems(0).Text = "Delete"
-        System.Diagnostics.Process.Start(If(CopyFromLeft, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Source) & SyncingList(
-    End Sub
-#End If
+    'Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
+    '    If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
+    '    Dim Index As Integer = PreviewList.SelectedIndices(0)
+    '    Dim CopyFromLeft As Boolean = (PreviewList.SelectedItems(0).Text = "Left->Right") Xor PreviewList.SelectedItems(0).SubItems(0).Text = "Delete"
+    '    System.Diagnostics.Process.Start(If(CopyFromLeft, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Source) & SyncingList(
+    'End Sub
 End Class
