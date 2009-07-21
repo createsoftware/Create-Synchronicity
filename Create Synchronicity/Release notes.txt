@@ -3,7 +3,7 @@
 Language:		English
 Created on:		June 3, 2009
 Created by:		Clément Pit--Claudel
-License:		GNU GPL v3 or later (included as "COPYING")
+License:		GNU GPL v3 or later (included in file "COPYING")
 Coded in:		Visual Basic .Net
 Requires:		.Net Framework v2
 
@@ -13,14 +13,16 @@ Contact:		createsoftware@users.sourceforge.net
 SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Change Log
+NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Jul. 21, 2009 - FIX: !Final fix for a FAT-related bug: file copies from NTFS to FAT are now accurate and not redundant. See http://sourceforge.net/tracker/?func=detail&aid=2824316&group_id=264348&atid=1130882 and/or http://support.microsoft.com/kb/127830/en-us/.
 Jul. 14, 2009 - FIX: More accurate folder selection.
 Jul. 13, 2009 - FIX: If the time difference between files is below 1.0s, consider it is a windows bug and the files are the same (windows has lots of difficulties handling time/date on different hard drives).
 Jul. 13, 2009 - FIX: Windows is packed up with bugs of all kinds: allow multiple instances of the application to run, as the opposite made the application unstable on some copies of XP.
-Jul. 13, 2009 - UPD: By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster.
+Jul. 13, 2009 - UPD: !By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster.
 Jul. 12, 2009 - UPD: A new mechanism is used to store configuration.
-Jul. 12, 2009 - NEW: Create Synchronicity can now check for updates automatically.
-Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-explorer-related bug (when copying a file, 2 seconds are added to the actual last-write date).
+Jul. 12, 2009 - NEW: !Create Synchronicity can now check for updates automatically.
+Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-related bug (when copying a file, 2 seconds are added to the actual last-write date).
 Jun. 21, 2009 - NEW: Create Synchronicity can now compute MD5 hashes.
 -- Version 1.0 --
 Jun. 22, 2009 - SYN: First stable release, including lots of bug fixes, and speedups.
