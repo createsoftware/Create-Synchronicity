@@ -11,7 +11,7 @@ Public Class AboutForm
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
         About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
         ConfigOptions.LoadProgramSettings()
-        About_Updates.Checked = ConfigOptions.GetProgramSetting("AutoUpdates", False)
+        About_Updates.Checked = ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, False)
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked
@@ -41,9 +41,9 @@ Public Class AboutForm
 
     Private Sub About_Updates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles About_Updates.CheckedChanged
         If About_Updates.Checked Then
-            ConfigOptions.SetProgramSetting("AutoUpdates", "True")
+            ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
         Else
-            ConfigOptions.SetProgramSetting("AutoUpdates", "False")
+            ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
         End If
     End Sub
 

@@ -475,6 +475,7 @@ Public Class SynchronizeForm
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         IO.File.Copy(Source & Path, Dest & Path, True)
+        IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
         Status_CreatedFiles += 1
         Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
     End Sub

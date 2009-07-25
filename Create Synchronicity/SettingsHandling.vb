@@ -77,6 +77,7 @@ Public Module ConfigOptions
         For Each Setting As String In ConfigArray
             Dim Pair As String() = Setting.Split(":")
             If Pair.Length() < 2 Then Continue For
+            If ProgramSettings.ContainsKey(Pair(0)) Then ProgramSettings.Remove(Pair(0))
             ProgramSettings.Add(Pair(0), Pair(1))
         Next
 

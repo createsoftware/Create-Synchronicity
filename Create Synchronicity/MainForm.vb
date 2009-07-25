@@ -24,7 +24,8 @@ Public Class MainForm
             ConfigOptions.SaveProgramSettings()
         End If
 
-        If ConfigOptions.GetProgramSetting("AutoUpdates", "False") Then
+        ConfigOptions.LoadProgramSettings()
+        If ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
             Dim UpdateThread As New Threading.Thread(AddressOf ConfigOptions.CheckForUpdates)
             UpdateThread.Start(True)
         End If
