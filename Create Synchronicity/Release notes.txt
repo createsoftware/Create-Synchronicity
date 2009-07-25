@@ -15,6 +15,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Jul. 25, 2009 - UPD: !Crete Synchroicity now copies file attributes.
 Jul. 21, 2009 - FIX: !Final fix for a FAT-related bug: file copies from NTFS to FAT are now accurate and not redundant. See http://sourceforge.net/tracker/?func=detail&aid=2824316&group_id=264348&atid=1130882 and/or http://support.microsoft.com/kb/127830/en-us/.
 Jul. 14, 2009 - FIX: More accurate folder selection.
 Jul. 13, 2009 - FIX: If the time difference between files is below 1.0s, consider it is a windows bug and the files are the same (windows has lots of difficulties handling time/date on different hard drives).
