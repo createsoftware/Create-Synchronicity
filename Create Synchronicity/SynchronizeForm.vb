@@ -9,6 +9,8 @@
 Public Class SynchronizeForm
     Dim Log As LogHandler
     Dim Handler As SettingsHandler
+
+    Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
 
     Dim [STOP] As Boolean
@@ -306,6 +308,8 @@ Public Class SynchronizeForm
         SyncingList.Add(SideOfSource.Left, New List(Of SyncingItem))
         SyncingList.Add(SideOfSource.Right, New List(Of SyncingItem))
 
+        ValidFiles.Clear()
+
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Context.Source = SideOfSource.Left
         Context.SourcePath = Handler.GetSetting(ConfigOptions.Source)
@@ -391,10 +395,139 @@ Public Class SynchronizeForm
 
     Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
-            BuildList(Folder, FoldersList(Folder), Context)
+            If Context.Action = TypeOfAction.Create Then
+                SearchForChanges(Folder, FoldersList(Folder), Context)
+            ElseIf Context.Action = TypeOfAction.Delete Then
+                SearchForCrap(Folder, FoldersList(Folder), Context)
+            End If
         Next
     End Sub
 
+    Sub AddToSyncingList(ByVal Side As SideOfSource, ByRef Entry As SyncingItem)
+        SyncingList(Side).Add(Entry)
+        SyncPreviewList(Side, 1)
+        If Entry.Action <> TypeOfAction.Delete Then AddValidFile(Entry.Path)
+    End Sub
+
+    Sub AddValidFile(ByVal File As String)
+        If Not ValidFiles.ContainsKey(File) Then ValidFiles.Add(File, Nothing)
+    End Sub
+
+    Sub RemoveValidFile(ByVal File As String)
+        If ValidFiles.ContainsKey(File) Then ValidFiles.Remove(File)
+    End Sub
+
+    Sub RemoveFromSyncingList(ByVal Side As SideOfSource)
+        ValidFiles.Remove(SyncingList(Side)(SyncingList(Side).Count - 1).Path)
+        SyncingList(Side).RemoveAt(SyncingList(Side).Count - 1)
+        SyncPreviewList(Side, -1)
+    End Sub
+
+    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String
+        Return If(Dir.EndsWith(IO.Path.DirectorySeparatorChar), Dir, Dir & IO.Path.DirectorySeparatorChar) & If(File.StartsWith(IO.Path.DirectorySeparatorChar), File.Substring(1), File)
+    End Function
+
+
+    ' This procedure searches for changes in the source directory, in regards
+    ' to the status of the destination directory.
+    Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+
+        Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
+        Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
+        Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
+
+        Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
+        Dim EmptyDirectories As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
+
+        Dim InitialCount As Integer
+        Dim IsSingularity As Boolean
+        IsSingularity = Not IO.Directory.Exists(Dest_FilePath)
+
+        If IsSingularity Then
+            AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+        Else
+            AddValidFile(Folder)
+        End If
+
+        InitialCount = ValidFiles.Count
+
+        Try
+            For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
+                Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile))
+
+                'First check if the file is part of the synchronization profile.
+                'Then, check whether it requires updating.
+                If HasValidExtension(SourceFile) Then
+
+                    If Not IO.File.Exists(DestinationFile) OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
+                        AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
+                    Else
+                        'Adds an entry to not delete this when cleaning up the other side.
+                        AddValidFile(SourceFile.Substring(Context.SourcePath.Length))
+                    End If
+
+                End If
+
+                Status_FilesScanned += 1
+            Next
+        Catch Ex As Exception
+            'Error with entering the folder
+        End Try
+
+        If Recursive Then
+            Try
+                For Each SubFolder As String In IO.Directory.GetDirectories(Src_FilePath)
+                    SearchForChanges(SubFolder.Substring(Context.SourcePath.Length), True, Context)
+                Next
+            Catch Ex As Exception
+
+            End Try
+        End If
+
+        If InitialCount = ValidFiles.Count Then
+            If Not EmptyDirectories Then
+                If IsSingularity Then RemoveFromSyncingList(Context.Source)
+                RemoveValidFile(Folder)
+            End If
+        End If
+    End Sub
+
+    Sub SearchForCrap(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+
+        Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
+        Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
+        Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
+
+        'Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
+        'Dim EmptyDirectories As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
+
+        Try
+            For Each File As String In IO.Directory.GetFiles(Src_FilePath)
+                Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
+                If Not ValidFiles.ContainsKey(RelativeFName) Then
+                    AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
+                End If
+            Next
+        Catch Ex As Exception
+        End Try
+
+        If Recursive Then
+            Try
+                For Each SubFolder As String In IO.Directory.GetDirectories(Src_FilePath)
+                    SearchForCrap(SubFolder.Substring(Context.SourcePath.Length), True, Context)
+                Next
+            Catch Ex As Exception
+            End Try
+        End If
+
+        If Folder <> "" AndAlso Not ValidFiles.ContainsKey(Folder) Then
+            AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+        End If
+    End Sub
+
+#If 0 Then
     Sub BuildList(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction) ' As Boolean 'Returns whether the directory (or its subdirectories) contains files.
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
@@ -402,7 +535,7 @@ Public Class SynchronizeForm
         Dim AbsolutePath As String = Context.SourcePath & Folder
 
         Me.Invoke(LabelDelegate, New Object() {1, AbsolutePath})
-       
+
         Try
             Dim IsSingularity As Boolean = Not IO.Directory.Exists(Context.DestinationPath & Folder)
             If IsSingularity And Not Context.Action = TypeOfAction.Delete Then
@@ -413,6 +546,7 @@ Public Class SynchronizeForm
             For Each File As String In IO.Directory.GetFiles(AbsolutePath)
                 Dim SourceFile As String = File
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
+                'Needs to be more efficient.
                 'Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
                 Status_FilesScanned += 1
 
@@ -436,7 +570,6 @@ Public Class SynchronizeForm
             '   If it is not present on the other side, delete the dir.
             '   If it is, and it is empty on the other side, delete unless replicate_empty_directories.
 
-            Dim CurrentActionsCount As Integer = SyncingList(Context.Source).Count
             Dim EmptyDirectoryReplication As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
 
             If Not Context.Action = TypeOfAction.Delete Then
@@ -454,6 +587,7 @@ Public Class SynchronizeForm
 
         End Try
     End Sub
+#End If
 
     Sub SyncPreviewList(ByVal Side As SideOfSource, ByVal Count As Integer)
         If Count > 0 Then
@@ -464,12 +598,15 @@ Public Class SynchronizeForm
     End Sub
 
     Function HasValidExtension(ByVal Path As String) As Boolean
-        Select Case Handler.GetSetting(ConfigOptions.Restrictions)
-            Case "1"
-                Return InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
-            Case "2"
-                Return Not InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
-        End Select
+        Try
+            Select Case Handler.GetSetting(ConfigOptions.Restrictions)
+                Case "1"
+                    Return InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
+                Case "2"
+                    Return Not InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
+            End Select
+        Catch Ex As Exception
+        End Try
         Return True
     End Function
 
@@ -502,14 +639,14 @@ Public Class SynchronizeForm
         Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
     End Function
 
-    Function FileHasBeenUpdated(ByVal Source As String, ByVal Destination As String)
+    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String)
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
-        If IO.File.GetLastWriteTime(Source) = IO.File.GetLastWriteTime(Destination) Then Return False
+        If IO.File.GetLastWriteTime(Source) <= IO.File.GetLastWriteTime(Destination) Then Return False
 
         'TODO: Do no check if transfering from NTFS to NTFS: 
-        'Stupid fat filesystem.
-        If NTFSToFATTime(IO.File.GetLastWriteTime(Source)) = IO.File.GetLastWriteTime(Destination) Then Return False
-        If NTFSToFATTime(IO.File.GetLastWriteTime(Destination)) = IO.File.GetLastWriteTime(Source) Then Return False
+        'Stupid fat filesystem...
+        If NTFSToFATTime(IO.File.GetLastWriteTime(Source)) <= IO.File.GetLastWriteTime(Destination) Then Return False
+        If NTFSToFATTime(IO.File.GetLastWriteTime(Destination)) >= IO.File.GetLastWriteTime(Source) Then Return False
 
         'More violent version
         'If ToEvenSeconds(IO.File.GetLastWriteTime(Source)) = ToEvenSeconds(IO.File.GetLastWriteTime(Destination)) Then Return False
