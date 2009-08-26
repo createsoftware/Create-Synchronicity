@@ -13,6 +13,7 @@ Public Class SynchronizeForm
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
 
+    Dim Quiet As Boolean
     Dim [STOP] As Boolean
     Dim Status_StartTime As Date
     Dim Status_BytesCopied As Long
@@ -41,7 +42,7 @@ Public Class SynchronizeForm
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean)
+    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, Optional ByVal DisplayForm As Boolean = True)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -70,7 +71,14 @@ Public Class SynchronizeForm
         SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
-        StatusIcon.ShowBalloonTip(1000)
+
+        Quiet = Not DisplayForm
+        If Quiet Then
+            Me.Visible = False
+            StatusIcon.Visible = True
+            StatusIcon.BalloonTipText = "Create Synchronicity is running """ & ConfigName & """" & Environment.NewLine() & "Click on the icon for more information."
+            StatusIcon.ShowBalloonTip(1000)
+        End If
 
         If DisplayPreview Then
             PreviewList.Items.Clear()
@@ -82,9 +90,10 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
+        If Quiet Then Application.Exit()
     End Sub
 
-    Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
+    Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click, StatusIconCancelMenuItem.Click
         Select Case StopBtn.Text
             Case StopBtn.Tag.ToString.Split(";"c)(0)
                 EndAll()
@@ -141,13 +150,18 @@ Public Class SynchronizeForm
     End Sub
 
     Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
+        StatusIcon.Text = "Create Synchronicity - Running - "
+
         Select Case Id
             Case 1
                 If Step1ProgressBar.Value + Progress < Step1ProgressBar.Maximum Then Step1ProgressBar.Value += Progress
+                StatusIcon.BalloonTipText &= "Step 1, " & Step1ProgressBar.Value & "/" & Step1ProgressBar.Maximum
             Case 2
                 If Step2ProgressBar.Value + Progress < Step2ProgressBar.Maximum Then Step2ProgressBar.Value += Progress
+                StatusIcon.BalloonTipText &= "Step 2, " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum
             Case 3
                 If Step3ProgressBar.Value + Progress < Step3ProgressBar.Maximum Then Step3ProgressBar.Value += Progress
+                StatusIcon.BalloonTipText &= "Step 3, " & Step3ProgressBar.Value & "/" & Step3ProgressBar.Maximum
         End Select
     End Sub
 
@@ -226,11 +240,15 @@ Public Class SynchronizeForm
 
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
+
+                    'TODO: Display Report
                 End If
 
                 Log.SaveAndDispose()
                 SyncingTimeCounter.Stop()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
+
+                If Quiet Then Application.Exit()
         End Select
     End Sub
 
@@ -651,7 +669,7 @@ Public Class SynchronizeForm
         If NTFSToFATTime(IO.File.GetLastWriteTime(Source)) <= IO.File.GetLastWriteTime(Destination) Then Return False
         If NTFSToFATTime(IO.File.GetLastWriteTime(Destination)) >= IO.File.GetLastWriteTime(Source) Then Return False
 
-        'More violent version
+        'More straightforward version
         'If ToEvenSeconds(IO.File.GetLastWriteTime(Source)) = ToEvenSeconds(IO.File.GetLastWriteTime(Destination)) Then Return False
 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then

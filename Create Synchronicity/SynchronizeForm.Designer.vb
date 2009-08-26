@@ -74,6 +74,8 @@ Partial Class SynchronizeForm
         Me.PathColumn = New System.Windows.Forms.ColumnHeader
         Me.SyncingIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.StatusIcon = New System.Windows.Forms.NotifyIcon(Me.components)
+        Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.StatusIconCancelMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
         Me.Step3_ProgressLayout.SuspendLayout()
@@ -83,6 +85,7 @@ Partial Class SynchronizeForm
         Me.Step1ProgressLayout.SuspendLayout()
         Me.ButtonsLayoutPanel.SuspendLayout()
         Me.StatisticsPanel.SuspendLayout()
+        Me.StatusIconMenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'MainLayoutPanel
@@ -557,7 +560,20 @@ Partial Class SynchronizeForm
         Me.StatusIcon.BalloonTipTitle = "Create Synchronicity"
         Me.StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
         Me.StatusIcon.Text = "Create Synchronicity - Running"
-        Me.StatusIcon.Visible = True
+        '
+        'StatusIconMenu
+        '
+        Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusIconCancelMenuItem})
+        Me.StatusIconMenu.Name = "StatusIconMenu"
+        Me.StatusIconMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.StatusIconMenu.ShowImageMargin = False
+        Me.StatusIconMenu.Size = New System.Drawing.Size(128, 48)
+        '
+        'StatusIconCancelMenuItem
+        '
+        Me.StatusIconCancelMenuItem.Name = "StatusIconCancelMenuItem"
+        Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(127, 22)
+        Me.StatusIconCancelMenuItem.Text = "Cancel"
         '
         'SynchronizeForm
         '
@@ -586,6 +602,7 @@ Partial Class SynchronizeForm
         Me.ButtonsLayoutPanel.ResumeLayout(False)
         Me.StatisticsPanel.ResumeLayout(False)
         Me.StatisticsPanel.PerformLayout()
+        Me.StatusIconMenu.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -630,4 +647,6 @@ Partial Class SynchronizeForm
     Friend WithEvents SyncingIcons As System.Windows.Forms.ImageList
     Friend WithEvents BlankMargin As System.Windows.Forms.Label
     Friend WithEvents StatusIcon As System.Windows.Forms.NotifyIcon
+    Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents StatusIconCancelMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

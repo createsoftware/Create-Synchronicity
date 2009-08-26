@@ -15,22 +15,6 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
 
-        Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
-
-        If ArgsList.Count > 0 Then
-            If ArgsList.IndexOf("/quiet") <> -1 Then
-                Quiet = True
-            End If
-
-            Dim RunTask As String = ""
-            Dim RunPos As Integer = ArgsList.IndexOf("/run")
-            If RunPos <> -1 AndAlso RunPos + 1 < ArgsList.Count Then
-                RunTask = ArgsList(RunPos + 1)
-            End If
-        End If
-
-        'TODO: Use args to detect a quiet run.
-
         ConfigOptions.LoadProgramSettings()
         If Not ConfigOptions.ProgramSettingsSet() Then
             If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
@@ -48,6 +32,32 @@ Public Class MainForm
         End If
 
         Main_ReloadConfigs()
+
+        Dim TaskToRun As String = ""
+        Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
+        If ArgsList.Count > 0 Then
+            If ArgsList.IndexOf("/quiet") <> -1 Then
+                Quiet = True
+            End If
+
+            Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
+            If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
+                TaskToRun = ArgsList(RunArgIndex + 1)
+            End If
+        End If
+
+        If TaskToRun <> "" Then
+            If SettingsArray.ContainsKey(TaskToRun) Then
+                If SettingsArray(TaskToRun).ValidateConfigFile() Then
+                    Dim SyncForm As New SynchronizeForm(TaskToRun, False, False)
+                    If Quiet Then Me.Close()
+                Else
+                    Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                End If
+            Else
+                Microsoft.VisualBasic.MsgBox("Invalid profile name!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+            End If
+        End If
     End Sub
 
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
@@ -192,5 +202,4 @@ Public Class MainForm
         Return True
     End Function
 #End Region
-
 End Class
