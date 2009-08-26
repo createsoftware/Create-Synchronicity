@@ -70,6 +70,7 @@ Public Class SynchronizeForm
         SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
+        StatusIcon.ShowBalloonTip(1000)
 
         If DisplayPreview Then
             PreviewList.Items.Clear()
@@ -528,6 +529,8 @@ Public Class SynchronizeForm
     End Sub
 
 #If 0 Then
+    'Old version of the code.
+
     Sub BuildList(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction) ' As Boolean 'Returns whether the directory (or its subdirectories) contains files.
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
