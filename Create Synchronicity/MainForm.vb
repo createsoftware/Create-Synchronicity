@@ -7,6 +7,7 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class MainForm
+    Dim Quiet As Boolean
     Dim SettingsArray As Dictionary(Of String, SettingsHandler)
 
 #Region " Events "
@@ -14,7 +15,21 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
 
-        'TODO: Use Environment.GetCommandLineArgs() to detect a quiet run.
+        Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
+
+        If ArgsList.Count > 0 Then
+            If ArgsList.IndexOf("/quiet") <> -1 Then
+                Quiet = True
+            End If
+
+            Dim RunTask As String = ""
+            Dim RunPos As Integer = ArgsList.IndexOf("/run")
+            If RunPos <> -1 AndAlso RunPos + 1 < ArgsList.Count Then
+                RunTask = ArgsList(RunPos + 1)
+            End If
+        End If
+
+        'TODO: Use args to detect a quiet run.
 
         ConfigOptions.LoadProgramSettings()
         If Not ConfigOptions.ProgramSettingsSet() Then
