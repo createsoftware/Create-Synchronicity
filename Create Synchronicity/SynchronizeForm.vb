@@ -110,6 +110,10 @@ Public Class SynchronizeForm
         SecondSyncThread.Start()
     End Sub
 
+    Private Sub StatusIcon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles StatusIcon.Click
+        Me.Visible = Not Me.Visible
+    End Sub
+
     Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimeCounter.Tick
         UpdateStatuses()
     End Sub
@@ -139,29 +143,28 @@ Public Class SynchronizeForm
 
 #Region " Processes interaction "
     Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
+        'TODO: Check
         Select Case Id
             Case 1
-                Step1StatusLabel.Text = Text
+                Step1StatusLabel.Text = "Step 1: " & Text
+                StatusIcon.Text = Text
             Case 2
                 Step2StatusLabel.Text = Text
+                StatusIcon.Text = "Step 2: " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum & "(" & Text & ")"
             Case 3
                 Step3StatusLabel.Text = Text
+                StatusIcon.Text = "Step 3: " & Step3ProgressBar.Value & "/" & Step3ProgressBar.Maximum & "(" & Text & ")"
         End Select
     End Sub
 
     Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
-        StatusIcon.Text = "Create Synchronicity - Running - "
-
         Select Case Id
             Case 1
                 If Step1ProgressBar.Value + Progress < Step1ProgressBar.Maximum Then Step1ProgressBar.Value += Progress
-                StatusIcon.BalloonTipText &= "Step 1, " & Step1ProgressBar.Value & "/" & Step1ProgressBar.Maximum
             Case 2
                 If Step2ProgressBar.Value + Progress < Step2ProgressBar.Maximum Then Step2ProgressBar.Value += Progress
-                StatusIcon.BalloonTipText &= "Step 2, " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum
             Case 3
                 If Step3ProgressBar.Value + Progress < Step3ProgressBar.Maximum Then Step3ProgressBar.Value += Progress
-                StatusIcon.BalloonTipText &= "Step 3, " & Step3ProgressBar.Value & "/" & Step3ProgressBar.Maximum
         End Select
     End Sub
 

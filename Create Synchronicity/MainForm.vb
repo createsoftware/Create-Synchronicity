@@ -35,6 +35,7 @@ Public Class MainForm
 
         Dim TaskToRun As String = ""
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
+
         If ArgsList.Count > 0 Then
             If ArgsList.IndexOf("/quiet") <> -1 Then
                 Quiet = True
@@ -50,7 +51,11 @@ Public Class MainForm
             If SettingsArray.ContainsKey(TaskToRun) Then
                 If SettingsArray(TaskToRun).ValidateConfigFile() Then
                     Dim SyncForm As New SynchronizeForm(TaskToRun, False, False)
-                    If Quiet Then Me.Close()
+                    If Quiet Then
+                        'TODO: Yuck
+                        Me.Opacity = 0
+                        Me.ShowInTaskbar = False
+                    End If
                 Else
                     Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
                 End If
@@ -202,4 +207,8 @@ Public Class MainForm
         Return True
     End Function
 #End Region
+
+    Private Sub MainForm_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.VisibleChanged
+        'Me.Visible = Not Quiet
+    End Sub
 End Class
