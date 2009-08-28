@@ -147,7 +147,11 @@ Class SettingsHandler
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
         Subfolders.Clear()
-        For Each Dir As String In Configuration(ConfigLine).Split(";"c)
+
+        Dim ConfigCheckedFoldersList As New List(Of String)(Configuration(ConfigLine).Split(";"c))
+        ConfigCheckedFoldersList.RemoveAt(ConfigCheckedFoldersList.Count - 1) 'Removes the last, empty element
+
+        For Each Dir As String In ConfigCheckedFoldersList
             If Not Subfolders.ContainsKey(Dir) Then
                 If Dir.EndsWith("*") Then
                     Subfolders.Add(Dir.Substring(0, Dir.Length - 1), True)
