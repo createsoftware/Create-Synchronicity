@@ -143,17 +143,21 @@ Public Class SynchronizeForm
 
 #Region " Processes interaction "
     Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
-        'TODO: Check
+        Dim StatusText As String = Text
+        If Text.Length > 30 Then
+            StatusText = "..." & Text.Substring(Text.Length - 30, 30)
+        End If
+
         Select Case Id
             Case 1
                 Step1StatusLabel.Text = Text
-                StatusIcon.Text = "Step 1: " & Text
+                StatusIcon.Text = "Step 1: " & StatusText
             Case 2
                 Step2StatusLabel.Text = Text
-                StatusIcon.Text = "Step 2: " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum & "(" & Text & ")"
+                StatusIcon.Text = "Step 2: " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum & " (" & StatusText & ")"
             Case 3
                 Step3StatusLabel.Text = Text
-                StatusIcon.Text = "Step 3: " & Step3ProgressBar.Value & "/" & Step3ProgressBar.Maximum & "(" & Text & ")"
+                StatusIcon.Text = "Step 3: " & Step3ProgressBar.Value & "/" & Step3ProgressBar.Maximum & " (" & StatusText & ")"
         End Select
     End Sub
 
