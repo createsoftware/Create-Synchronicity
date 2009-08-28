@@ -146,8 +146,8 @@ Public Class SynchronizeForm
         'TODO: Check
         Select Case Id
             Case 1
-                Step1StatusLabel.Text = "Step 1: " & Text
-                StatusIcon.Text = Text
+                Step1StatusLabel.Text = Text
+                StatusIcon.Text = "Step 1: " & Text
             Case 2
                 Step2StatusLabel.Text = Text
                 StatusIcon.Text = "Step 2: " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum & "(" & Text & ")"
