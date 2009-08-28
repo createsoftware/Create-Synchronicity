@@ -13,7 +13,7 @@ Public Class Settings
 
     'Note:
     'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
-    'The boolean value is stored as a / appended at the end of the file name.
+    'The boolean value is stored as a * appended at the end of the file name.
     'In fact, we have two steps : 
     '   1. Loading and saving the file
     '       1.1 Saving: Booleans calculated as "*"
@@ -85,6 +85,14 @@ Public Class Settings
         Settings_Tips.Visible = False
     End Sub
 
+    Private Sub Settings_PropagateUpdatesOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter
+        Settings_BottomDescLabel.Text = sender.Tag
+    End Sub
+
+    Private Sub Settings_PropagateUpdatesOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave
+        Settings_BottomDescLabel.Text = ""
+    End Sub
+
     Private Sub Settings_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_LeftView.AfterExpand, Settings_RightView.AfterExpand
         ClickedRightTreeView = (sender.Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes
@@ -110,6 +118,14 @@ Public Class Settings
 
     Private Sub Settings_TwoWaysIncrementalMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.CheckedChanged
         Settings_RightView.CheckBoxes = Settings_TwoWaysIncrementalMethodOption.Checked
+
+        'When the CheckBoxes' display is switched on, the checked property is not taken into account for the display.
+        'That is, ir Node.Checked = True but TreeView.CheckBoxes = False, then when Chekboxes = true Node
+
+        'Therefore, re-check the tree (if at has already been loaded)
+        If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then
+            Settings_CheckTree(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & "\")
+        End If
     End Sub
 
     Public Sub New(ByVal Name As String)
@@ -326,12 +342,4 @@ Public Class Settings
         Me.Text = "Settings for " & Handler.ConfigName & " profile"
     End Sub
 #End Region
-
-    Private Sub Settings_PropagateUpdatesOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter
-        Settings_BottomDescLabel.Text = sender.Tag
-    End Sub
-
-    Private Sub Settings_PropagateUpdatesOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave
-        Settings_BottomDescLabel.Text = ""
-    End Sub
 End Class
