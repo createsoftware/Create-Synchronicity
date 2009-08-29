@@ -15,17 +15,22 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
-Jul. 25, 2009 - UPD: !30% average speed increase by rewriting the syncing module (31 -> 24s).
-Jul. 25, 2009 - UPD: !Create Synchroicity now copies file attributes.
+-- Version 2.0 --
+Aug. 29, 2009 - SYN: Various speedups (281% speed increase), more accurate algorithm, and propagation of file attributes.
+Aug. 27, 2009 - FIX: Folder selection bug in settings screen.
+Aug. 27, 2009 - NEW: Support of command-line arguments "/quiet" and "/run".
+Jul. 25, 2009 - UPD: !30% average speed increase by rewriting the syncing module (test scan: 31 to 24s).
+Jul. 25, 2009 - UPD: !Create Synchronicity now copies file attributes.
 Jul. 21, 2009 - FIX: !Final fix for a FAT-related bug: file copies from NTFS to FAT are now accurate and not redundant. See http://sourceforge.net/tracker/?func=detail&aid=2824316&group_id=264348&atid=1130882 and/or http://support.microsoft.com/kb/127830/en-us/.
 Jul. 14, 2009 - FIX: More accurate folder selection.
-Jul. 13, 2009 - FIX: If the time difference between files is below 1.0s, consider it is a windows bug and the files are the same (windows has lots of difficulties handling time/date on different hard drives).
+Jul. 13, 2009 - FIX: Partial fix for a FAT-related bug: if the time difference between files is below 1.0s, consider the files are the same.
 Jul. 13, 2009 - FIX: Windows is packed up with bugs of all kinds: allow multiple instances of the application to run, as the opposite made the application unstable on some copies of XP.
-Jul. 13, 2009 - UPD: !By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster. (1m, 14s -> 31s)
+Jul. 13, 2009 - UPD: !By using a new way to calculate the scanning speed, Create Synchronicity is now 3 times faster. (test scan: 74 to 31s)
 Jul. 12, 2009 - UPD: A new mechanism is used to store configuration.
 Jul. 12, 2009 - NEW: !Create Synchronicity can now check for updates automatically.
 Jun. 21, 2009 - NEW: Option to not propagate updates, fixing a windows-related bug (when copying a file, 2 seconds are added to the actual last-write date).
 Jun. 21, 2009 - NEW: Create Synchronicity can now compute MD5 hashes.
+
 -- Version 1.0 --
 Jun. 22, 2009 - SYN: First stable release, including lots of bug fixes, and speedups.
 Jun. 21, 2009 - UPD: Better display for errors list.
@@ -35,6 +40,7 @@ Jun. 20, 2009 - FIX: Create settings validation function - better error handling
 Jun. 18, 2009 - FIX: Deleted directories were emptied but not deleted.
 Jun. 16, 2009 - UPD: Load preview list in a separate thread, speeding up the display of the preview list.
 Jun. 16, 2009 - FIX: Fix settings loading bug.
+
 -- Version 0.2 --
 Jun. 14, 2009 - SYN: Many updates and bug fixes. An icon was found :)
 Jun. 14, 2009 - FIX: Overflow bug.
@@ -42,5 +48,6 @@ Jun. 13, 2009 - UPD: Sorted Lists are not used anymore, resulting in a performan
 Jun. 13, 2009 - UPD: The full directory tree is not loaded anymore when displaying settings screen, so that lots of time is saved.
 Jun. 11, 2009 - FIX: Nodes were sometimes displayed twice or more in settings screen.
 Jun. 11, 2009 - FIX: Invoke was called before window handle was created, resulting in a crash.
+
 -- Version 0.1 --
 Jun. 10, 2009 - SYN: First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
