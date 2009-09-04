@@ -40,13 +40,13 @@ Public Class Settings
     Private Sub Settings_BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseLButton.Click
         Settings_FolderBrowser.Description = Settings_FolderBrowser.Description.Replace("%", "from")
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_FromTextBox.Text = Settings_FolderBrowser.SelectedPath
-        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag
+        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag.ToString
     End Sub
 
     Private Sub Settings_BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseRButton.Click
         Settings_FolderBrowser.Description = Settings_FolderBrowser.Description.Replace("%", "to")
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
-        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag
+        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag.ToString
     End Sub
 
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
@@ -233,12 +233,12 @@ Public Class Settings
             Case True
                 Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
                 For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.LeftCheckedNodes
-                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\")), CheckedPath.Value)
+                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\"c)), CheckedPath.Value)
                 Next
             Case False
                 Dim BaseNode As TreeNode = Settings_RightView.Nodes(0)
                 For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.RightCheckedNodes
-                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\")), CheckedPath.Value)
+                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\"c)), CheckedPath.Value)
                 Next
         End Select
     End Sub
@@ -278,9 +278,9 @@ Public Class Settings
         Handler.SetSetting(ConfigOptions.Destination, Settings_ToTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.IncludedTypes, Settings_IncludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ExcludedTypes, Settings_ExcludedTypesTextBox.Text, LoadToForm)
-        Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.ComputeHash, Settings_ComputeHashOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked.ToString, LoadToForm)
+        Handler.SetSetting(ConfigOptions.ComputeHash, Settings_ComputeHashOption.Checked.ToString, LoadToForm)
+        Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked.ToString, LoadToForm)
 
         Dim Restrictions As String = (If(Settings_CopyAllFilesCheckBox.Checked, 0, 1) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
         Dim Method As String = (If(Settings_LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(Settings_TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString

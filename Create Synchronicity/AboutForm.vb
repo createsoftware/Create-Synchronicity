@@ -11,7 +11,7 @@ Public Class AboutForm
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
         About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
         ConfigOptions.LoadProgramSettings()
-        About_Updates.Checked = ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, False)
+        About_Updates.Checked = ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked

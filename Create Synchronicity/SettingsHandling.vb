@@ -19,7 +19,7 @@ Public Module ConfigOptions
     Public Const ComputeHash As String = "Compute Hash"
     Public Const PropagateUpdates As String = "Propagate Updates"
 
-    Public Const AutoUpdates = "Auto updates"
+    Public Const AutoUpdates As String = "Auto updates"
 
     Dim ProgramSettingsLoaded As Boolean = False
     Public ConfigRootDir As String = Application.StartupPath & "\config"
@@ -36,19 +36,19 @@ Public Module ConfigOptions
         Return LogRootDir & "\" & Name & ".log"
     End Function
 
-    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+    Public Sub CheckForUpdates(Optional ByVal RoutineCheck As Boolean = True)
         Try
             Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
-                If Microsoft.VisualBasic.MsgBox("A new version of Create Synchronicity is available!" & Microsoft.VisualBasic.vbNewLine & "Installed version: " & Application.ProductVersion & Microsoft.VisualBasic.vbNewLine & "Current version: " & CurrentVersion & Microsoft.VisualBasic.vbNewLine & "Visit download website?", Microsoft.VisualBasic.MsgBoxStyle.Question + Microsoft.VisualBasic.MsgBoxStyle.YesNo, "New version available!") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                If Microsoft.VisualBasic.MsgBox("A new version of Create Synchronicity is available!" & Microsoft.VisualBasic.vbNewLine & "Installed version: " & Application.ProductVersion & Microsoft.VisualBasic.vbNewLine & "Current version: " & CurrentVersion & Microsoft.VisualBasic.vbNewLine & "Visit download website?", Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, "New version available!") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
                 End If
             Else
-                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox("No updates available", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Information)
+                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox("No updates available", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
             End If
         Catch Ex As Exception
-            Microsoft.VisualBasic.MsgBox("Unable to connect to ""http://synchronicity.sourceforge.net"". Disable searching for updates by clicking ""About"".", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Network error!")
+            Microsoft.VisualBasic.MsgBox("Unable to connect to ""http://synchronicity.sourceforge.net"". Disable searching for updates by clicking ""About"".", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Network error!")
         End Try
     End Sub
 
@@ -73,9 +73,9 @@ Public Module ConfigOptions
         End If
 
         Dim ConfigString As String = My.Computer.FileSystem.ReadAllText(MainConfigFile)
-        Dim ConfigArray As New List(Of String)(ConfigString.Split(";"))
+        Dim ConfigArray As New List(Of String)(ConfigString.Split(";"c))
         For Each Setting As String In ConfigArray
-            Dim Pair As String() = Setting.Split(":")
+            Dim Pair As String() = Setting.Split(":"c)
             If Pair.Length() < 2 Then Continue For
             If ProgramSettings.ContainsKey(Pair(0)) Then ProgramSettings.Remove(Pair(0))
             ProgramSettings.Add(Pair(0), Pair(1))
@@ -204,7 +204,7 @@ Class SettingsHandler
             End If
         Next
         If Not IsValid Then
-            Microsoft.VisualBasic.MsgBox(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine), Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Invalid configuration")
+            Microsoft.VisualBasic.MsgBox(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0)), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Invalid configuration")
         End If
         Return IsValid
     End Function
@@ -214,11 +214,11 @@ Class SettingsHandler
         IO.File.Delete(ConfigOptions.GetLogPath(ConfigName))
     End Sub
 
-    Sub SetSetting(ByVal SettingName As String, ByVal Value As Object)
+    Sub SetSetting(ByVal SettingName As String, ByVal Value As String)
         Configuration(SettingName) = Value
     End Sub
 
-    Sub SetSetting(ByVal SettingName As String, ByRef SettingField As Object, ByVal LoadSetting As Boolean)
+    Sub SetSetting(ByVal SettingName As String, ByRef SettingField As String, ByVal LoadSetting As Boolean)
         If LoadSetting Then
             SettingField = GetSetting(SettingName, SettingField)
         Else
@@ -226,7 +226,7 @@ Class SettingsHandler
         End If
     End Sub
 
-    Function GetSetting(ByVal SettingName As String, Optional ByRef DefaultVal As Object = Nothing) As String
+    Function GetSetting(ByVal SettingName As String, Optional ByRef DefaultVal As String = Nothing) As String
         If Configuration.ContainsKey(SettingName) Then
             Return Configuration(SettingName)
         Else

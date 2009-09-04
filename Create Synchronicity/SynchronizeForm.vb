@@ -667,7 +667,7 @@ Public Class SynchronizeForm
         Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
     End Function
 
-    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String)
+    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
         If IO.File.GetLastWriteTime(Source) <= IO.File.GetLastWriteTime(Destination) Then Return False
 
@@ -687,11 +687,11 @@ Public Class SynchronizeForm
     End Function
 
     Function ToEvenSeconds(ByVal T As Date) As Long
-        Dim TotalSeconds As Decimal = T.Ticks / 100000000
-        Return 2 * Math.Round(TotalSeconds / 2)
+        Dim TotalSeconds As Double = T.Ticks / 100000000
+        Return CLng(2 * Math.Round(TotalSeconds / 2))
     End Function
 
-    Function NTFSToFATTime(ByVal NTFSTime As Date)
+    Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
         Return New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second + If(NTFSTime.Second Mod 2 = 0, If(NTFSTime.Millisecond = 0, 0, 2), 1))
     End Function
 #End Region

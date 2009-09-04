@@ -17,7 +17,7 @@ Public Class MainForm
 
         ConfigOptions.LoadProgramSettings()
         If Not ConfigOptions.ProgramSettingsSet() Then
-            If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+            If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
                 ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
             Else
                 ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
@@ -57,10 +57,10 @@ Public Class MainForm
                         Me.ShowInTaskbar = False
                     End If
                 Else
-                    Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                    Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
                 End If
             Else
-                Microsoft.VisualBasic.MsgBox("Invalid profile name!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                Microsoft.VisualBasic.MsgBox("Invalid profile name!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
             End If
         End If
     End Sub
@@ -128,7 +128,7 @@ Public Class MainForm
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
-        If Microsoft.VisualBasic.MsgBox("Do you really want to delete """ & Main_Actions.SelectedItems(0).Text & """ profile ?", Microsoft.VisualBasic.MsgBoxStyle.YesNo + Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+        If Microsoft.VisualBasic.MsgBox("Do you really want to delete """ & Main_Actions.SelectedItems(0).Text & """ profile ?", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
             SettingsArray(Main_Actions.SelectedItems(0).Text).DeleteConfigFile()
             SettingsArray(Main_Actions.SelectedItems(0).Text) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
@@ -201,7 +201,7 @@ Public Class MainForm
 
     Function CheckValidity() As Boolean
         If Not SettingsArray(Main_Actions.SelectedItems(0).Text).ValidateConfigFile() Then
-            Microsoft.VisualBasic.MsgBox("Invalid Config !", Microsoft.VisualBasic.MsgBoxStyle.OkOnly + Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
+            Microsoft.VisualBasic.MsgBox("Invalid Config !", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
             Return False
         End If
         Return True
