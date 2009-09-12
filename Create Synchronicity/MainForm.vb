@@ -201,7 +201,7 @@ Public Class MainForm
 
     Function CheckValidity() As Boolean
         If Not SettingsArray(Main_Actions.SelectedItems(0).Text).ValidateConfigFile() Then
-            Microsoft.VisualBasic.MsgBox("Invalid Config !", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
+            Microsoft.VisualBasic.MsgBox("Invalid configuration!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
             Return False
         End If
         Return True
