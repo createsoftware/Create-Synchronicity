@@ -535,6 +535,8 @@ Public Class SynchronizeForm
                 If Not ValidFiles.ContainsKey(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
                 End If
+
+                Status_FilesScanned += 1
             Next
         Catch Ex As Exception
         End Try
