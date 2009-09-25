@@ -18,6 +18,7 @@ Public Module ConfigOptions
     Public Const RightSubFolders As String = "Destination folders to be synchronized"
     Public Const ComputeHash As String = "Compute Hash"
     Public Const PropagateUpdates As String = "Propagate Updates"
+    Public Const StrictMirror As String = "Strict mirror"
 
     Public Const AutoUpdates As String = "Auto updates"
 

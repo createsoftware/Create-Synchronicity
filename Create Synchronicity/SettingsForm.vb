@@ -61,6 +61,10 @@ Public Class Settings
         Settings_DescriptionLabel.Text = Settings_DescriptionLabel.Tag.ToString
     End Sub
 
+    Private Sub Settings_LRMirrorMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_LRMirrorMethodOption.CheckedChanged
+        Settings_StrictMirrorOption.Visible = Settings_LRMirrorMethodOption.Checked
+    End Sub
+
     Private Sub Settings_View_AfterCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_RightView.AfterCheck, Settings_LeftView.AfterCheck
         If ProcessingNodes Then Exit Sub
         If Not (Settings_OverAllCheckStatus(e.Node) = If(e.Node.Checked, 1, 0)) And e.Node.Nodes.Count > 0 Then e.Node.FirstNode.EnsureVisible()
@@ -281,9 +285,11 @@ Public Class Settings
         Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked.ToString, LoadToForm)
         Handler.SetSetting(ConfigOptions.ComputeHash, Settings_ComputeHashOption.Checked.ToString, LoadToForm)
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked.ToString, LoadToForm)
+        Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)
 
         Dim Restrictions As String = (If(Settings_CopyAllFilesCheckBox.Checked, 0, 1) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
         Dim Method As String = (If(Settings_LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(Settings_TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
+
         Select Case LoadToForm
             Case False
                 Handler.SetSetting(ConfigOptions.Method, Method)

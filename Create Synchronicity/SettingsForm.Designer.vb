@@ -72,6 +72,7 @@ Partial Class Settings
         Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
+        Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -265,6 +266,7 @@ Partial Class Settings
         Me.Settings_SynchronizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_Tips)
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_StrictMirrorOption)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
         Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 254)
@@ -549,6 +551,16 @@ Partial Class Settings
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
         '
+        'Settings_StrictMirrorOption
+        '
+        Me.Settings_StrictMirrorOption.AutoSize = True
+        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(43, 74)
+        Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(294, 17)
+        Me.Settings_StrictMirrorOption.TabIndex = 9
+        Me.Settings_StrictMirrorOption.Text = "Strict mirror: revert files modified on the right."
+        Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -573,6 +585,7 @@ Partial Class Settings
         Me.Settings_TreeViewMenuStrip.ResumeLayout(False)
         Me.Settings_ViewsBox.ResumeLayout(False)
         Me.Settings_SynchronizationMethodBox.ResumeLayout(False)
+        Me.Settings_SynchronizationMethodBox.PerformLayout()
         Me.Settings_MethodLayoutPanel.ResumeLayout(False)
         Me.Settings_MethodLayoutPanel.PerformLayout()
         Me.Settings_IncludeExcludeBox.ResumeLayout(False)
@@ -625,4 +638,5 @@ Partial Class Settings
     Friend WithEvents Settings_Tips As System.Windows.Forms.Label
     Friend WithEvents Settings_AdvancedBox As System.Windows.Forms.GroupBox
     Friend WithEvents Settings_BottomDescLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_StrictMirrorOption As System.Windows.Forms.CheckBox
 End Class
