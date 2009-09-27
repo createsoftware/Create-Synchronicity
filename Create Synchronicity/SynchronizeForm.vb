@@ -670,17 +670,15 @@ Public Class SynchronizeForm
     End Function
 
     Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
+        'If we're not updating any files, do nothing. 
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
-        If IO.File.GetLastWriteTime(Source) <= IO.File.GetLastWriteTime(Destination) Then Return False
 
-        'TODO: Do no check if transfering from NTFS to NTFS: 
-        'Stupid fat filesystem...
-        If NTFSToFATTime(IO.File.GetLastWriteTime(Source)) <= IO.File.GetLastWriteTime(Destination) Then Return False
-        If NTFSToFATTime(IO.File.GetLastWriteTime(Destination)) >= IO.File.GetLastWriteTime(Source) Then Return False
+        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Source))
+        Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Destination))
 
-        'More straightforward version
-        'If ToEvenSeconds(IO.File.GetLastWriteTime(Source)) = ToEvenSeconds(IO.File.GetLastWriteTime(Destination)) Then Return False
-
+        If SourceFATTime = DestFATTime Then Return False
+        If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
+ 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
             Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
         Else
@@ -688,13 +686,9 @@ Public Class SynchronizeForm
         End If
     End Function
 
-    Function ToEvenSeconds(ByVal T As Date) As Long
-        Dim TotalSeconds As Double = T.Ticks / 100000000
-        Return CLng(2 * Math.Round(TotalSeconds / 2))
-    End Function
-
     Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
-        Return New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second + If(NTFSTime.Second Mod 2 = 0, If(NTFSTime.Millisecond = 0, 0, 2), 1))
+        'Return NTFSTime.AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))).AddMilliseconds(-NTFSTime.Millisecond)
+        Return (New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second).AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))))
     End Function
 #End Region
 
