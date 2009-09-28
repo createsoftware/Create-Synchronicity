@@ -3,7 +3,7 @@
 Language:		English
 Created on:		June 3, 2009
 Created by:		Clément Pit--Claudel
-License:		GNU GPL v3 or later (included in file "COPYING")
+License:		GNU GPL v3 or later (see "COPYING")
 Coded in:		Visual Basic .Net
 Requires:		.Net Framework v2
 
@@ -15,6 +15,9 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Sep. 28, 2009 - FIX: Better handling of filetimes.
+Sep. 28, 2009 - NEW: Add a "Strict" option for the "mirror" action, to revert files that were modified on the right.
+
 -- Version 2.0 --
 Aug. 29, 2009 - SYN: Various speedups (281% speed increase), more accurate algorithm, and propagation of file attributes.
 Aug. 27, 2009 - FIX: Folder selection bug in settings screen.
