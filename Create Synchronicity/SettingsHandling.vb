@@ -37,7 +37,7 @@ Public Module ConfigOptions
         Return LogRootDir & "\" & Name & ".log"
     End Function
 
-    Public Sub CheckForUpdates(Optional ByVal RoutineCheck As Boolean = True)
+    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
         Try
             Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
             If CurrentVersion = "" Then Throw New Exception()
