@@ -10,11 +10,13 @@ Class LogHandler
     Dim LogName As String
     Public Errors As List(Of Exception)
     Public Log As Dictionary(Of SyncingItem, Boolean)
+    Private Disposed As Boolean
 
     Sub New(ByVal _LogName As String)
         LogName = _LogName
         Errors = New List(Of Exception)
         Log = New Dictionary(Of SyncingItem, Boolean)
+        Disposed = False
     End Sub
 
     Sub HandleError(ByVal Ex As Exception)
@@ -26,6 +28,9 @@ Class LogHandler
     End Sub
 
     Sub SaveAndDispose()
+        If Disposed Then Exit Sub
+        Disposed = True
+
         Dim LogWriter As New IO.StreamWriter(ConfigOptions.GetLogPath(LogName), True)
         LogWriter.WriteLine(" -- " & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & " -- ")
         For Each Pair As KeyValuePair(Of SyncingItem, Boolean) In Log
