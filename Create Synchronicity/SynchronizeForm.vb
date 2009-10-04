@@ -496,6 +496,9 @@ Public Class SynchronizeForm
                 Status_FilesScanned += 1
             Next
         Catch Ex As Exception
+#If DEBUG Then
+            Log.HandleError(Ex)
+#End If
             'Error with entering the folder
         End Try
 
@@ -505,6 +508,9 @@ Public Class SynchronizeForm
                     SearchForChanges(SubFolder.Substring(Context.SourcePath.Length), True, Context)
                 Next
             Catch Ex As Exception
+#If DEBUG Then
+                Log.HandleError(Ex)
+#End If
             End Try
         End If
 
@@ -536,6 +542,9 @@ Public Class SynchronizeForm
                 Status_FilesScanned += 1
             Next
         Catch Ex As Exception
+#If DEBUG Then
+            Log.HandleError(Ex)
+#End If
         End Try
 
         If Recursive Then
@@ -544,6 +553,9 @@ Public Class SynchronizeForm
                     SearchForCrap(SubFolder.Substring(Context.SourcePath.Length), True, Context)
                 Next
             Catch Ex As Exception
+#If DEBUG Then
+                Log.HandleError(Ex)
+#End If
             End Try
         End If
 
@@ -633,6 +645,9 @@ Public Class SynchronizeForm
                     Return Not InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
             End Select
         Catch Ex As Exception
+#If DEBUG Then
+            Log.HandleError(Ex)
+#End If
         End Try
         Return True
     End Function

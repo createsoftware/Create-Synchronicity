@@ -15,6 +15,10 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
 
+#If DEBUG Then
+        MessageBox.Show("This is a debug version of Create Synchronicity. Some extra info will be added to the logs, and the process of synchronizing files may be slower. Please report any bugs you encounter.", "DEBUG Mode", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+#End If
+
         ConfigOptions.LoadProgramSettings()
         If Not ConfigOptions.ProgramSettingsSet() Then
             If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then

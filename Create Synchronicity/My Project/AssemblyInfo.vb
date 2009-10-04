@@ -42,6 +42,10 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("2.0.*")> 
-<Assembly: AssemblyFileVersion("2.09.10.02")> 
+#If DEBUG Then
+<Assembly: AssemblyFileVersion("2.09.10.04")>
+#Else
+<Assembly: AssemblyFileVersion("2.0.0.0")> 
+#End If
 
 <Assembly: NeutralResourcesLanguageAttribute("")> 
