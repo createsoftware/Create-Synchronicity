@@ -10,13 +10,22 @@ Class LogHandler
     Dim LogName As String
     Public Errors As List(Of Exception)
     Public Log As Dictionary(Of SyncingItem, Boolean)
+#If DEBUG Then
+    Public DebugInfo As List(Of String)
+#End If
+
     Private Disposed As Boolean
 
     Sub New(ByVal _LogName As String)
         LogName = _LogName
+        Disposed = False
+
+#If DEBUG Then
+        DebugInfo = New List(Of String)
+#End If
+
         Errors = New List(Of Exception)
         Log = New Dictionary(Of SyncingItem, Boolean)
-        Disposed = False
     End Sub
 
     Sub HandleError(ByVal Ex As Exception)
@@ -27,18 +36,31 @@ Class LogHandler
         Log.Add(Item, Success)
     End Sub
 
+#If DEBUG Then
+    Sub LogInfo(ByVal Info As String)
+        DebugInfo.Add(Info)
+    End Sub
+#End If
+
     Sub SaveAndDispose()
         If Disposed Then Exit Sub
         Disposed = True
 
         Dim LogWriter As New IO.StreamWriter(ConfigOptions.GetLogPath(LogName), True)
         LogWriter.WriteLine(" -- " & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & " -- ")
+
+#If DEBUG Then
+        For Each Info As String In DebugInfo
+            LogWriter.WriteLine("Info:  " & Info)
+        Next
+#End If
         For Each Pair As KeyValuePair(Of SyncingItem, Boolean) In Log
             LogWriter.WriteLine(If(Pair.Value, "Succeded", "Failed") & "	" & Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path)
         Next
         For Each Ex As Exception In Errors
             LogWriter.WriteLine("Error:	" & Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"))
         Next
+
         LogWriter.Flush()
         LogWriter.Close()
         LogWriter.Dispose()

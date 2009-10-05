@@ -482,15 +482,29 @@ Public Class SynchronizeForm
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile))
 
+#If DEBUG Then
+                Log.LogInfo("Scanning " & SourceFile)
+#End If
+
                 'First check if the file is part of the synchronization profile.
                 'Then, check whether it requires updating.
                 If HasValidExtension(SourceFile) Then
                     If Not IO.File.Exists(DestinationFile) OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
                         AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
+#If DEBUG Then
+                        Log.LogInfo(SourceFile & " will be copied.")
+#End If
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
                         AddValidFile(SourceFile.Substring(Context.SourcePath.Length))
+#If DEBUG Then
+                        Log.LogInfo(SourceFile & " will not be deleted.")
+#End If
                     End If
+#If DEBUG Then
+                Else
+                    Log.LogInfo(SourceFile & " will be deleted, since its extension is not valid.")
+#End If
                 End If
 
                 Status_FilesScanned += 1
