@@ -551,6 +551,9 @@ Public Class SynchronizeForm
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
                 If Not ValidFiles.ContainsKey(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
+#If DEBUG Then
+                    Log.LogInfo(SourceFile & " does not belong to the list, so will be deleted.")
+#End If
                 End If
 
                 Status_FilesScanned += 1
