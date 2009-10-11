@@ -436,12 +436,16 @@ Public Class SynchronizeForm
     End Sub
 
     Sub AddValidFile(ByVal File As String)
-        If Not ValidFiles.ContainsKey(File) Then ValidFiles.Add(File, Nothing)
+        If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower, Nothing)
     End Sub
 
     Sub RemoveValidFile(ByVal File As String)
-        If ValidFiles.ContainsKey(File) Then ValidFiles.Remove(File)
+        If IsValidFile(File) Then ValidFiles.Remove(File.ToLower)
     End Sub
+
+    Function IsValidFile(ByVal File As String) As Boolean
+        Return ValidFiles.ContainsKey(File.ToLower)
+    End Function
 
     Sub RemoveFromSyncingList(ByVal Side As SideOfSource)
         ValidFiles.Remove(SyncingList(Side)(SyncingList(Side).Count - 1).Path)
@@ -550,7 +554,7 @@ Public Class SynchronizeForm
         Try
             For Each File As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
-                If Not ValidFiles.ContainsKey(RelativeFName) Then
+                If Not IsValidFile(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
 #If DEBUG Then
                     Log.LogInfo("""" & File & """ (""" & RelativeFName & """) does not belong to the list, so will be deleted.")
@@ -579,7 +583,7 @@ Public Class SynchronizeForm
             End Try
         End If
 
-        If Folder <> "" AndAlso Not ValidFiles.ContainsKey(Folder) Then
+        If Folder <> "" AndAlso Not IsValidFile(Folder) Then
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
         End If
     End Sub
