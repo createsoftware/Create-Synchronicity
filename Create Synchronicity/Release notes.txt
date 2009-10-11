@@ -15,6 +15,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Oct. 12, 2009 - FIX: A few changes in the way flenames are handled, fixing an uppercase/lowercase-related bug.
 Sep. 28, 2009 - FIX: Better handling of filetimes.
 Sep. 28, 2009 - NEW: Add a "Strict" option for the "mirror" action, to revert files that were modified on the right.
 
