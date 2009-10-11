@@ -492,18 +492,18 @@ Public Class SynchronizeForm
                     If Not IO.File.Exists(DestinationFile) OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
                         AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
 #If DEBUG Then
-                        Log.LogInfo(SourceFile & " will be copied.")
+                        Log.LogInfo("""" & SourceFile & """ (""" & SourceFile.Substring(Context.SourcePath.Length) & """) added to the list, will be copied.")
 #End If
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
                         AddValidFile(SourceFile.Substring(Context.SourcePath.Length))
 #If DEBUG Then
-                        Log.LogInfo(SourceFile & " will not be deleted.")
+                        Log.LogInfo("""" & SourceFile & """ (""" & SourceFile.Substring(Context.SourcePath.Length) & """) added to the list, will not be deleted.")
 #End If
                     End If
 #If DEBUG Then
                 Else
-                    Log.LogInfo(SourceFile & " will be deleted, since its extension is not valid.")
+                    Log.LogInfo("""" & SourceFile & """ (""" & SourceFile.Substring(Context.SourcePath.Length) & """) NOT added to the list, will be deleted, since its extension is not valid.")
 #End If
                 End If
 
@@ -537,6 +537,7 @@ Public Class SynchronizeForm
     End Sub
 
     Sub SearchForCrap(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+        'Here, Source is set to be the right folder, and dest to be the left folder
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
@@ -552,7 +553,9 @@ Public Class SynchronizeForm
                 If Not ValidFiles.ContainsKey(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
 #If DEBUG Then
-                    Log.LogInfo(SourceFile & " does not belong to the list, so will be deleted.")
+                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) does not belong to the list, so will be deleted.")
+                Else
+                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) has been scanned, and won't be deleted.")
 #End If
                 End If
 
