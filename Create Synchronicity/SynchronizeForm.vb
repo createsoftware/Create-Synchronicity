@@ -685,7 +685,7 @@ Public Class SynchronizeForm
     End Function
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
-        IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal)
+        If IO.File.Exists(Dest & Path) Then IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal)
         IO.File.Copy(Source & Path, Dest & Path, True)
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
         Status_CreatedFiles += 1
