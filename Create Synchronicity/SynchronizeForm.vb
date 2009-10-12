@@ -400,7 +400,15 @@ Public Class SynchronizeForm
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
                                 Status_CreatedFolders += 1
                             Case TypeOfAction.Delete
-                                If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then IO.Directory.Delete(Source & Entry.Path)
+                                If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then
+                                    Try
+                                        IO.Directory.Delete(Source & Entry.Path)
+                                    Catch ex As Exception
+                                        Dim DirInfo As New IO.DirectoryInfo(Source & Entry.Path)
+                                        DirInfo.Attributes = IO.FileAttributes.Normal
+                                        DirInfo.Delete()
+                                    End Try
+                                End If
                         End Select
                 End Select
                 Status_ActionsDone += 1
@@ -677,6 +685,7 @@ Public Class SynchronizeForm
     End Function
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
+        IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal)
         IO.File.Copy(Source & Path, Dest & Path, True)
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
         Status_CreatedFiles += 1
