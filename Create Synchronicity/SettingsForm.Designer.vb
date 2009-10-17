@@ -51,6 +51,7 @@ Partial Class Settings
         Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox
         Me.Settings_Tips = New System.Windows.Forms.Label
+        Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
         Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
@@ -65,14 +66,13 @@ Partial Class Settings
         Me.Settings_ExcludeFilesOption = New System.Windows.Forms.RadioButton
         Me.Settings_ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox
         Me.Settings_PropagateUpdatesOption = New System.Windows.Forms.CheckBox
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
+        Me.Settings_ActionsPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_CancelButton = New System.Windows.Forms.Button
         Me.Settings_SaveButton = New System.Windows.Forms.Button
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
         Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
-        Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -81,7 +81,7 @@ Partial Class Settings
         Me.Settings_MethodLayoutPanel.SuspendLayout()
         Me.Settings_IncludeExcludeBox.SuspendLayout()
         Me.Settings_IncludeExcludeLayoutPanel.SuspendLayout()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.Settings_ActionsPanel.SuspendLayout()
         Me.Settings_AdvancedBox.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -289,6 +289,16 @@ Partial Class Settings
         Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Settings_Tips.Visible = False
         '
+        'Settings_StrictMirrorOption
+        '
+        Me.Settings_StrictMirrorOption.AutoSize = True
+        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(43, 74)
+        Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(352, 17)
+        Me.Settings_StrictMirrorOption.TabIndex = 9
+        Me.Settings_StrictMirrorOption.Text = "Strict mirror: revert files that were modified on the right."
+        Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
+        '
         'Settings_MethodLayoutPanel
         '
         Me.Settings_MethodLayoutPanel.ColumnCount = 3
@@ -474,20 +484,20 @@ Partial Class Settings
         Me.Settings_PropagateUpdatesOption.Text = "Propagate updates"
         Me.Settings_PropagateUpdatesOption.UseVisualStyleBackColor = True
         '
-        'TableLayoutPanel1
+        'Settings_ActionsPanel
         '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Settings_CancelButton, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Settings_SaveButton, 0, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(486, 511)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(200, 31)
-        Me.TableLayoutPanel1.TabIndex = 7
+        Me.Settings_ActionsPanel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ActionsPanel.ColumnCount = 2
+        Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_ActionsPanel.Controls.Add(Me.Settings_CancelButton, 1, 0)
+        Me.Settings_ActionsPanel.Controls.Add(Me.Settings_SaveButton, 0, 0)
+        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(486, 511)
+        Me.Settings_ActionsPanel.Name = "Settings_ActionsPanel"
+        Me.Settings_ActionsPanel.RowCount = 1
+        Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Settings_ActionsPanel.Size = New System.Drawing.Size(200, 31)
+        Me.Settings_ActionsPanel.TabIndex = 7
         '
         'Settings_CancelButton
         '
@@ -551,16 +561,6 @@ Partial Class Settings
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
         '
-        'Settings_StrictMirrorOption
-        '
-        Me.Settings_StrictMirrorOption.AutoSize = True
-        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(43, 74)
-        Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
-        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(294, 17)
-        Me.Settings_StrictMirrorOption.TabIndex = 9
-        Me.Settings_StrictMirrorOption.Text = "Strict mirror: revert files modified on the right."
-        Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
-        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -568,7 +568,7 @@ Partial Class Settings
         Me.ClientSize = New System.Drawing.Size(698, 554)
         Me.Controls.Add(Me.Settings_BottomDescLabel)
         Me.Controls.Add(Me.Settings_AdvancedBox)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Controls.Add(Me.Settings_ActionsPanel)
         Me.Controls.Add(Me.Settings_ViewsBox)
         Me.Controls.Add(Me.Settings_DirectoriesBox)
         Me.Controls.Add(Me.Settings_IncludeExcludeBox)
@@ -592,7 +592,7 @@ Partial Class Settings
         Me.Settings_IncludeExcludeBox.PerformLayout()
         Me.Settings_IncludeExcludeLayoutPanel.ResumeLayout(False)
         Me.Settings_IncludeExcludeLayoutPanel.PerformLayout()
-        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.Settings_ActionsPanel.ResumeLayout(False)
         Me.Settings_AdvancedBox.ResumeLayout(False)
         Me.Settings_AdvancedBox.PerformLayout()
         Me.ResumeLayout(False)
@@ -625,7 +625,7 @@ Partial Class Settings
     Friend WithEvents Settings_CopyAllFilesCheckBox As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_IncludeFilesOption As System.Windows.Forms.RadioButton
     Friend WithEvents Settings_ExcludeFilesOption As System.Windows.Forms.RadioButton
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Settings_ActionsPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Settings_CancelButton As System.Windows.Forms.Button
     Friend WithEvents Settings_SaveButton As System.Windows.Forms.Button
     Friend WithEvents Settings_FolderBrowser As System.Windows.Forms.FolderBrowserDialog
