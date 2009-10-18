@@ -42,24 +42,59 @@ Class LogHandler
     End Sub
 #End If
 
+    Sub OpenHTMLHeaders(ByRef LogW As IO.StreamWriter)
+        LogW.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">")
+        LogW.WriteLine("<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"">")
+        LogW.WriteLine("	<head>")
+        LogW.WriteLine("		<title>Create Synchronicity - Log for " & LogName & "</title>")
+        LogW.WriteLine("	</head>")
+        LogW.WriteLine("	<body>")
+        LogW.WriteLine("		<h1>Create Synchronicity - Log for " & LogName & "</h1>")
+    End Sub
+
+    Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
+        LogW.WriteLine("	</body>")
+        LogW.WriteLine("</html>")
+      End Sub
+
+    Sub OpenSyncHeaders(ByRef LogW As IO.StreamWriter)
+        LogW.WriteLine("<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
+        LogW.WriteLine("<table><tr><th>Type</th><th>Contents</th></tr>")
+    End Sub
+
+    Sub CloseSyncHeaders(ByRef LogW As IO.StreamWriter)
+        LogW.WriteLine("</table>")
+    End Sub
+
+    Sub PutLine(ByVal Title As String, ByVal Contents As String, ByRef LogW As IO.StreamWriter)
+        LogW.WriteLine("<tr><td>" & Title & "</td><td>" & Contents & "</td></tr>")
+    End Sub
+
     Sub SaveAndDispose()
         If Disposed Then Exit Sub
         Disposed = True
 
+        Dim NewLog As Boolean = IO.File.Exists(ConfigOptions.GetLogPath(LogName))
+
         Dim LogWriter As New IO.StreamWriter(ConfigOptions.GetLogPath(LogName), True)
-        LogWriter.WriteLine(" -- " & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & " -- ")
+
+        If NewLog Then OpenHTMLHeaders(LogWriter)
+        OpenSyncHeaders(LogWriter)
 
 #If DEBUG Then
         For Each Info As String In DebugInfo
-            LogWriter.WriteLine("Info:  " & Info)
+            PutLine("Info", Info, LogWriter)
         Next
 #End If
         For Each Pair As KeyValuePair(Of SyncingItem, Boolean) In Log
-            LogWriter.WriteLine(If(Pair.Value, "Succeded", "Failed") & "	" & Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path)
+            PutLine(If(Pair.Value, "Succeded", "Failed"), Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path, LogWriter)
         Next
         For Each Ex As Exception In Errors
-            LogWriter.WriteLine("Error:	" & Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"))
+            PutLine("Error", Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"), LogWriter)
         Next
+
+        CloseSyncHeaders(LogWriter)
+        If NewLog Then CloseHTMLHeaders(LogWriter)
 
         LogWriter.Flush()
         LogWriter.Close()

@@ -34,7 +34,7 @@ Public Module ConfigOptions
     End Function
 
     Public Function GetLogPath(ByVal Name As String) As String
-        Return LogRootDir & "\" & Name & ".log"
+        Return LogRootDir & "\" & Name & ".log.html"
     End Function
 
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
