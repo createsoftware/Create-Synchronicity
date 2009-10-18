@@ -140,7 +140,8 @@ Public Class MainForm
     End Sub
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
-        Diagnostics.Process.Start(ConfigOptions.LogRootDir & "\" & Main_Actions.SelectedItems(0).Text & ".log")
+        If Not IO.File.Exists(ConfigOptions.GetLogPath(Main_Actions.SelectedItems(0).Text)) Then Exit Sub
+        Diagnostics.Process.Start(ConfigOptions.GetLogPath(Main_Actions.SelectedItems(0).Text))
     End Sub
 #End Region
 
