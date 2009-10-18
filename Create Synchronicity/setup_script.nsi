@@ -12,7 +12,7 @@
 !define			PRODUCTPATH	"${COMPANY}\${PRODUCTNAME}"
 
 Name "${PRODUCTNAME} ${VERSION}"
-OutFile "Create_Synchronicity-${VERSION}_Setup.exe"
+OutFile "..\Create_Synchronicity_Setup.exe"
 InstallDir "${PROGRAMPATH}"
 InstallDirRegKey HKLM "${SUBREGPATH}" "InstallPath"
 
