@@ -55,14 +55,6 @@ Section "Installer Section" InstallSection
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd
 
-;Language strings
-LangString DESC_InstallSection ${LANG_ENGLISH} "Installing Create Synchronicity, Version ${VERSION}"
-
-;Assign language strings to sections
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${InstallSection} $(DESC_InstallSection)
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
-
 Section "Uninstall"
 	Delete "$INSTDIR\Create Synchronicity.exe"
 	Delete "$INSTDIR\Release notes.txt"
