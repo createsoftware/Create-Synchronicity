@@ -6,11 +6,14 @@
 
 !define 		REGPATH		"Software\${COMPANY}"
 !define 		SUBREGPATH	"${REGPATH}\${PRODUCTNAME}"
-!define 		PRODUCTPATH	"${COMPANY}\${PRODUCTNAME}"
+
+!define 		COMPANYPATH	"$PROGRAMFILES\${COMPANY}"
+!define 		PROGRAMPATH	"${COMPANYPATH}\${PRODUCTNAME}"
+!define			PRODUCTPATH	"${COMPANY}\${PRODUCTNAME}"
 
 Name "${PRODUCTNAME} ${VERSION}"
 OutFile "Create_Synchronicity-${VERSION}_Setup.exe"
-InstallDir "$PROGRAMFILES\${PRODUCTPATH}"
+InstallDir "${PROGRAMPATH}"
 InstallDirRegKey HKLM "${SUBREGPATH}" "InstallPath"
 
 RequestExecutionLevel user
@@ -61,16 +64,23 @@ LangString DESC_InstallSection ${LANG_ENGLISH} "Installing Create Synchronicity,
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section "Uninstall"
-  ;ADD YOUR OWN FILES HERE...
-  Delete "$INSTDIR\Uninstall.exe"
+	Delete "$INSTDIR\Create Synchronicity.exe"
+	Delete "$INSTDIR\Release notes.txt"
+	Delete "$INSTDIR\COPYING"
+	Delete "$INSTDIR\Uninstall.exe"
 
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
+	!insertmacro MUI_STARTMENU_GETFOLDER AppStartMenu $StartMenuFolder
 
-  Delete "$SMPROGRAMS\$StartMenuFolder\${PRODUCTNAME}.lnk"
-  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
-  RMDir "$SMPROGRAMS\$StartMenuFolder"
+	Delete "$SMPROGRAMS\$StartMenuFolder\${PRODUCTNAME}.lnk"
+	Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
+	RMDir "$SMPROGRAMS\$StartMenuFolder"
+	RMDir "$SMPROGRAMS\${COMPANY}" #remove "Create Software" folder if empty
 
-  RMDir "$INSTDIR"
-  DeleteRegKey HKLM "${SUBREGPATH}"
-  DeleteRegKey /ifempty HKLM "${REGPATH}"
+	RMDir /r "$INSTDIR\config"
+	RMDir /r "$INSTDIR\log"
+	RMDir "$INSTDIR"
+	
+	RMDir "${COMPANYPATH}" #remove "Create Software" folder if empty
+	DeleteRegKey HKLM "${SUBREGPATH}"
+	DeleteRegKey /ifempty HKLM "${REGPATH}" #remove "Create Software" key if empty
 SectionEnd
