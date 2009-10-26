@@ -73,6 +73,9 @@ Partial Class Settings
         Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
+        Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
+        Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label
+        Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -83,6 +86,7 @@ Partial Class Settings
         Me.Settings_IncludeExcludeLayoutPanel.SuspendLayout()
         Me.Settings_ActionsPanel.SuspendLayout()
         Me.Settings_AdvancedBox.SuspendLayout()
+        CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Settings_FromTextBox
@@ -531,19 +535,23 @@ Partial Class Settings
         '
         'Settings_ComputeHashOption
         '
-        Me.Settings_ComputeHashOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ComputeHashOption.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.Settings_ComputeHashOption.AutoSize = True
-        Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(336, 20)
+        Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(219, 20)
         Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
-        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(332, 17)
+        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(237, 17)
         Me.Settings_ComputeHashOption.TabIndex = 8
-        Me.Settings_ComputeHashOption.Text = "Compute hash of modified files before copying (slow)"
+        Me.Settings_ComputeHashOption.Text = "Compute hash before copying (slow)"
+        Me.Settings_ComputeHashOption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.Settings_ComputeHashOption.UseVisualStyleBackColor = True
         '
         'Settings_AdvancedBox
         '
         Me.Settings_AdvancedBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
+        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetLabel)
+        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffset)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_ComputeHashOption)
         Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 460)
@@ -560,6 +568,33 @@ Partial Class Settings
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
+        '
+        'Settings_TimeOffset
+        '
+        Me.Settings_TimeOffset.Location = New System.Drawing.Point(584, 19)
+        Me.Settings_TimeOffset.Maximum = New Decimal(New Integer() {2, 0, 0, 0})
+        Me.Settings_TimeOffset.Minimum = New Decimal(New Integer() {2, 0, 0, -2147483648})
+        Me.Settings_TimeOffset.Name = "Settings_TimeOffset"
+        Me.Settings_TimeOffset.Size = New System.Drawing.Size(35, 21)
+        Me.Settings_TimeOffset.TabIndex = 10
+        '
+        'Settings_TimeOffsetLabel
+        '
+        Me.Settings_TimeOffsetLabel.AutoSize = True
+        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(502, 21)
+        Me.Settings_TimeOffsetLabel.Name = "Settings_TimeOffsetLabel"
+        Me.Settings_TimeOffsetLabel.Size = New System.Drawing.Size(76, 13)
+        Me.Settings_TimeOffsetLabel.TabIndex = 11
+        Me.Settings_TimeOffsetLabel.Text = "Time offset:"
+        '
+        'Settings_TimeOffsetHoursLabel
+        '
+        Me.Settings_TimeOffsetHoursLabel.AutoSize = True
+        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(625, 21)
+        Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
+        Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(43, 13)
+        Me.Settings_TimeOffsetHoursLabel.TabIndex = 12
+        Me.Settings_TimeOffsetHoursLabel.Text = "hours."
         '
         'Settings
         '
@@ -595,6 +630,7 @@ Partial Class Settings
         Me.Settings_ActionsPanel.ResumeLayout(False)
         Me.Settings_AdvancedBox.ResumeLayout(False)
         Me.Settings_AdvancedBox.PerformLayout()
+        CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -639,4 +675,7 @@ Partial Class Settings
     Friend WithEvents Settings_AdvancedBox As System.Windows.Forms.GroupBox
     Friend WithEvents Settings_BottomDescLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_StrictMirrorOption As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_TimeOffset As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Settings_TimeOffsetHoursLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_TimeOffsetLabel As System.Windows.Forms.Label
 End Class

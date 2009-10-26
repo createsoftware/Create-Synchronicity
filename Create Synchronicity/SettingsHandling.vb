@@ -19,6 +19,7 @@ Public Module ConfigOptions
     Public Const ComputeHash As String = "Compute Hash"
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
+    Public Const TimeOffset As String = "Time Offset"
 
     Public Const AutoUpdates As String = "Auto updates"
 

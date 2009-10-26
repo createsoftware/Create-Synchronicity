@@ -718,7 +718,7 @@ Public Class SynchronizeForm
         'If we're not updating any files, do nothing. 
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
-        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Source))
+        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
         Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Destination))
 
         If SourceFATTime = DestFATTime Then Return False
