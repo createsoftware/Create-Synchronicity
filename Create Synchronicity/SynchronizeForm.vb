@@ -688,7 +688,7 @@ Public Class SynchronizeForm
         If IO.File.Exists(Dest & Path) Then IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal)
         IO.File.Copy(Source & Path, Dest & Path, True)
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
-            IO.File.SetLastWriteTime(Dest & Path, IO.File.GetLastWriteTime(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
+            IO.File.SetLastWriteTimeUtc(Dest & Path, IO.File.GetLastWriteTimeUtc(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
         Status_CreatedFiles += 1
@@ -721,12 +721,12 @@ Public Class SynchronizeForm
         'If we're not updating any files, do nothing. 
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
-        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
-        Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTime(Destination))
+        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
+        Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Destination))
 
         If SourceFATTime = DestFATTime Then Return False
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
- 
+
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
             Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
         Else
