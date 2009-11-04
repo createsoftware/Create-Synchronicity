@@ -41,6 +41,10 @@ Public Class SynchronizeForm
     Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
+    'Not evaluating file size gives better performance (See FileLen_Speed_Test.vb for tests):
+    'With size evaluation : 1'20, 46'', 36'', 35'', 31''
+    'Without :                    41'', 42'', 26'', 29''
+
 #Region " Events "
     Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, Optional ByVal DisplayForm As Boolean = True)
         ' This call is required by the Windows Form Designer.
@@ -120,12 +124,15 @@ Public Class SynchronizeForm
 
     Sub UpdateStatuses()
         Status_TimeElapsed = DateTime.Now - Status_StartTime
-        Status_MillisecondsSpeed = Status_BytesCopied / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)
         ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
 
+        If Status_TimeElapsed.TotalMilliseconds = 0 Then Status_TimeElapsed = New System.TimeSpan(1)
+
         If Status_CurrentStep = 1 Then
-            Speed.Text = Math.Round(Status_FilesScanned / (If(Status_TimeElapsed.TotalMilliseconds = 0, New System.TimeSpan(1), Status_TimeElapsed).TotalMilliseconds / 1000)).ToString & " files/s"
+            Speed.Text = Math.Round(Status_FilesScanned / (Status_TimeElapsed.TotalMilliseconds / 1000)).ToString & " files/s"
         Else
+            Status_MillisecondsSpeed = Status_BytesCopied / (Status_TimeElapsed.TotalMilliseconds / 1000)
+
             Select Case Status_MillisecondsSpeed
                 Case Is > 1024 * 1000 * 1000
                     Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
@@ -465,7 +472,6 @@ Public Class SynchronizeForm
         Return If(Dir.EndsWith(IO.Path.DirectorySeparatorChar), Dir, Dir & IO.Path.DirectorySeparatorChar) & If(File.StartsWith(IO.Path.DirectorySeparatorChar), File.Substring(1), File)
     End Function
 
-
     ' This procedure searches for changes in the source directory, in regards
     ' to the status of the destination directory.
     Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
@@ -520,6 +526,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status_FilesScanned += 1
+                'Status_BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
             Next
         Catch Ex As Exception
 #If DEBUG Then
@@ -572,6 +579,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status_FilesScanned += 1
+                'Status_BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
             Next
         Catch Ex As Exception
 #If DEBUG Then
@@ -692,7 +700,8 @@ Public Class SynchronizeForm
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
         Status_CreatedFiles += 1
-        Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
+        'Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
+        Status_BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster
     End Sub
 #End Region
 
