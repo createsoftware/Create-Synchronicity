@@ -66,13 +66,13 @@ Section "Uninstall"
 	Delete "$SMPROGRAMS\$StartMenuFolder\${PRODUCTNAME}.lnk"
 	Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
 	RMDir "$SMPROGRAMS\$StartMenuFolder"
-	RMDir "$SMPROGRAMS\${COMPANY}" #remove "Create Software" folder if empty
+	RMDir "$SMPROGRAMS\${COMPANY}" #remove the "Create Software" folder if empty
 
 	RMDir /r "$INSTDIR\config"
 	RMDir /r "$INSTDIR\log"
 	RMDir "$INSTDIR"
 	
-	RMDir "${COMPANYPATH}" #remove "Create Software" folder if empty
+	RMDir "${COMPANYPATH}" #remove the "Create Software" folder if empty
 	DeleteRegKey HKLM "${SUBREGPATH}"
-	DeleteRegKey /ifempty HKLM "${REGPATH}" #remove "Create Software" key if empty
+	DeleteRegKey /ifempty HKLM "${REGPATH}" #remove the "Create Software" key if empty
 SectionEnd
