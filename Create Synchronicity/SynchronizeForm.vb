@@ -42,8 +42,8 @@ Public Class SynchronizeForm
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
     'Not evaluating file size gives better performance (See FileLen_Speed_Test.vb for tests):
-    'With size evaluation : 1'20, 46'', 36'', 35'', 31''
-    'Without :                    41'', 42'', 26'', 29''
+    'With size evaluation: 1'20, 46'', 36'', 35'', 31''
+    'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
     Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, Optional ByVal DisplayForm As Boolean = True)
