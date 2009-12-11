@@ -16,7 +16,7 @@ Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
 -- Version 2.2 --
-Oct. 26, 2009 - SYN: A few new options, including timme offsets, and a nicer log display.
+Oct. 26, 2009 - SYN: A few new options, including time offsets, and a nicer log display.
 Oct. 26, 2009 - NEW: Add a "Time Offset" property to compensate for summer/winter time changes.
 Oct. 20, 2009 - UPD: Nicer log display (HTML Logs)
 Oct. 18, 2009 - NEW: !Automated installer for Create Synchronicity.
