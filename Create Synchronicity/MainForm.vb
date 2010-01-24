@@ -10,22 +10,32 @@ Public Class MainForm
     Dim Quiet As Boolean
     Dim SettingsArray As Dictionary(Of String, SettingsHandler)
 
+    Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
+        IO.Directory.CreateDirectory(ConfigOptions.LanguageRootDir)
 
 #If DEBUG Then
-        MessageBox.Show("This is a debug version of Create Synchronicity. Some extra info will be added to the logs, and the process of synchronizing files may be slower. Please report any bugs you encounter.", "DEBUG Mode", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        MessageBox.Show("This is a debug version of Create Synchronicity. Lots of extra info will be added to the logs, and the process of synchronizing files may be slower. Please report any bugs you encounter.", "DEBUG Mode", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
 
         ConfigOptions.LoadProgramSettings()
-        If Not ConfigOptions.ProgramSettingsSet() Then
-            If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
-                ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
-            Else
-                ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
+        If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
+            If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
+                If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                    ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
+                Else
+                    ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
+                End If
             End If
+
+            If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
+                ConfigOptions.SetProgramSetting(ConfigOptions.Language, "en")
+            End If
+
             ConfigOptions.SaveProgramSettings()
         End If
 
@@ -35,6 +45,7 @@ Public Class MainForm
             UpdateThread.Start(True)
         End If
 
+        StringTranslator.TranslateControl(Me)
         Main_ReloadConfigs()
 
         Dim TaskToRun As String = ""
@@ -132,7 +143,7 @@ Public Class MainForm
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
-        If Microsoft.VisualBasic.MsgBox("Do you really want to delete """ & Main_Actions.SelectedItems(0).Text & """ profile ?", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+        If Microsoft.VisualBasic.MsgBox(String.Format("Do you really want to delete ""{0}"" profile?", Main_Actions.SelectedItems(0).Text), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
             SettingsArray(Main_Actions.SelectedItems(0).Text).DeleteConfigFile()
             SettingsArray(Main_Actions.SelectedItems(0).Text) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
@@ -149,7 +160,9 @@ Public Class MainForm
     Sub Main_ReloadConfigs()
         SettingsArray = New Dictionary(Of String, SettingsHandler)
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
-        Main_Actions.Items.Clear() : Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
+
+        Main_Actions.Items.Clear()
+        Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
         For Each ConfigFile As String In IO.Directory.GetFiles(ConfigOptions.ConfigRootDir, "*.sync")
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
@@ -206,7 +219,7 @@ Public Class MainForm
 
     Function CheckValidity() As Boolean
         If Not SettingsArray(Main_Actions.SelectedItems(0).Text).ValidateConfigFile() Then
-            Microsoft.VisualBasic.MsgBox("Invalid configuration!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
+            Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
             Return False
         End If
         Return True

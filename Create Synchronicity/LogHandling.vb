@@ -133,7 +133,7 @@ Class LogHandler
                 LogWriter.Dispose()
             End Try
         Catch Ex As Exception
-            Warning("Unable to open log file!", Ex)
+            Warning("Unable to open the log file!", Ex)
         End Try
     End Sub
 

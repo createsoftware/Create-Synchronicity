@@ -8,6 +8,9 @@
 
 Public Class AboutForm
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+        StringTranslator.TranslateControl(Me)
+
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
         About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
         ConfigOptions.LoadProgramSettings()

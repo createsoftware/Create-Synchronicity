@@ -10,6 +10,8 @@ Public Class SynchronizeForm
     Dim Log As LogHandler
     Dim Handler As SettingsHandler
 
+    Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
 
@@ -80,7 +82,7 @@ Public Class SynchronizeForm
         If Quiet Then
             Me.Visible = False
             StatusIcon.Visible = True
-            StatusIcon.BalloonTipText = "Create Synchronicity is running """ & ConfigName & """" & Environment.NewLine() & "Click on the icon for more information."
+            StatusIcon.BalloonTipText = String.Format(StringTranslator.Translate("\RUNNING_TASK"), ConfigName)
             StatusIcon.ShowBalloonTip(1000)
         End If
 
@@ -90,6 +92,10 @@ Public Class SynchronizeForm
         Else
             FullSyncThread.Start()
         End If
+    End Sub
+
+    Private Sub SynchronizeForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        StringTranslator.TranslateControl(Me)
     End Sub
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed

@@ -11,6 +11,7 @@ Public Class Settings
     Dim ProcessingNodes As Boolean = False
     Dim ClickedRightTreeView As Boolean = False
 
+    Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
     'Note:
     'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
     'The boolean value is stored as a * appended at the end of the file name.
@@ -54,7 +55,7 @@ Public Class Settings
     End Sub
 
     Private Sub Settings_MethodOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter
-        Settings_DescriptionLabel.Text = sender.Tag.Replace("%s", sender.Text).Replace("\n", Microsoft.VisualBasic.vbNewLine)
+        Settings_DescriptionLabel.Text = sender.Tag.Replace("%s", sender.Text)
     End Sub
 
     Private Sub Settings_MethodOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave
@@ -345,8 +346,11 @@ Public Class Settings
     End Function
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+        StringTranslator.TranslateControl(Me)
+
         Settings_Update(True)
-        Me.Text = "Settings for " & Handler.ConfigName & " profile"
+        Me.Text = String.Format("{0} profile settings", Handler.ConfigName)
     End Sub
 #End Region
 End Class
