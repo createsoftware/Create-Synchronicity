@@ -148,7 +148,7 @@ Partial Class SynchronizeForm
         Me.Step3StatusLabel.Name = "Step3StatusLabel"
         Me.Step3StatusLabel.Size = New System.Drawing.Size(450, 13)
         Me.Step3StatusLabel.TabIndex = 2
-        Me.Step3StatusLabel.Text = "Waiting..."
+        Me.Step3StatusLabel.Text = "\WAITING"
         '
         'Step3ProgressBar
         '
@@ -167,7 +167,7 @@ Partial Class SynchronizeForm
         Me.Step3Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
         Me.Step3Label.Size = New System.Drawing.Size(456, 23)
         Me.Step3Label.TabIndex = 1
-        Me.Step3Label.Text = "Step 3 : Cleaning up and copying files right to left"
+        Me.Step3Label.Text = "\STEP_3"
         '
         'Step2LayoutPanel
         '
@@ -208,7 +208,7 @@ Partial Class SynchronizeForm
         Me.Step2StatusLabel.Name = "Step2StatusLabel"
         Me.Step2StatusLabel.Size = New System.Drawing.Size(450, 13)
         Me.Step2StatusLabel.TabIndex = 2
-        Me.Step2StatusLabel.Text = "Waiting..."
+        Me.Step2StatusLabel.Text = "\WAITING"
         '
         'Step2ProgressBar
         '
@@ -227,7 +227,7 @@ Partial Class SynchronizeForm
         Me.Step2Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
         Me.Step2Label.Size = New System.Drawing.Size(456, 23)
         Me.Step2Label.TabIndex = 1
-        Me.Step2Label.Text = "Step 2 : Copying files left to right"
+        Me.Step2Label.Text = "\STEP_2"
         '
         'Step1LayoutPanel
         '
@@ -268,7 +268,7 @@ Partial Class SynchronizeForm
         Me.Step1StatusLabel.Name = "Step1StatusLabel"
         Me.Step1StatusLabel.Size = New System.Drawing.Size(450, 13)
         Me.Step1StatusLabel.TabIndex = 2
-        Me.Step1StatusLabel.Text = "Waiting..."
+        Me.Step1StatusLabel.Text = "\WAITING"
         '
         'Step1ProgressBar
         '
@@ -290,7 +290,7 @@ Partial Class SynchronizeForm
         Me.Step1Label.Padding = New System.Windows.Forms.Padding(0, 5, 0, 5)
         Me.Step1Label.Size = New System.Drawing.Size(456, 23)
         Me.Step1Label.TabIndex = 1
-        Me.Step1Label.Text = "Step 1 : Building files list"
+        Me.Step1Label.Text = "\STEP_1"
         '
         'ButtonsLayoutPanel
         '
@@ -316,7 +316,7 @@ Partial Class SynchronizeForm
         Me.SyncBtn.Size = New System.Drawing.Size(118, 28)
         Me.SyncBtn.TabIndex = 4
         Me.SyncBtn.Tag = ""
-        Me.SyncBtn.Text = "Synchronize"
+        Me.SyncBtn.Text = "\SYNC"
         Me.SyncBtn.UseVisualStyleBackColor = True
         '
         'StopBtn
@@ -326,8 +326,8 @@ Partial Class SynchronizeForm
         Me.StopBtn.Name = "StopBtn"
         Me.StopBtn.Size = New System.Drawing.Size(118, 29)
         Me.StopBtn.TabIndex = 1
-        Me.StopBtn.Tag = "Cancel;Close"
-        Me.StopBtn.Text = "Cancel"
+        Me.StopBtn.Tag = "\CANCEL_CLOSE"
+        Me.StopBtn.Text = "\CANCEL"
         Me.StopBtn.UseVisualStyleBackColor = True
         '
         'StatisticsPanel
@@ -381,7 +381,7 @@ Partial Class SynchronizeForm
         Me.FilesCreatedLabel.Name = "FilesCreatedLabel"
         Me.FilesCreatedLabel.Size = New System.Drawing.Size(90, 17)
         Me.FilesCreatedLabel.TabIndex = 10
-        Me.FilesCreatedLabel.Text = "Files created:"
+        Me.FilesCreatedLabel.Text = "\FILES_CREATED"
         Me.FilesCreatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'FilesCreated
@@ -402,7 +402,7 @@ Partial Class SynchronizeForm
         Me.FoldersCreatedLabel.Name = "FoldersCreatedLabel"
         Me.FoldersCreatedLabel.Size = New System.Drawing.Size(80, 17)
         Me.FoldersCreatedLabel.TabIndex = 8
-        Me.FoldersCreatedLabel.Text = "Folders:"
+        Me.FoldersCreatedLabel.Text = "\FOLDERS"
         Me.FoldersCreatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'TotalCount
@@ -423,7 +423,7 @@ Partial Class SynchronizeForm
         Me.TotalCountLabel.Name = "TotalCountLabel"
         Me.TotalCountLabel.Size = New System.Drawing.Size(80, 18)
         Me.TotalCountLabel.TabIndex = 6
-        Me.TotalCountLabel.Text = "Total:"
+        Me.TotalCountLabel.Text = "\TOTAL"
         Me.TotalCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Done
@@ -444,7 +444,7 @@ Partial Class SynchronizeForm
         Me.DoneLabel.Name = "DoneLabel"
         Me.DoneLabel.Size = New System.Drawing.Size(90, 18)
         Me.DoneLabel.TabIndex = 4
-        Me.DoneLabel.Text = "Done:"
+        Me.DoneLabel.Text = "\DONE"
         Me.DoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Speed
@@ -465,7 +465,7 @@ Partial Class SynchronizeForm
         Me.SpeedLabel.Name = "SpeedLabel"
         Me.SpeedLabel.Size = New System.Drawing.Size(80, 17)
         Me.SpeedLabel.TabIndex = 2
-        Me.SpeedLabel.Text = "Speed:"
+        Me.SpeedLabel.Text = "\SPEED"
         Me.SpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ElapsedTime
@@ -486,7 +486,7 @@ Partial Class SynchronizeForm
         Me.ElapsedTimeLabel.Name = "ElapsedTimeLabel"
         Me.ElapsedTimeLabel.Size = New System.Drawing.Size(90, 17)
         Me.ElapsedTimeLabel.TabIndex = 0
-        Me.ElapsedTimeLabel.Text = "Elapsed time:"
+        Me.ElapsedTimeLabel.Text = "\ELAPSED"
         Me.ElapsedTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'BlankMargin
@@ -524,17 +524,17 @@ Partial Class SynchronizeForm
         '
         'TypeColumn
         '
-        Me.TypeColumn.Text = "Type"
+        Me.TypeColumn.Text = "\TYPE"
         Me.TypeColumn.Width = 80
         '
         'ActionColumn
         '
-        Me.ActionColumn.Text = "Action"
+        Me.ActionColumn.Text = "\ACTION"
         Me.ActionColumn.Width = 80
         '
         'DirectionColumn
         '
-        Me.DirectionColumn.Text = "Direction"
+        Me.DirectionColumn.Text = "\DIRECTION"
         Me.DirectionColumn.Width = 80
         '
         'PathColumn
@@ -556,10 +556,10 @@ Partial Class SynchronizeForm
         'StatusIcon
         '
         Me.StatusIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
-        Me.StatusIcon.BalloonTipText = "Create Synchronicity is running"
+        Me.StatusIcon.BalloonTipText = "\RUNNING"
         Me.StatusIcon.BalloonTipTitle = "Create Synchronicity"
         Me.StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
-        Me.StatusIcon.Text = "Create Synchronicity - Running"
+        Me.StatusIcon.Text = "\RUNNING"
         '
         'StatusIconMenu
         '
@@ -573,7 +573,7 @@ Partial Class SynchronizeForm
         '
         Me.StatusIconCancelMenuItem.Name = "StatusIconCancelMenuItem"
         Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(127, 22)
-        Me.StatusIconCancelMenuItem.Text = "Cancel"
+        Me.StatusIconCancelMenuItem.Text = "CANCEL"
         '
         'SynchronizeForm
         '
@@ -588,7 +588,7 @@ Partial Class SynchronizeForm
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SynchronizeForm"
         Me.ShowInTaskbar = False
-        Me.Text = "Synchronizing"
+        Me.Text = "SYNCHRONIZING"
         Me.MainLayoutPanel.ResumeLayout(False)
         Me.Step3LayoutPanel.ResumeLayout(False)
         Me.Step3LayoutPanel.PerformLayout()

@@ -21,11 +21,13 @@ Public Module ConfigOptions
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
 
+    Public Const Language As String = "Language"
     Public Const AutoUpdates As String = "Auto updates"
 
     Dim ProgramSettingsLoaded As Boolean = False
     Public ConfigRootDir As String = Application.StartupPath & "\config"
     Public LogRootDir As String = Application.StartupPath & "\log"
+    Public LanguageRootDir As String = Application.StartupPath & "\languages"
     Public MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
 
     Dim ProgramSettings As New Dictionary(Of String, String)
@@ -47,14 +49,14 @@ Public Module ConfigOptions
             Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
-                If Microsoft.VisualBasic.MsgBox("A new version of Create Synchronicity is available!" & Microsoft.VisualBasic.vbNewLine & "Installed version: " & Application.ProductVersion & Microsoft.VisualBasic.vbNewLine & "Current version: " & CurrentVersion & Microsoft.VisualBasic.vbNewLine & "Visit download website?", Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, "New version available!") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                If Microsoft.VisualBasic.MsgBox(String.Format("A new version of Create Synchronicity is available!\nInstalled version: {0}\nCurrent version: {1}\nVisit download website?", Application.ProductVersion, CurrentVersion), Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, "New version available!") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
                 End If
             Else
                 If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox("No updates available", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
             End If
         Catch Ex As Exception
-            Microsoft.VisualBasic.MsgBox("Unable to connect to ""http://synchronicity.sourceforge.net"". Disable searching for updates by clicking ""About"".", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Network error!")
+            Microsoft.VisualBasic.MsgBox("Unable to reach ""http://synchronicity.sourceforge.net"". You can disable auto-updates by clicking ""About"".", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Network error!")
         End Try
     End Sub
 
@@ -100,8 +102,8 @@ Public Module ConfigOptions
         My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
     End Sub
 
-    Public Function ProgramSettingsSet() As Boolean
-        Return ProgramSettings.ContainsKey(ConfigOptions.AutoUpdates)
+    Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
+        Return ProgramSettings.ContainsKey(Setting)
     End Function
 End Module
 
@@ -201,11 +203,11 @@ Class SettingsHandler
         For Each Pair As KeyValuePair(Of String, String) In PredicateConfigMatchingList
             If Not Configuration.ContainsKey(Pair.Key) Then
                 IsValid = False
-                InvalidListing.Add("""" & Pair.Key & """ setting is not set.")
+                InvalidListing.Add(String.Format("""{0}"" setting is not set.", Pair.Key))
             Else
                 If Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
                     IsValid = False
-                    InvalidListing.Add("Value for """ & Pair.Key & """ setting is invalid.")
+                    InvalidListing.Add(String.Format("Value for ""{0}"" setting is invalid.", Pair.Key))
                 End If
             End If
         Next

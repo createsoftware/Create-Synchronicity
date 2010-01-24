@@ -1,4 +1,4 @@
-﻿'This file is part of Create Synchronicity.
+'This file is part of Create Synchronicity.
 '
 'Create Synchronicity is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 'Create Synchronicity is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
@@ -72,10 +72,10 @@ Partial Class Settings
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
         Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox
-        Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
-        Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
-        Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label
+        Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label
+        Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
+        Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -113,7 +113,7 @@ Partial Class Settings
         Me.Settings_DirectoriesBox.Size = New System.Drawing.Size(674, 71)
         Me.Settings_DirectoriesBox.TabIndex = 1
         Me.Settings_DirectoriesBox.TabStop = False
-        Me.Settings_DirectoriesBox.Text = "Directories"
+        Me.Settings_DirectoriesBox.Text = "\DIRECTORIES"
         '
         'Settings_BrowseRButton
         '
@@ -150,7 +150,7 @@ Partial Class Settings
         Me.Settings_ToLabel.Name = "Settings_ToLabel"
         Me.Settings_ToLabel.Size = New System.Drawing.Size(59, 21)
         Me.Settings_ToLabel.TabIndex = 4
-        Me.Settings_ToLabel.Text = "To: "
+        Me.Settings_ToLabel.Text = "\TO"
         Me.Settings_ToLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Settings_FromLabel
@@ -159,7 +159,7 @@ Partial Class Settings
         Me.Settings_FromLabel.Name = "Settings_FromLabel"
         Me.Settings_FromLabel.Size = New System.Drawing.Size(62, 21)
         Me.Settings_FromLabel.TabIndex = 2
-        Me.Settings_FromLabel.Text = "From: "
+        Me.Settings_FromLabel.Text = "\FROM"
         Me.Settings_FromLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Settings_ViewsLayoutPanel
@@ -200,19 +200,19 @@ Partial Class Settings
         Me.Settings_TreeViewMenuStrip.Name = "Settings_TreeViewMenuStrip"
         Me.Settings_TreeViewMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Settings_TreeViewMenuStrip.ShowImageMargin = False
-        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(200, 48)
+        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(149, 48)
         '
         'Settings_SynchronizeAllSubfoldersMenuItem
         '
         Me.Settings_SynchronizeAllSubfoldersMenuItem.Name = "Settings_SynchronizeAllSubfoldersMenuItem"
-        Me.Settings_SynchronizeAllSubfoldersMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.Settings_SynchronizeAllSubfoldersMenuItem.Text = "Synchronize all subfolders"
+        Me.Settings_SynchronizeAllSubfoldersMenuItem.Size = New System.Drawing.Size(148, 22)
+        Me.Settings_SynchronizeAllSubfoldersMenuItem.Text = "\ALL_SUBFOLDERS"
         '
         'Settings_DontSynchronizeSubfoldersMenuItem
         '
         Me.Settings_DontSynchronizeSubfoldersMenuItem.Name = "Settings_DontSynchronizeSubfoldersMenuItem"
-        Me.Settings_DontSynchronizeSubfoldersMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.Settings_DontSynchronizeSubfoldersMenuItem.Text = "Don't Synchronize subfolders"
+        Me.Settings_DontSynchronizeSubfoldersMenuItem.Size = New System.Drawing.Size(148, 22)
+        Me.Settings_DontSynchronizeSubfoldersMenuItem.Text = "\NO_SUBFOLDERS"
         '
         'Settings_RightView
         '
@@ -239,18 +239,18 @@ Partial Class Settings
         Me.Settings_LeftViewLabel.AutoSize = True
         Me.Settings_LeftViewLabel.Location = New System.Drawing.Point(3, 0)
         Me.Settings_LeftViewLabel.Name = "Settings_LeftViewLabel"
-        Me.Settings_LeftViewLabel.Size = New System.Drawing.Size(60, 13)
+        Me.Settings_LeftViewLabel.Size = New System.Drawing.Size(74, 13)
         Me.Settings_LeftViewLabel.TabIndex = 5
-        Me.Settings_LeftViewLabel.Text = "Left side:"
+        Me.Settings_LeftViewLabel.Text = "\LEFT_SIDE"
         '
         'Settings_RightViewLabel
         '
         Me.Settings_RightViewLabel.AutoSize = True
         Me.Settings_RightViewLabel.Location = New System.Drawing.Point(354, 0)
         Me.Settings_RightViewLabel.Name = "Settings_RightViewLabel"
-        Me.Settings_RightViewLabel.Size = New System.Drawing.Size(68, 13)
+        Me.Settings_RightViewLabel.Size = New System.Drawing.Size(85, 13)
         Me.Settings_RightViewLabel.TabIndex = 6
-        Me.Settings_RightViewLabel.Text = "Right side:"
+        Me.Settings_RightViewLabel.Text = "\RIGHT_SIDE"
         '
         'Settings_ViewsBox
         '
@@ -263,7 +263,7 @@ Partial Class Settings
         Me.Settings_ViewsBox.Size = New System.Drawing.Size(674, 159)
         Me.Settings_ViewsBox.TabIndex = 4
         Me.Settings_ViewsBox.TabStop = False
-        Me.Settings_ViewsBox.Text = "Subdirectories"
+        Me.Settings_ViewsBox.Text = "\SUBDIRECTORIES"
         '
         'Settings_SynchronizationMethodBox
         '
@@ -278,7 +278,7 @@ Partial Class Settings
         Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 97)
         Me.Settings_SynchronizationMethodBox.TabIndex = 5
         Me.Settings_SynchronizationMethodBox.TabStop = False
-        Me.Settings_SynchronizationMethodBox.Text = "Synchronization method"
+        Me.Settings_SynchronizationMethodBox.Text = "\METHOD"
         '
         'Settings_Tips
         '
@@ -289,7 +289,7 @@ Partial Class Settings
         Me.Settings_Tips.Name = "Settings_Tips"
         Me.Settings_Tips.Size = New System.Drawing.Size(668, 77)
         Me.Settings_Tips.TabIndex = 8
-        Me.Settings_Tips.Text = resources.GetString("Settings_Tips.Text")
+        Me.Settings_Tips.Text = "\SETTINGS_TIPS"
         Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Settings_Tips.Visible = False
         '
@@ -298,9 +298,9 @@ Partial Class Settings
         Me.Settings_StrictMirrorOption.AutoSize = True
         Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(43, 74)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
-        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(352, 17)
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 9
-        Me.Settings_StrictMirrorOption.Text = "Strict mirror: revert files that were modified on the right."
+        Me.Settings_StrictMirrorOption.Text = "\STRICT_MIRROR_DESC"
         Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
         '
         'Settings_MethodLayoutPanel
@@ -324,26 +324,24 @@ Partial Class Settings
         '
         Me.Settings_TwoWaysIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_TwoWaysIncrementalMethodOption.AutoSize = True
-        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(479, 3)
+        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(466, 3)
         Me.Settings_TwoWaysIncrementalMethodOption.Name = "Settings_TwoWaysIncrementalMethodOption"
-        Me.Settings_TwoWaysIncrementalMethodOption.Size = New System.Drawing.Size(153, 17)
+        Me.Settings_TwoWaysIncrementalMethodOption.Size = New System.Drawing.Size(180, 17)
         Me.Settings_TwoWaysIncrementalMethodOption.TabIndex = 2
-        Me.Settings_TwoWaysIncrementalMethodOption.Tag = "%s copies all files both ways, without deleting any.\nNew and modified files are " & _
-            "copied both ways, nothing is deleted."
-        Me.Settings_TwoWaysIncrementalMethodOption.Text = "Two-ways incremental"
+        Me.Settings_TwoWaysIncrementalMethodOption.Tag = "\TWOWAYS_INCREMENTAL_TAG"
+        Me.Settings_TwoWaysIncrementalMethodOption.Text = "\TWOWAYS_INCREMENTAL"
         Me.Settings_TwoWaysIncrementalMethodOption.UseVisualStyleBackColor = True
         '
         'Settings_LRIncrementalMethodOption
         '
         Me.Settings_LRIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_LRIncrementalMethodOption.AutoSize = True
-        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(244, 3)
+        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(266, 3)
         Me.Settings_LRIncrementalMethodOption.Name = "Settings_LRIncrementalMethodOption"
-        Me.Settings_LRIncrementalMethodOption.Size = New System.Drawing.Size(177, 17)
+        Me.Settings_LRIncrementalMethodOption.Size = New System.Drawing.Size(133, 17)
         Me.Settings_LRIncrementalMethodOption.TabIndex = 1
-        Me.Settings_LRIncrementalMethodOption.Tag = "%s saves source files to destination.\nNew and modified files are copied left to " & _
-            "right, but no files are deleted."
-        Me.Settings_LRIncrementalMethodOption.Text = "Left to Right (Incremental)"
+        Me.Settings_LRIncrementalMethodOption.Tag = "\LR_INCREMENTAL_TAG"
+        Me.Settings_LRIncrementalMethodOption.Text = "\LR_INCREMENTAL"
         Me.Settings_LRIncrementalMethodOption.UseVisualStyleBackColor = True
         '
         'Settings_LRMirrorMethodOption
@@ -351,15 +349,13 @@ Partial Class Settings
         Me.Settings_LRMirrorMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_LRMirrorMethodOption.AutoSize = True
         Me.Settings_LRMirrorMethodOption.Checked = True
-        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(40, 3)
+        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(62, 3)
         Me.Settings_LRMirrorMethodOption.Name = "Settings_LRMirrorMethodOption"
-        Me.Settings_LRMirrorMethodOption.Size = New System.Drawing.Size(142, 17)
+        Me.Settings_LRMirrorMethodOption.Size = New System.Drawing.Size(98, 17)
         Me.Settings_LRMirrorMethodOption.TabIndex = 0
         Me.Settings_LRMirrorMethodOption.TabStop = True
-        Me.Settings_LRMirrorMethodOption.Tag = "%s creates a clone of the left side on the right and copies all files from source" & _
-            " to destination.\nNew and modified files are copied left to right, deletes on th" & _
-            "e left are repeated on the right."
-        Me.Settings_LRMirrorMethodOption.Text = "Left to Right (Mirror)"
+        Me.Settings_LRMirrorMethodOption.Tag = "\LR_MIRROR_TAG"
+        Me.Settings_LRMirrorMethodOption.Text = "\LR_MIRROR"
         Me.Settings_LRMirrorMethodOption.UseVisualStyleBackColor = True
         '
         'Settings_DescriptionLabel
@@ -371,8 +367,8 @@ Partial Class Settings
         Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
         Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 51)
         Me.Settings_DescriptionLabel.TabIndex = 1
-        Me.Settings_DescriptionLabel.Tag = "Move your mouse over an option to see a more detailed description"
-        Me.Settings_DescriptionLabel.Text = "Move your mouse over an option to see a more detailed description"
+        Me.Settings_DescriptionLabel.Tag = "\MOUSE_OVER"
+        Me.Settings_DescriptionLabel.Text = "\MOUSE_OVER"
         '
         'Settings_IncludeExcludeBox
         '
@@ -386,7 +382,7 @@ Partial Class Settings
         Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(674, 97)
         Me.Settings_IncludeExcludeBox.TabIndex = 6
         Me.Settings_IncludeExcludeBox.TabStop = False
-        Me.Settings_IncludeExcludeBox.Text = "Include or exclude file types"
+        Me.Settings_IncludeExcludeBox.Text = "\INCLUDE_EXCLUDE"
         '
         'Settings_CopyAllFilesCheckBox
         '
@@ -395,9 +391,9 @@ Partial Class Settings
         Me.Settings_CopyAllFilesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_CopyAllFilesCheckBox.Location = New System.Drawing.Point(6, 20)
         Me.Settings_CopyAllFilesCheckBox.Name = "Settings_CopyAllFilesCheckBox"
-        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(100, 17)
+        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(90, 17)
         Me.Settings_CopyAllFilesCheckBox.TabIndex = 5
-        Me.Settings_CopyAllFilesCheckBox.Text = "Copy all files"
+        Me.Settings_CopyAllFilesCheckBox.Text = "\ALL_FILES"
         Me.Settings_CopyAllFilesCheckBox.UseVisualStyleBackColor = True
         '
         'Settings_IncludeExcludeLayoutPanel
@@ -443,10 +439,10 @@ Partial Class Settings
         Me.Settings_IncludeFilesOption.AutoSize = True
         Me.Settings_IncludeFilesOption.Location = New System.Drawing.Point(3, 3)
         Me.Settings_IncludeFilesOption.Name = "Settings_IncludeFilesOption"
-        Me.Settings_IncludeFilesOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_IncludeFilesOption.Size = New System.Drawing.Size(104, 17)
         Me.Settings_IncludeFilesOption.TabIndex = 9
         Me.Settings_IncludeFilesOption.TabStop = True
-        Me.Settings_IncludeFilesOption.Text = "Include these files only:"
+        Me.Settings_IncludeFilesOption.Text = "\THESE_ONLY"
         Me.Settings_IncludeFilesOption.UseVisualStyleBackColor = True
         '
         'Settings_ExcludeFilesOption
@@ -454,10 +450,10 @@ Partial Class Settings
         Me.Settings_ExcludeFilesOption.AutoSize = True
         Me.Settings_ExcludeFilesOption.Location = New System.Drawing.Point(337, 3)
         Me.Settings_ExcludeFilesOption.Name = "Settings_ExcludeFilesOption"
-        Me.Settings_ExcludeFilesOption.Size = New System.Drawing.Size(136, 17)
+        Me.Settings_ExcludeFilesOption.Size = New System.Drawing.Size(128, 17)
         Me.Settings_ExcludeFilesOption.TabIndex = 10
         Me.Settings_ExcludeFilesOption.TabStop = True
-        Me.Settings_ExcludeFilesOption.Text = "Exclude these files:"
+        Me.Settings_ExcludeFilesOption.Text = "\EXCLUDE_THESE"
         Me.Settings_ExcludeFilesOption.UseVisualStyleBackColor = True
         '
         'Settings_ReplicateEmptyDirectoriesOption
@@ -466,11 +462,11 @@ Partial Class Settings
         Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
         Me.Settings_ReplicateEmptyDirectoriesOption.Checked = True
         Me.Settings_ReplicateEmptyDirectoriesOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(489, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(532, 20)
         Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
-        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(182, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(139, 17)
         Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 8
-        Me.Settings_ReplicateEmptyDirectoriesOption.Text = "Replicate empty directories"
+        Me.Settings_ReplicateEmptyDirectoriesOption.Text = "\REPLICATE_EMPTY"
         Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Settings_ReplicateEmptyDirectoriesOption.UseVisualStyleBackColor = True
         '
@@ -481,11 +477,10 @@ Partial Class Settings
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(6, 20)
         Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
-        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(133, 17)
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(101, 17)
         Me.Settings_PropagateUpdatesOption.TabIndex = 9
-        Me.Settings_PropagateUpdatesOption.Tag = "Checked, updated files are copied. Unchecked, only new and deleted files are sync" & _
-            "hronized."
-        Me.Settings_PropagateUpdatesOption.Text = "Propagate updates"
+        Me.Settings_PropagateUpdatesOption.Tag = "\PROPAGATE_TAG"
+        Me.Settings_PropagateUpdatesOption.Text = "\PROPAGATE"
         Me.Settings_PropagateUpdatesOption.UseVisualStyleBackColor = True
         '
         'Settings_ActionsPanel
@@ -512,7 +507,7 @@ Partial Class Settings
         Me.Settings_CancelButton.Name = "Settings_CancelButton"
         Me.Settings_CancelButton.Size = New System.Drawing.Size(94, 25)
         Me.Settings_CancelButton.TabIndex = 1
-        Me.Settings_CancelButton.Text = "Cancel"
+        Me.Settings_CancelButton.Text = "\CANCEL"
         Me.Settings_CancelButton.UseVisualStyleBackColor = True
         '
         'Settings_SaveButton
@@ -524,14 +519,14 @@ Partial Class Settings
         Me.Settings_SaveButton.Name = "Settings_SaveButton"
         Me.Settings_SaveButton.Size = New System.Drawing.Size(94, 25)
         Me.Settings_SaveButton.TabIndex = 0
-        Me.Settings_SaveButton.Text = "Save"
+        Me.Settings_SaveButton.Text = "\SAVE"
         Me.Settings_SaveButton.UseVisualStyleBackColor = True
         '
         'Settings_FolderBrowser
         '
-        Me.Settings_FolderBrowser.Description = "Select a folder to copy the files %."
+        Me.Settings_FolderBrowser.Description = "\SELECT_FOLDER"
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
-        Me.Settings_FolderBrowser.Tag = "Select a folder to copy the files %."
+        Me.Settings_FolderBrowser.Tag = "\SELECT_FOLDER"
         '
         'Settings_ComputeHashOption
         '
@@ -539,9 +534,9 @@ Partial Class Settings
         Me.Settings_ComputeHashOption.AutoSize = True
         Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(219, 20)
         Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
-        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(237, 17)
+        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(126, 17)
         Me.Settings_ComputeHashOption.TabIndex = 8
-        Me.Settings_ComputeHashOption.Text = "Compute hash before copying (slow)"
+        Me.Settings_ComputeHashOption.Text = "\COMPUTE_HASH"
         Me.Settings_ComputeHashOption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.Settings_ComputeHashOption.UseVisualStyleBackColor = True
         '
@@ -559,15 +554,26 @@ Partial Class Settings
         Me.Settings_AdvancedBox.Size = New System.Drawing.Size(674, 45)
         Me.Settings_AdvancedBox.TabIndex = 9
         Me.Settings_AdvancedBox.TabStop = False
-        Me.Settings_AdvancedBox.Text = "Advanced options"
+        Me.Settings_AdvancedBox.Text = "\ADVANCED_OPTS"
         '
-        'Settings_BottomDescLabel
+        'Settings_TimeOffsetHoursLabel
         '
-        Me.Settings_BottomDescLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 511)
-        Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
-        Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
-        Me.Settings_BottomDescLabel.TabIndex = 10
+        Me.Settings_TimeOffsetHoursLabel.AutoSize = True
+        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(625, 21)
+        Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
+        Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(53, 13)
+        Me.Settings_TimeOffsetHoursLabel.TabIndex = 12
+        Me.Settings_TimeOffsetHoursLabel.Text = "\HOURS"
+        '
+        'Settings_TimeOffsetLabel
+        '
+        Me.Settings_TimeOffsetLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(461, 21)
+        Me.Settings_TimeOffsetLabel.Name = "Settings_TimeOffsetLabel"
+        Me.Settings_TimeOffsetLabel.Size = New System.Drawing.Size(117, 13)
+        Me.Settings_TimeOffsetLabel.TabIndex = 11
+        Me.Settings_TimeOffsetLabel.Text = "\TIME_OFFSET"
+        Me.Settings_TimeOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Settings_TimeOffset
         '
@@ -578,23 +584,13 @@ Partial Class Settings
         Me.Settings_TimeOffset.Size = New System.Drawing.Size(35, 21)
         Me.Settings_TimeOffset.TabIndex = 10
         '
-        'Settings_TimeOffsetLabel
+        'Settings_BottomDescLabel
         '
-        Me.Settings_TimeOffsetLabel.AutoSize = True
-        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(502, 21)
-        Me.Settings_TimeOffsetLabel.Name = "Settings_TimeOffsetLabel"
-        Me.Settings_TimeOffsetLabel.Size = New System.Drawing.Size(76, 13)
-        Me.Settings_TimeOffsetLabel.TabIndex = 11
-        Me.Settings_TimeOffsetLabel.Text = "Time offset:"
-        '
-        'Settings_TimeOffsetHoursLabel
-        '
-        Me.Settings_TimeOffsetHoursLabel.AutoSize = True
-        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(625, 21)
-        Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
-        Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(43, 13)
-        Me.Settings_TimeOffsetHoursLabel.TabIndex = 12
-        Me.Settings_TimeOffsetHoursLabel.Text = "hours."
+        Me.Settings_BottomDescLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 511)
+        Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
+        Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
+        Me.Settings_BottomDescLabel.TabIndex = 10
         '
         'Settings
         '
@@ -612,7 +608,7 @@ Partial Class Settings
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "Settings"
         Me.ShowInTaskbar = False
-        Me.Text = "Settings"
+        Me.Text = "\SETTINGS"
         Me.Settings_DirectoriesBox.ResumeLayout(False)
         Me.Settings_DirectoriesBox.PerformLayout()
         Me.Settings_ViewsLayoutPanel.ResumeLayout(False)

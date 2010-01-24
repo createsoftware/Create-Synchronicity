@@ -1,4 +1,4 @@
-﻿'This file is part of Create Synchronicity.
+'This file is part of Create Synchronicity.
 '
 'Create Synchronicity is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 'Create Synchronicity is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
@@ -31,8 +31,8 @@ Partial Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Actions", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Profiles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
         Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "New profile"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Create a new profile", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Main_Actions = New System.Windows.Forms.ListView
@@ -70,9 +70,9 @@ Partial Class MainForm
         '
         Me.Main_Actions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Actions_NameColumn, Me.Main_MethodsColumn})
         Me.Main_Actions.Dock = System.Windows.Forms.DockStyle.Fill
-        ListViewGroup1.Header = "Actions"
+        ListViewGroup1.Header = "\ACTIONS"
         ListViewGroup1.Name = "Actions"
-        ListViewGroup2.Header = "Profiles"
+        ListViewGroup2.Header = "\PROFILES"
         ListViewGroup2.Name = "Profiles"
         Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2})
         ListViewItem1.Group = ListViewGroup1
@@ -91,11 +91,11 @@ Partial Class MainForm
         '
         'Actions_NameColumn
         '
-        Me.Actions_NameColumn.Text = "Name"
+        Me.Actions_NameColumn.Text = "\NAME"
         '
         'Main_MethodsColumn
         '
-        Me.Main_MethodsColumn.Text = "Method"
+        Me.Main_MethodsColumn.Text = "\METHOD"
         '
         'Main_SyncIcons
         '
@@ -153,9 +153,9 @@ Partial Class MainForm
         Me.Main_Destination.AutoSize = True
         Me.Main_InfoLayout.SetColumnSpan(Me.Main_Destination, 3)
         Me.Main_Destination.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_Destination.Location = New System.Drawing.Point(87, 85)
+        Me.Main_Destination.Location = New System.Drawing.Point(104, 85)
         Me.Main_Destination.Name = "Main_Destination"
-        Me.Main_Destination.Size = New System.Drawing.Size(240, 28)
+        Me.Main_Destination.Size = New System.Drawing.Size(223, 28)
         Me.Main_Destination.TabIndex = 11
         Me.Main_Destination.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -165,9 +165,9 @@ Partial Class MainForm
         Me.Main_DestinationLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Main_DestinationLabel.Location = New System.Drawing.Point(4, 85)
         Me.Main_DestinationLabel.Name = "Main_DestinationLabel"
-        Me.Main_DestinationLabel.Size = New System.Drawing.Size(76, 28)
+        Me.Main_DestinationLabel.Size = New System.Drawing.Size(93, 28)
         Me.Main_DestinationLabel.TabIndex = 10
-        Me.Main_DestinationLabel.Text = "Destination:"
+        Me.Main_DestinationLabel.Text = "\DESTINATION"
         Me.Main_DestinationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_Source
@@ -175,9 +175,9 @@ Partial Class MainForm
         Me.Main_Source.AutoSize = True
         Me.Main_InfoLayout.SetColumnSpan(Me.Main_Source, 3)
         Me.Main_Source.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_Source.Location = New System.Drawing.Point(87, 57)
+        Me.Main_Source.Location = New System.Drawing.Point(104, 57)
         Me.Main_Source.Name = "Main_Source"
-        Me.Main_Source.Size = New System.Drawing.Size(240, 27)
+        Me.Main_Source.Size = New System.Drawing.Size(223, 27)
         Me.Main_Source.TabIndex = 9
         Me.Main_Source.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -187,18 +187,18 @@ Partial Class MainForm
         Me.Main_SourceLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Main_SourceLabel.Location = New System.Drawing.Point(4, 57)
         Me.Main_SourceLabel.Name = "Main_SourceLabel"
-        Me.Main_SourceLabel.Size = New System.Drawing.Size(76, 27)
+        Me.Main_SourceLabel.Size = New System.Drawing.Size(93, 27)
         Me.Main_SourceLabel.TabIndex = 8
-        Me.Main_SourceLabel.Text = "Source:"
+        Me.Main_SourceLabel.Text = "\SOURCE"
         Me.Main_SourceLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_FileTypes
         '
         Me.Main_FileTypes.AutoSize = True
         Me.Main_FileTypes.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_FileTypes.Location = New System.Drawing.Point(271, 29)
+        Me.Main_FileTypes.Location = New System.Drawing.Point(284, 29)
         Me.Main_FileTypes.Name = "Main_FileTypes"
-        Me.Main_FileTypes.Size = New System.Drawing.Size(56, 27)
+        Me.Main_FileTypes.Size = New System.Drawing.Size(43, 27)
         Me.Main_FileTypes.TabIndex = 7
         Me.Main_FileTypes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -206,20 +206,20 @@ Partial Class MainForm
         '
         Me.Main_FileTypesLabel.AutoSize = True
         Me.Main_FileTypesLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_FileTypesLabel.Location = New System.Drawing.Point(180, 29)
+        Me.Main_FileTypesLabel.Location = New System.Drawing.Point(178, 29)
         Me.Main_FileTypesLabel.Name = "Main_FileTypesLabel"
-        Me.Main_FileTypesLabel.Size = New System.Drawing.Size(84, 27)
+        Me.Main_FileTypesLabel.Size = New System.Drawing.Size(99, 27)
         Me.Main_FileTypesLabel.TabIndex = 6
-        Me.Main_FileTypesLabel.Text = "Filetypes:"
+        Me.Main_FileTypesLabel.Text = "\FILETYPES"
         Me.Main_FileTypesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_Method
         '
         Me.Main_Method.AutoSize = True
         Me.Main_Method.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_Method.Location = New System.Drawing.Point(87, 29)
+        Me.Main_Method.Location = New System.Drawing.Point(104, 29)
         Me.Main_Method.Name = "Main_Method"
-        Me.Main_Method.Size = New System.Drawing.Size(86, 27)
+        Me.Main_Method.Size = New System.Drawing.Size(67, 27)
         Me.Main_Method.TabIndex = 5
         Me.Main_Method.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -229,18 +229,18 @@ Partial Class MainForm
         Me.Main_MethodLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Main_MethodLabel.Location = New System.Drawing.Point(4, 29)
         Me.Main_MethodLabel.Name = "Main_MethodLabel"
-        Me.Main_MethodLabel.Size = New System.Drawing.Size(76, 27)
+        Me.Main_MethodLabel.Size = New System.Drawing.Size(93, 27)
         Me.Main_MethodLabel.TabIndex = 4
-        Me.Main_MethodLabel.Text = "Method:"
+        Me.Main_MethodLabel.Text = "\METHOD"
         Me.Main_MethodLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_LimitedCopy
         '
         Me.Main_LimitedCopy.AutoSize = True
         Me.Main_LimitedCopy.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_LimitedCopy.Location = New System.Drawing.Point(271, 1)
+        Me.Main_LimitedCopy.Location = New System.Drawing.Point(284, 1)
         Me.Main_LimitedCopy.Name = "Main_LimitedCopy"
-        Me.Main_LimitedCopy.Size = New System.Drawing.Size(56, 27)
+        Me.Main_LimitedCopy.Size = New System.Drawing.Size(43, 27)
         Me.Main_LimitedCopy.TabIndex = 3
         Me.Main_LimitedCopy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -248,20 +248,20 @@ Partial Class MainForm
         '
         Me.Main_LimitedCopyLabel.AutoSize = True
         Me.Main_LimitedCopyLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_LimitedCopyLabel.Location = New System.Drawing.Point(180, 1)
+        Me.Main_LimitedCopyLabel.Location = New System.Drawing.Point(178, 1)
         Me.Main_LimitedCopyLabel.Name = "Main_LimitedCopyLabel"
-        Me.Main_LimitedCopyLabel.Size = New System.Drawing.Size(84, 27)
+        Me.Main_LimitedCopyLabel.Size = New System.Drawing.Size(99, 27)
         Me.Main_LimitedCopyLabel.TabIndex = 2
-        Me.Main_LimitedCopyLabel.Text = "Limited copy:"
+        Me.Main_LimitedCopyLabel.Text = "\LIMITED_COPY"
         Me.Main_LimitedCopyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_Name
         '
         Me.Main_Name.AutoSize = True
         Me.Main_Name.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_Name.Location = New System.Drawing.Point(87, 1)
+        Me.Main_Name.Location = New System.Drawing.Point(104, 1)
         Me.Main_Name.Name = "Main_Name"
-        Me.Main_Name.Size = New System.Drawing.Size(86, 27)
+        Me.Main_Name.Size = New System.Drawing.Size(67, 27)
         Me.Main_Name.TabIndex = 1
         Me.Main_Name.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -271,9 +271,9 @@ Partial Class MainForm
         Me.Main_NameLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Main_NameLabel.Location = New System.Drawing.Point(4, 1)
         Me.Main_NameLabel.Name = "Main_NameLabel"
-        Me.Main_NameLabel.Size = New System.Drawing.Size(76, 27)
+        Me.Main_NameLabel.Size = New System.Drawing.Size(93, 27)
         Me.Main_NameLabel.TabIndex = 0
-        Me.Main_NameLabel.Text = "Name:"
+        Me.Main_NameLabel.Text = "\NAME"
         Me.Main_NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_ActionsMenu
@@ -281,64 +281,64 @@ Partial Class MainForm
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(165, 120)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 120)
         '
         'PreviewMenuItem
         '
         Me.PreviewMenuItem.Image = CType(resources.GetObject("PreviewMenuItem.Image"), System.Drawing.Image)
         Me.PreviewMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.PreviewMenuItem.Name = "PreviewMenuItem"
-        Me.PreviewMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.PreviewMenuItem.Text = "Preview"
+        Me.PreviewMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.PreviewMenuItem.Text = "\PREVIEW"
         '
         'SynchronizeMenuItem
         '
         Me.SynchronizeMenuItem.Image = CType(resources.GetObject("SynchronizeMenuItem.Image"), System.Drawing.Image)
         Me.SynchronizeMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.SynchronizeMenuItem.Name = "SynchronizeMenuItem"
-        Me.SynchronizeMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.SynchronizeMenuItem.Text = "Synchronize"
+        Me.SynchronizeMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.SynchronizeMenuItem.Text = "\SYNCHRONIZE"
         '
         'Main_ChangeSettingsMenuItem
         '
         Me.Main_ChangeSettingsMenuItem.Image = CType(resources.GetObject("Main_ChangeSettingsMenuItem.Image"), System.Drawing.Image)
         Me.Main_ChangeSettingsMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.Main_ChangeSettingsMenuItem.Name = "Main_ChangeSettingsMenuItem"
-        Me.Main_ChangeSettingsMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.Main_ChangeSettingsMenuItem.Text = "Change Settings"
+        Me.Main_ChangeSettingsMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.Main_ChangeSettingsMenuItem.Text = "\CHANGE_SETTINGS"
         '
         'Main_ActionsMenuToolStripSeparator
         '
         Me.Main_ActionsMenuToolStripSeparator.Name = "Main_ActionsMenuToolStripSeparator"
-        Me.Main_ActionsMenuToolStripSeparator.Size = New System.Drawing.Size(161, 6)
+        Me.Main_ActionsMenuToolStripSeparator.Size = New System.Drawing.Size(181, 6)
         '
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Image = CType(resources.GetObject("DeleteToolStripMenuItem.Image"), System.Drawing.Image)
         Me.DeleteToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.DeleteToolStripMenuItem.Text = "Delete"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.DeleteToolStripMenuItem.Text = "\DELETE"
         '
         'ViewLogMenuItem
         '
         Me.ViewLogMenuItem.Image = CType(resources.GetObject("ViewLogMenuItem.Image"), System.Drawing.Image)
         Me.ViewLogMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.ViewLogMenuItem.Name = "ViewLogMenuItem"
-        Me.ViewLogMenuItem.Size = New System.Drawing.Size(164, 22)
-        Me.ViewLogMenuItem.Text = "View log"
+        Me.ViewLogMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.ViewLogMenuItem.Text = "\VIEW_LOG"
         '
         'Main_AboutLinkLabel
         '
         Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Main_AboutLinkLabel.AutoSize = True
-        Me.Main_AboutLinkLabel.BackColor = System.Drawing.SystemColors.Window
-        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(314, 3)
+        Me.Main_AboutLinkLabel.BackColor = System.Drawing.Color.Transparent
+        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(279, 5)
         Me.Main_AboutLinkLabel.Name = "Main_AboutLinkLabel"
-        Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(40, 13)
+        Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(75, 13)
         Me.Main_AboutLinkLabel.TabIndex = 2
         Me.Main_AboutLinkLabel.TabStop = True
-        Me.Main_AboutLinkLabel.Text = "About"
+        Me.Main_AboutLinkLabel.Text = "\ABOUT"
+        Me.Main_AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Main_AboutLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue
         '
         'MainForm
@@ -359,7 +359,6 @@ Partial Class MainForm
         Me.Main_InfoLayout.PerformLayout()
         Me.Main_ActionsMenu.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Main_Actions As System.Windows.Forms.ListView

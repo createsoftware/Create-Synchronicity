@@ -1,4 +1,4 @@
-﻿'This file is part of Create Synchronicity.
+'This file is part of Create Synchronicity.
 '
 'Create Synchronicity is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 'Create Synchronicity is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
@@ -84,7 +84,7 @@ Partial Class AboutForm
         Me.About_LinkToWebsite.Size = New System.Drawing.Size(301, 20)
         Me.About_LinkToWebsite.TabIndex = 1
         Me.About_LinkToWebsite.TabStop = True
-        Me.About_LinkToWebsite.Text = "An application by Create (Clément Pit--Claudel)"
+        Me.About_LinkToWebsite.Text = "\LINKTOWEBSITE_TEXT"
         Me.About_LinkToWebsite.UseCompatibleTextRendering = True
         '
         'About_VersionInfo
@@ -95,7 +95,7 @@ Partial Class AboutForm
         Me.About_VersionInfo.Size = New System.Drawing.Size(301, 20)
         Me.About_VersionInfo.TabIndex = 2
         Me.About_VersionInfo.TabStop = True
-        Me.About_VersionInfo.Text = "Version %version% (Search for updates)"
+        Me.About_VersionInfo.Text = "\VERSION_TEXT"
         Me.About_VersionInfo.UseCompatibleTextRendering = True
         '
         'About_ContactLink
@@ -106,7 +106,7 @@ Partial Class AboutForm
         Me.About_ContactLink.Size = New System.Drawing.Size(301, 20)
         Me.About_ContactLink.TabIndex = 3
         Me.About_ContactLink.TabStop = True
-        Me.About_ContactLink.Text = "Contact the author (createcorpsoftware@yahoo.fr)"
+        Me.About_ContactLink.Text = "\CONTACT_LINK"
         Me.About_ContactLink.UseCompatibleTextRendering = True
         '
         'About_LinkToLicense
@@ -117,7 +117,7 @@ Partial Class AboutForm
         Me.About_LinkToLicense.Size = New System.Drawing.Size(301, 20)
         Me.About_LinkToLicense.TabIndex = 4
         Me.About_LinkToLicense.TabStop = True
-        Me.About_LinkToLicense.Text = "Licensed under GNU GPL"
+        Me.About_LinkToLicense.Text = "\LICENSE_TEXT"
         Me.About_LinkToLicense.UseCompatibleTextRendering = True
         '
         'About_BugReport
@@ -129,7 +129,7 @@ Partial Class AboutForm
         Me.About_BugReport.Size = New System.Drawing.Size(301, 20)
         Me.About_BugReport.TabIndex = 5
         Me.About_BugReport.TabStop = True
-        Me.About_BugReport.Text = "Report a bug"
+        Me.About_BugReport.Text = "\BUG_REPORT"
         '
         'About_Updates
         '
@@ -138,7 +138,7 @@ Partial Class AboutForm
         Me.About_Updates.Name = "About_Updates"
         Me.About_Updates.Size = New System.Drawing.Size(427, 17)
         Me.About_Updates.TabIndex = 2
-        Me.About_Updates.Text = "Check for updates on startup (requires a working internet connection)"
+        Me.About_Updates.Text = "\UPDATES"
         Me.About_Updates.UseVisualStyleBackColor = True
         '
         'AboutForm
@@ -153,7 +153,7 @@ Partial Class AboutForm
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "AboutForm"
         Me.ShowInTaskbar = False
-        Me.Text = "About"
+        Me.Text = "\ABOUT"
         CType(Me.About_Logo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.About_FlowLayoutPanel.ResumeLayout(False)
         Me.ResumeLayout(False)
