@@ -39,28 +39,50 @@ Public Class LanguageHandler
 
     Dim Strings As Dictionary(Of String, String)
 
-    Public Function Translate(ByVal Code As String)
-        If Code = Nothing Then Return String.Empty
+    Public Function Translate(ByVal Code As String, Optional ByVal Default_Value As String = "")
+        If Code = Nothing OrElse Code = String.Empty Then Return Default_Value
         Return If(Strings.ContainsKey(Code), Strings(Code), Code)
     End Function
 
     Public Sub TranslateControl(ByVal Ctrl As Control)
-        For Each C As Control In Ctrl.Controls
-            C.Text = Translate(C.Text)
+        If Ctrl Is Nothing Then Exit Sub
 
-            If TypeOf C Is ListView Then
-                For Each H As ListViewGroup In CType(C, ListView).Groups
-                    H.Header = Translate(H.Header)
+        'Add ; in tags so as to avoid errors when tag properties are split.
+        Ctrl.Text = Translate(Ctrl.Text)
+        TranslateControl(Ctrl.ContextMenuStrip)
+
+        If TypeOf Ctrl Is ListView Then
+            For Each Group As ListViewGroup In CType(Ctrl, ListView).Groups
+                Group.Header = Translate(Group.Header)
+            Next
+
+            For Each Item As ListViewItem In CType(Ctrl, ListView).Items
+                For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
+                    SubItem.Text = Translate(SubItem.Text)
+                    SubItem.Tag = Translate(SubItem.Tag, ";")
                 Next
-            ElseIf TypeOf C Is Label Then
-                CType(C, Label).Tag = Translate(CType(C, Label).Tag)
-            ElseIf TypeOf C Is CheckBox Then
-                CType(C, CheckBox).Tag = Translate(CType(C, CheckBox).Tag)
-            ElseIf TypeOf C Is RadioButton Then
-                CType(C, RadioButton).Tag = Translate(CType(C, RadioButton).Tag)
-            End If
+            Next
 
-            TranslateControl(C)
+        ElseIf TypeOf Ctrl Is ContextMenuStrip Then
+            For Each Item As ToolStripItem In CType(Ctrl, ContextMenuStrip).Items
+                Item.Text = Translate(Item.Text)
+            Next
+
+        ElseIf TypeOf Ctrl Is Button Then
+            CType(Ctrl, Button).Tag = Translate(CType(Ctrl, Button).Tag, ";")
+
+        ElseIf TypeOf Ctrl Is Label Then
+            CType(Ctrl, Label).Tag = Translate(CType(Ctrl, Label).Tag, ";")
+
+        ElseIf TypeOf Ctrl Is CheckBox Then
+            CType(Ctrl, CheckBox).Tag = Translate(CType(Ctrl, CheckBox).Tag, ";")
+
+        ElseIf TypeOf Ctrl Is RadioButton Then
+            CType(Ctrl, RadioButton).Tag = Translate(CType(Ctrl, RadioButton).Tag, ";")
+        End If
+
+        For Each ChildCtrl As Control In Ctrl.Controls
+            TranslateControl(ChildCtrl)
         Next
     End Sub
 End Class
