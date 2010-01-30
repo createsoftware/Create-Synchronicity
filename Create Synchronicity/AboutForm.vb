@@ -8,8 +8,8 @@
 
 Public Class AboutForm
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
-        StringTranslator.TranslateControl(Me)
+        Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+        Translation.TranslateControl(Me)
 
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
         About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
@@ -26,7 +26,6 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_VersionInfo.LinkClicked
-        'Diagnostics.Process.Start("http://synchronicity.sourceforge.net/create-synchronicity-vercheck_version=" & Application.ProductVersion)
         ConfigOptions.CheckForUpdates(False)
     End Sub
 

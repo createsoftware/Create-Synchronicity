@@ -10,7 +10,7 @@ Public Class SynchronizeForm
     Dim Log As LogHandler
     Dim Handler As SettingsHandler
 
-    Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
 
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
@@ -82,7 +82,7 @@ Public Class SynchronizeForm
         If Quiet Then
             Me.Visible = False
             StatusIcon.Visible = True
-            StatusIcon.BalloonTipText = String.Format(StringTranslator.Translate("\RUNNING_TASK"), ConfigName)
+            StatusIcon.BalloonTipText = String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName)
             StatusIcon.ShowBalloonTip(1000)
         End If
 
@@ -95,7 +95,7 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub SynchronizeForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        StringTranslator.TranslateControl(Me)
+        Translation.TranslateControl(Me)
     End Sub
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
@@ -164,13 +164,13 @@ Public Class SynchronizeForm
         Select Case Id
             Case 1
                 Step1StatusLabel.Text = Text
-                StatusIcon.Text = "Step 1: " & StatusText
+                StatusIcon.Text = String.Format(Translation.Translate("\STEP_1_STATUS"), StatusText)
             Case 2
                 Step2StatusLabel.Text = Text
-                StatusIcon.Text = "Step 2: " & Step2ProgressBar.Value & "/" & Step2ProgressBar.Maximum & " (" & StatusText & ")"
+                StatusIcon.Text = String.Format(Translation.Translate("\STEP_2_STATUS"), Step2ProgressBar.Value, Step2ProgressBar.Maximum, StatusText)
             Case 3
                 Step3StatusLabel.Text = Text
-                StatusIcon.Text = "Step 3: " & Step3ProgressBar.Value & "/" & Step3ProgressBar.Maximum & " (" & StatusText & ")"
+                StatusIcon.Text = String.Format(Translation.Translate("\STEP_3_STATUS"), Step3ProgressBar.Value, Step3ProgressBar.Maximum, StatusText)
         End Select
     End Sub
 
@@ -217,7 +217,7 @@ Public Class SynchronizeForm
     Sub TaskDone(ByVal Id As Integer)
         Select Case Id
             Case 1
-                UpdateLabel(1, "Done !")
+                UpdateLabel(1, Translation.Translate("\FINISHED"))
                 Step1ProgressBar.Maximum = 100
                 Step1ProgressBar.Value = Step1ProgressBar.Maximum
                 Step1ProgressBar.Style = ProgressBarStyle.Blocks
@@ -230,14 +230,14 @@ Public Class SynchronizeForm
                 TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
 
             Case 2
-                UpdateLabel(2, "Done !")
+                UpdateLabel(2, Translation.Translate("\FINISHED"))
                 Step2ProgressBar.Maximum = 100
                 Step2ProgressBar.Value = Step2ProgressBar.Maximum
                 Step2ProgressBar.Style = ProgressBarStyle.Blocks
                 Status_CurrentStep = 3
 
             Case 3
-                UpdateLabel(3, "Done !")
+                UpdateLabel(3, Translation.Translate("\FINISHED"))
                 Step3ProgressBar.Maximum = 100
                 Step3ProgressBar.Value = Step3ProgressBar.Maximum
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
@@ -247,8 +247,8 @@ Public Class SynchronizeForm
                     PreviewList.Visible = True
                     PreviewList.Items.Clear()
                     PreviewList.Columns.Clear()
-                    PreviewList.Columns.Add("Error")
-                    Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add("Error detail")
+                    PreviewList.Columns.Add(Translation.Translate("\ERROR"))
+                    Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add(Translation.Translate("\ERROR_DETAIL"))
 
                     Dim ErrorsList As New List(Of Exception)(Log.Errors)
                     For Each Ex As Exception In ErrorsList
@@ -293,9 +293,9 @@ Public Class SynchronizeForm
         Dim DirectionString As String = ""
         Select Case Side
             Case SideOfSource.Left
-                DirectionString = "Left->Right"
+                DirectionString = Translation.Translate("\LR")
             Case SideOfSource.Right
-                DirectionString = "Right->Left"
+                DirectionString = Translation.Translate("\RL")
         End Select
         ListItem.SubItems.Add(DirectionString)
         ListItem.SubItems.Add(Item.Path)
@@ -632,7 +632,7 @@ Public Class SynchronizeForm
                 Dim SourceFile As String = File
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
                 'Needs to be more efficient.
-                'Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(SourceFile).Length
+                'Status_BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
                 Status_FilesScanned += 1
 
                 If Not HasValidExtension(File) Then Continue For
@@ -706,8 +706,7 @@ Public Class SynchronizeForm
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
         Status_CreatedFiles += 1
-        'Status_BytesCopied += My.Computer.FileSystem.GetFileInfo(Source & Path).Length
-        Status_BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster
+        Status_BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
     End Sub
 #End Region
 
@@ -733,7 +732,7 @@ Public Class SynchronizeForm
     End Function
 
     Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
-        'If we're not updating any files, do nothing. 
+        'If nothing should be updated, return false. 
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))

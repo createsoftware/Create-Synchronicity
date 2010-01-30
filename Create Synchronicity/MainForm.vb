@@ -10,7 +10,7 @@ Public Class MainForm
     Dim Quiet As Boolean
     Dim SettingsArray As Dictionary(Of String, SettingsHandler)
 
-    Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
 
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -19,13 +19,13 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ConfigOptions.LanguageRootDir)
 
 #If DEBUG Then
-        MessageBox.Show("This is a debug version of Create Synchronicity. Lots of extra info will be added to the logs, and the process of synchronizing files may be slower. Please report any bugs you encounter.", "DEBUG Mode", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        MessageBox.Show(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
 
         ConfigOptions.LoadProgramSettings()
         If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
             If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
-                If Microsoft.VisualBasic.MsgBox("Welcome to Create Synchronicity! Would you like the program to check for updates on startup?" & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & "This setting can be changed from the About menu later.", Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                If Microsoft.VisualBasic.MsgBox(Translation.Translate("\WELCOME_MSG"), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
                     ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
                 Else
                     ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
@@ -39,13 +39,13 @@ Public Class MainForm
             ConfigOptions.SaveProgramSettings()
         End If
 
-        ConfigOptions.LoadProgramSettings()
         If ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
             Dim UpdateThread As New Threading.Thread(AddressOf ConfigOptions.CheckForUpdates)
             UpdateThread.Start(True)
         End If
 
-        StringTranslator.TranslateControl(Me)
+        Translation.TranslateControl(Me)
+        Translation.TranslateControl(Me.Main_ActionsMenu)
         Main_ReloadConfigs()
 
         Dim TaskToRun As String = ""
@@ -72,16 +72,17 @@ Public Class MainForm
                         Me.ShowInTaskbar = False
                     End If
                 Else
-                    Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                    Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
                 End If
             Else
-                Microsoft.VisualBasic.MsgBox("Invalid profile name!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_PROFILE"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
             End If
         End If
     End Sub
 
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
-        If Not (Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0) Then Main_ActionsMenu.Show(Main_Actions, e.Location)
+        If Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
+        Main_ActionsMenu.Show(Main_Actions, e.Location)
     End Sub
 
     Private Sub Main_Actions_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Actions.DoubleClick
@@ -106,7 +107,7 @@ Public Class MainForm
         If Main_Actions.SelectedIndices.Count = 0 Then
             Main_Display_Options("", True)
         ElseIf Main_Actions.SelectedIndices(0) = 0 Then
-            Main_Display_Options("Create a new profile", True)
+            Main_Display_Options(Translation.Translate("\NEW_PROFILE"), True)
         End If
 
         If Main_Actions.SelectedIndices.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then
@@ -143,7 +144,7 @@ Public Class MainForm
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
-        If Microsoft.VisualBasic.MsgBox(String.Format("Do you really want to delete ""{0}"" profile?", Main_Actions.SelectedItems(0).Text), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, "Confirm deletion") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+        If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\DELETE_PROFILE"), Main_Actions.SelectedItems(0).Text), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, Translation.Translate("\CONFIRM_DELETION")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
             SettingsArray(Main_Actions.SelectedItems(0).Text).DeleteConfigFile()
             SettingsArray(Main_Actions.SelectedItems(0).Text) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
@@ -171,7 +172,7 @@ Public Class MainForm
             SettingsArray.Add(Name, New SettingsHandler(Name))
 
             Dim NewItem As ListViewItem = Main_Actions.Items.Add(Name)
-            NewItem.Group = Main_Actions.Groups("Profiles")
+            NewItem.Group = Main_Actions.Groups(Translation.Translate("\PROFILES"))
             NewItem.ImageIndex = CInt(SettingsArray(Name).GetSetting(ConfigOptions.Method))
             NewItem.SubItems.Add(GetMethodName(Name)).ForeColor = Drawing.Color.DarkGray
         Next
@@ -196,9 +197,9 @@ Public Class MainForm
 
         Select Case CInt(SettingsArray(Name).GetSetting(ConfigOptions.Restrictions, "0"))
             Case 0
-                Main_LimitedCopy.Text = "No"
+                Main_LimitedCopy.Text = Translation.Translate("\NO")
             Case 1, 2
-                Main_LimitedCopy.Text = "Yes"
+                Main_LimitedCopy.Text = Translation.Translate("\YES")
             Case 1
                 Main_FileTypes.Text = SettingsArray(Name).GetSetting(ConfigOptions.IncludedTypes, "")
             Case 2
@@ -209,17 +210,17 @@ Public Class MainForm
     Function GetMethodName(ByVal Name As String) As String
         Select Case SettingsArray(Name).GetSetting(ConfigOptions.Method, "")
             Case "1"
-                Return "Left to Right (Incremental)"
+                Return Translation.Translate("\LEFT_TO_RIGHT_INCREMENTAL")
             Case "2"
-                Return "Two-ways incremental"
+                Return Translation.Translate("\TWO_WAYS_INCREMENTAL")
             Case Else
-                Return "Left to Right (Mirror)"
+                Return Translation.Translate("\LEFT_TO_RIGHT_MIRROR")
         End Select
     End Function
 
     Function CheckValidity() As Boolean
         If Not SettingsArray(Main_Actions.SelectedItems(0).Text).ValidateConfigFile() Then
-            Microsoft.VisualBasic.MsgBox("Invalid config!", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
+            Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
             Return False
         End If
         Return True

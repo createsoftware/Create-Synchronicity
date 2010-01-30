@@ -24,13 +24,15 @@ Public Module ConfigOptions
     Public Const Language As String = "Language"
     Public Const AutoUpdates As String = "Auto updates"
 
-    Dim ProgramSettingsLoaded As Boolean = False
     Public ConfigRootDir As String = Application.StartupPath & "\config"
     Public LogRootDir As String = Application.StartupPath & "\log"
     Public LanguageRootDir As String = Application.StartupPath & "\languages"
     Public MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
 
+    Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
+
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
 
     Public Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & "\" & Name & ".sync"
@@ -49,14 +51,14 @@ Public Module ConfigOptions
             Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
-                If Microsoft.VisualBasic.MsgBox(String.Format("A new version of Create Synchronicity is available!\nInstalled version: {0}\nCurrent version: {1}\nVisit download website?", Application.ProductVersion, CurrentVersion), Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, "New version available!") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, Translation.Translate("\UPDATE_TITLE")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
                 End If
             Else
-                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox("No updates available", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
+                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox(Translation.Translate("\NO_UPDATES"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
             End If
         Catch Ex As Exception
-            Microsoft.VisualBasic.MsgBox("Unable to reach ""http://synchronicity.sourceforge.net"". You can disable auto-updates by clicking ""About"".", Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Network error!")
+            Microsoft.VisualBasic.MsgBox(Translation.Translate("\UPDATE_ERROR"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, Translation.Translate("\UPDATE_ERROR_TITLE"))
         End Try
     End Sub
 
@@ -114,6 +116,8 @@ Class SettingsHandler
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
 
     Private PredicateConfigMatchingList As Dictionary(Of String, String)
+
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
 
     Public Sub New(ByVal Name As String)
         ConfigName = Name
@@ -191,23 +195,23 @@ Class SettingsHandler
         Dim InvalidListing As New List(Of String)
 
         If Not IO.Directory.Exists(GetSetting(ConfigOptions.Source)) Then
-            InvalidListing.Add("Source directory is not valid.")
+            InvalidListing.Add(Translation.Translate("\INVALID_SOURCE"))
             IsValid = False
         End If
 
         If Not IO.Directory.Exists(GetSetting(ConfigOptions.Destination)) Then
-            InvalidListing.Add("Destination directory is not valid.")
+            InvalidListing.Add(Translation.Translate("\INVALID_DEST"))
             IsValid = False
         End If
 
         For Each Pair As KeyValuePair(Of String, String) In PredicateConfigMatchingList
             If Not Configuration.ContainsKey(Pair.Key) Then
                 IsValid = False
-                InvalidListing.Add(String.Format("""{0}"" setting is not set.", Pair.Key))
+                InvalidListing.Add(String.Format(Translation.Translate("SETTING_UNSET"), Pair.Key))
             Else
                 If Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
                     IsValid = False
-                    InvalidListing.Add(String.Format("Value for ""{0}"" setting is invalid.", Pair.Key))
+                    InvalidListing.Add(String.Format(Translation.Translate("INVALID_SETTING"), Pair.Key))
                 End If
             End If
         Next

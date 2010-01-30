@@ -11,7 +11,7 @@ Public Class Settings
     Dim ProcessingNodes As Boolean = False
     Dim ClickedRightTreeView As Boolean = False
 
-    Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     'Note:
     'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
     'The boolean value is stored as a * appended at the end of the file name.
@@ -39,15 +39,13 @@ Public Class Settings
     End Sub
 
     Private Sub Settings_BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseLButton.Click
-        Settings_FolderBrowser.Description = Settings_FolderBrowser.Description.Replace("%", "from")
+        Settings_FolderBrowser.Description = Translation.Translate("\CHOOSE_SOURCE")
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_FromTextBox.Text = Settings_FolderBrowser.SelectedPath
-        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag.ToString
     End Sub
 
     Private Sub Settings_BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseRButton.Click
-        Settings_FolderBrowser.Description = Settings_FolderBrowser.Description.Replace("%", "to")
+        Settings_FolderBrowser.Description = Translation.Translate("\CHOOSE_DEST")
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
-        Settings_FolderBrowser.Description = Settings_FolderBrowser.Tag.ToString
     End Sub
 
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
@@ -346,11 +344,11 @@ Public Class Settings
     End Function
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim StringTranslator As LanguageHandler = LanguageHandler.GetSingleton
-        StringTranslator.TranslateControl(Me)
+        Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+        Translation.TranslateControl(Me)
 
         Settings_Update(True)
-        Me.Text = String.Format("{0} profile settings", Handler.ConfigName)
+        Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ConfigName)
     End Sub
 #End Region
 End Class

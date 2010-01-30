@@ -524,9 +524,7 @@ Partial Class Settings
         '
         'Settings_FolderBrowser
         '
-        Me.Settings_FolderBrowser.Description = "\SELECT_FOLDER"
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
-        Me.Settings_FolderBrowser.Tag = "\SELECT_FOLDER"
         '
         'Settings_ComputeHashOption
         '

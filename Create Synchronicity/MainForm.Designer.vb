@@ -33,7 +33,7 @@ Partial Class MainForm
         Me.components = New System.ComponentModel.Container
         Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
         Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "New profile"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Create a new profile", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Main_Actions = New System.Windows.Forms.ListView
         Me.Actions_NameColumn = New System.Windows.Forms.ColumnHeader
@@ -331,7 +331,7 @@ Partial Class MainForm
         'Main_AboutLinkLabel
         '
         Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Main_AboutLinkLabel.BackColor = System.Drawing.Color.Transparent
+        Me.Main_AboutLinkLabel.BackColor = System.Drawing.Color.White
         Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(279, 5)
         Me.Main_AboutLinkLabel.Name = "Main_AboutLinkLabel"
         Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(75, 13)

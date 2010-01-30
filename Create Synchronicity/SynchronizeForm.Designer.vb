@@ -315,7 +315,6 @@ Partial Class SynchronizeForm
         Me.SyncBtn.Name = "SyncBtn"
         Me.SyncBtn.Size = New System.Drawing.Size(118, 28)
         Me.SyncBtn.TabIndex = 4
-        Me.SyncBtn.Tag = ""
         Me.SyncBtn.Text = "\SYNC"
         Me.SyncBtn.UseVisualStyleBackColor = True
         '
@@ -539,7 +538,7 @@ Partial Class SynchronizeForm
         '
         'PathColumn
         '
-        Me.PathColumn.Text = "Path"
+        Me.PathColumn.Text = "\PATH"
         Me.PathColumn.Width = 230
         '
         'SyncingIcons
@@ -567,12 +566,12 @@ Partial Class SynchronizeForm
         Me.StatusIconMenu.Name = "StatusIconMenu"
         Me.StatusIconMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.StatusIconMenu.ShowImageMargin = False
-        Me.StatusIconMenu.Size = New System.Drawing.Size(128, 48)
+        Me.StatusIconMenu.Size = New System.Drawing.Size(95, 26)
         '
         'StatusIconCancelMenuItem
         '
         Me.StatusIconCancelMenuItem.Name = "StatusIconCancelMenuItem"
-        Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(127, 22)
+        Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(94, 22)
         Me.StatusIconCancelMenuItem.Text = "CANCEL"
         '
         'SynchronizeForm
