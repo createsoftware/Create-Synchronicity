@@ -21,7 +21,9 @@ Public Module ConfigOptions
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
 
+    'Main program settings
     Public Const Language As String = "Language"
+    Public Const DefaultLanguage As String = "english"
     Public Const AutoUpdates As String = "Auto updates"
 
     Public ConfigRootDir As String = Application.StartupPath & "\config"

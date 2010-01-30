@@ -7,14 +7,38 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class AboutForm
+    Private Sub SetLinkArea(ByVal Link As LinkLabel)
+        If Link.Text.IndexOf("\") = -1 Or Link.Text.IndexOf("/") = -1 Then Exit Sub
+
+        Dim Area As New LinkArea
+        Area.Start = Link.Text.IndexOf("\")
+        Link.Text = Link.Text.Remove(Area.Start, 1)
+        Area.Length = Link.Text.IndexOf("/") - Area.Start
+        Link.Text = Link.Text.Remove(Area.Start + Area.Length, 1)
+        Link.LinkArea = Area
+    End Sub
+
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
         Translation.TranslateControl(Me)
 
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
-        About_VersionInfo.LinkArea = New LinkArea(About_VersionInfo.Text.IndexOf("(") + 1, About_VersionInfo.Text.Length - (About_VersionInfo.Text.IndexOf("(") + 1) - 1)
+
+        SetLinkArea(About_BugReport)
+        SetLinkArea(About_ContactLink)
+        SetLinkArea(About_LinkToLicense)
+        SetLinkArea(About_LinkToProductPage)
+        SetLinkArea(About_LinkToWebsite)
+        SetLinkArea(About_VersionInfo)
+
+        About_LanguagesList.Items.Clear()
+        For Each File As String In IO.Directory.GetFiles(ConfigOptions.LanguageRootDir)
+            About_LanguagesList.Items.Add(File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1))
+        Next
+
         ConfigOptions.LoadProgramSettings()
         About_Updates.Checked = ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
+        About_LanguagesList.SelectedIndex = About_LanguagesList.Items.IndexOf(ConfigOptions.GetProgramSetting(ConfigOptions.Language, ""))
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked
@@ -41,15 +65,9 @@ Public Class AboutForm
         Diagnostics.Process.Start("http://sourceforge.net/tracker/?group_id=264348&atid=1130882")
     End Sub
 
-    Private Sub About_Updates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles About_Updates.CheckedChanged
-        If About_Updates.Checked Then
-            ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
-        Else
-            ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
-        End If
-    End Sub
-
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+        ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
+        ConfigOptions.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
         ConfigOptions.SaveProgramSettings()
     End Sub
 End Class

@@ -33,7 +33,7 @@ Public Class MainForm
             End If
 
             If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
-                ConfigOptions.SetProgramSetting(ConfigOptions.Language, "en")
+                ConfigOptions.SetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage)
             End If
 
             ConfigOptions.SaveProgramSettings()

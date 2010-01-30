@@ -10,11 +10,15 @@ Public Class LanguageHandler
     Private Shared Instance As LanguageHandler
 
     Protected Sub New()
-        Strings = New Dictionary(Of String, String)
-        Dim File As String = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.GetProgramSetting(ConfigOptions.Language, "en") & ".lng"
+        LoadProgramSettings()
 
-        If Not IO.File.Exists(File) Then Exit Sub
-        Dim Reader As New IO.StreamReader(File, Text.Encoding.UTF8)
+        Strings = New Dictionary(Of String, String)
+        Dim DictFile As String = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
+
+        If Not IO.File.Exists(DictFile) Then DictFile = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.DefaultLanguage & ".lng"
+        If Not IO.File.Exists(DictFile) Then MessageBox.Show("No language file found!")
+
+        Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
 
         While Reader.Peek() > -1
             Dim Line As String = Reader.ReadLine
