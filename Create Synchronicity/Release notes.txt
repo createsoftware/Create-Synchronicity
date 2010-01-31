@@ -15,6 +15,9 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Jan. 31, 2009 - NEW: French translation.
+Jan. 23, 2009 - NEW: !Add a language handling class, so that the program can be translated to other languages.
+
 -- Version 2.2 --
 Oct. 26, 2009 - SYN: A few new options, including time offsets, and a nicer log display.
 Oct. 26, 2009 - NEW: Add a "Time Offset" property to compensate for summer/winter time changes.
