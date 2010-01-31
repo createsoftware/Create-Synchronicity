@@ -7,6 +7,8 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class AboutForm
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+
     Private Sub SetLinkArea(ByVal Link As LinkLabel)
         If Link.Text.IndexOf("\") = -1 Or Link.Text.IndexOf("/") = -1 Then Exit Sub
 
@@ -19,7 +21,6 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
         Translation.TranslateControl(Me)
 
         About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
@@ -66,6 +67,10 @@ Public Class AboutForm
     End Sub
 
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
+        If ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> About_LanguagesList.SelectedItem Then
+            MessageBox.Show(Translation.Translate("\RESTART"), Translation.Translate("\RESTART_NEEDED"))
+        End If
+
         ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
         ConfigOptions.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
         ConfigOptions.SaveProgramSettings()

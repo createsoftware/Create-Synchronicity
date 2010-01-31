@@ -297,7 +297,7 @@ Partial Class MainForm
         Me.SynchronizeMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None
         Me.SynchronizeMenuItem.Name = "SynchronizeMenuItem"
         Me.SynchronizeMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.SynchronizeMenuItem.Text = "\SYNCHRONIZE"
+        Me.SynchronizeMenuItem.Text = "\SYNC"
         '
         'Main_ChangeSettingsMenuItem
         '

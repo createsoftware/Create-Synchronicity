@@ -60,6 +60,10 @@ Public Class LanguageHandler
                 Group.Header = Translate(Group.Header)
             Next
 
+            For Each Column As ColumnHeader In CType(Ctrl, ListView).Columns
+                Column.Text = Translate(Column.Text)
+            Next
+
             For Each Item As ListViewItem In CType(Ctrl, ListView).Items
                 For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
                     SubItem.Text = Translate(SubItem.Text)

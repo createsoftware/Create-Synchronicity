@@ -95,7 +95,7 @@ Public Class MainForm
     Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
         e.CancelEdit = True
         Main_Actions.LabelEdit = False
-        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 OrElse IO.File.Exists(ConfigOptions.GetConfigPath(e.Label)) Then
+        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then 'OrElse IO.File.Exists(ConfigOptions.GetConfigPath(e.Label)) Then
             Exit Sub
         End If
         Dim SettingsForm As New Settings(e.Label)
@@ -104,13 +104,13 @@ Public Class MainForm
     End Sub
 
     Private Sub Main_Actions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Actions.SelectedIndexChanged
-        If Main_Actions.SelectedIndices.Count = 0 Then
-            Main_Display_Options("", True)
-        ElseIf Main_Actions.SelectedIndices(0) = 0 Then
-            Main_Display_Options(Translation.Translate("\NEW_PROFILE"), True)
-        End If
-
         If Main_Actions.SelectedIndices.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then
+            If Main_Actions.SelectedIndices.Count = 0 Then
+                Main_Display_Options("", True)
+            ElseIf Main_Actions.SelectedIndices(0) = 0 Then
+                Main_Display_Options(Translation.Translate("\NEW_PROFILE"), True)
+            End If
+
             Main_ActionsMenu.Close()
             Exit Sub
         End If
@@ -172,7 +172,7 @@ Public Class MainForm
             SettingsArray.Add(Name, New SettingsHandler(Name))
 
             Dim NewItem As ListViewItem = Main_Actions.Items.Add(Name)
-            NewItem.Group = Main_Actions.Groups(Translation.Translate("\PROFILES"))
+            NewItem.Group = Main_Actions.Groups(1)
             NewItem.ImageIndex = CInt(SettingsArray(Name).GetSetting(ConfigOptions.Method))
             NewItem.SubItems.Add(GetMethodName(Name)).ForeColor = Drawing.Color.DarkGray
         Next
@@ -210,11 +210,11 @@ Public Class MainForm
     Function GetMethodName(ByVal Name As String) As String
         Select Case SettingsArray(Name).GetSetting(ConfigOptions.Method, "")
             Case "1"
-                Return Translation.Translate("\LEFT_TO_RIGHT_INCREMENTAL")
+                Return Translation.Translate("\LR_INCREMENTAL")
             Case "2"
-                Return Translation.Translate("\TWO_WAYS_INCREMENTAL")
+                Return Translation.Translate("\TWOWAYS_INCREMENTAL")
             Case Else
-                Return Translation.Translate("\LEFT_TO_RIGHT_MIRROR")
+                Return Translation.Translate("\LR_MIRROR")
         End Select
     End Function
 
@@ -227,7 +227,9 @@ Public Class MainForm
     End Function
 #End Region
 
+#If 0 Then
     Private Sub MainForm_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.VisibleChanged
         'Me.Visible = Not Quiet
     End Sub
+#End If
 End Class

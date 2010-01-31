@@ -278,7 +278,7 @@ Partial Class Settings
         Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 97)
         Me.Settings_SynchronizationMethodBox.TabIndex = 5
         Me.Settings_SynchronizationMethodBox.TabStop = False
-        Me.Settings_SynchronizationMethodBox.Text = "\METHOD"
+        Me.Settings_SynchronizationMethodBox.Text = "\SYNC_METHOD"
         '
         'Settings_Tips
         '

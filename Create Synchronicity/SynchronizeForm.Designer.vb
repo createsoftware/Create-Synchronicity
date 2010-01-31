@@ -572,7 +572,7 @@ Partial Class SynchronizeForm
         '
         Me.StatusIconCancelMenuItem.Name = "StatusIconCancelMenuItem"
         Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(94, 22)
-        Me.StatusIconCancelMenuItem.Text = "CANCEL"
+        Me.StatusIconCancelMenuItem.Text = "\CANCEL"
         '
         'SynchronizeForm
         '
@@ -587,7 +587,7 @@ Partial Class SynchronizeForm
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SynchronizeForm"
         Me.ShowInTaskbar = False
-        Me.Text = "SYNCHRONIZING"
+        Me.Text = "\SYNCHRONIZING"
         Me.MainLayoutPanel.ResumeLayout(False)
         Me.Step3LayoutPanel.ResumeLayout(False)
         Me.Step3LayoutPanel.PerformLayout()
