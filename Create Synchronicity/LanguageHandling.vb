@@ -11,6 +11,7 @@ Public Class LanguageHandler
 
     Protected Sub New()
         LoadProgramSettings()
+        IO.Directory.CreateDirectory(ConfigOptions.LanguageRootDir)
 
         Strings = New Dictionary(Of String, String)
         Dim DictFile As String = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"

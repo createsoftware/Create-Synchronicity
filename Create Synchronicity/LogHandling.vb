@@ -17,15 +17,16 @@ Class LogHandler
     Private Disposed As Boolean
 
     Sub New(ByVal _LogName As String)
-        LogName = _LogName
+        IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
+
         Disposed = False
+        LogName = _LogName
+        Errors = New List(Of Exception)
+        Log = New Dictionary(Of SyncingItem, Boolean)
 
 #If DEBUG Then
         DebugInfo = New List(Of String)
 #End If
-
-        Errors = New List(Of Exception)
-        Log = New Dictionary(Of SyncingItem, Boolean)
     End Sub
 
     Sub HandleError(ByVal Ex As Exception)

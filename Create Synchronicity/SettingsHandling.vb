@@ -79,6 +79,7 @@ Public Module ConfigOptions
     Public Sub LoadProgramSettings()
         If ProgramSettingsLoaded Then Exit Sub
 
+        IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
         If Not IO.File.Exists(MainConfigFile) Then
             IO.File.Create(MainConfigFile).Close()
             Exit Sub
