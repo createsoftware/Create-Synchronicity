@@ -503,6 +503,7 @@ Partial Class Settings
         Me.Settings_CancelButton.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Settings_CancelButton.Location = New System.Drawing.Point(103, 3)
         Me.Settings_CancelButton.Name = "Settings_CancelButton"
         Me.Settings_CancelButton.Size = New System.Drawing.Size(94, 25)
@@ -592,8 +593,10 @@ Partial Class Settings
         '
         'Settings
         '
+        Me.AcceptButton = Me.Settings_SaveButton
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Settings_CancelButton
         Me.ClientSize = New System.Drawing.Size(698, 554)
         Me.Controls.Add(Me.Settings_BottomDescLabel)
         Me.Controls.Add(Me.Settings_AdvancedBox)
