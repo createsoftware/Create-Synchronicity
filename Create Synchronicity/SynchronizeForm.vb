@@ -738,7 +738,12 @@ Public Class SynchronizeForm
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
         Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Destination))
 
-        If SourceFATTime = DestFATTime Then Return False
+        If Handler.GetSetting(ConfigOptions.StrictDateComparison, "True") = "True" Then
+            If SourceFATTime = DestFATTime Then Return False
+        Else
+            If (SourceFATTime - DestFATTime).TotalSeconds < 4 Then Return False
+        End If
+
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
 
         If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then

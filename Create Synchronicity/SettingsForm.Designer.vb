@@ -76,6 +76,7 @@ Partial Class Settings
         Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
+        Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -270,9 +271,9 @@ Partial Class Settings
         Me.Settings_SynchronizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_Tips)
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_StrictMirrorOption)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
-        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
         Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 254)
         Me.Settings_SynchronizationMethodBox.Name = "Settings_SynchronizationMethodBox"
         Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 97)
@@ -296,7 +297,7 @@ Partial Class Settings
         'Settings_StrictMirrorOption
         '
         Me.Settings_StrictMirrorOption.AutoSize = True
-        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(43, 74)
+        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 74)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
         Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 9
@@ -491,7 +492,7 @@ Partial Class Settings
         Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_ActionsPanel.Controls.Add(Me.Settings_CancelButton, 1, 0)
         Me.Settings_ActionsPanel.Controls.Add(Me.Settings_SaveButton, 0, 0)
-        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(486, 511)
+        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(486, 534)
         Me.Settings_ActionsPanel.Name = "Settings_ActionsPanel"
         Me.Settings_ActionsPanel.RowCount = 1
         Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -529,36 +530,37 @@ Partial Class Settings
         '
         'Settings_ComputeHashOption
         '
-        Me.Settings_ComputeHashOption.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.Settings_ComputeHashOption.AutoSize = True
-        Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(219, 20)
+        Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(6, 44)
         Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
         Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(126, 17)
         Me.Settings_ComputeHashOption.TabIndex = 8
+        Me.Settings_ComputeHashOption.Tag = "\COMPUTEHASH_TAG"
         Me.Settings_ComputeHashOption.Text = "\COMPUTE_HASH"
-        Me.Settings_ComputeHashOption.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.Settings_ComputeHashOption.UseVisualStyleBackColor = True
         '
         'Settings_AdvancedBox
         '
         Me.Settings_AdvancedBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
+        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_StrictDateComparisonOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetLabel)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffset)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_ComputeHashOption)
+        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
         Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 460)
         Me.Settings_AdvancedBox.Name = "Settings_AdvancedBox"
-        Me.Settings_AdvancedBox.Size = New System.Drawing.Size(674, 45)
+        Me.Settings_AdvancedBox.Size = New System.Drawing.Size(674, 68)
         Me.Settings_AdvancedBox.TabIndex = 9
         Me.Settings_AdvancedBox.TabStop = False
         Me.Settings_AdvancedBox.Text = "\ADVANCED_OPTS"
         '
         'Settings_TimeOffsetHoursLabel
         '
+        Me.Settings_TimeOffsetHoursLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_TimeOffsetHoursLabel.AutoSize = True
-        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(625, 21)
+        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(615, 45)
         Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
         Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(53, 13)
         Me.Settings_TimeOffsetHoursLabel.TabIndex = 12
@@ -567,16 +569,17 @@ Partial Class Settings
         'Settings_TimeOffsetLabel
         '
         Me.Settings_TimeOffsetLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(461, 21)
+        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(425, 45)
         Me.Settings_TimeOffsetLabel.Name = "Settings_TimeOffsetLabel"
-        Me.Settings_TimeOffsetLabel.Size = New System.Drawing.Size(117, 13)
+        Me.Settings_TimeOffsetLabel.Size = New System.Drawing.Size(143, 13)
         Me.Settings_TimeOffsetLabel.TabIndex = 11
         Me.Settings_TimeOffsetLabel.Text = "\TIME_OFFSET"
         Me.Settings_TimeOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Settings_TimeOffset
         '
-        Me.Settings_TimeOffset.Location = New System.Drawing.Point(584, 19)
+        Me.Settings_TimeOffset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_TimeOffset.Location = New System.Drawing.Point(574, 43)
         Me.Settings_TimeOffset.Maximum = New Decimal(New Integer() {2, 0, 0, 0})
         Me.Settings_TimeOffset.Minimum = New Decimal(New Integer() {2, 0, 0, -2147483648})
         Me.Settings_TimeOffset.Name = "Settings_TimeOffset"
@@ -586,10 +589,25 @@ Partial Class Settings
         'Settings_BottomDescLabel
         '
         Me.Settings_BottomDescLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 511)
+        Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 534)
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
+        '
+        'Settings_StrictDateComparisonOption
+        '
+        Me.Settings_StrictDateComparisonOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_StrictDateComparisonOption.AutoSize = True
+        Me.Settings_StrictDateComparisonOption.Checked = True
+        Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(506, 20)
+        Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_StrictDateComparisonOption.TabIndex = 13
+        Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
+        Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
+        Me.Settings_StrictDateComparisonOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Settings_StrictDateComparisonOption.UseVisualStyleBackColor = True
         '
         'Settings
         '
@@ -597,14 +615,14 @@ Partial Class Settings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Settings_CancelButton
-        Me.ClientSize = New System.Drawing.Size(698, 554)
+        Me.ClientSize = New System.Drawing.Size(698, 577)
         Me.Controls.Add(Me.Settings_BottomDescLabel)
-        Me.Controls.Add(Me.Settings_AdvancedBox)
         Me.Controls.Add(Me.Settings_ActionsPanel)
+        Me.Controls.Add(Me.Settings_AdvancedBox)
         Me.Controls.Add(Me.Settings_ViewsBox)
         Me.Controls.Add(Me.Settings_DirectoriesBox)
-        Me.Controls.Add(Me.Settings_IncludeExcludeBox)
         Me.Controls.Add(Me.Settings_SynchronizationMethodBox)
+        Me.Controls.Add(Me.Settings_IncludeExcludeBox)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "Settings"
@@ -675,4 +693,5 @@ Partial Class Settings
     Friend WithEvents Settings_TimeOffset As System.Windows.Forms.NumericUpDown
     Friend WithEvents Settings_TimeOffsetHoursLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_TimeOffsetLabel As System.Windows.Forms.Label
+    Friend WithEvents Settings_StrictDateComparisonOption As System.Windows.Forms.CheckBox
 End Class

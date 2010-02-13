@@ -15,6 +15,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Feb. 13, 2009 - UPD: A few cosmetic updates.
+Feb. 13, 2009 - NEW: Add a "Strict time check" advanced option which, when disabled, allows file times to differ by up to 2 seconds before forcing an update.
 Jan. 31, 2009 - NEW: French translation.
 Jan. 23, 2009 - NEW: !Add a language handling class, so that the program can be translated to other languages.
 

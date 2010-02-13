@@ -283,6 +283,7 @@ Public Class Settings
         Handler.SetSetting(ConfigOptions.ExcludedTypes, Settings_ExcludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked.ToString, LoadToForm)
         Handler.SetSetting(ConfigOptions.ComputeHash, Settings_ComputeHashOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.StrictDateComparison, Settings_StrictDateComparisonOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.TimeOffset, Settings_TimeOffset.Value, LoadToForm)
