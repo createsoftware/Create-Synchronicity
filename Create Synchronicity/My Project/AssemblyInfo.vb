@@ -22,7 +22,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Create Synchronicity synchronizes and backups files and folders quickly and easily.")> 
 <Assembly: AssemblyCompany("Create Software")> 
 <Assembly: AssemblyProduct("Create Synchronicity")> 
-<Assembly: AssemblyCopyright("Create Software 2009 - GNU GPL Licensing.")> 
+<Assembly: AssemblyCopyright("Create Software 2009 - GNU GPL Licensing")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -43,7 +43,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyVersion("2.2.*")> 
 #If DEBUG Then
-<Assembly: AssemblyFileVersion("2.10.01.30")> 
+<Assembly: AssemblyFileVersion("2.10.02.13")> 
 #Else
 <Assembly: AssemblyFileVersion("2.2.0.0")> 
 #End If
