@@ -60,3 +60,37 @@ Public Class SyncingItem
         End Select
     End Function
 End Class
+
+Public Class FileNamePattern
+    Public Enum PatternType
+        FileExt
+        FileName
+        Regex
+    End Enum
+
+    Public Type As PatternType
+    Public Pattern As String
+
+    Sub New(ByVal _Type As PatternType, ByVal _Pattern As String)
+        Type = _Type
+        Pattern = _Pattern
+    End Sub
+
+    Shared Function GetPattern(ByVal Pattern As String)
+        If Pattern.StartsWith("""") And Pattern.EndsWith("""") Then
+            Return New FileNamePattern(PatternType.FileName, Pattern.Substring(1, Pattern.Length - 2))
+        ElseIf Pattern.StartsWith("/") And Pattern.EndsWith("/") Then 'Regex
+            Return New FileNamePattern(PatternType.Regex, Pattern.Substring(1, Pattern.Length - 2))
+        Else
+            Return New FileNamePattern(PatternType.FileExt, Pattern)
+        End If
+    End Function
+
+    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal Patterns As String())
+        PatternsList = New List(Of FileNamePattern)
+
+        For Each Pattern As String In Patterns
+            PatternsList.Add(GetPattern(Pattern))
+        Next
+    End Sub
+End Class

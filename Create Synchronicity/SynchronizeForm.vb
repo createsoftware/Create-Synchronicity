@@ -12,8 +12,11 @@ Public Class SynchronizeForm
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
 
+    'TODO: Unify vars definitions in one big object.
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
+    Dim IncludedPatterns As New List(Of FileNamePattern)
+    Dim ExcludedPatterns As New List(Of FileNamePattern)
 
     Dim Quiet As Boolean
     Dim [STOP] As Boolean
@@ -71,6 +74,9 @@ Public Class SynchronizeForm
 
         Log = New LogHandler(ConfigName)
         Handler = New SettingsHandler(ConfigName)
+
+        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
+        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
 
         FullSyncThread = New Threading.Thread(AddressOf Synchronize)
         FirstSyncThread = New Threading.Thread(AddressOf Do_FirstStep)
@@ -512,7 +518,7 @@ Public Class SynchronizeForm
 
                 'First check if the file is part of the synchronization profile.
                 'Then, check whether it requires updating.
-                If HasValidExtension(SourceFile) Then
+                If HasAcceptedFilename(SourceFile) Then
                     If Not IO.File.Exists(DestinationFile) OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
                         AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
 #If DEBUG Then
@@ -682,19 +688,21 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Function HasValidExtension(ByVal Path As String) As Boolean
+    Function HasAcceptedFilename(ByVal Path As String) As Boolean
         Try
             Select Case Handler.GetSetting(ConfigOptions.Restrictions)
+                'TODO: Add an option to allow for both inclusion and exclusion (useful because of regex patterns)
                 Case "1"
-                    Return InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
+                    Return MatchesPattern(Path, IncludedPatterns)
                 Case "2"
-                    Return Not InArray(GetExtension(Path), Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
+                    Return Not MatchesPattern(Path, ExcludedPatterns)
             End Select
         Catch Ex As Exception
 #If DEBUG Then
             Log.HandleError(Ex)
 #End If
         End Try
+
         Return True
     End Function
 
@@ -719,10 +727,22 @@ Public Class SynchronizeForm
         Return Path.Substring(Path.LastIndexOf(".") + 1)
     End Function
 
-    Function InArray(ByVal Str As String, ByRef ListObject As String()) As Boolean
-        For Each SubStr As String In ListObject
-            If Str = SubStr Then Return True
+    Function MatchesPattern(ByVal Path As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
+        Dim FileName As String = GetFileOrFolderName(Path)
+        Dim Extension As String = GetExtension(FileName)
+
+        'TODO: Document Syntax
+        For Each Pattern As FileNamePattern In Patterns
+            Select Case Pattern.Type
+                Case FileNamePattern.PatternType.FileExt
+                    If Extension = Pattern.Pattern Then Return True
+                Case FileNamePattern.PatternType.FileName
+                    If FileName = Pattern.Pattern Then Return True
+                Case FileNamePattern.PatternType.Regex
+                    If System.Text.RegularExpressions.Regex.IsMatch(FileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
+            End Select
         Next
+
         Return False
     End Function
 
