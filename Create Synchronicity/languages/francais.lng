@@ -1,7 +1,7 @@
 # Create Synchronicity English Language file
-# Last update: 01.31.2010
+# Last update: 02.17.2010
 # Translation by Clément Pit--Claudel
-ABOUT=À propos
+ABOUT_SETTINGS=À propos/Paramètres
 ACTION=Action
 ACTIONS=Actions
 ADVANCED_OPTS=Options avancées

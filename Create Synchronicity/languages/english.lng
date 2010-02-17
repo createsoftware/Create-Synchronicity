@@ -1,7 +1,7 @@
 # Create Synchronicity English Language file
-# Last update: 01.31.2010
+# Last update: 02.17.2010
 # Translation by Clément Pit--Claudel
-ABOUT=About
+ABOUT_SETTINGS=About/Settings
 ACTION=Action
 ACTIONS=Actions
 ADVANCED_OPTS=Advanced options
@@ -89,7 +89,7 @@ STEP_2=Step 2: Copying files left to right
 STEP_2_STATUS=Step 2: {0}/{1} ({2})
 STEP_3=Step 3: Cleaning up and copying files right to left
 STEP_3_STATUS=Step 3: {0}/{1} ({2})
-STRICT_COMPARISON=Strict file time checking
+STRICT_COMPARISON=Strict file time comparison
 STRICT_MIRROR_DESC=Strict mirror: revert files that were modified on the right.
 STRICTCOMPARISON_TAG=Unchecked, allows last modified time in source and destination to differ by up to 4 seconds.
 SUBDIRECTORIES=Subdirectories
