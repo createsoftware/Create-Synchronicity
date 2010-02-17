@@ -15,6 +15,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
 --------------------------
+Feb. 17, 2009 - NEW: Full regex support for file inclusion/exclusion.
 Feb. 13, 2009 - UPD: A few cosmetic updates.
 Feb. 13, 2009 - NEW: Add a "Strict time check" advanced option which, when disabled, allows file times to differ by up to 2 seconds before forcing an update.
 Jan. 31, 2009 - NEW: French translation.
