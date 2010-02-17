@@ -332,12 +332,12 @@ Partial Class MainForm
         '
         Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Main_AboutLinkLabel.BackColor = System.Drawing.Color.White
-        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(279, 5)
+        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(193, 3)
         Me.Main_AboutLinkLabel.Name = "Main_AboutLinkLabel"
-        Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(75, 13)
+        Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(161, 13)
         Me.Main_AboutLinkLabel.TabIndex = 2
         Me.Main_AboutLinkLabel.TabStop = True
-        Me.Main_AboutLinkLabel.Text = "\ABOUT"
+        Me.Main_AboutLinkLabel.Text = "\ABOUT_SETTINGS"
         Me.Main_AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Main_AboutLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue
         '
@@ -351,7 +351,6 @@ Partial Class MainForm
         Me.Controls.Add(Me.Main_InfoPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "MainForm"
         Me.Text = "Create Synchronicity"
         Me.Main_InfoPanel.ResumeLayout(False)

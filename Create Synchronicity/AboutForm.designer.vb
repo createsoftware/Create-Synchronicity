@@ -130,18 +130,17 @@ Partial Class AboutForm
         '
         'About_Updates
         '
-        Me.About_Updates.AutoSize = True
         Me.About_Updates.Location = New System.Drawing.Point(12, 147)
         Me.About_Updates.Name = "About_Updates"
-        Me.About_Updates.Size = New System.Drawing.Size(85, 17)
+        Me.About_Updates.Size = New System.Drawing.Size(462, 34)
         Me.About_Updates.TabIndex = 2
         Me.About_Updates.Text = "\UPDATES"
-        Me.About_Updates.UseVisualStyleBackColor = True
+        Me.About_Updates.UseVisualStyleBackColor = False
         '
         'About_LanguageLabel
         '
         Me.About_LanguageLabel.AutoSize = True
-        Me.About_LanguageLabel.Location = New System.Drawing.Point(12, 173)
+        Me.About_LanguageLabel.Location = New System.Drawing.Point(12, 190)
         Me.About_LanguageLabel.Name = "About_LanguageLabel"
         Me.About_LanguageLabel.Size = New System.Drawing.Size(75, 13)
         Me.About_LanguageLabel.TabIndex = 3
@@ -151,7 +150,7 @@ Partial Class AboutForm
         'About_LanguagesList
         '
         Me.About_LanguagesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.About_LanguagesList.Location = New System.Drawing.Point(353, 170)
+        Me.About_LanguagesList.Location = New System.Drawing.Point(353, 187)
         Me.About_LanguagesList.Name = "About_LanguagesList"
         Me.About_LanguagesList.Size = New System.Drawing.Size(121, 21)
         Me.About_LanguagesList.TabIndex = 4
@@ -160,7 +159,7 @@ Partial Class AboutForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(486, 202)
+        Me.ClientSize = New System.Drawing.Size(486, 220)
         Me.Controls.Add(Me.About_LanguageLabel)
         Me.Controls.Add(Me.About_LanguagesList)
         Me.Controls.Add(Me.About_Updates)

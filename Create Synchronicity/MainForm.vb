@@ -14,6 +14,8 @@ Public Class MainForm
 
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Icon = ConfigOptions.GetIcon()
+
         IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
         IO.Directory.CreateDirectory(ConfigOptions.LanguageRootDir)

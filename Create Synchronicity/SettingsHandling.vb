@@ -41,6 +41,16 @@ Public Module ConfigOptions
         Return ConfigRootDir & "\" & Name & ".sync"
     End Function
 
+    Public Function GetIcon()
+        Static Icon As Drawing.Icon
+
+        If Icon Is Nothing Then
+            Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
+        End If
+
+        Return Icon
+    End Function
+
     Public Function GetLogPath(ByVal Name As String) As String
 #If DEBUG Then
         Return LogRootDir & "\" & Name & ".log"
