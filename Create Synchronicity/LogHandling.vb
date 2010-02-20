@@ -14,6 +14,8 @@ Class LogHandler
     Public DebugInfo As List(Of String)
 #End If
 
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+
     Private Disposed As Boolean
 
     Sub New(ByVal _LogName As String)
@@ -70,7 +72,7 @@ Class LogHandler
         LogW.WriteLine("		</style>")
         LogW.WriteLine("	</head>")
         LogW.WriteLine("	<body>")
-        LogW.WriteLine("		<h1>Create Synchronicity - Log for " & LogName & "</h1>")
+        LogW.WriteLine(String.Format(Translation.Translate("\LOG_TITLE"), LogName))
     End Sub
 
     Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
@@ -116,10 +118,10 @@ Class LogHandler
                 Next
 #End If
                 For Each Pair As KeyValuePair(Of SyncingItem, Boolean) In Log
-                    PutLine(If(Pair.Value, "Succeded", "Failed"), Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path, LogWriter)
+                    PutLine(If(Pair.Value, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path, LogWriter)
                 Next
                 For Each Ex As Exception In Errors
-                    PutLine("Error", Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"), LogWriter)
+                    PutLine(Translation.Translate("\ERROR"), Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"), LogWriter)
                 Next
 
 #If Not DEBUG Then
@@ -127,7 +129,7 @@ Class LogHandler
                 If NewLog Then CloseHTMLHeaders(LogWriter)
 #End If
             Catch Ex As Exception
-                Warning("Error writing to the log file!", Ex)
+                Warning(Translation.Translate("\LOGFILE_WRITE_ERROR"), Ex)
 
             Finally
                 LogWriter.Flush()
@@ -135,7 +137,7 @@ Class LogHandler
                 LogWriter.Dispose()
             End Try
         Catch Ex As Exception
-            Warning("Unable to open the log file!", Ex)
+            Warning(Translation.Translate("\LOGFILE_OPEN_ERROR"), Ex)
         End Try
     End Sub
 
