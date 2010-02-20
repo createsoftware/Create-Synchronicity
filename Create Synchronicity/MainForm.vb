@@ -78,7 +78,10 @@ Public Class MainForm
 
                     'TODO: Yuck
                     Me.Opacity = 0
+                    Me.WindowState = FormWindowState.Minimized
                     Me.ShowInTaskbar = False
+
+                    SyncForm.Show()
                 Else
                     Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
                 End If

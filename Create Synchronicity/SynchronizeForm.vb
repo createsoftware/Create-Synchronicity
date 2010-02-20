@@ -89,8 +89,6 @@ Public Class SynchronizeForm
         If Quiet Then
             Me.Visible = False
             SingleTask = True
-        Else
-            Me.Visible = True
         End If
 
         SingleTask = _SingleTask
@@ -114,6 +112,7 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
+        StatusIcon.Visible = False
         If SingleTask Then Application.Exit()
     End Sub
 
@@ -122,7 +121,6 @@ Public Class SynchronizeForm
             Case StopBtn.Tag.ToString.Split(";"c)(0)
                 EndAll()
             Case StopBtn.Tag.ToString.Split(";"c)(1)
-                If SingleTask Then Application.Exit()
                 Me.Close()
         End Select
     End Sub
