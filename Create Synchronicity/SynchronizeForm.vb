@@ -19,6 +19,7 @@ Public Class SynchronizeForm
     Dim ExcludedPatterns As New List(Of FileNamePattern)
 
     Dim Quiet As Boolean
+    Dim SingleTask As Boolean
     Dim [STOP] As Boolean
     Dim Status_StartTime As Date
     Dim Status_BytesCopied As Long
@@ -51,7 +52,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, Optional ByVal DisplayForm As Boolean = True)
+    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, Optional ByVal DisplayForm As Boolean = True, Optional ByVal _SingleTask As Boolean = False)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -87,6 +88,13 @@ Public Class SynchronizeForm
         Quiet = Not DisplayForm
         If Quiet Then
             Me.Visible = False
+            SingleTask = True
+        Else
+            Me.Visible = True
+        End If
+
+        SingleTask = _SingleTask
+        If SingleTask Then
             StatusIcon.Visible = True
             StatusIcon.BalloonTipText = String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName)
             StatusIcon.ShowBalloonTip(1000)
@@ -106,7 +114,7 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
-        If Quiet Then Application.Exit()
+        If SingleTask Then Application.Exit()
     End Sub
 
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click, StatusIconCancelMenuItem.Click
@@ -114,7 +122,8 @@ Public Class SynchronizeForm
             Case StopBtn.Tag.ToString.Split(";"c)(0)
                 EndAll()
             Case StopBtn.Tag.ToString.Split(";"c)(1)
-                Close()
+                If SingleTask Then Application.Exit()
+                Me.Close()
         End Select
     End Sub
 
@@ -273,8 +282,6 @@ Public Class SynchronizeForm
                 Log.SaveAndDispose()
                 SyncingTimeCounter.Stop()
                 StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
-
-                If Quiet Then Application.Exit()
         End Select
     End Sub
 
@@ -731,13 +738,12 @@ Public Class SynchronizeForm
         Dim FileName As String = GetFileOrFolderName(Path)
         Dim Extension As String = GetExtension(FileName)
 
-        'TODO: Document Syntax
         For Each Pattern As FileNamePattern In Patterns
             Select Case Pattern.Type
                 Case FileNamePattern.PatternType.FileExt
-                    If Extension = Pattern.Pattern Then Return True
+                    If String.Compare(Extension, Pattern.Pattern, True) = 0 Then Return True
                 Case FileNamePattern.PatternType.FileName
-                    If FileName = Pattern.Pattern Then Return True
+                    If String.Compare(FileName, Pattern.Pattern, True) = 0 Then Return True
                 Case FileNamePattern.PatternType.Regex
                     If System.Text.RegularExpressions.Regex.IsMatch(FileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
             End Select
@@ -752,7 +758,6 @@ Public Class SynchronizeForm
     End Function
 
     Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
-        'If nothing should be updated, return false. 
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))

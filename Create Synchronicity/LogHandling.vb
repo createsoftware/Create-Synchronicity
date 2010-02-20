@@ -30,6 +30,7 @@ Class LogHandler
     End Sub
 
     Sub HandleError(ByVal Ex As Exception)
+        If TypeOf (Ex) Is Threading.ThreadAbortException Then Exit Sub
         Errors.Add(Ex)
     End Sub
 

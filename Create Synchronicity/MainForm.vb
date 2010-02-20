@@ -51,12 +51,19 @@ Public Class MainForm
         Main_ReloadConfigs()
 
         Dim TaskToRun As String = ""
+        Dim ShowPreview As Boolean = False
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
-        If ArgsList.Count > 0 Then
+        ArgsList.Add("/preview")
+        ArgsList.Add("/run")
+        ArgsList.Add("Backup")
+
+        If ArgsList.Count > 1 Then
             If ArgsList.IndexOf("/quiet") <> -1 Then
                 Quiet = True
             End If
+
+            ShowPreview = (ArgsList.IndexOf("/preview") <> -1)
 
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
@@ -67,12 +74,11 @@ Public Class MainForm
         If TaskToRun <> "" Then
             If SettingsArray.ContainsKey(TaskToRun) Then
                 If SettingsArray(TaskToRun).ValidateConfigFile() Then
-                    Dim SyncForm As New SynchronizeForm(TaskToRun, False, False)
-                    If Quiet Then
-                        'TODO: Yuck
-                        Me.Opacity = 0
-                        Me.ShowInTaskbar = False
-                    End If
+                    Dim SyncForm As New SynchronizeForm(TaskToRun, ShowPreview, Not Quiet, True)
+
+                    'TODO: Yuck
+                    Me.Opacity = 0
+                    Me.ShowInTaskbar = False
                 Else
                     Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
                 End If

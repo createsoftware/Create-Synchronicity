@@ -566,12 +566,12 @@ Partial Class SynchronizeForm
         Me.StatusIconMenu.Name = "StatusIconMenu"
         Me.StatusIconMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.StatusIconMenu.ShowImageMargin = False
-        Me.StatusIconMenu.Size = New System.Drawing.Size(95, 26)
+        Me.StatusIconMenu.Size = New System.Drawing.Size(100, 26)
         '
         'StatusIconCancelMenuItem
         '
         Me.StatusIconCancelMenuItem.Name = "StatusIconCancelMenuItem"
-        Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(94, 22)
+        Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(99, 22)
         Me.StatusIconCancelMenuItem.Text = "\CANCEL"
         '
         'SynchronizeForm

@@ -77,12 +77,12 @@ Public Class FileNamePattern
     End Sub
 
     Shared Function GetPattern(ByVal Pattern As String)
-        If Pattern.StartsWith("""") And Pattern.EndsWith("""") Then
-            Return New FileNamePattern(PatternType.FileName, Pattern.Substring(1, Pattern.Length - 2))
+        If Pattern.StartsWith("""") And Pattern.EndsWith("""") Then 'Filename
+            Return New FileNamePattern(PatternType.FileName, Pattern.Substring(1, Pattern.Length - 2).ToLower)
         ElseIf Pattern.StartsWith("/") And Pattern.EndsWith("/") Then 'Regex
-            Return New FileNamePattern(PatternType.Regex, Pattern.Substring(1, Pattern.Length - 2))
+            Return New FileNamePattern(PatternType.Regex, Pattern.Substring(1, Pattern.Length - 2).ToLower)
         Else
-            Return New FileNamePattern(PatternType.FileExt, Pattern)
+            Return New FileNamePattern(PatternType.FileExt, Pattern.ToLower)
         End If
     End Function
 
