@@ -269,3 +269,100 @@ Class SettingsHandler
         Return ReturnStr
     End Function
 End Class
+
+Class Scheduler 'schtasks.exe
+    Enum TaskFrequency '/SC
+        DAILY '/D *
+        WEEKLY '/D _TaskDayOfWeek_
+        MONTHLY '/D _1-31_
+    End Enum
+
+    Enum TaskDayOfWeek
+        MON
+        TUE
+        WED
+        THU
+        FRI
+        SAT
+        SUN
+    End Enum
+
+    Public Name As String '/TN
+    Public Frequency As TaskFrequency
+
+    Public WeekDay As TaskDayOfWeek
+    Public MonthDay As Integer
+    Public Hour, Minute As Integer '/ST
+
+    '/V1 for compatibility
+    '/F to force task creation
+
+    Sub New(ByVal _Name As String, ByVal _Hour As Integer, ByVal _Minute As Integer)
+        Frequency = TaskFrequency.DAILY
+
+        Name = _Name
+        Hour = _Hour
+        Minute = _Minute
+    End Sub
+
+    Sub New(ByVal _Name As String, ByVal _WeekDay As TaskDayOfWeek, ByVal _Hour As Integer, ByVal _Minute As Integer)
+        Frequency = TaskFrequency.WEEKLY
+
+        Name = _Name
+        WeekDay = _WeekDay
+
+        Hour = _Hour
+        Minute = _Minute
+    End Sub
+
+    Sub New(ByVal _Name As String, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
+        Frequency = TaskFrequency.MONTHLY
+
+        Name = _Name
+        MonthDay = _MonthDay
+
+        Hour = _Hour
+        Minute = _Minute
+    End Sub
+
+    Sub RegisterTask()
+        Dim Arguments As String = ""
+        Arguments &= " /Create "
+        Arguments &= " /TN " & "Create_Synchronicity_" & Name
+        Arguments &= " /SC " & Frequency.ToString
+        Select Case Frequency
+            Case TaskFrequency.WEEKLY
+                Arguments &= " /D " & WeekDay.ToString
+
+            Case TaskFrequency.MONTHLY
+                Arguments &= " /D " & MonthDay
+        End Select
+        Arguments &= " /ST " & """" & Hour.ToString.PadLeft(2, "0") & ":" & Minute.ToString.PadLeft(2, "0") & """"
+        Arguments &= " /TR " & """" & "'" & Application.ExecutablePath & "'" & " /quiet /run " & Name & """"
+
+        Arguments &= " /RU SYSTEM /V1 /F"
+
+        Dim StartInfo As New Diagnostics.ProcessStartInfo("schtasks.exe", Arguments)
+        StartInfo.UseShellExecute = False
+        StartInfo.CreateNoWindow = True
+        StartInfo.RedirectStandardOutput = True
+        StartInfo.RedirectStandardError = True
+        StartInfo.StandardOutputEncoding = Text.Encoding.GetEncoding(850)
+        StartInfo.StandardErrorEncoding = Text.Encoding.GetEncoding(850)
+
+        ' Make the process and set its start information.
+        Dim RegProcess As New Diagnostics.Process()
+        RegProcess.StartInfo = StartInfo
+        RegProcess.Start()
+
+        Dim Output As String = RegProcess.StandardOutput.ReadToEnd
+        Dim ErrorOutput As String = RegProcess.StandardError.ReadToEnd
+
+        RegProcess.StandardOutput.Close()
+        RegProcess.StandardError.Close()
+
+        RegProcess.Close()
+
+        MessageBox.Show("Output: " & Environment.NewLine & Output & Environment.NewLine & ErrorOutput)
+    End Sub
+End Class

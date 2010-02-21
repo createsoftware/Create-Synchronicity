@@ -54,10 +54,6 @@ Public Class MainForm
         Dim ShowPreview As Boolean = False
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
-        ' ArgsList.Add("/preview")
-        ' ArgsList.Add("/run")
-        ' ArgsList.Add("Backup")
-
         If ArgsList.Count > 1 Then
             If ArgsList.IndexOf("/quiet") <> -1 Then
                 Quiet = True
