@@ -237,6 +237,10 @@ Class SettingsHandler
 
     Sub DeleteConfigFile()
         IO.File.Delete(ConfigOptions.GetConfigPath(ConfigName))
+        DeleteLogFile()
+    End Sub
+
+    Sub DeleteLogFile()
         IO.File.Delete(ConfigOptions.GetLogPath(ConfigName))
     End Sub
 

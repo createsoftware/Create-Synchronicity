@@ -60,6 +60,7 @@ Partial Class MainForm
         Me.Main_ActionsMenuToolStripSeparator = New System.Windows.Forms.ToolStripSeparator
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ClearLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
@@ -278,10 +279,10 @@ Partial Class MainForm
         '
         'Main_ActionsMenu
         '
-        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem})
+        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 120)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 164)
         '
         'PreviewMenuItem
         '
@@ -327,6 +328,13 @@ Partial Class MainForm
         Me.ViewLogMenuItem.Name = "ViewLogMenuItem"
         Me.ViewLogMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ViewLogMenuItem.Text = "\VIEW_LOG"
+        '
+        'ClearLogMenuItem
+        '
+        Me.ClearLogMenuItem.Image = CType(resources.GetObject("ClearLogMenuItem.Image"), System.Drawing.Image)
+        Me.ClearLogMenuItem.Name = "ClearLogMenuItem"
+        Me.ClearLogMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.ClearLogMenuItem.Tag = "\CLEAR_LOG"
         '
         'Main_AboutLinkLabel
         '
@@ -386,4 +394,5 @@ Partial Class MainForm
     Friend WithEvents Main_ActionsMenuToolStripSeparator As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Main_AboutLinkLabel As System.Windows.Forms.LinkLabel
+    Friend WithEvents ClearLogMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

@@ -122,7 +122,7 @@ Public Class MainForm
             Exit Sub
         End If
 
-        Main_Display_Options(Main_Actions.SelectedItems(0).Text, False)
+        Main_Display_Options(CurrentProfile, False)
     End Sub
 
     Private Sub Main_AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles Main_AboutLinkLabel.LinkClicked
@@ -130,37 +130,46 @@ Public Class MainForm
         About.ShowDialog()
     End Sub
 
+    Private Sub Main_ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Main_ActionsMenu.Opening
+        Dim FileSize As Integer = If(IO.File.Exists(ConfigOptions.GetLogPath(CurrentProfile)), CInt((New System.IO.FileInfo(ConfigOptions.GetLogPath(CurrentProfile))).Length / 1000), 0)
+        ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag, FileSize)
+    End Sub
+
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         If Not CheckValidity() Then Exit Sub
-        Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, True)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, True)
         SyncForm.ShowDialog()
     End Sub
 
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
         If Not CheckValidity() Then Exit Sub
 
-        Dim SyncForm As New SynchronizeForm(Main_Actions.SelectedItems(0).Text, False)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, False)
         SyncForm.ShowDialog()
         SyncForm.Dispose()
     End Sub
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ChangeSettingsMenuItem.Click
-        Dim SettingsForm As New Settings(Main_Actions.SelectedItems(0).Text)
+        Dim SettingsForm As New Settings(CurrentProfile)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
-        If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\DELETE_PROFILE"), Main_Actions.SelectedItems(0).Text), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, Translation.Translate("\CONFIRM_DELETION")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
-            SettingsArray(Main_Actions.SelectedItems(0).Text).DeleteConfigFile()
-            SettingsArray(Main_Actions.SelectedItems(0).Text) = Nothing
+        If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\DELETE_PROFILE"), CurrentProfile), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, Translation.Translate("\CONFIRM_DELETION")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+            SettingsArray(CurrentProfile).DeleteConfigFile()
+            SettingsArray(CurrentProfile) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
         End If
     End Sub
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
-        If Not IO.File.Exists(ConfigOptions.GetLogPath(Main_Actions.SelectedItems(0).Text)) Then Exit Sub
-        Diagnostics.Process.Start(ConfigOptions.GetLogPath(Main_Actions.SelectedItems(0).Text))
+        If Not IO.File.Exists(ConfigOptions.GetLogPath(CurrentProfile)) Then Exit Sub
+        Diagnostics.Process.Start(ConfigOptions.GetLogPath(CurrentProfile))
+    End Sub
+
+    Private Sub ClearLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLogMenuItem.Click
+        SettingsArray(CurrentProfile).DeleteLogFile()
     End Sub
 #End Region
 
@@ -226,17 +235,15 @@ Public Class MainForm
     End Function
 
     Function CheckValidity() As Boolean
-        If Not SettingsArray(Main_Actions.SelectedItems(0).Text).ValidateConfigFile() Then
+        If Not SettingsArray(CurrentProfile).ValidateConfigFile() Then
             Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
             Return False
         End If
         Return True
     End Function
-#End Region
 
-#If 0 Then
-    Private Sub MainForm_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.VisibleChanged
-        'Me.Visible = Not Quiet
-    End Sub
-#End If
+    Private Function CurrentProfile()
+        Return Main_Actions.SelectedItems(0).Text
+    End Function
+#End Region
 End Class

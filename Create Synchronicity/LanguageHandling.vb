@@ -75,6 +75,7 @@ Public Class LanguageHandler
         ElseIf TypeOf Ctrl Is ContextMenuStrip Then
             For Each Item As ToolStripItem In CType(Ctrl, ContextMenuStrip).Items
                 Item.Text = Translate(Item.Text)
+                Item.Tag = Translate(Item.Tag, ";")
             Next
 
         ElseIf TypeOf Ctrl Is Button Then

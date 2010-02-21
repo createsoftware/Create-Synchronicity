@@ -13,6 +13,7 @@ CANCEL_CLOSE=Cancel;Close
 CHANGE_SETTINGS=Change Settings
 CHOOSE_DEST=Select a folder to copy the files to.
 CHOOSE_SOURCE=Select a folder to copy the files from.
+CLEAR_LOG=Clear log ({0} kB)
 COMPUTE_HASH=Compute a hash before copying (slow)
 COMPUTEHASH_TAG=Checked, a file signature is computed before copying, to check for actual modifications.
 CONFIRM_DELETION=Confirm deletion
