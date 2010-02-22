@@ -1,5 +1,5 @@
 # Create Synchronicity English Language file
-# Last update: 02.17.2010
+# Last update: 02.23.2010
 # Translation by Clément Pit--Claudel
 ABOUT_SETTINGS=À propos/Paramètres
 ACTION=Action
@@ -92,7 +92,7 @@ STEP_2=2ème étape : Copie des fichiers de gauche à droite
 STEP_2_STATUS=2ème étape : {0}/{1} ({2})
 STEP_3=3ème étape : Nettoyage et copie des fichiers de droite à gauche
 STEP_3_STATUS=3ème étape : {0}/{1} ({2})
-STRICT_COMPARISON=Concordance obligatoire des dates de fichiers
+STRICT_COMPARISON=Concordance stricte des dates de fichiers obligatoire
 STRICT_MIRROR_DESC=Miroir strict : rétablir la version originale des fichiers modifiés à droite.
 STRICTCOMPARISON_TAG=Décoché, autorise les dates de deux copies d'un fichier à différer jusqu'à 4 secondes.
 SUBDIRECTORIES=Sous-dossiers
