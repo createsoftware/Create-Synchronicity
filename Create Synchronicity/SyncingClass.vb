@@ -34,6 +34,8 @@ Public Class SyncingItem
     Public Type As TypeOfItem
     Public Action As TypeOfAction
 
+    Private Translation As LanguageHandler = LanguageHandler.GetSingleton
+
     Sub New(ByVal _Path As String, ByVal _Type As TypeOfItem, ByVal _Action As TypeOfAction)
         Path = _Path
         Type = _Type
@@ -43,20 +45,20 @@ Public Class SyncingItem
     Function FormatType() As String
         Select Case Type
             Case TypeOfItem.File
-                Return "File"
+                Return Translation.Translate("\FILE")
             Case Else
-                Return "Folder"
+                Return Translation.Translate("\FOLDER")
         End Select
     End Function
 
     Function FormatAction() As String
         Select Case Action
             Case TypeOfAction.Create
-                Return "Create"
+                Return Translation.Translate("\CREATE")
             Case TypeOfAction.Delete
-                Return "Delete"
+                Return Translation.Translate("\DELETE")
             Case Else
-                Return "None"
+                Return Translation.Translate("\NONE")
         End Select
     End Function
 End Class
@@ -76,7 +78,7 @@ Public Class FileNamePattern
         Pattern = _Pattern
     End Sub
 
-    Shared Function GetPattern(ByVal Pattern As String)
+    Shared Function GetPattern(ByVal Pattern As String) As FileNamePattern
         If Pattern.StartsWith("""") And Pattern.EndsWith("""") Then 'Filename
             Return New FileNamePattern(PatternType.FileName, Pattern.Substring(1, Pattern.Length - 2).ToLower)
         ElseIf Pattern.StartsWith("/") And Pattern.EndsWith("/") Then 'Regex

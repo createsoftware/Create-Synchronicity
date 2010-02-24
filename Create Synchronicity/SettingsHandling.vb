@@ -41,7 +41,7 @@ Public Module ConfigOptions
         Return ConfigRootDir & "\" & Name & ".sync"
     End Function
 
-    Public Function GetIcon()
+    Public Function GetIcon() As Drawing.Icon
         Static Icon As Drawing.Icon
 
         If Icon Is Nothing Then

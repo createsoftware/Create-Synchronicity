@@ -1,5 +1,5 @@
 # Create Synchronicity English Language file
-# Last update: 02.17.2010
+# Last update: 02.25.2010
 # Translation by Clément Pit--Claudel
 ABOUT_SETTINGS=About/Settings
 ACTION=Action
@@ -18,6 +18,7 @@ COMPUTE_HASH=Compute a hash before copying (slow)
 COMPUTEHASH_TAG=Checked, a file signature is computed before copying, to check for actual modifications.
 CONFIRM_DELETION=Confirm deletion
 CONTACT_LINK=\Contact the author/ (createcorpsoftware@yahoo.fr)
+CREATE=Create
 DEBUG_MODE=DEBUG Mode
 DEBUG_WARNING=This is a debug version of Create Synchronicity. Lots of extra info will be added to the logs, and the process of synchronizing files may be slower. Please report any bugs you encounter.
 DELETE=Delete

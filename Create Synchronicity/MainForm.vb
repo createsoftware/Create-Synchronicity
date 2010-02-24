@@ -242,7 +242,7 @@ Public Class MainForm
         Return True
     End Function
 
-    Private Function CurrentProfile()
+    Private Function CurrentProfile() As String
         Return Main_Actions.SelectedItems(0).Text
     End Function
 #End Region

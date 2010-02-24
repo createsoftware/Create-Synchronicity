@@ -67,7 +67,7 @@ Public Class AboutForm
     End Sub
 
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> About_LanguagesList.SelectedItem Then
+        If ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> About_LanguagesList.SelectedItem.ToString Then
             MessageBox.Show(Translation.Translate("\RESTART"), Translation.Translate("\RESTART_NEEDED"))
         End If
 
