@@ -13,15 +13,20 @@ Contact:		createsoftware@users.sourceforge.net
 SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 Change Log
-NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification
+NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Feb. 21, 2009 - NEW: Clear log option.
-Feb. 20, 2009 - UPD: Better command-line support.
-Feb. 17, 2009 - NEW: Full regex support for file inclusion/exclusion.
-Feb. 13, 2009 - UPD: A few cosmetic updates.
-Feb. 13, 2009 - NEW: Add a "Strict time check" advanced option which, when disabled, allows file times to differ by up to 2 seconds before forcing an update.
-Jan. 31, 2009 - NEW: French translation.
-Jan. 23, 2009 - NEW: !Add a language handling class, so that the program can be translated to other languages.
+
+-- Version 3.0 --
+Feb. 25, 2010 - SYN: Major update: translations, full regex support, cosmetic updates and a few new options.
+Feb. 21, 2010 - NEW: Add a menu item to clear logs.
+Feb. 20, 2010 - UPD: !Better command-line support.
+Feb. 17, 2010 - NEW: !Full regex support for file inclusion/exclusion.
+Feb. 17, 2010 - UPD: Better-looking icon.
+Feb. 13, 2010 - UPD: A few cosmetic updates.
+Feb. 13, 2010 - NEW: Add a "Strict time check" advanced option which, when disabled, allows file times to differ by up to 2 seconds before forcing an update.
+Jan. 31, 2010 - NEW: !French translation.
+Jan. 23, 2010 - NEW: !Create Synchronicity can now be translated to other languages.
+Nov.  4, 2009 - UPD: Small performance increase using a new way to calculate file size.
 
 -- Version 2.2 --
 Oct. 26, 2009 - SYN: A few new options, including time offsets, and a nicer log display.
