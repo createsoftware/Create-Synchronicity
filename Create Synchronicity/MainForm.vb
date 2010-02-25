@@ -42,7 +42,7 @@ Public Class MainForm
         End If
 
         If ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
-            Dim UpdateThread As New Threading.Thread(AddressOf ConfigOptions.CheckForUpdates)
+            Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start(True)
         End If
 

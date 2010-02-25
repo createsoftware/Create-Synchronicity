@@ -35,8 +35,6 @@ Public Module ConfigOptions
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-
     Public Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & "\" & Name & ".sync"
     End Function
@@ -58,22 +56,6 @@ Public Module ConfigOptions
         Return LogRootDir & "\" & Name & ".log.html"
 #End If
     End Function
-
-    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
-        Try
-            Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
-            If CurrentVersion = "" Then Throw New Exception()
-            If (CurrentVersion <> Application.ProductVersion) Then
-                If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, Translation.Translate("\UPDATE_TITLE")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
-                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
-                End If
-            Else
-                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox(Translation.Translate("\NO_UPDATES"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
-            End If
-        Catch Ex As Exception
-            Microsoft.VisualBasic.MsgBox(Translation.Translate("\UPDATE_ERROR"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, Translation.Translate("\UPDATE_ERROR_TITLE"))
-        End Try
-    End Sub
 
     Public Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
         If (ProgramSettings.ContainsKey(Key)) Then
@@ -370,3 +352,23 @@ Class Scheduler 'schtasks.exe
         MessageBox.Show("Output: " & Environment.NewLine & Output & Environment.NewLine & ErrorOutput)
     End Sub
 End Class
+
+Public Module Updates
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+
+    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+        Try
+            Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
+            If CurrentVersion = "" Then Throw New Exception()
+            If (CurrentVersion <> Application.ProductVersion) Then
+                If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, Translation.Translate("\UPDATE_TITLE")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
+                End If
+            Else
+                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox(Translation.Translate("\NO_UPDATES"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
+            End If
+        Catch Ex As Exception
+            Microsoft.VisualBasic.MsgBox(Translation.Translate("\UPDATE_ERROR"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, Translation.Translate("\UPDATE_ERROR_TITLE"))
+        End Try
+    End Sub
+End Module

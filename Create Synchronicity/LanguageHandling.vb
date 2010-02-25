@@ -17,24 +17,26 @@ Public Class LanguageHandler
         Dim DictFile As String = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
 
         If Not IO.File.Exists(DictFile) Then DictFile = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.DefaultLanguage & ".lng"
-        If Not IO.File.Exists(DictFile) Then MessageBox.Show("No language file found!")
+        If Not IO.File.Exists(DictFile) Then
+            MessageBox.Show("No language file found!")
+        Else
+            Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
 
-        Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
+            While Reader.Peek() > -1
+                Dim Line As String = Reader.ReadLine
 
-        While Reader.Peek() > -1
-            Dim Line As String = Reader.ReadLine
+                If Line.StartsWith("#") Then Continue While
 
-            If Line.StartsWith("#") Then Continue While
+                Dim Pair() As String = Line.Split("=")
+                If Pair.Length < 2 Then Continue While 'Invalid entry
 
-            Dim Pair() As String = Line.Split("=")
-            If Pair.Length < 2 Then Continue While 'Invalid entry
-
-            Try
-                Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Environment.NewLine))
-            Catch Ex As Exception
-                'TODO
-            End Try
-        End While
+                Try
+                    Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Environment.NewLine))
+                Catch Ex As Exception
+                    'TODO
+                End Try
+            End While
+        End If
     End Sub
 
     Public Shared Function GetSingleton() As LanguageHandler
