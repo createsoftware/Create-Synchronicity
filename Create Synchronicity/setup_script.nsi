@@ -11,8 +11,6 @@
 !define 		PROGRAMPATH	"${COMPANYPATH}\${PRODUCTNAME}"
 !define			PRODUCTPATH	"${COMPANY}\${PRODUCTNAME}"
 
-!define			LANGPATH	"${PROGRAMPATH}\language"
-
 Name "${PRODUCTNAME} ${VERSION}"
 OutFile "..\Create_Synchronicity_Setup.exe"
 InstallDir "${PROGRAMPATH}"
@@ -47,8 +45,8 @@ Section "Installer Section" InstallSection
 	File "bin\Release\Release notes.txt"
 	File "bin\Release\COPYING"
 
-	SetOutPath "${PRODUCTNAME}"
-	File "bin\Release\language\*.lng"
+	SetOutPath "$INSTDIR\languages"
+	File "bin\Release\languages\*.lng"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN AppStartMenu
 	CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -65,7 +63,7 @@ Section "Uninstall"
 	Delete "$INSTDIR\Release notes.txt"
 	Delete "$INSTDIR\COPYING"
 	Delete "$INSTDIR\Uninstall.exe"
-	RMDir /r "$INSTDIR\language"
+	RMDir /r "$INSTDIR\languages"
 
 	!insertmacro MUI_STARTMENU_GETFOLDER AppStartMenu $StartMenuFolder
 
