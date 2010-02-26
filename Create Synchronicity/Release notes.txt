@@ -15,6 +15,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Feb. 26, 2010 - NEW: Add a "swap" button, to swap left and right.
 
 -- Version 3.0 --
 Feb. 25, 2010 - SYN: Major update: translations, full regex support, cosmetic updates and a few new options.
