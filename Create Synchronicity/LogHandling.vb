@@ -15,11 +15,12 @@ Class LogHandler
 #End If
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Private Disposed As Boolean
 
     Sub New(ByVal _LogName As String)
-        IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
 
         Disposed = False
         LogName = _LogName
@@ -102,9 +103,9 @@ Class LogHandler
         Disposed = True
 
         Try
-            Dim NewLog As Boolean = Not IO.File.Exists(ConfigOptions.GetLogPath(LogName))
+            Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
-            Dim LogWriter As New IO.StreamWriter(ConfigOptions.GetLogPath(LogName), True)
+            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
 
             Try
 #If Not DEBUG Then

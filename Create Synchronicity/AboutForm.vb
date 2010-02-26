@@ -8,6 +8,7 @@
 
 Public Class AboutForm
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Private Sub SetLinkArea(ByVal Link As LinkLabel)
         If Link.Text.IndexOf("\") = -1 Or Link.Text.IndexOf("/") = -1 Then Exit Sub
@@ -33,13 +34,13 @@ Public Class AboutForm
         SetLinkArea(About_VersionInfo)
 
         About_LanguagesList.Items.Clear()
-        For Each File As String In IO.Directory.GetFiles(ConfigOptions.LanguageRootDir)
+        For Each File As String In IO.Directory.GetFiles(ProgramConfig.LanguageRootDir)
             About_LanguagesList.Items.Add(File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1))
         Next
 
-        ConfigOptions.LoadProgramSettings()
-        About_Updates.Checked = ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
-        About_LanguagesList.SelectedIndex = About_LanguagesList.Items.IndexOf(ConfigOptions.GetProgramSetting(ConfigOptions.Language, ""))
+        ProgramConfig.LoadProgramSettings()
+        About_Updates.Checked = ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
+        About_LanguagesList.SelectedIndex = About_LanguagesList.Items.IndexOf(ProgramConfig.GetProgramSetting(ConfigOptions.Language, ""))
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked
@@ -67,12 +68,12 @@ Public Class AboutForm
     End Sub
 
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If ConfigOptions.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> About_LanguagesList.SelectedItem.ToString Then
+        If ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> About_LanguagesList.SelectedItem.ToString Then
             Interaction.ShowMsg(Translation.Translate("\RESTART"), Translation.Translate("\RESTART_NEEDED"))
         End If
 
-        ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
-        If About_LanguagesList.SelectedIndex <> -1 Then ConfigOptions.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
-        ConfigOptions.SaveProgramSettings()
+        ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
+        If About_LanguagesList.SelectedIndex <> -1 Then ProgramConfig.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
+        ProgramConfig.SaveProgramSettings()
     End Sub
 End Class

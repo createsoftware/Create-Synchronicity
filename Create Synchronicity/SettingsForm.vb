@@ -12,6 +12,7 @@ Public Class Settings
     Dim ClickedRightTreeView As Boolean = False
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
     'Note:
     'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
     'The boolean value is stored as a * appended at the end of the file name.
@@ -354,7 +355,6 @@ Public Class Settings
     End Function
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
         Translation.TranslateControl(Me)
 
         Settings_Update(True)

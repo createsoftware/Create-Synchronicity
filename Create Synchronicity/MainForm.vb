@@ -11,37 +11,38 @@ Public Class MainForm
     Dim SettingsArray As Dictionary(Of String, SettingsHandler)
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.Icon = ConfigOptions.GetIcon()
+        Me.Icon = ProgramConfig.GetIcon()
 
-        IO.Directory.CreateDirectory(ConfigOptions.LogRootDir)
-        IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
-        IO.Directory.CreateDirectory(ConfigOptions.LanguageRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
 
 #If DEBUG Then
         Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
 
-        ConfigOptions.LoadProgramSettings()
-        If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
-            If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
+        ProgramConfig.LoadProgramSettings()
+        If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+            If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
                 If Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
+                    ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
                 Else
-                    ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
+                    ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
                 End If
             End If
 
-            If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
-                ConfigOptions.SetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage)
+            If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+                ProgramConfig.SetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage)
             End If
 
-            ConfigOptions.SaveProgramSettings()
+            ProgramConfig.SaveProgramSettings()
         End If
 
-        If ConfigOptions.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
+        If ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
             Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start(True)
         End If
@@ -102,7 +103,7 @@ Public Class MainForm
     Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
         e.CancelEdit = True
         Main_Actions.LabelEdit = False
-        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then 'OrElse IO.File.Exists(ConfigOptions.GetConfigPath(e.Label)) Then
+        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then 'OrElse IO.File.Exists(ProgramConfig.GetConfigPath(e.Label)) Then
             Exit Sub
         End If
         Dim SettingsForm As New Settings(e.Label)
@@ -131,7 +132,7 @@ Public Class MainForm
     End Sub
 
     Private Sub Main_ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Main_ActionsMenu.Opening
-        Dim FileSize As Integer = If(IO.File.Exists(ConfigOptions.GetLogPath(CurrentProfile)), CInt((New System.IO.FileInfo(ConfigOptions.GetLogPath(CurrentProfile))).Length / 1000), 0)
+        Dim FileSize As Integer = If(IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)), CInt((New System.IO.FileInfo(ProgramConfig.GetLogPath(CurrentProfile))).Length / 1000), 0)
         ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag, FileSize)
     End Sub
 
@@ -164,8 +165,8 @@ Public Class MainForm
     End Sub
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
-        If Not IO.File.Exists(ConfigOptions.GetLogPath(CurrentProfile)) Then Exit Sub
-        Diagnostics.Process.Start(ConfigOptions.GetLogPath(CurrentProfile))
+        If Not IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)) Then Exit Sub
+        Diagnostics.Process.Start(ProgramConfig.GetLogPath(CurrentProfile))
     End Sub
 
     Private Sub ClearLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLogMenuItem.Click
@@ -181,7 +182,7 @@ Public Class MainForm
         Main_Actions.Items.Clear()
         Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
-        For Each ConfigFile As String In IO.Directory.GetFiles(ConfigOptions.ConfigRootDir, "*.sync")
+        For Each ConfigFile As String In IO.Directory.GetFiles(ProgramConfig.ConfigRootDir, "*.sync")
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
 

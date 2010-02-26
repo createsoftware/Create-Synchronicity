@@ -27,13 +27,33 @@ Public Module ConfigOptions
     Public Const DefaultLanguage As String = "english"
     Public Const AutoUpdates As String = "Auto updates"
 
-    Public ConfigRootDir As String = Application.StartupPath & "\config"
-    Public LogRootDir As String = Application.StartupPath & "\log"
+    Public Const ConfigFolderName = "config"
+    Public Const LogFolderName = "log"
+    Public Const SettingsFileName = "mainconfig.ini"
+End Module
+
+Public Class ConfigHandler
+    Private Shared Instance As ConfigHandler
+
+    Public ConfigRootDir As String
+    Public LogRootDir As String
+    Public MainConfigFile As String
+
     Public LanguageRootDir As String = Application.StartupPath & "\languages"
-    Public MainConfigFile As String = ConfigRootDir & "\mainconfig.ini"
 
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
+
+    Protected Sub New()
+        ConfigRootDir = GetUserFilesRootDir() & ConfigFolderName
+        LogRootDir = GetUserFilesRootDir() & LogFolderName
+        MainConfigFile = ConfigRootDir & "\" & SettingsFileName
+    End Sub
+
+    Public Shared Function GetSingleton() As ConfigHandler
+        If Instance Is Nothing Then Instance = New ConfigHandler()
+        Return Instance
+    End Function
 
     Public Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & "\" & Name & ".sync"
@@ -57,6 +77,30 @@ Public Module ConfigOptions
 #End If
     End Function
 
+    Public Function GetUserFilesRootDir() As String 'Return the place were config files are stored
+        Static UserFilesRootDir As String = String.Empty
+        If Not UserFilesRootDir = String.Empty Then Return UserFilesRootDir
+
+        Dim AppPathInfo As New IO.DirectoryInfo(Application.StartupPath)
+        Dim UserPath As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Create Software\Create Synchronicity\"
+
+        If IO.Directory.Exists(Application.StartupPath & "\" & ConfigFolderName) Then
+            If Not AppPathInfo.Attributes & IO.FileAttributes.ReadOnly Then
+                UserFilesRootDir = Application.StartupPath & "\"
+                Return UserFilesRootDir
+            Else
+                Interaction.ShowMsg("Create Synchronicity cannot write in your in your installation directory, although it contains configuration files. Your Application Data folder will therefore be used instead.", "Information", , MessageBoxIcon.Information)
+                Return UserPath
+            End If
+
+        ElseIf IO.Directory.Exists(UserPath) Then
+            Return UserPath
+
+        Else
+            Return Application.StartupPath & "\"
+        End If
+    End Function
+
     Public Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
         If (ProgramSettings.ContainsKey(Key)) Then
             Return ProgramSettings(Key)
@@ -72,7 +116,7 @@ Public Module ConfigOptions
     Public Sub LoadProgramSettings()
         If ProgramSettingsLoaded Then Exit Sub
 
-        IO.Directory.CreateDirectory(ConfigOptions.ConfigRootDir)
+        IO.Directory.CreateDirectory(ConfigRootDir)
         If Not IO.File.Exists(MainConfigFile) Then
             IO.File.Create(MainConfigFile).Close()
             Exit Sub
@@ -103,7 +147,7 @@ Public Module ConfigOptions
     Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
         Return ProgramSettings.ContainsKey(Setting)
     End Function
-End Module
+End Class
 
 Class SettingsHandler
     Public ConfigName As String
@@ -114,6 +158,7 @@ Class SettingsHandler
     Private PredicateConfigMatchingList As Dictionary(Of String, String)
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Public Sub New(ByVal Name As String)
         ConfigName = Name
@@ -132,8 +177,8 @@ Class SettingsHandler
     End Sub
 
     Function LoadConfigFile() As Boolean
-        If Not IO.File.Exists(ConfigOptions.GetConfigPath(ConfigName)) Then Exit Function
-        Dim FileReader As New IO.StreamReader(ConfigOptions.GetConfigPath(ConfigName))
+        If Not IO.File.Exists(ProgramConfig.GetConfigPath(ConfigName)) Then Exit Function
+        Dim FileReader As New IO.StreamReader(ProgramConfig.GetConfigPath(ConfigName))
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
@@ -173,7 +218,7 @@ Class SettingsHandler
     Function SaveConfigFile() As Boolean
         Try
             Dim ConfigString As String = ""
-            Dim FileWriter As New IO.StreamWriter(ConfigOptions.GetConfigPath(ConfigName))
+            Dim FileWriter As New IO.StreamWriter(ProgramConfig.GetConfigPath(ConfigName))
 
             For Each Setting As KeyValuePair(Of String, String) In Configuration
                 FileWriter.WriteLine(Setting.Key & ":" & Setting.Value)
@@ -218,12 +263,12 @@ Class SettingsHandler
     End Function
 
     Sub DeleteConfigFile()
-        IO.File.Delete(ConfigOptions.GetConfigPath(ConfigName))
+        IO.File.Delete(ProgramConfig.GetConfigPath(ConfigName))
         DeleteLogFile()
     End Sub
 
     Sub DeleteLogFile()
-        IO.File.Delete(ConfigOptions.GetLogPath(ConfigName))
+        IO.File.Delete(ProgramConfig.GetLogPath(ConfigName))
     End Sub
 
     Sub SetSetting(ByVal SettingName As String, ByVal Value As String)
@@ -355,6 +400,7 @@ End Class
 
 Public Module Updates
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
         Try
