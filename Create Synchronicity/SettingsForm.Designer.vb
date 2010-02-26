@@ -52,12 +52,12 @@ Partial Class Settings
         Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox
         Me.Settings_Tips = New System.Windows.Forms.Label
-        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
         Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
         Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton
+        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
         Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox
         Me.Settings_CopyAllFilesCheckBox = New System.Windows.Forms.CheckBox
         Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel
@@ -192,7 +192,7 @@ Partial Class Settings
         Me.Settings_ViewsLayoutPanel.RowCount = 2
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(668, 139)
+        Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(668, 140)
         Me.Settings_ViewsLayoutPanel.TabIndex = 3
         '
         'Settings_LeftView
@@ -204,7 +204,7 @@ Partial Class Settings
         Me.Settings_LeftView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
         Me.Settings_LeftView.Location = New System.Drawing.Point(3, 16)
         Me.Settings_LeftView.Name = "Settings_LeftView"
-        Me.Settings_LeftView.Size = New System.Drawing.Size(310, 120)
+        Me.Settings_LeftView.Size = New System.Drawing.Size(310, 121)
         Me.Settings_LeftView.TabIndex = 2
         '
         'Settings_TreeViewMenuStrip
@@ -235,7 +235,7 @@ Partial Class Settings
         Me.Settings_RightView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
         Me.Settings_RightView.Location = New System.Drawing.Point(354, 16)
         Me.Settings_RightView.Name = "Settings_RightView"
-        Me.Settings_RightView.Size = New System.Drawing.Size(311, 120)
+        Me.Settings_RightView.Size = New System.Drawing.Size(311, 121)
         Me.Settings_RightView.TabIndex = 3
         '
         'Settings_ReloadButton
@@ -273,7 +273,7 @@ Partial Class Settings
         Me.Settings_ViewsBox.Controls.Add(Me.Settings_ViewsLayoutPanel)
         Me.Settings_ViewsBox.Location = New System.Drawing.Point(12, 89)
         Me.Settings_ViewsBox.Name = "Settings_ViewsBox"
-        Me.Settings_ViewsBox.Size = New System.Drawing.Size(674, 159)
+        Me.Settings_ViewsBox.Size = New System.Drawing.Size(674, 160)
         Me.Settings_ViewsBox.TabIndex = 4
         Me.Settings_ViewsBox.TabStop = False
         Me.Settings_ViewsBox.Text = "\SUBDIRECTORIES"
@@ -282,13 +282,13 @@ Partial Class Settings
         '
         Me.Settings_SynchronizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_Tips)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_StrictMirrorOption)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
-        Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 254)
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_Tips)
+        Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 255)
         Me.Settings_SynchronizationMethodBox.Name = "Settings_SynchronizationMethodBox"
-        Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 97)
+        Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 110)
         Me.Settings_SynchronizationMethodBox.TabIndex = 5
         Me.Settings_SynchronizationMethodBox.TabStop = False
         Me.Settings_SynchronizationMethodBox.Text = "\SYNC_METHOD"
@@ -300,28 +300,16 @@ Partial Class Settings
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_Tips.Location = New System.Drawing.Point(3, 17)
         Me.Settings_Tips.Name = "Settings_Tips"
-        Me.Settings_Tips.Size = New System.Drawing.Size(668, 77)
+        Me.Settings_Tips.Size = New System.Drawing.Size(668, 90)
         Me.Settings_Tips.TabIndex = 8
         Me.Settings_Tips.Text = "\SETTINGS_TIPS"
         Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Settings_Tips.Visible = False
         '
-        'Settings_DescriptionLabel
-        '
-        Me.Settings_DescriptionLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 43)
-        Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
-        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 51)
-        Me.Settings_DescriptionLabel.TabIndex = 1
-        Me.Settings_DescriptionLabel.Tag = "\MOUSE_OVER"
-        Me.Settings_DescriptionLabel.Text = "\MOUSE_OVER"
-        '
         'Settings_StrictMirrorOption
         '
         Me.Settings_StrictMirrorOption.AutoSize = True
-        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 74)
+        Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 87)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
         Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 9
@@ -383,6 +371,18 @@ Partial Class Settings
         Me.Settings_LRMirrorMethodOption.Text = "\LR_MIRROR"
         Me.Settings_LRMirrorMethodOption.UseVisualStyleBackColor = True
         '
+        'Settings_DescriptionLabel
+        '
+        Me.Settings_DescriptionLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 43)
+        Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
+        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 64)
+        Me.Settings_DescriptionLabel.TabIndex = 1
+        Me.Settings_DescriptionLabel.Tag = "\MOUSE_OVER"
+        Me.Settings_DescriptionLabel.Text = "\MOUSE_OVER"
+        '
         'Settings_IncludeExcludeBox
         '
         Me.Settings_IncludeExcludeBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
@@ -390,7 +390,7 @@ Partial Class Settings
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_CopyAllFilesCheckBox)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_IncludeExcludeLayoutPanel)
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_ReplicateEmptyDirectoriesOption)
-        Me.Settings_IncludeExcludeBox.Location = New System.Drawing.Point(12, 357)
+        Me.Settings_IncludeExcludeBox.Location = New System.Drawing.Point(12, 371)
         Me.Settings_IncludeExcludeBox.Name = "Settings_IncludeExcludeBox"
         Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(674, 97)
         Me.Settings_IncludeExcludeBox.TabIndex = 6
@@ -504,7 +504,7 @@ Partial Class Settings
         Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_ActionsPanel.Controls.Add(Me.Settings_CancelButton, 1, 0)
         Me.Settings_ActionsPanel.Controls.Add(Me.Settings_SaveButton, 0, 0)
-        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(486, 534)
+        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(486, 548)
         Me.Settings_ActionsPanel.Name = "Settings_ActionsPanel"
         Me.Settings_ActionsPanel.RowCount = 1
         Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -561,7 +561,7 @@ Partial Class Settings
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_ComputeHashOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
-        Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 460)
+        Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 474)
         Me.Settings_AdvancedBox.Name = "Settings_AdvancedBox"
         Me.Settings_AdvancedBox.Size = New System.Drawing.Size(674, 68)
         Me.Settings_AdvancedBox.TabIndex = 9
@@ -616,7 +616,7 @@ Partial Class Settings
         'Settings_BottomDescLabel
         '
         Me.Settings_BottomDescLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 534)
+        Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 548)
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
@@ -627,7 +627,7 @@ Partial Class Settings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Settings_CancelButton
-        Me.ClientSize = New System.Drawing.Size(698, 577)
+        Me.ClientSize = New System.Drawing.Size(698, 591)
         Me.Controls.Add(Me.Settings_BottomDescLabel)
         Me.Controls.Add(Me.Settings_ActionsPanel)
         Me.Controls.Add(Me.Settings_AdvancedBox)

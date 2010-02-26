@@ -357,6 +357,8 @@ Public Class Settings
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
 
+        Settings_Tips.BringToFront()
+
         Settings_Update(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ConfigName)
     End Sub
