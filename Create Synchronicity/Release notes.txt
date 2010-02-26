@@ -5,6 +5,7 @@ Created on:		June 3, 2009
 Created by:		Clément Pit--Claudel (Create Software)
 License:		GNU GPL v3 or later (see "COPYING")
 Coded in:		Visual Basic .Net
+Translations:	Clément Pit--Claudel, Florian Haag
 Requires:		.Net Framework v2
 
 * Contact
@@ -15,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Feb. 26, 2010 - New: !German translation by Florian Haag. Thanks!
 Feb. 26, 2010 - NEW: !If Create Synchronicity cannot write to its own directory, settings are stored in the ApplicationData folder. Fixes a bug on Windows Vista.
 Feb. 26, 2010 - NEW: Add a "swap" button, to swap left and right.
 
