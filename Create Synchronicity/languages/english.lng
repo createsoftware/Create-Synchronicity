@@ -120,6 +120,6 @@ VERSION_TEXT=Version %version% (\Search for updates/)
 VIEW_LOG=View log
 WAITING=Waiting...
 WARNING=Warning
-WARNING_SWAP=Swaping left and right folders requires reloading folder trees. All unsaved modifications will be lost. Proceed?
+WARNING_SWAP=Swapping left and right folders requires reloading folder trees. All unsaved modifications will be lost. Proceed?
 WELCOME_MSG=Welcome to Create Synchronicity! Would you like the program to check for updates on startup?
 YES=Yes
