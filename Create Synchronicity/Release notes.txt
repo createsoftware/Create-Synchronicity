@@ -15,6 +15,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Feb. 26, 2010 - NEW: !If Create Synchronicity cannot write to its own directory, settings are stored in the ApplicationData folder. Fixes a bug on Windows Vista.
 Feb. 26, 2010 - NEW: Add a "swap" button, to swap left and right.
 
 -- Version 3.0 --
