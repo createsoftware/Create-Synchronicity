@@ -1,5 +1,5 @@
 # Create Synchronicity French Language file
-# Last update: 02.25.2010
+# Last update: 02.26.2010
 # Translation by Clément Pit--Claudel
 ABOUT_SETTINGS=À propos/Paramètres
 ACTION=Action
@@ -26,7 +26,7 @@ DELETE_PROFILE=Vouslez-vous vraiment supprimer le profil "{0}" ?
 DESTINATION=Destination :
 DIRECTION=Direction
 DIRECTORIES=Répertoires
-DONE=Terminé :
+DONE=Actions réalisées :
 ELAPSED=Temps écoulé :
 ERROR=Erreur
 ERROR_DETAIL=Détails de l'erreur
