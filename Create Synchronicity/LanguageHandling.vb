@@ -18,7 +18,7 @@ Public Class LanguageHandler
 
         If Not IO.File.Exists(DictFile) Then DictFile = ConfigOptions.LanguageRootDir & "\" & ConfigOptions.DefaultLanguage & ".lng"
         If Not IO.File.Exists(DictFile) Then
-            MessageBox.Show("No language file found!")
+            Interaction.ShowMsg("No language file found!")
         Else
             Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
 

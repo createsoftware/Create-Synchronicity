@@ -212,7 +212,7 @@ Class SettingsHandler
             End If
         Next
         If Not IsValid Then
-            Microsoft.VisualBasic.MsgBox(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0)), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, "Invalid configuration")
+            Interaction.ShowMsg(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0)), Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
         Return IsValid
     End Function
@@ -349,7 +349,7 @@ Class Scheduler 'schtasks.exe
 
         RegProcess.Close()
 
-        MessageBox.Show("Output: " & Environment.NewLine & Output & Environment.NewLine & ErrorOutput)
+        Interaction.ShowMsg("Output: " & Environment.NewLine & Output & Environment.NewLine & ErrorOutput)
     End Sub
 End Class
 
@@ -361,14 +361,26 @@ Public Module Updates
             Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
-                If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Microsoft.VisualBasic.MsgBoxStyle.Question Or Microsoft.VisualBasic.MsgBoxStyle.YesNo, Translation.Translate("\UPDATE_TITLE")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
                 End If
             Else
-                If Not RoutineCheck Then Microsoft.VisualBasic.MsgBox(Translation.Translate("\NO_UPDATES"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Information)
+                If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
             End If
         Catch Ex As Exception
-            Microsoft.VisualBasic.MsgBox(Translation.Translate("\UPDATE_ERROR"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Exclamation, Translation.Translate("\UPDATE_ERROR_TITLE"))
+            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR"), Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
         End Try
     End Sub
+End Module
+
+Public Module Interaction
+    Public AsAService As Boolean = False
+
+    Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
+        If AsAService Then
+            MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
+        Else
+            MessageBox.Show(Text, Caption, Buttons, Icon)
+        End If
+    End Function
 End Module

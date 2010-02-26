@@ -142,6 +142,6 @@ Class LogHandler
     End Sub
 
     Sub Warning(ByVal Message As String, Optional ByVal Ex As Exception = Nothing)
-        MessageBox.Show(Message & Microsoft.VisualBasic.ControlChars.NewLine & If(Ex Is Nothing, "", Ex.Message))
+        Interaction.ShowMsg(Message & Microsoft.VisualBasic.vbNewLine & If(Ex Is Nothing, "", Ex.Message))
     End Sub
 End Class

@@ -21,13 +21,13 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ConfigOptions.LanguageRootDir)
 
 #If DEBUG Then
-        MessageBox.Show(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
 
         ConfigOptions.LoadProgramSettings()
         If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ConfigOptions.ProgramSettingsSet(ConfigOptions.Language) Then
             If Not ConfigOptions.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
-                If Microsoft.VisualBasic.MsgBox(Translation.Translate("\WELCOME_MSG"), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Question, "First Run") = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+                If Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
                 Else
                     ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
@@ -79,10 +79,10 @@ Public Class MainForm
 
                     SyncForm.Show()
                 Else
-                    Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                    Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
                 End If
             Else
-                Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_PROFILE"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Invalid command-line arguments")
+                Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
             End If
         End If
     End Sub
@@ -156,7 +156,7 @@ Public Class MainForm
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
-        If Microsoft.VisualBasic.MsgBox(String.Format(Translation.Translate("\DELETE_PROFILE"), CurrentProfile), Microsoft.VisualBasic.MsgBoxStyle.YesNo Or Microsoft.VisualBasic.MsgBoxStyle.Information, Translation.Translate("\CONFIRM_DELETION")) = Microsoft.VisualBasic.MsgBoxResult.Yes Then
+        If Interaction.ShowMsg(String.Format(Translation.Translate("\DELETE_PROFILE"), CurrentProfile), Translation.Translate("\CONFIRM_DELETION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             SettingsArray(CurrentProfile).DeleteConfigFile()
             SettingsArray(CurrentProfile) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
@@ -236,7 +236,7 @@ Public Class MainForm
 
     Function CheckValidity() As Boolean
         If Not SettingsArray(CurrentProfile).ValidateConfigFile() Then
-            Microsoft.VisualBasic.MsgBox(Translation.Translate("\INVALID_CONFIG"), Microsoft.VisualBasic.MsgBoxStyle.OkOnly Or Microsoft.VisualBasic.MsgBoxStyle.Critical, "Error")
+            Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\ERROR"), , MessageBoxIcon.Error)
             Return False
         End If
         Return True
