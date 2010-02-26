@@ -51,12 +51,12 @@ Partial Class Settings
         Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox
         Me.Settings_Tips = New System.Windows.Forms.Label
+        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
         Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
         Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton
-        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
         Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox
         Me.Settings_CopyAllFilesCheckBox = New System.Windows.Forms.CheckBox
         Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel
@@ -72,11 +72,12 @@ Partial Class Settings
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
         Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox
-        Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label
+        Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox
         Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
+        Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
-        Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox
+        Me.Settings_SwapButton = New System.Windows.Forms.Button
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -96,13 +97,14 @@ Partial Class Settings
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_FromTextBox.Location = New System.Drawing.Point(62, 19)
         Me.Settings_FromTextBox.Name = "Settings_FromTextBox"
-        Me.Settings_FromTextBox.Size = New System.Drawing.Size(571, 21)
+        Me.Settings_FromTextBox.Size = New System.Drawing.Size(509, 21)
         Me.Settings_FromTextBox.TabIndex = 0
         '
         'Settings_DirectoriesBox
         '
         Me.Settings_DirectoriesBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_SwapButton)
         Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_BrowseRButton)
         Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_BrowseLButton)
         Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_ToTextBox)
@@ -119,7 +121,7 @@ Partial Class Settings
         'Settings_BrowseRButton
         '
         Me.Settings_BrowseRButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BrowseRButton.Location = New System.Drawing.Point(639, 44)
+        Me.Settings_BrowseRButton.Location = New System.Drawing.Point(577, 44)
         Me.Settings_BrowseRButton.Name = "Settings_BrowseRButton"
         Me.Settings_BrowseRButton.Size = New System.Drawing.Size(29, 24)
         Me.Settings_BrowseRButton.TabIndex = 3
@@ -129,7 +131,7 @@ Partial Class Settings
         'Settings_BrowseLButton
         '
         Me.Settings_BrowseLButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BrowseLButton.Location = New System.Drawing.Point(639, 18)
+        Me.Settings_BrowseLButton.Location = New System.Drawing.Point(577, 18)
         Me.Settings_BrowseLButton.Name = "Settings_BrowseLButton"
         Me.Settings_BrowseLButton.Size = New System.Drawing.Size(29, 24)
         Me.Settings_BrowseLButton.TabIndex = 2
@@ -142,7 +144,7 @@ Partial Class Settings
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_ToTextBox.Location = New System.Drawing.Point(62, 45)
         Me.Settings_ToTextBox.Name = "Settings_ToTextBox"
-        Me.Settings_ToTextBox.Size = New System.Drawing.Size(571, 21)
+        Me.Settings_ToTextBox.Size = New System.Drawing.Size(509, 21)
         Me.Settings_ToTextBox.TabIndex = 1
         '
         'Settings_ToLabel
@@ -294,6 +296,18 @@ Partial Class Settings
         Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.Settings_Tips.Visible = False
         '
+        'Settings_DescriptionLabel
+        '
+        Me.Settings_DescriptionLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 43)
+        Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
+        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 51)
+        Me.Settings_DescriptionLabel.TabIndex = 1
+        Me.Settings_DescriptionLabel.Tag = "\MOUSE_OVER"
+        Me.Settings_DescriptionLabel.Text = "\MOUSE_OVER"
+        '
         'Settings_StrictMirrorOption
         '
         Me.Settings_StrictMirrorOption.AutoSize = True
@@ -358,18 +372,6 @@ Partial Class Settings
         Me.Settings_LRMirrorMethodOption.Tag = "\LR_MIRROR_TAG"
         Me.Settings_LRMirrorMethodOption.Text = "\LR_MIRROR"
         Me.Settings_LRMirrorMethodOption.UseVisualStyleBackColor = True
-        '
-        'Settings_DescriptionLabel
-        '
-        Me.Settings_DescriptionLabel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_DescriptionLabel.Location = New System.Drawing.Point(6, 43)
-        Me.Settings_DescriptionLabel.Name = "Settings_DescriptionLabel"
-        Me.Settings_DescriptionLabel.Size = New System.Drawing.Size(662, 51)
-        Me.Settings_DescriptionLabel.TabIndex = 1
-        Me.Settings_DescriptionLabel.Tag = "\MOUSE_OVER"
-        Me.Settings_DescriptionLabel.Text = "\MOUSE_OVER"
         '
         'Settings_IncludeExcludeBox
         '
@@ -556,15 +558,20 @@ Partial Class Settings
         Me.Settings_AdvancedBox.TabStop = False
         Me.Settings_AdvancedBox.Text = "\ADVANCED_OPTS"
         '
-        'Settings_TimeOffsetHoursLabel
+        'Settings_StrictDateComparisonOption
         '
-        Me.Settings_TimeOffsetHoursLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_TimeOffsetHoursLabel.AutoSize = True
-        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(615, 45)
-        Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
-        Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(53, 13)
-        Me.Settings_TimeOffsetHoursLabel.TabIndex = 12
-        Me.Settings_TimeOffsetHoursLabel.Text = "\HOURS"
+        Me.Settings_StrictDateComparisonOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_StrictDateComparisonOption.AutoSize = True
+        Me.Settings_StrictDateComparisonOption.Checked = True
+        Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(506, 20)
+        Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_StrictDateComparisonOption.TabIndex = 13
+        Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
+        Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
+        Me.Settings_StrictDateComparisonOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Settings_StrictDateComparisonOption.UseVisualStyleBackColor = True
         '
         'Settings_TimeOffsetLabel
         '
@@ -586,6 +593,16 @@ Partial Class Settings
         Me.Settings_TimeOffset.Size = New System.Drawing.Size(35, 21)
         Me.Settings_TimeOffset.TabIndex = 10
         '
+        'Settings_TimeOffsetHoursLabel
+        '
+        Me.Settings_TimeOffsetHoursLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_TimeOffsetHoursLabel.AutoSize = True
+        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(615, 45)
+        Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
+        Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(53, 13)
+        Me.Settings_TimeOffsetHoursLabel.TabIndex = 12
+        Me.Settings_TimeOffsetHoursLabel.Text = "\HOURS"
+        '
         'Settings_BottomDescLabel
         '
         Me.Settings_BottomDescLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -594,20 +611,15 @@ Partial Class Settings
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
         '
-        'Settings_StrictDateComparisonOption
+        'Settings_SwapButton
         '
-        Me.Settings_StrictDateComparisonOption.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_StrictDateComparisonOption.AutoSize = True
-        Me.Settings_StrictDateComparisonOption.Checked = True
-        Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(506, 20)
-        Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
-        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
-        Me.Settings_StrictDateComparisonOption.TabIndex = 13
-        Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
-        Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
-        Me.Settings_StrictDateComparisonOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Settings_StrictDateComparisonOption.UseVisualStyleBackColor = True
+        Me.Settings_SwapButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_SwapButton.Location = New System.Drawing.Point(612, 19)
+        Me.Settings_SwapButton.Name = "Settings_SwapButton"
+        Me.Settings_SwapButton.Size = New System.Drawing.Size(56, 49)
+        Me.Settings_SwapButton.TabIndex = 5
+        Me.Settings_SwapButton.Text = "\SWAP"
+        Me.Settings_SwapButton.UseVisualStyleBackColor = True
         '
         'Settings
         '
@@ -694,4 +706,5 @@ Partial Class Settings
     Friend WithEvents Settings_TimeOffsetHoursLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_TimeOffsetLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_StrictDateComparisonOption As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_SwapButton As System.Windows.Forms.Button
 End Class

@@ -48,6 +48,15 @@ Public Class Settings
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
     End Sub
 
+    Private Sub Settings_SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SwapButton.Click
+        If MessageBox.Show(Translation.Translate("\WARNING_SWAP"), "\WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
+            Dim Settings_FromTextBox_Text As String = Settings_FromTextBox.Text
+            Settings_FromTextBox.Text = Settings_ToTextBox.Text
+            Settings_ToTextBox.Text = Settings_FromTextBox_Text
+            Settings_ReloadTrees()
+        End If
+    End Sub
+
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
         Settings_ReloadTrees()
     End Sub

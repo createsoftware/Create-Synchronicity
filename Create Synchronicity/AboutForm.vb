@@ -72,7 +72,7 @@ Public Class AboutForm
         End If
 
         ConfigOptions.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
-        ConfigOptions.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
+        If About_LanguagesList.SelectedIndex <> -1 Then ConfigOptions.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
         ConfigOptions.SaveProgramSettings()
     End Sub
 End Class
