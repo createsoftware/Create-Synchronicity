@@ -81,11 +81,26 @@ Public Class ConfigHandler
         Static UserFilesRootDir As String = String.Empty
         If Not UserFilesRootDir = String.Empty Then Return UserFilesRootDir
 
-        Dim AppPathInfo As New IO.DirectoryInfo(Application.StartupPath)
         Dim UserPath As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Create Software\Create Synchronicity\"
 
+        'http://support.microsoft.com/default.aspx?scid=kb;EN-US;326549
+        Dim WriteNeededFiles As New List(Of String)
+        Dim WriteNeededFolders As String() = {Application.StartupPath, Application.StartupPath & "\" & LogFolderName, Application.StartupPath & "\" & ConfigFolderName}
+        WriteNeededFiles.AddRange(IO.Directory.GetFiles(Application.StartupPath & "\" & LogFolderName))
+        WriteNeededFiles.AddRange(IO.Directory.GetFiles(Application.StartupPath & "\" & ConfigFolderName))
+
         If IO.Directory.Exists(Application.StartupPath & "\" & ConfigFolderName) Then
-            If Not AppPathInfo.Attributes & IO.FileAttributes.ReadOnly Then
+            Dim Writable As Boolean = True
+
+            For Each Folder As String In WriteNeededFolders
+                Dim FolderInfo As New IO.DirectoryInfo(Folder)
+                Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
+            Next
+            For Each File As String In WriteNeededFiles
+                Writable = Writable And (Not (IO.File.GetAttributes(File) And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
+            Next
+
+            If Writable Then
                 UserFilesRootDir = Application.StartupPath & "\"
                 Return UserFilesRootDir
             Else
