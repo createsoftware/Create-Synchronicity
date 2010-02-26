@@ -34,6 +34,7 @@ Partial Class Settings
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
         Me.Settings_FromTextBox = New System.Windows.Forms.TextBox
         Me.Settings_DirectoriesBox = New System.Windows.Forms.GroupBox
+        Me.Settings_SwapButton = New System.Windows.Forms.Button
         Me.Settings_BrowseRButton = New System.Windows.Forms.Button
         Me.Settings_BrowseLButton = New System.Windows.Forms.Button
         Me.Settings_ToTextBox = New System.Windows.Forms.TextBox
@@ -77,7 +78,6 @@ Partial Class Settings
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
-        Me.Settings_SwapButton = New System.Windows.Forms.Button
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -117,6 +117,16 @@ Partial Class Settings
         Me.Settings_DirectoriesBox.TabIndex = 1
         Me.Settings_DirectoriesBox.TabStop = False
         Me.Settings_DirectoriesBox.Text = "\DIRECTORIES"
+        '
+        'Settings_SwapButton
+        '
+        Me.Settings_SwapButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_SwapButton.Location = New System.Drawing.Point(612, 19)
+        Me.Settings_SwapButton.Name = "Settings_SwapButton"
+        Me.Settings_SwapButton.Size = New System.Drawing.Size(56, 49)
+        Me.Settings_SwapButton.TabIndex = 5
+        Me.Settings_SwapButton.Text = "\SWAP"
+        Me.Settings_SwapButton.UseVisualStyleBackColor = True
         '
         'Settings_BrowseRButton
         '
@@ -273,9 +283,9 @@ Partial Class Settings
         Me.Settings_SynchronizationMethodBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_Tips)
-        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_StrictMirrorOption)
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
+        Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_DescriptionLabel)
         Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 254)
         Me.Settings_SynchronizationMethodBox.Name = "Settings_SynchronizationMethodBox"
         Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 97)
@@ -610,16 +620,6 @@ Partial Class Settings
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 10
-        '
-        'Settings_SwapButton
-        '
-        Me.Settings_SwapButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_SwapButton.Location = New System.Drawing.Point(612, 19)
-        Me.Settings_SwapButton.Name = "Settings_SwapButton"
-        Me.Settings_SwapButton.Size = New System.Drawing.Size(56, 49)
-        Me.Settings_SwapButton.TabIndex = 5
-        Me.Settings_SwapButton.Text = "\SWAP"
-        Me.Settings_SwapButton.UseVisualStyleBackColor = True
         '
         'Settings
         '

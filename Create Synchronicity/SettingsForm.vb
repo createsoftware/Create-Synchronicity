@@ -98,11 +98,11 @@ Public Class Settings
         Settings_Tips.Visible = False
     End Sub
 
-    Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter
+    Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
         Settings_BottomDescLabel.Text = sender.Tag.ToString
     End Sub
 
-    Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_ComputeHashOption.MouseLeave
+    Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_ComputeHashOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
         Settings_BottomDescLabel.Text = ""
     End Sub
 
