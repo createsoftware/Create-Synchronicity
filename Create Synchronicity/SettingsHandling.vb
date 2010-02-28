@@ -409,7 +409,7 @@ Class Scheduler 'schtasks.exe
 
         RegProcess.Close()
 
-        Interaction.ShowMsg("Output: " & Environment.NewLine & Output & Environment.NewLine & ErrorOutput)
+        Interaction.ShowMsg("Output: " & Microsoft.VisualBasic.vbNewLine & Output & Microsoft.VisualBasic.vbNewLine & ErrorOutput)
     End Sub
 End Class
 
