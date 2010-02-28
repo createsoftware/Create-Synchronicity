@@ -32,6 +32,7 @@ Public Class LanguageHandler
                 If Pair.Length < 2 Then Continue While 'Invalid entry
 
                 Try
+                    If Pair(0).StartsWith("->") Then Pair(0) = Pair(0).Remove(0, "->".Length)
                     Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Microsoft.VisualBasic.vbNewLine))
                 Catch Ex As Exception
                     'TODO
