@@ -16,8 +16,9 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Feb. 26, 2010 - New: !German translation by Florian Haag. Thanks!
-Feb. 26, 2010 - NEW: !If Create Synchronicity cannot write to its own directory, settings are stored in the ApplicationData folder. Fixes a bug on Windows Vista.
+Feb. 28, 2010 - NEW: !Native support for UCN paths (paths to network drives such as "\\dlink-6A4EA4\Documents").
+Feb. 26, 2010 - NEW: !German translation by Florian Haag. Thanks!
+Feb. 26, 2010 - NEW: !When running from a write-protected directory, store settings in the ApplicationData folder. Fixes a privileges-related bug on Windows Vista.
 Feb. 26, 2010 - NEW: Add a "swap" button, to swap left and right.
 
 -- Version 3.0 --
