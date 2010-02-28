@@ -78,8 +78,8 @@ Public Class ConfigHandler
     End Function
 
     Public Function GetUserFilesRootDir() As String 'Return the place were config files are stored
-        Static UserFilesRootDir As String = String.Empty
-        If Not UserFilesRootDir = String.Empty Then Return UserFilesRootDir
+        Static UserFilesRootDir As String = ""
+        If Not UserFilesRootDir = "" Then Return UserFilesRootDir
 
         Dim UserPath As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Create Software\Create Synchronicity\"
 

@@ -48,7 +48,7 @@ Public Class LanguageHandler
     Dim Strings As Dictionary(Of String, String)
 
     Public Function Translate(ByVal Code As String, Optional ByVal Default_Value As String = "") As String
-        If Code = Nothing OrElse Code = String.Empty Then Return Default_Value
+        If Code = Nothing OrElse Code = "" Then Return Default_Value
         Return If(Strings.ContainsKey(Code), Strings(Code), Code)
     End Function
 
