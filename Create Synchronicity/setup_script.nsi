@@ -16,7 +16,7 @@ OutFile "..\Create_Synchronicity_Setup.exe"
 InstallDir "${PROGRAMPATH}"
 InstallDirRegKey HKLM "${SUBREGPATH}" "InstallPath"
 
-RequestExecutionLevel user
+RequestExecutionLevel admin
 Var StartMenuFolder
 
 !insertmacro MUI_PAGE_WELCOME
