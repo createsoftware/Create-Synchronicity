@@ -32,7 +32,7 @@ Public Class LanguageHandler
                 If Pair.Length < 2 Then Continue While 'Invalid entry
 
                 Try
-                    Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Environment.NewLine))
+                    Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Microsoft.VisualBasic.vbNewLine))
                 Catch Ex As Exception
                     'TODO
                 End Try

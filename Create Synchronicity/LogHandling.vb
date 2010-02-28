@@ -122,7 +122,7 @@ Class LogHandler
                     PutLine(If(Pair.Value, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path, LogWriter)
                 Next
                 For Each Ex As Exception In Errors
-                    PutLine(Translation.Translate("\ERROR"), Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"), LogWriter)
+                    PutLine(Translation.Translate("\ERROR"), Ex.Message & "	" & Ex.StackTrace.Replace(Environment.NewLine, "\n"), LogWriter)
                 Next
 
 #If Not DEBUG Then
