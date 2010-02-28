@@ -284,8 +284,8 @@ Public Class Settings
 
 #Region " Settings Handling "
     Sub Settings_Update(ByVal LoadToForm As Boolean)
-        Settings_FromTextBox.Text = Settings_FromTextBox.Text.Trim("\"c)
-        Settings_ToTextBox.Text = Settings_ToTextBox.Text.Trim("\"c)
+        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd("\"c)
+        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd("\"c)
 
         Handler.SetSetting(ConfigOptions.Source, Settings_FromTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.Destination, Settings_ToTextBox.Text, LoadToForm)
