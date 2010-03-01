@@ -1,0 +1,1 @@
+vbc /out:"languages\language_update.exe" /reference:Microsoft.VisualBasic.dll /reference:System.dll /reference:System.Windows.Forms.dll language_update.vb
