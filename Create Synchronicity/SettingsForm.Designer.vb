@@ -51,13 +51,13 @@ Partial Class Settings
         Me.Settings_RightViewLabel = New System.Windows.Forms.Label
         Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox
-        Me.Settings_Tips = New System.Windows.Forms.Label
         Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
         Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton
         Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
+        Me.Settings_Tips = New System.Windows.Forms.Label
         Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox
         Me.Settings_CopyAllFilesCheckBox = New System.Windows.Forms.CheckBox
         Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel
@@ -293,19 +293,6 @@ Partial Class Settings
         Me.Settings_SynchronizationMethodBox.TabStop = False
         Me.Settings_SynchronizationMethodBox.Text = "\SYNC_METHOD"
         '
-        'Settings_Tips
-        '
-        Me.Settings_Tips.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_Tips.Location = New System.Drawing.Point(3, 17)
-        Me.Settings_Tips.Name = "Settings_Tips"
-        Me.Settings_Tips.Size = New System.Drawing.Size(668, 90)
-        Me.Settings_Tips.TabIndex = 8
-        Me.Settings_Tips.Text = "\SETTINGS_TIPS"
-        Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Settings_Tips.Visible = False
-        '
         'Settings_StrictMirrorOption
         '
         Me.Settings_StrictMirrorOption.AutoSize = True
@@ -382,6 +369,19 @@ Partial Class Settings
         Me.Settings_DescriptionLabel.TabIndex = 1
         Me.Settings_DescriptionLabel.Tag = "\MOUSE_OVER"
         Me.Settings_DescriptionLabel.Text = "\MOUSE_OVER"
+        '
+        'Settings_Tips
+        '
+        Me.Settings_Tips.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_Tips.Location = New System.Drawing.Point(3, 17)
+        Me.Settings_Tips.Name = "Settings_Tips"
+        Me.Settings_Tips.Size = New System.Drawing.Size(668, 90)
+        Me.Settings_Tips.TabIndex = 8
+        Me.Settings_Tips.Text = "\SETTINGS_TIPS"
+        Me.Settings_Tips.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Settings_Tips.Visible = False
         '
         'Settings_IncludeExcludeBox
         '

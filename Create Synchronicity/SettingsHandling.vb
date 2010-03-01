@@ -246,7 +246,7 @@ Class SettingsHandler
         End Try
     End Function
 
-    Function ValidateConfigFile() As Boolean
+    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False) As Boolean
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
@@ -263,18 +263,32 @@ Class SettingsHandler
         For Each Pair As KeyValuePair(Of String, String) In PredicateConfigMatchingList
             If Not Configuration.ContainsKey(Pair.Key) Then
                 IsValid = False
-                InvalidListing.Add(String.Format(Translation.Translate("SETTING_UNSET"), Pair.Key))
+                InvalidListing.Add(String.Format(Translation.Translate("\SETTING_UNSET"), Pair.Key))
             Else
                 If Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
                     IsValid = False
-                    InvalidListing.Add(String.Format(Translation.Translate("INVALID_SETTING"), Pair.Key))
+                    InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
                 End If
             End If
         Next
+
+
         If Not IsValid Then
             Interaction.ShowMsg(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0)), Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Return False
+        Else
+            If WarnUnrootedPaths Then
+                If Not IO.Path.IsPathRooted(GetSetting(ConfigOptions.Source)) Then
+                    If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED"), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                End If
+
+                If Not IO.Path.IsPathRooted(GetSetting(ConfigOptions.Source)) Then
+                    If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED"), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                End If
+            End If
+
+            Return True
         End If
-        Return IsValid
     End Function
 
     Sub DeleteConfigFile()
@@ -439,9 +453,9 @@ Public Module Interaction
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
         If AsAService Then
-            MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
+            Return MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
         Else
-            MessageBox.Show(Text, Caption, Buttons, Icon)
+            Return MessageBox.Show(Text, Caption, Buttons, Icon)
         End If
     End Function
 End Module

@@ -226,6 +226,7 @@ Public Class Settings
 
         Tree.Enabled = IO.Directory.Exists(Path) AndAlso Path <> "\"
         If Tree.Enabled Then
+            Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(Path)
@@ -238,6 +239,8 @@ Public Class Settings
                 Tree.Nodes.Clear()
                 Tree.Enabled = False
             End Try
+        Else
+            Tree.BackColor = Drawing.Color.LightGray
         End If
     End Sub
 

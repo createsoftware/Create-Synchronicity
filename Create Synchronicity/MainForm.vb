@@ -236,7 +236,7 @@ Public Class MainForm
     End Function
 
     Function CheckValidity() As Boolean
-        If Not SettingsArray(CurrentProfile).ValidateConfigFile() Then
+        If Not SettingsArray(CurrentProfile).ValidateConfigFile(True) Then
             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\ERROR"), , MessageBoxIcon.Error)
             Return False
         End If
