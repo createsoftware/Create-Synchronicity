@@ -28,6 +28,10 @@ Module Update_Languages
         Console.WriteLine("Please input a space-separated list of all removed strings")
         Input = Console.ReadLine() : Dim DelVars As New List(Of String)(Input.Split(" "c))
 
+        Updated.Remove("")
+        NewVars.Remove("")
+        DelVars.Remove("")
+
         Dim TODOList As New IO.StreamWriter(Application.StartupPath & "\" & "TODO.txt")
 
         For Each File As String In Languages
@@ -54,8 +58,7 @@ Module Update_Languages
                             End If
 
                             If Updated.Contains(Contents(0)) Then
-                                Output.AppendLine("->" & Line)
-                                TODO += 1
+                                TODO += 1 : Output.AppendLine("->" & Contents(0) & "=" & Contents(1))
                             ElseIf Not DelVars.Contains(Contents(0)) Then
                                 Output.AppendLine(Line)
                             End If
@@ -69,15 +72,19 @@ Module Update_Languages
                 For Each NewString As String In NewVars
                     Output.AppendLine("->" & NewString & "=")
                 Next
+                TODO += NewVars.Count
 
+                Dim LanguageName As String = File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1)
+                If TODO > 0 Then TODOList.WriteLine(LanguageName & ":" & TODO)
                 My.Computer.FileSystem.WriteAllText(File, Output.ToString(), False, System.Text.Encoding.UTF8)
+
                 Console.WriteLine("Updated " & File)
-                TODOList.WriteLine(File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1))
             Catch Ex As Exception
                 Console.WriteLine("Exception " & Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
             End Try
         Next
 
+        TODOList.Close()
         Console.ReadLine()
     End Sub
 End Module
