@@ -28,19 +28,23 @@ Module Update_Languages
         Console.WriteLine("Please input a space-separated list of all removed strings")
         Input = Console.ReadLine() : Dim DelVars As New List(Of String)(Input.Split(" "c))
 
+        Dim TODOList As New IO.StreamWriter(Application.StartupPath & "\" & "TODO.txt")
+
         For Each File As String In Languages
             Try
                 Dim Reader As New IO.StreamReader(File, System.Text.Encoding.UTF8)
                 Dim Output As New System.Text.StringBuilder
 
+                Dim TODO As Integer = 0
+
                 While Reader.Peek() > 0
                     Dim Line As String = Reader.ReadLine
                     If Line.StartsWith("#") Then
                         Try
-                        Output.AppendLine(Line)
-						Catch Ex As Exception
-							Console.WriteLine("Wooops " & Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
-						End Try
+                            Output.AppendLine(Line)
+                        Catch Ex As Exception
+                            Console.WriteLine("Wooops " & Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
+                        End Try
                     Else
                         Dim Contents() As String = Line.Split("=")
 
@@ -51,6 +55,7 @@ Module Update_Languages
 
                             If Updated.Contains(Contents(0)) Then
                                 Output.AppendLine("->" & Line)
+                                TODO += 1
                             ElseIf Not DelVars.Contains(Contents(0)) Then
                                 Output.AppendLine(Line)
                             End If
@@ -67,6 +72,7 @@ Module Update_Languages
 
                 My.Computer.FileSystem.WriteAllText(File, Output.ToString(), False, System.Text.Encoding.UTF8)
                 Console.WriteLine("Updated " & File)
+                TODOList.WriteLine(File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1))
             Catch Ex As Exception
                 Console.WriteLine("Exception " & Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
             End Try
