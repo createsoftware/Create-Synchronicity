@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Mar.  1, 2010 - NEW: !Native supports for relative paths, such as "..\..\Documents"
 Feb. 28, 2010 - NEW: !Native support for UCN paths (paths to network drives such as "\\dlink-6A4EA4\Documents").
 Feb. 26, 2010 - NEW: !German translation by Florian Haag. Thanks!
 Feb. 26, 2010 - NEW: !When running from a write-protected directory, store settings in the ApplicationData folder. Fixes a privileges-related bug on Windows Vista.
