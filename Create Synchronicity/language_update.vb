@@ -44,11 +44,7 @@ Module Update_Languages
                 While Reader.Peek() > 0
                     Dim Line As String = Reader.ReadLine
                     If Line.StartsWith("#") Then
-                        Try
-                            Output.AppendLine(Line)
-                        Catch Ex As Exception
-                            Console.WriteLine("Wooops " & Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
-                        End Try
+                        Output.AppendLine(Line)
                     Else
                         Dim Contents() As String = Line.Split("=")
 
