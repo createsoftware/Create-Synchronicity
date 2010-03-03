@@ -37,26 +37,24 @@ Module Update_Languages
         For Each File As String In Languages
             Try
                 Dim Reader As New IO.StreamReader(File, System.Text.Encoding.UTF8)
-                Dim Output As New System.Text.StringBuilder
+                Dim Output As New List(Of String)
 
                 Dim TODO As Integer = 0
 
                 While Reader.Peek() > 0
                     Dim Line As String = Reader.ReadLine
                     If Line.StartsWith("#") Then
-                        Output.AppendLine(Line)
+                        Output.Add(Line)
                     Else
                         Dim Contents() As String = Line.Split("=")
 
                         Try
-                            If Contents(0).StartsWith("->") Then
-                                Contents(0) = Contents(0).Remove(0, "->".Length)
-                            End If
+                            Dim Key As String = If(Contents(0).StartsWith("->"), Contents(0).Remove(0, "->".Length), Contents(0))
 
-                            If Updated.Contains(Contents(0)) Then
-                                TODO += 1 : Output.AppendLine("->" & Contents(0) & "=" & Contents(1))
+                            If Key <> Contents(0) Or Updated.Contains(Key) Then
+                                TODO += 1 : Output.Add("->" & Key & "=" & Contents(1))
                             ElseIf Not DelVars.Contains(Contents(0)) Then
-                                Output.AppendLine(Line)
+                                Output.Add(Line)
                             End If
                         Catch ex As Exception
                             Console.WriteLine("Exception in " & File & " at line " & Line)
@@ -66,13 +64,18 @@ Module Update_Languages
                 Reader.Close()
 
                 For Each NewString As String In NewVars
-                    Output.AppendLine("->" & NewString & "=")
+                    Output.Add("->" & NewString & "=")
                 Next
                 TODO += NewVars.Count
 
                 Dim LanguageName As String = File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1)
-                If TODO > 0 Then TODOList.WriteLine(LanguageName & ":" & TODO)
-                My.Computer.FileSystem.WriteAllText(File, Output.ToString(), False, System.Text.Encoding.UTF8)
+                TODOList.WriteLine(LanguageName & ":" & TODO)
+
+                Dim Writer As New IO.StreamWriter(File, False, System.Text.Encoding.UTF8)
+                For Each Line As String In Output
+                    Writer.WriteLine(Line)
+                Next
+                Writer.Close()
 
                 Console.WriteLine("Updated " & File)
             Catch Ex As Exception
