@@ -85,35 +85,36 @@ Public Class ConfigHandler
 
         'http://support.microsoft.com/default.aspx?scid=kb;EN-US;326549
         Dim WriteNeededFiles As New List(Of String)
-        Dim WriteNeededFolders As String() = {Application.StartupPath, Application.StartupPath & "\" & LogFolderName, Application.StartupPath & "\" & ConfigFolderName}
-        WriteNeededFiles.AddRange(IO.Directory.GetFiles(Application.StartupPath & "\" & LogFolderName))
-        WriteNeededFiles.AddRange(IO.Directory.GetFiles(Application.StartupPath & "\" & ConfigFolderName))
+        Dim WriteNeededFolders As New List(Of String)
+        Dim PotentialWriteNeededFolders As String() = {Application.StartupPath & "\" & LogFolderName, Application.StartupPath & "\" & ConfigFolderName}
 
-        If IO.Directory.Exists(Application.StartupPath & "\" & ConfigFolderName) Then
-            Dim Writable As Boolean = True
-
-            For Each Folder As String In WriteNeededFolders
-                Dim FolderInfo As New IO.DirectoryInfo(Folder)
-                Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
-            Next
-            For Each File As String In WriteNeededFiles
-                Writable = Writable And (Not (IO.File.GetAttributes(File) And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
-            Next
-
-            If Writable Then
-                UserFilesRootDir = Application.StartupPath & "\"
-                Return UserFilesRootDir
-            Else
-                Interaction.ShowMsg("Create Synchronicity cannot write in your in your installation directory, although it contains configuration files. Your Application Data folder will therefore be used instead.", "Information", , MessageBoxIcon.Information)
-                Return UserPath
+        WriteNeededFolders.Add(Application.StartupPath)
+        For Each Folder As String In PotentialWriteNeededFolders
+            If IO.Directory.Exists(Folder) Then
+                WriteNeededFolders.Add(Folder)
+                WriteNeededFiles.AddRange(IO.Directory.GetFiles(Folder))
             End If
+        Next
 
-        ElseIf IO.Directory.Exists(UserPath) Then
-            Return UserPath
+        Dim Writable As Boolean = True
+        Dim ProgramPathExists As Boolean = IO.Directory.Exists(Application.StartupPath & "\" & ConfigFolderName)
 
+        For Each Folder As String In WriteNeededFolders
+            Dim FolderInfo As New IO.DirectoryInfo(Folder)
+            Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
+        Next
+        For Each File As String In WriteNeededFiles
+            Writable = Writable And (Not (IO.File.GetAttributes(File) And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
+        Next
+
+        If Writable And (ProgramPathExists Or Not IO.Directory.Exists(UserPath)) Then
+            UserFilesRootDir = Application.StartupPath & "\"
         Else
-            Return Application.StartupPath & "\"
+            If ProgramPathExists Then Interaction.ShowMsg("Create Synchronicity cannot write to your installation directory, although it contains configuration files. Your Application Data folder will therefore be used instead.", "Information", , MessageBoxIcon.Information)
+            UserFilesRootDir = UserPath
         End If
+
+        Return UserFilesRootDir
     End Function
 
     Public Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
