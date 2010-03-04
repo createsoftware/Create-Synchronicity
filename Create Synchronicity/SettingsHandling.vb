@@ -61,10 +61,7 @@ Public Class ConfigHandler
 
     Public Function GetIcon() As Drawing.Icon
         Static Icon As Drawing.Icon
-
-        If Icon Is Nothing Then
-            Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
-        End If
+        If Icon Is Nothing Then Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
 
         Return Icon
     End Function

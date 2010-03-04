@@ -103,9 +103,7 @@ Public Class MainForm
     Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
         e.CancelEdit = True
         Main_Actions.LabelEdit = False
-        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then 'OrElse IO.File.Exists(ProgramConfig.GetConfigPath(e.Label)) Then
-            Exit Sub
-        End If
+        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then Exit Sub
 
         Dim SettingsForm As New Settings(e.Label)
         SettingsForm.ShowDialog()
