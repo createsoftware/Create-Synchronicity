@@ -11,6 +11,7 @@ Public Class SynchronizeForm
     Dim Handler As SettingsHandler
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     'TODO: Unify vars definitions in one big object.
     Dim ValidFiles As New Dictionary(Of String, Boolean)
@@ -108,6 +109,7 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Translation.TranslateControl(Me)
+        Me.Icon = ProgramConfig.GetIcon()
     End Sub
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed

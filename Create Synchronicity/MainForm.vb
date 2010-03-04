@@ -106,6 +106,7 @@ Public Class MainForm
         If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then 'OrElse IO.File.Exists(ProgramConfig.GetConfigPath(e.Label)) Then
             Exit Sub
         End If
+
         Dim SettingsForm As New Settings(e.Label)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
@@ -139,14 +140,15 @@ Public Class MainForm
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         If Not CheckValidity() Then Exit Sub
         Dim SyncForm As New SynchronizeForm(CurrentProfile, True)
-        SyncForm.ShowDialog()
+        Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
+        SyncForm.Dispose()
     End Sub
 
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
         If Not CheckValidity() Then Exit Sub
 
         Dim SyncForm As New SynchronizeForm(CurrentProfile, False)
-        SyncForm.ShowDialog()
+        Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
         SyncForm.Dispose()
     End Sub
 

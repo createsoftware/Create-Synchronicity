@@ -586,7 +586,6 @@ Partial Class SynchronizeForm
         Me.Font = New System.Drawing.Font("Verdana", 8.25!)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SynchronizeForm"
-        Me.ShowInTaskbar = False
         Me.Text = "\SYNCHRONIZING"
         Me.MainLayoutPanel.ResumeLayout(False)
         Me.Step3LayoutPanel.ResumeLayout(False)
