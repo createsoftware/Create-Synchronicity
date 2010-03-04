@@ -8,7 +8,7 @@
 
 Public Class MainForm
     Dim Quiet As Boolean
-    Dim SettingsArray As Dictionary(Of String, SettingsHandler)
+    Dim Profiles As Dictionary(Of String, ProfileHandler)
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
@@ -69,8 +69,8 @@ Public Class MainForm
         End If
 
         If TaskToRun <> "" Then
-            If SettingsArray.ContainsKey(TaskToRun) Then
-                If SettingsArray(TaskToRun).ValidateConfigFile() Then
+            If Profiles.ContainsKey(TaskToRun) Then
+                If Profiles(TaskToRun).ValidateConfigFile() Then
                     Dim SyncForm As New SynchronizeForm(TaskToRun, ShowPreview, Not Quiet, True)
                     Main_HideForm()
                 Else
@@ -158,8 +158,8 @@ Public Class MainForm
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
         If Interaction.ShowMsg(String.Format(Translation.Translate("\DELETE_PROFILE"), CurrentProfile), Translation.Translate("\CONFIRM_DELETION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            SettingsArray(CurrentProfile).DeleteConfigFile()
-            SettingsArray(CurrentProfile) = Nothing
+            Profiles(CurrentProfile).DeleteConfigFile()
+            Profiles(CurrentProfile) = Nothing
             Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
         End If
     End Sub
@@ -170,7 +170,7 @@ Public Class MainForm
     End Sub
 
     Private Sub ClearLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLogMenuItem.Click
-        SettingsArray(CurrentProfile).DeleteLogFile()
+        Profiles(CurrentProfile).DeleteLogFile()
     End Sub
 #End Region
 
@@ -183,7 +183,7 @@ Public Class MainForm
     End Sub
 
     Sub Main_ReloadConfigs()
-        SettingsArray = New Dictionary(Of String, SettingsHandler)
+        Profiles = New Dictionary(Of String, ProfileHandler)
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
 
         Main_Actions.Items.Clear()
@@ -193,11 +193,11 @@ Public Class MainForm
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
 
-            SettingsArray.Add(Name, New SettingsHandler(Name))
+            Profiles.Add(Name, New ProfileHandler(Name))
 
             Dim NewItem As ListViewItem = Main_Actions.Items.Add(Name)
             NewItem.Group = Main_Actions.Groups(1)
-            NewItem.ImageIndex = CInt(SettingsArray(Name).GetSetting(ConfigOptions.Method))
+            NewItem.ImageIndex = CInt(Profiles(Name).GetSetting(ConfigOptions.Method))
             NewItem.SubItems.Add(GetMethodName(Name)).ForeColor = Drawing.Color.DarkGray
         Next
     End Sub
@@ -216,23 +216,23 @@ Public Class MainForm
         End If
         Main_Method.Text = GetMethodName(Name)
 
-        Main_Source.Text = SettingsArray(Name).GetSetting(ConfigOptions.Source)
-        Main_Destination.Text = SettingsArray(Name).GetSetting(ConfigOptions.Destination)
+        Main_Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
+        Main_Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
 
-        Select Case CInt(SettingsArray(Name).GetSetting(ConfigOptions.Restrictions, "0"))
+        Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
             Case 0
                 Main_LimitedCopy.Text = Translation.Translate("\NO")
             Case 1, 2
                 Main_LimitedCopy.Text = Translation.Translate("\YES")
             Case 1
-                Main_FileTypes.Text = SettingsArray(Name).GetSetting(ConfigOptions.IncludedTypes, "")
+                Main_FileTypes.Text = Profiles(Name).GetSetting(ConfigOptions.IncludedTypes, "")
             Case 2
-                Main_FileTypes.Text = "-" & SettingsArray(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
+                Main_FileTypes.Text = "-" & Profiles(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
         End Select
     End Sub
 
     Function GetMethodName(ByVal Name As String) As String
-        Select Case SettingsArray(Name).GetSetting(ConfigOptions.Method, "")
+        Select Case Profiles(Name).GetSetting(ConfigOptions.Method, "")
             Case "1"
                 Return Translation.Translate("\LR_INCREMENTAL")
             Case "2"
@@ -243,7 +243,7 @@ Public Class MainForm
     End Function
 
     Function CheckValidity() As Boolean
-        If Not SettingsArray(CurrentProfile).ValidateConfigFile(True) Then
+        If Not Profiles(CurrentProfile).ValidateConfigFile(True) Then
             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\ERROR"), , MessageBoxIcon.Error)
             Return False
         End If
@@ -256,7 +256,7 @@ Public Class MainForm
             ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
             Dim ProfilesToRun As New List(Of String)
 
-            For Each Profile As KeyValuePair(Of String, SettingsHandler) In SettingsArray
+            For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
                 If Profile.Value.GetSetting(ConfigOptions.Scheduled, "False") Then
                     'Add to the list
                 End If

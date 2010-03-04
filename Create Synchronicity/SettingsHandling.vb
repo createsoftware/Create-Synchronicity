@@ -163,8 +163,8 @@ Public Class ConfigHandler
     End Function
 End Class
 
-Class SettingsHandler
-    Public ConfigName As String
+Class ProfileHandler
+    Public ProfileName As String
     Public Configuration As New Dictionary(Of String, String)
     Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
@@ -175,7 +175,7 @@ Class SettingsHandler
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Public Sub New(ByVal Name As String)
-        ConfigName = Name
+        ProfileName = Name
         LoadConfigFile()
 
         PredicateConfigMatchingList = New Dictionary(Of String, String)
@@ -191,8 +191,8 @@ Class SettingsHandler
     End Sub
 
     Function LoadConfigFile() As Boolean
-        If Not IO.File.Exists(ProgramConfig.GetConfigPath(ConfigName)) Then Exit Function
-        Dim FileReader As New IO.StreamReader(ProgramConfig.GetConfigPath(ConfigName))
+        If Not IO.File.Exists(ProgramConfig.GetConfigPath(ProfileName)) Then Exit Function
+        Dim FileReader As New IO.StreamReader(ProgramConfig.GetConfigPath(ProfileName))
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
@@ -232,7 +232,7 @@ Class SettingsHandler
     Function SaveConfigFile() As Boolean
         Try
             Dim ConfigString As String = ""
-            Dim FileWriter As New IO.StreamWriter(ProgramConfig.GetConfigPath(ConfigName))
+            Dim FileWriter As New IO.StreamWriter(ProgramConfig.GetConfigPath(ProfileName))
 
             For Each Setting As KeyValuePair(Of String, String) In Configuration
                 FileWriter.WriteLine(Setting.Key & ":" & Setting.Value)
@@ -291,12 +291,12 @@ Class SettingsHandler
     End Function
 
     Sub DeleteConfigFile()
-        IO.File.Delete(ProgramConfig.GetConfigPath(ConfigName))
+        IO.File.Delete(ProgramConfig.GetConfigPath(ProfileName))
         DeleteLogFile()
     End Sub
 
     Sub DeleteLogFile()
-        IO.File.Delete(ProgramConfig.GetLogPath(ConfigName))
+        IO.File.Delete(ProgramConfig.GetLogPath(ProfileName))
     End Sub
 
     Sub SetSetting(ByVal SettingName As String, ByVal Value As String)

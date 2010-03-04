@@ -8,7 +8,7 @@
 
 Public Class SynchronizeForm
     Dim Log As LogHandler
-    Dim Handler As SettingsHandler
+    Dim Handler As ProfileHandler
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
@@ -75,7 +75,7 @@ Public Class SynchronizeForm
         Status_CurrentStep = 1
 
         Log = New LogHandler(ConfigName)
-        Handler = New SettingsHandler(ConfigName)
+        Handler = New ProfileHandler(ConfigName)
 
         FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
         FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))

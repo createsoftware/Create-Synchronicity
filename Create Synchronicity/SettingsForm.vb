@@ -7,7 +7,7 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class Settings
-    Dim Handler As SettingsHandler
+    Dim Handler As ProfileHandler
     Dim ProcessingNodes As Boolean = False
     Dim ClickedRightTreeView As Boolean = False
 
@@ -146,7 +146,7 @@ Public Class Settings
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Handler = New SettingsHandler(Name)
+        Handler = New ProfileHandler(Name)
     End Sub
 #End Region
 
@@ -362,7 +362,7 @@ Public Class Settings
         Translation.TranslateControl(Me)
 
         Settings_Update(True)
-        Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ConfigName)
+        Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
 #End Region
 End Class
