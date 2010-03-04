@@ -329,6 +329,8 @@ Class SettingsHandler
     End Function
 End Class
 
+#If 0 Then
+'TODO: Try to use the built-in scheduler. May not be possible due to the need to interact with the desktop.
 Class Scheduler 'schtasks.exe
     Enum TaskFrequency '/SC
         DAILY '/D *
@@ -425,6 +427,7 @@ Class Scheduler 'schtasks.exe
         Interaction.ShowMsg("Output: " & Microsoft.VisualBasic.vbNewLine & Output & Microsoft.VisualBasic.vbNewLine & ErrorOutput)
     End Sub
 End Class
+#End If
 
 Public Module Updates
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
