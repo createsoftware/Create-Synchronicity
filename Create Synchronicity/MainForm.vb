@@ -13,6 +13,8 @@ Public Class MainForm
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
+    Dim ExitScheduler As Boolean = False
+
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
@@ -56,11 +58,9 @@ Public Class MainForm
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
         If ArgsList.Count > 1 Then
-            If ArgsList.IndexOf("/quiet") <> -1 Then
-                Quiet = True
-            End If
+            Quiet = ArgsList.Contains("/quiet")
+            ShowPreview = ArgsList.Contains("/preview")
 
-            ShowPreview = (ArgsList.IndexOf("/preview") <> -1)
 
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
@@ -72,19 +72,19 @@ Public Class MainForm
             If SettingsArray.ContainsKey(TaskToRun) Then
                 If SettingsArray(TaskToRun).ValidateConfigFile() Then
                     Dim SyncForm As New SynchronizeForm(TaskToRun, ShowPreview, Not Quiet, True)
-
-                    'TODO: Yuck
-                    Me.Opacity = 0
-                    Me.WindowState = FormWindowState.Minimized
-                    Me.ShowInTaskbar = False
-
-                    SyncForm.Show()
+                    Main_HideForm()
                 Else
                     Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
                 End If
             Else
                 Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
             End If
+        ElseIf ArgsList.Contains("/scheduled") Then
+            Main_HideForm()
+            While Not ExitScheduler
+                'TODO
+                Main_WaitForNextProfile()
+            End While
         End If
     End Sub
 
@@ -175,6 +175,13 @@ Public Class MainForm
 #End Region
 
 #Region " Functions and Routines "
+    Sub Main_HideForm()
+        'TODO: Yuck
+        Me.Opacity = 0
+        Me.WindowState = FormWindowState.Minimized
+        Me.ShowInTaskbar = False
+    End Sub
+
     Sub Main_ReloadConfigs()
         SettingsArray = New Dictionary(Of String, SettingsHandler)
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
@@ -243,7 +250,29 @@ Public Class MainForm
         Return True
     End Function
 
-    Private Function CurrentProfile() As String
+    Sub Main_WaitForNextProfile()
+        Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
+        If ProfilesQueue Is Nothing Then
+            ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
+            Dim ProfilesToRun As New List(Of String)
+
+            For Each Profile As KeyValuePair(Of String, SettingsHandler) In SettingsArray
+                If Profile.Value.GetSetting(ConfigOptions.Scheduled, "False") Then
+                    'Add to the list
+                End If
+            Next
+        End If
+
+        Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
+
+        Dim MsTimeout As Long = CLng((NextProfile.Value - Date.Now).TotalMilliseconds)
+        If MsTimeout > 0 Then System.Threading.Thread.Sleep(MsTimeout)
+
+        Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, False)
+        'TODO: ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, SettingsArray(NextProfile.Key).NextRun()))
+    End Sub
+
+    Function CurrentProfile() As String
         Return Main_Actions.SelectedItems(0).Text
     End Function
 #End Region

@@ -21,6 +21,7 @@ Public Module ConfigOptions
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
+    Public Const Scheduled As String = "Scheduled"
 
     'Main program settings
     Public Const Language As String = "Language"
