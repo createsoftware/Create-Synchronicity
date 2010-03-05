@@ -584,7 +584,6 @@ Partial Class SynchronizeForm
         Me.Controls.Add(Me.ButtonsLayoutPanel)
         Me.Controls.Add(Me.MainLayoutPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SynchronizeForm"
         Me.Text = "\SYNCHRONIZING"
         Me.MainLayoutPanel.ResumeLayout(False)
