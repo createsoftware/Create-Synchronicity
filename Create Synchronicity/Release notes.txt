@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Mar.  5, 2010 - NEW: !Initial, command-line only support for task scheduling.
 Mar.  3, 2010 - FIX: When running from a write-protected directory, display a warning if configuration files were found. Fixes a privileges-related bug on Windows Vista.
 Mar.  1, 2010 - NEW: !Native supports for relative paths, such as "..\..\Documents"
 Feb. 28, 2010 - NEW: !Native support for UCN paths (paths to network drives such as "\\dlink-6A4EA4\Documents").
