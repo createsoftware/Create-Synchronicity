@@ -367,6 +367,7 @@ Structure ScheduleInfo
         Frequency = _Frequency
 
         Hour = _Hour
+        Minute = _Minute
         WeekDay = _WeekDay
         MonthDay = _MonthDay
     End Sub
@@ -384,15 +385,16 @@ Structure ScheduleInfo
                 RunAt = Today.AddHours(Hour).AddMinutes(Minute)
             Case WEEKLY
                 Interval = New TimeSpan(7, 0, 0, 0)
-                RunAt = Today.AddDays(If(Date.Today.DayOfWeek = WeekDay, 0, 8 - Today.DayOfWeek)).AddHours(Hour).AddMinutes(Minute)
+                RunAt = Today.AddDays(WeekDay - Today.DayOfWeek).AddHours(Hour).AddMinutes(Minute)
             Case MONTHLY
                 Interval = Today.AddMonths(1) - Today
-                RunAt = Today.AddMonths(If(Date.Today.Day = MonthDay, 0, CInt(Interval.TotalDays - Today.Day))).AddHours(Hour).AddMinutes(Minute) 'Cint works, because Interval represents a whole number of days
+                RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute) 'Cint works, because Interval represents a whole number of days
             Case Else
                 Return Date.Now.AddYears(-1)
         End Select
 
-        Return If(Now > RunAt, RunAt + Interval, RunAt)
+        While Now > RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
+        Return RunAt
     End Function
 End Structure
 
