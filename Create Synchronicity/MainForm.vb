@@ -257,7 +257,7 @@ Public Class MainForm
             Dim ProfilesToRun As New List(Of String)
 
             For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-                If Profile.Value.GetSetting(ConfigOptions.Scheduled, "False") Then
+                If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                     'Add to the list
                 End If
             Next
@@ -269,7 +269,7 @@ Public Class MainForm
         If MsTimeout > 0 Then System.Threading.Thread.Sleep(MsTimeout)
 
         Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, False)
-        'TODO: ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, SettingsArray(NextProfile.Key).NextRun()))
+        ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
     End Sub
 
     Function CurrentProfile() As String

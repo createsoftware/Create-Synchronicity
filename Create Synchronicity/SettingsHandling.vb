@@ -21,7 +21,9 @@ Public Module ConfigOptions
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
-    Public Const Scheduled As String = "Scheduled"
+
+    Public Const Scheduling As String = "Scheduling"
+    Public Const SchedulingSettingsCount As Integer = 5 'Frequency|WeekDay|MonthDay|Hour|Minute
 
     'Main program settings
     Public Const Language As String = "Language"
@@ -165,6 +167,7 @@ End Class
 
 Class ProfileHandler
     Public ProfileName As String
+    Public Scheduler As New ScheduleInfo()
     Public Configuration As New Dictionary(Of String, String)
     Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
@@ -188,10 +191,11 @@ Class ProfileHandler
         PredicateConfigMatchingList.Add(ConfigOptions.Method, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.Restrictions, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
+        'TODO: add regexps for new settings.
     End Sub
 
     Function LoadConfigFile() As Boolean
-        If Not IO.File.Exists(ProgramConfig.GetConfigPath(ProfileName)) Then Exit Function
+        If Not IO.File.Exists(ProgramConfig.GetConfigPath(ProfileName)) Then Return False
         Dim FileReader As New IO.StreamReader(ProgramConfig.GetConfigPath(ProfileName))
 
         Configuration.Clear()
@@ -207,27 +211,11 @@ Class ProfileHandler
 
         FileReader.Close()
 
+        LoadScheduler()
         LoadSubFoldersList(ConfigOptions.LeftSubFolders, LeftCheckedNodes)
         LoadSubFoldersList(ConfigOptions.RightSubFolders, RightCheckedNodes)
         Return True
     End Function
-
-    Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
-        Subfolders.Clear()
-
-        Dim ConfigCheckedFoldersList As New List(Of String)(Configuration(ConfigLine).Split(";"c))
-        ConfigCheckedFoldersList.RemoveAt(ConfigCheckedFoldersList.Count - 1) 'Removes the last, empty element
-
-        For Each Dir As String In ConfigCheckedFoldersList
-            If Not Subfolders.ContainsKey(Dir) Then
-                If Dir.EndsWith("*") Then
-                    Subfolders.Add(Dir.Substring(0, Dir.Length - 1), True)
-                Else
-                    Subfolders.Add(Dir, False)
-                End If
-            End If
-        Next
-    End Sub
 
     Function SaveConfigFile() As Boolean
         Try
@@ -319,7 +307,37 @@ Class ProfileHandler
         End If
     End Function
 
-    Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
+    Sub LoadScheduler()
+        Dim Opts() As String = GetSetting(ConfigOptions.Scheduling, "").Split("|")
+
+        Select Case Opts.GetLength(0)
+            Case 0
+                Scheduler = New ScheduleInfo(ScheduleInfo.NEVER)
+            Case ConfigOptions.SchedulingSettingsCount
+                Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4))
+            Case Else
+                Scheduler = New ScheduleInfo(ScheduleInfo.NEVER) 'TODO: Invalid string
+        End Select
+    End Sub
+
+    Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
+        Subfolders.Clear()
+
+        Dim ConfigCheckedFoldersList As New List(Of String)(Configuration(ConfigLine).Split(";"c))
+        ConfigCheckedFoldersList.RemoveAt(ConfigCheckedFoldersList.Count - 1) 'Removes the last, empty element
+
+        For Each Dir As String In ConfigCheckedFoldersList
+            If Not Subfolders.ContainsKey(Dir) Then
+                If Dir.EndsWith("*") Then
+                    Subfolders.Add(Dir.Substring(0, Dir.Length - 1), True)
+                Else
+                    Subfolders.Add(Dir, False)
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Shared Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
         Dim ReturnStr As String = ""
         For Each Str As String In StrList
             ReturnStr &= Str & Separator
@@ -329,63 +347,89 @@ Class ProfileHandler
     End Function
 End Class
 
-#If 0 Then
-'TODO: Try to use the built-in scheduler. May not be possible due to the need to interact with the desktop.
-Class Scheduler 'schtasks.exe
-    Enum TaskFrequency '/SC
-        DAILY '/D *
-        WEEKLY '/D _TaskDayOfWeek_
-        MONTHLY '/D _1-31_
-    End Enum
+Structure ScheduleInfo
+    Public Frequency As String
 
-    Enum TaskDayOfWeek
-        MON
-        TUE
-        WED
-        THU
-        FRI
-        SAT
-        SUN
-    End Enum
-
-    Public Name As String '/TN
-    Public Frequency As TaskFrequency
-
-    Public WeekDay As TaskDayOfWeek
+    Public WeekDay As String 'Sunday = 0
     Public MonthDay As Integer
-    Public Hour, Minute As Integer '/ST
+    Public Hour, Minute As Integer
 
-    '/V1 for compatibility
-    '/F to force task creation
+    Public Const NEVER = "never"
+    Public Const DAILY = "daily"
+    Public Const WEEKLY = "weekly"
+    Public Const MONTHLY = "monthly"
 
-    Sub New(ByVal _Name As String, ByVal _Hour As Integer, ByVal _Minute As Integer)
-        Frequency = TaskFrequency.DAILY
-
-        Name = _Name
-        Hour = _Hour
-        Minute = _Minute
+    Sub New(ByVal _Frequency As String)
+        Frequency = _Frequency
     End Sub
 
-    Sub New(ByVal _Name As String, ByVal _WeekDay As TaskDayOfWeek, ByVal _Hour As Integer, ByVal _Minute As Integer)
-        Frequency = TaskFrequency.WEEKLY
+    Sub New(ByVal _Frequency As String, ByVal _WeekDay As String, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
+        Frequency = _Frequency
 
-        Name = _Name
+        Hour = _Hour
         WeekDay = _WeekDay
-
-        Hour = _Hour
-        Minute = _Minute
-    End Sub
-
-    Sub New(ByVal _Name As String, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
-        Frequency = TaskFrequency.MONTHLY
-
-        Name = _Name
         MonthDay = _MonthDay
-
-        Hour = _Hour
-        Minute = _Minute
     End Sub
 
+    Function NextRun() As Date
+        Dim Now As Date = Date.Now
+        Dim Today As Date = Date.Today
+
+        Dim RunAt As Date
+        Dim Interval As TimeSpan
+
+        Select Case Frequency
+            Case DAILY
+                Interval = New TimeSpan(1, 0, 0, 0)
+                RunAt = Today.AddHours(Hour).AddMinutes(Minute)
+            Case WEEKLY
+                Interval = New TimeSpan(7, 0, 0, 0)
+                RunAt = Today.AddDays(If(Date.Today.DayOfWeek = WeekDay, 0, 8 - Today.DayOfWeek)).AddHours(Hour).AddMinutes(Minute)
+            Case MONTHLY
+                Interval = Today.AddMonths(1) - Today
+                RunAt = Today.AddMonths(If(Date.Today.Day = MonthDay, 0, CInt(Interval.TotalDays - Today.Day))).AddHours(Hour).AddMinutes(Minute) 'Cint works, because Interval represents a whole number of days
+            Case Else
+                Return Date.Now.AddYears(-1)
+        End Select
+
+        Return If(Now > RunAt, RunAt + Interval, RunAt)
+    End Function
+End Structure
+
+Public Module Updates
+    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
+    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
+
+    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+        Try
+            Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
+            If CurrentVersion = "" Then Throw New Exception()
+            If (CurrentVersion <> Application.ProductVersion) Then
+                If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
+                End If
+            Else
+                If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
+            End If
+        Catch Ex As Exception
+            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR"), Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
+        End Try
+    End Sub
+End Module
+
+Public Module Interaction
+    Public AsAService As Boolean = False
+
+    Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
+        If AsAService Then
+            Return MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
+        Else
+            Return MessageBox.Show(Text, Caption, Buttons, Icon)
+        End If
+    End Function
+End Module
+
+#If 0 Then
     Sub RegisterTask()
         Dim Arguments As String = ""
         Arguments &= " /Create "
@@ -428,36 +472,3 @@ Class Scheduler 'schtasks.exe
     End Sub
 End Class
 #End If
-
-Public Module Updates
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-
-    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
-        Try
-            Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
-            If CurrentVersion = "" Then Throw New Exception()
-            If (CurrentVersion <> Application.ProductVersion) Then
-                If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
-                End If
-            Else
-                If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
-            End If
-        Catch Ex As Exception
-            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR"), Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
-        End Try
-    End Sub
-End Module
-
-Public Module Interaction
-    Public AsAService As Boolean = False
-
-    Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
-        If AsAService Then
-            Return MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
-        Else
-            Return MessageBox.Show(Text, Caption, Buttons, Icon)
-        End If
-    End Function
-End Module
