@@ -105,7 +105,7 @@ Public Class MainForm
         Main_Actions.LabelEdit = False
         If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then Exit Sub
 
-        Dim SettingsForm As New Settings(e.Label)
+        Dim SettingsForm As New SettingsForm(e.Label)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
@@ -151,7 +151,7 @@ Public Class MainForm
     End Sub
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ChangeSettingsMenuItem.Click
-        Dim SettingsForm As New Settings(CurrentProfile)
+        Dim SettingsForm As New SettingsForm(CurrentProfile)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
@@ -171,6 +171,12 @@ Public Class MainForm
 
     Private Sub ClearLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLogMenuItem.Click
         Profiles(CurrentProfile).DeleteLogFile()
+    End Sub
+
+    Private Sub Main_ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ScheduleMenuItem.Click
+        Dim SchedForm As New SchedulingForm(CurrentProfile)
+        SchedForm.ShowDialog()
+        Main_ReloadConfigs()
     End Sub
 #End Region
 

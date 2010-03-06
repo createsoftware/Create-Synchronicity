@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Public Class Settings
+Public Class SettingsForm
     Dim Handler As ProfileHandler
     Dim ProcessingNodes As Boolean = False
     Dim ClickedRightTreeView As Boolean = False

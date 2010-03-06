@@ -61,9 +61,9 @@ Partial Class MainForm
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ClearLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
         Me.Main_ActionsMenuToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.SCHEDULEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.Main_ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
@@ -281,10 +281,10 @@ Partial Class MainForm
         '
         'Main_ActionsMenu
         '
-        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.Main_ActionsMenuToolStripSeparator2, Me.SCHEDULEToolStripMenuItem})
+        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.Main_ActionsMenuToolStripSeparator2, Me.Main_ScheduleMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 170)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 192)
         '
         'PreviewMenuItem
         '
@@ -338,6 +338,18 @@ Partial Class MainForm
         Me.ClearLogMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ClearLogMenuItem.Tag = "\CLEAR_LOG"
         '
+        'Main_ActionsMenuToolStripSeparator2
+        '
+        Me.Main_ActionsMenuToolStripSeparator2.Name = "Main_ActionsMenuToolStripSeparator2"
+        Me.Main_ActionsMenuToolStripSeparator2.Size = New System.Drawing.Size(181, 6)
+        '
+        'Main_ScheduleMenuItem
+        '
+        Me.Main_ScheduleMenuItem.Image = CType(resources.GetObject("Main_ScheduleMenuItem.Image"), System.Drawing.Image)
+        Me.Main_ScheduleMenuItem.Name = "Main_ScheduleMenuItem"
+        Me.Main_ScheduleMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.Main_ScheduleMenuItem.Text = "\SCHEDULE"
+        '
         'Main_AboutLinkLabel
         '
         Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -350,18 +362,6 @@ Partial Class MainForm
         Me.Main_AboutLinkLabel.Text = "\ABOUT_SETTINGS"
         Me.Main_AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Main_AboutLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue
-        '
-        'Main_ActionsMenuToolStripSeparator2
-        '
-        Me.Main_ActionsMenuToolStripSeparator2.Name = "Main_ActionsMenuToolStripSeparator2"
-        Me.Main_ActionsMenuToolStripSeparator2.Size = New System.Drawing.Size(181, 6)
-        '
-        'SCHEDULEToolStripMenuItem
-        '
-        Me.SCHEDULEToolStripMenuItem.Image = CType(resources.GetObject("SCHEDULEToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.SCHEDULEToolStripMenuItem.Name = "SCHEDULEToolStripMenuItem"
-        Me.SCHEDULEToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.SCHEDULEToolStripMenuItem.Text = "\SCHEDULE"
         '
         'MainForm
         '
@@ -410,5 +410,5 @@ Partial Class MainForm
     Friend WithEvents Main_AboutLinkLabel As System.Windows.Forms.LinkLabel
     Friend WithEvents ClearLogMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Main_ActionsMenuToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents SCHEDULEToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Main_ScheduleMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

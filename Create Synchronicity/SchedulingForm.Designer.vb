@@ -37,7 +37,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryWeek = New System.Windows.Forms.RadioButton
         Me.Scheduling_WeekDay = New System.Windows.Forms.ComboBox
         Me.Scheduling_AtLabel = New System.Windows.Forms.Label
-        Me.FlowLayoutPanel4 = New System.Windows.Forms.FlowLayoutPanel
+        Me.Scheduling_TimeSelectionPanel = New System.Windows.Forms.FlowLayoutPanel
         Me.Scheduling_Hour = New System.Windows.Forms.NumericUpDown
         Me.Scheduling_HMSepLabel = New System.Windows.Forms.Label
         Me.Scheduling_Minute = New System.Windows.Forms.NumericUpDown
@@ -47,7 +47,7 @@ Partial Class SchedulingForm
         Me.FlowLayoutPanel3.SuspendLayout()
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.FlowLayoutPanel2.SuspendLayout()
-        Me.FlowLayoutPanel4.SuspendLayout()
+        Me.Scheduling_TimeSelectionPanel.SuspendLayout()
         CType(Me.Scheduling_Hour, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Scheduling_Minute, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -224,16 +224,16 @@ Partial Class SchedulingForm
         Me.Scheduling_AtLabel.Text = "\AT"
         Me.Scheduling_AtLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'FlowLayoutPanel4
+        'Scheduling_TimeSelectionPanel
         '
-        Me.FlowLayoutPanel4.Controls.Add(Me.Scheduling_AtLabel)
-        Me.FlowLayoutPanel4.Controls.Add(Me.Scheduling_Hour)
-        Me.FlowLayoutPanel4.Controls.Add(Me.Scheduling_HMSepLabel)
-        Me.FlowLayoutPanel4.Controls.Add(Me.Scheduling_Minute)
-        Me.FlowLayoutPanel4.Location = New System.Drawing.Point(12, 148)
-        Me.FlowLayoutPanel4.Name = "FlowLayoutPanel4"
-        Me.FlowLayoutPanel4.Size = New System.Drawing.Size(344, 27)
-        Me.FlowLayoutPanel4.TabIndex = 16
+        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_AtLabel)
+        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Hour)
+        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_HMSepLabel)
+        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Minute)
+        Me.Scheduling_TimeSelectionPanel.Location = New System.Drawing.Point(12, 148)
+        Me.Scheduling_TimeSelectionPanel.Name = "Scheduling_TimeSelectionPanel"
+        Me.Scheduling_TimeSelectionPanel.Size = New System.Drawing.Size(344, 27)
+        Me.Scheduling_TimeSelectionPanel.TabIndex = 16
         '
         'Scheduling_Hour
         '
@@ -269,7 +269,7 @@ Partial Class SchedulingForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(574, 191)
-        Me.Controls.Add(Me.FlowLayoutPanel4)
+        Me.Controls.Add(Me.Scheduling_TimeSelectionPanel)
         Me.Controls.Add(Me.Scheduling_Panel)
         Me.Controls.Add(Me.Scheduling_Enable)
         Me.Controls.Add(Me.Scheduling_WarningLabel)
@@ -291,8 +291,8 @@ Partial Class SchedulingForm
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).EndInit()
         Me.FlowLayoutPanel2.ResumeLayout(False)
         Me.FlowLayoutPanel2.PerformLayout()
-        Me.FlowLayoutPanel4.ResumeLayout(False)
-        Me.FlowLayoutPanel4.PerformLayout()
+        Me.Scheduling_TimeSelectionPanel.ResumeLayout(False)
+        Me.Scheduling_TimeSelectionPanel.PerformLayout()
         CType(Me.Scheduling_Hour, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Scheduling_Minute, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -314,7 +314,7 @@ Partial Class SchedulingForm
     Friend WithEvents Scheduling_EveryDay As System.Windows.Forms.RadioButton
     Friend WithEvents Scheduling_WeekDay As System.Windows.Forms.ComboBox
     Friend WithEvents Scheduling_AtLabel As System.Windows.Forms.Label
-    Friend WithEvents FlowLayoutPanel4 As System.Windows.Forms.FlowLayoutPanel
+    Friend WithEvents Scheduling_TimeSelectionPanel As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents Scheduling_Hour As System.Windows.Forms.NumericUpDown
     Friend WithEvents Scheduling_HMSepLabel As System.Windows.Forms.Label
     Friend WithEvents Scheduling_Minute As System.Windows.Forms.NumericUpDown

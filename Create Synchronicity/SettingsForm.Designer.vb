@@ -7,7 +7,7 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Settings
+Partial Class SettingsForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -31,7 +31,7 @@ Partial Class Settings
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SettingsForm))
         Me.Settings_FromTextBox = New System.Windows.Forms.TextBox
         Me.Settings_DirectoriesBox = New System.Windows.Forms.GroupBox
         Me.Settings_SwapButton = New System.Windows.Forms.Button
