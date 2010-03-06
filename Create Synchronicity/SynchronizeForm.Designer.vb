@@ -65,7 +65,6 @@ Partial Class SynchronizeForm
         Me.ElapsedTime = New System.Windows.Forms.Label
         Me.ElapsedTimeLabel = New System.Windows.Forms.Label
         Me.BlankMargin = New System.Windows.Forms.Label
-        Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
         Me.PreviewList = New System.Windows.Forms.ListView
         Me.TypeColumn = New System.Windows.Forms.ColumnHeader
         Me.ActionColumn = New System.Windows.Forms.ColumnHeader
@@ -73,8 +72,7 @@ Partial Class SynchronizeForm
         Me.PathColumn = New System.Windows.Forms.ColumnHeader
         Me.SyncingIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.StatusIcon = New System.Windows.Forms.NotifyIcon(Me.components)
-        Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.StatusIconCancelMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
         Me.Step3_ProgressLayout.SuspendLayout()
@@ -84,7 +82,6 @@ Partial Class SynchronizeForm
         Me.Step1ProgressLayout.SuspendLayout()
         Me.ButtonsLayoutPanel.SuspendLayout()
         Me.StatisticsPanel.SuspendLayout()
-        Me.StatusIconMenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'MainLayoutPanel
@@ -497,11 +494,6 @@ Partial Class SynchronizeForm
         Me.BlankMargin.Size = New System.Drawing.Size(338, 17)
         Me.BlankMargin.TabIndex = 12
         '
-        'SyncingTimeCounter
-        '
-        Me.SyncingTimeCounter.Enabled = True
-        Me.SyncingTimeCounter.Interval = 50
-        '
         'PreviewList
         '
         Me.PreviewList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -558,19 +550,10 @@ Partial Class SynchronizeForm
         Me.StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
         Me.StatusIcon.Text = "\RUNNING"
         '
-        'StatusIconMenu
+        'SyncingTimeCounter
         '
-        Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StatusIconCancelMenuItem})
-        Me.StatusIconMenu.Name = "StatusIconMenu"
-        Me.StatusIconMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.StatusIconMenu.ShowImageMargin = False
-        Me.StatusIconMenu.Size = New System.Drawing.Size(100, 26)
-        '
-        'StatusIconCancelMenuItem
-        '
-        Me.StatusIconCancelMenuItem.Name = "StatusIconCancelMenuItem"
-        Me.StatusIconCancelMenuItem.Size = New System.Drawing.Size(99, 22)
-        Me.StatusIconCancelMenuItem.Text = "\CANCEL"
+        Me.SyncingTimeCounter.Enabled = True
+        Me.SyncingTimeCounter.Interval = 50
         '
         'SynchronizeForm
         '
@@ -597,7 +580,6 @@ Partial Class SynchronizeForm
         Me.ButtonsLayoutPanel.ResumeLayout(False)
         Me.StatisticsPanel.ResumeLayout(False)
         Me.StatisticsPanel.PerformLayout()
-        Me.StatusIconMenu.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -622,7 +604,6 @@ Partial Class SynchronizeForm
     Friend WithEvents StatisticsPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents ElapsedTimeLabel As System.Windows.Forms.Label
     Friend WithEvents ElapsedTime As System.Windows.Forms.Label
-    Friend WithEvents SyncingTimeCounter As System.Windows.Forms.Timer
     Friend WithEvents SyncBtn As System.Windows.Forms.Button
     Friend WithEvents PreviewList As System.Windows.Forms.ListView
     Friend WithEvents PathColumn As System.Windows.Forms.ColumnHeader
@@ -642,6 +623,5 @@ Partial Class SynchronizeForm
     Friend WithEvents SyncingIcons As System.Windows.Forms.ImageList
     Friend WithEvents BlankMargin As System.Windows.Forms.Label
     Friend WithEvents StatusIcon As System.Windows.Forms.NotifyIcon
-    Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents StatusIconCancelMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SyncingTimeCounter As System.Windows.Forms.Timer
 End Class

@@ -118,7 +118,7 @@ Public Class SynchronizeForm
         If SingleTask Then Application.Exit()
     End Sub
 
-    Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click, StatusIconCancelMenuItem.Click
+    Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
         Select Case StopBtn.Text
             Case StopBtn.Tag.ToString.Split(";"c)(0)
                 EndAll()

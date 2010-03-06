@@ -285,7 +285,7 @@ Partial Class SchedulingForm
         Me.MinimizeBox = False
         Me.Name = "SchedulingForm"
         Me.ShowInTaskbar = False
-        Me.Text = "SchedulingForm"
+        Me.Text = "\SCHEDULING"
         Me.Settings_ActionsPanel.ResumeLayout(False)
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.FlowLayoutPanel1.PerformLayout()
