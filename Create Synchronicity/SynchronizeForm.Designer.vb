@@ -31,7 +31,6 @@ Partial Class SynchronizeForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Folder"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Create", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!)), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "Left->Right"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "C:\Documents\file.xxx", System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SynchronizeForm))
         Me.MainLayoutPanel = New System.Windows.Forms.TableLayoutPanel
         Me.Step3LayoutPanel = New System.Windows.Forms.TableLayoutPanel
@@ -510,7 +509,6 @@ Partial Class SynchronizeForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PreviewList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.TypeColumn, Me.ActionColumn, Me.DirectionColumn, Me.PathColumn})
         Me.PreviewList.FullRowSelect = True
-        Me.PreviewList.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.PreviewList.Location = New System.Drawing.Point(12, 12)
         Me.PreviewList.MultiSelect = False
         Me.PreviewList.Name = "PreviewList"
