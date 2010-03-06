@@ -136,3 +136,5 @@ AT=À
 H_M_SEP=h
 WEEK_DAYS=Dimanche;Lundi;Mardi;Mercredi;Jeudi;Vendredi;Samedi
 SCHEDULING=Planification
+REG_ERROR=Impossible d'enregistrer l'application au démarrage. Veuillez vous assurer que vous disposez des droits d'accès au registre.
+UNREG_ERROR=Quoiqu'aucun profil ne requiert le démarrage automatique du programme, Create Synchronicity n'a pas pu le désactiver. Veuillez vous assurer que vous disposez des droits d'accès au registre.
