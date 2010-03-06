@@ -60,7 +60,7 @@ Partial Class SchedulingForm
         Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_ActionsPanel.Controls.Add(Me.Scheduling_Cancel, 1, 0)
         Me.Settings_ActionsPanel.Controls.Add(Me.Scheduling_Save, 0, 0)
-        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(362, 148)
+        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(362, 169)
         Me.Settings_ActionsPanel.Name = "Settings_ActionsPanel"
         Me.Settings_ActionsPanel.RowCount = 1
         Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -94,11 +94,11 @@ Partial Class SchedulingForm
         '
         'Scheduling_WarningLabel
         '
+        Me.Scheduling_WarningLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_WarningLabel.BackColor = System.Drawing.Color.Orange
-        Me.Scheduling_WarningLabel.Dock = System.Windows.Forms.DockStyle.Top
         Me.Scheduling_WarningLabel.Location = New System.Drawing.Point(0, 0)
         Me.Scheduling_WarningLabel.Name = "Scheduling_WarningLabel"
-        Me.Scheduling_WarningLabel.Size = New System.Drawing.Size(574, 30)
+        Me.Scheduling_WarningLabel.Size = New System.Drawing.Size(574, 51)
         Me.Scheduling_WarningLabel.TabIndex = 9
         Me.Scheduling_WarningLabel.Text = "\SCHEDULE_WARNING"
         Me.Scheduling_WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -106,7 +106,7 @@ Partial Class SchedulingForm
         'Scheduling_Enable
         '
         Me.Scheduling_Enable.AutoSize = True
-        Me.Scheduling_Enable.Location = New System.Drawing.Point(12, 42)
+        Me.Scheduling_Enable.Location = New System.Drawing.Point(12, 63)
         Me.Scheduling_Enable.Name = "Scheduling_Enable"
         Me.Scheduling_Enable.Size = New System.Drawing.Size(144, 17)
         Me.Scheduling_Enable.TabIndex = 10
@@ -127,6 +127,7 @@ Partial Class SchedulingForm
         '
         Me.Scheduling_EveryDay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_EveryDay.AutoSize = True
+        Me.Scheduling_EveryDay.Checked = True
         Me.Scheduling_EveryDay.Location = New System.Drawing.Point(3, 3)
         Me.Scheduling_EveryDay.Name = "Scheduling_EveryDay"
         Me.Scheduling_EveryDay.Size = New System.Drawing.Size(98, 17)
@@ -137,13 +138,11 @@ Partial Class SchedulingForm
         '
         'Scheduling_Panel
         '
-        Me.Scheduling_Panel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_Panel.Controls.Add(Me.FlowLayoutPanel3)
         Me.Scheduling_Panel.Controls.Add(Me.FlowLayoutPanel2)
         Me.Scheduling_Panel.Controls.Add(Me.FlowLayoutPanel1)
-        Me.Scheduling_Panel.Location = New System.Drawing.Point(12, 65)
+        Me.Scheduling_Panel.Enabled = False
+        Me.Scheduling_Panel.Location = New System.Drawing.Point(12, 86)
         Me.Scheduling_Panel.Name = "Scheduling_Panel"
         Me.Scheduling_Panel.Size = New System.Drawing.Size(550, 77)
         Me.Scheduling_Panel.TabIndex = 14
@@ -176,9 +175,12 @@ Partial Class SchedulingForm
         Me.Scheduling_MonthDay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_MonthDay.AutoSize = True
         Me.Scheduling_MonthDay.Location = New System.Drawing.Point(124, 3)
+        Me.Scheduling_MonthDay.Maximum = New Decimal(New Integer() {28, 0, 0, 0})
+        Me.Scheduling_MonthDay.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.Scheduling_MonthDay.Name = "Scheduling_MonthDay"
-        Me.Scheduling_MonthDay.Size = New System.Drawing.Size(44, 21)
+        Me.Scheduling_MonthDay.Size = New System.Drawing.Size(37, 21)
         Me.Scheduling_MonthDay.TabIndex = 4
+        Me.Scheduling_MonthDay.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'FlowLayoutPanel2
         '
@@ -230,7 +232,8 @@ Partial Class SchedulingForm
         Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Hour)
         Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_HMSepLabel)
         Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Minute)
-        Me.Scheduling_TimeSelectionPanel.Location = New System.Drawing.Point(12, 148)
+        Me.Scheduling_TimeSelectionPanel.Enabled = False
+        Me.Scheduling_TimeSelectionPanel.Location = New System.Drawing.Point(12, 169)
         Me.Scheduling_TimeSelectionPanel.Name = "Scheduling_TimeSelectionPanel"
         Me.Scheduling_TimeSelectionPanel.Size = New System.Drawing.Size(344, 27)
         Me.Scheduling_TimeSelectionPanel.TabIndex = 16
@@ -240,15 +243,16 @@ Partial Class SchedulingForm
         Me.Scheduling_Hour.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_Hour.AutoSize = True
         Me.Scheduling_Hour.Location = New System.Drawing.Point(36, 3)
+        Me.Scheduling_Hour.Maximum = New Decimal(New Integer() {23, 0, 0, 0})
         Me.Scheduling_Hour.Name = "Scheduling_Hour"
-        Me.Scheduling_Hour.Size = New System.Drawing.Size(44, 21)
+        Me.Scheduling_Hour.Size = New System.Drawing.Size(37, 21)
         Me.Scheduling_Hour.TabIndex = 4
         '
         'Scheduling_HMSepLabel
         '
         Me.Scheduling_HMSepLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_HMSepLabel.AutoSize = True
-        Me.Scheduling_HMSepLabel.Location = New System.Drawing.Point(86, 0)
+        Me.Scheduling_HMSepLabel.Location = New System.Drawing.Point(79, 0)
         Me.Scheduling_HMSepLabel.Name = "Scheduling_HMSepLabel"
         Me.Scheduling_HMSepLabel.Size = New System.Drawing.Size(65, 27)
         Me.Scheduling_HMSepLabel.TabIndex = 16
@@ -259,16 +263,17 @@ Partial Class SchedulingForm
         '
         Me.Scheduling_Minute.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_Minute.AutoSize = True
-        Me.Scheduling_Minute.Location = New System.Drawing.Point(157, 3)
+        Me.Scheduling_Minute.Location = New System.Drawing.Point(150, 3)
+        Me.Scheduling_Minute.Maximum = New Decimal(New Integer() {59, 0, 0, 0})
         Me.Scheduling_Minute.Name = "Scheduling_Minute"
-        Me.Scheduling_Minute.Size = New System.Drawing.Size(44, 21)
+        Me.Scheduling_Minute.Size = New System.Drawing.Size(37, 21)
         Me.Scheduling_Minute.TabIndex = 17
         '
         'SchedulingForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(574, 191)
+        Me.ClientSize = New System.Drawing.Size(574, 212)
         Me.Controls.Add(Me.Scheduling_TimeSelectionPanel)
         Me.Controls.Add(Me.Scheduling_Panel)
         Me.Controls.Add(Me.Scheduling_Enable)

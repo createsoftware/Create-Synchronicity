@@ -23,7 +23,7 @@ Public Module ConfigOptions
     Public Const TimeOffset As String = "Time Offset"
 
     Public Const Scheduling As String = "Scheduling"
-    Public Const SchedulingSettingsCount As Integer = 5 'Frequency|WeekDay|MonthDay|Hour|Minute
+    Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute
 
     'Main program settings
     Public Const Language As String = "Language"
@@ -308,7 +308,7 @@ Class ProfileHandler
     End Function
 
     Sub LoadScheduler()
-        Dim Opts() As String = GetSetting(ConfigOptions.Scheduling, "").Split("|")
+        Dim Opts() As String = GetSetting(ConfigOptions.Scheduling, "").Split(";")
 
         Select Case Opts.GetLength(0)
             Case 0
@@ -318,6 +318,10 @@ Class ProfileHandler
             Case Else
                 Scheduler = New ScheduleInfo(ScheduleInfo.NEVER) 'TODO: Invalid string
         End Select
+    End Sub
+
+    Sub SaveScheduler()
+        SetSetting(ConfigOptions.Scheduling, Scheduler.Frequency & ";" & Scheduler.WeekDay & ";" & Scheduler.MonthDay & ";" & Scheduler.Hour & ";" & Scheduler.Minute)
     End Sub
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
