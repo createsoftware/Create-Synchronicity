@@ -67,18 +67,25 @@ Public Class SchedulingForm
     End Sub
 
     Private Sub Scheduling_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Save.Click
-        If Not Scheduling_Enable.Checked Then
-            Handler.Scheduler.Frequency = ScheduleInfo.NEVER
-        Else
-            Handler.Scheduler.Hour = Scheduling_Hour.Value
-            Handler.Scheduler.Minute = Scheduling_Minute.Value
-            Handler.Scheduler.WeekDay = Scheduling_WeekDay.SelectedIndex
-            Handler.Scheduler.MonthDay = Scheduling_MonthDay.Value
-            Handler.Scheduler.Frequency = If(Scheduling_EveryDay.Checked, ScheduleInfo.DAILY, If(Scheduling_EveryWeek.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))
-        End If
+        Try
+            My.Computer.Registry.SetValue(ConfigOptions.RegistryBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
 
-        Handler.SaveScheduler()
-        Handler.SaveConfigFile()
+            If Not Scheduling_Enable.Checked Then
+                Handler.Scheduler.Frequency = ScheduleInfo.NEVER
+            Else
+                Handler.Scheduler.Hour = Scheduling_Hour.Value
+                Handler.Scheduler.Minute = Scheduling_Minute.Value
+                Handler.Scheduler.WeekDay = Scheduling_WeekDay.SelectedIndex
+                Handler.Scheduler.MonthDay = Scheduling_MonthDay.Value
+                Handler.Scheduler.Frequency = If(Scheduling_EveryDay.Checked, ScheduleInfo.DAILY, If(Scheduling_EveryWeek.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))
+            End If
+
+            Handler.SaveScheduler()
+            Handler.SaveConfigFile()
+        Catch ex As Exception
+            Interaction.ShowMsg(Translation.Translate("\REG_ERROR"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
         Me.Close()
     End Sub
 

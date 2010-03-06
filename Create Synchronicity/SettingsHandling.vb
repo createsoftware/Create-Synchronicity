@@ -30,9 +30,12 @@ Public Module ConfigOptions
     Public Const DefaultLanguage As String = "english"
     Public Const AutoUpdates As String = "Auto updates"
 
-    Public Const ConfigFolderName = "config"
-    Public Const LogFolderName = "log"
-    Public Const SettingsFileName = "mainconfig.ini"
+    Public Const ConfigFolderName As String = "config"
+    Public Const LogFolderName As String = "log"
+    Public Const SettingsFileName As String = "mainconfig.ini"
+
+    Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
+    Public Const RegistryBootKey As String = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
 End Module
 
 Public Class ConfigHandler

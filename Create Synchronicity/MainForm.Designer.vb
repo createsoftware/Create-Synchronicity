@@ -64,6 +64,7 @@ Partial Class MainForm
         Me.Main_ActionsMenuToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.Main_ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
+        Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
@@ -284,7 +285,7 @@ Partial Class MainForm
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.Main_ActionsMenuToolStripSeparator2, Me.Main_ScheduleMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 192)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 170)
         '
         'PreviewMenuItem
         '
@@ -363,6 +364,10 @@ Partial Class MainForm
         Me.Main_AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Main_AboutLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue
         '
+        'ApplicationTimer
+        '
+        Me.ApplicationTimer.Interval = 20000
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -411,4 +416,5 @@ Partial Class MainForm
     Friend WithEvents ClearLogMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Main_ActionsMenuToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents Main_ScheduleMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ApplicationTimer As System.Windows.Forms.Timer
 End Class

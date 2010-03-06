@@ -51,7 +51,9 @@ Public Class MainForm
 
         Translation.TranslateControl(Me)
         Translation.TranslateControl(Me.Main_ActionsMenu)
+
         Main_ReloadConfigs()
+        Main_TryUnregStartAtBoot()
 
         Dim TaskToRun As String = ""
         Dim ShowPreview As Boolean = False
@@ -79,12 +81,9 @@ Public Class MainForm
             Else
                 Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
             End If
-        ElseIf ArgsList.Contains("/scheduled") Then
+        ElseIf ArgsList.Contains("/scheduler") Then
             Main_HideForm()
-            While Not ExitScheduler
-                'TODO
-                Main_WaitForNextProfile()
-            End While
+            ApplicationTimer.Start()
         End If
     End Sub
 
@@ -178,6 +177,27 @@ Public Class MainForm
         SchedForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
+
+    Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplicationTimer.Tick
+        Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
+        If ProfilesQueue Is Nothing Then
+            ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
+            Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
+
+            For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
+                If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profile.Value.Scheduler.NextRun(), Profile.Key))
+            Next
+
+            ProfilesToRun.Sort()
+            For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
+        End If
+
+        If ProfilesQueue.Peek().Value < Date.Now Then
+            Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
+            Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, False)
+            ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
+        End If
+    End Sub
 #End Region
 
 #Region " Functions and Routines "
@@ -256,26 +276,19 @@ Public Class MainForm
         Return True
     End Function
 
-    Sub Main_WaitForNextProfile()
-        Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
-        If ProfilesQueue Is Nothing Then
-            ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
-            Dim ProfilesToRun As New List(Of String)
+    Sub Main_TryUnregStartAtBoot()
+        Dim NeedToRunAtBootTime As Boolean = False
+        For Each Profile As ProfileHandler In Profiles.Values
+            NeedToRunAtBootTime = NeedToRunAtBootTime Or (Profile.Scheduler.Frequency <> ScheduleInfo.NEVER)
+        Next
 
-            For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-                If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                    'Add to the list
-                End If
-            Next
-        End If
-
-        Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
-
-        Dim MsTimeout As Long = CLng((NextProfile.Value - Date.Now).TotalMilliseconds)
-        If MsTimeout > 0 Then System.Threading.Thread.Sleep(MsTimeout)
-
-        Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, False)
-        ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
+        Try
+            If Not NeedToRunAtBootTime Then
+                If My.Computer.Registry.GetValue(ConfigOptions.RegistryBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
+            End If
+        Catch Ex As Exception
+            Interaction.ShowMsg(Translation.Translate("\UNREG_ERROR"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Function CurrentProfile() As String
