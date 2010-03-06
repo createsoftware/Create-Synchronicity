@@ -1,5 +1,5 @@
 ﻿# Create Synchronicity French Language file
-# Last update: 02.26.2010
+# Last update: 03.06.2010
 # Translation by Clément Pit--Claudel
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -127,3 +127,11 @@ WARNING=Attention
 WARNING_SWAP=Intervertir la source et la destination requiert le rechargement des arborescences. Toutes les modifications non sauvegardées seront perdues. Continuer?
 WELCOME_MSG=Bienvenue dans Create Synchronicity! Voulez-vous que le programme recherche des mises à jour au démarrage ?
 YES=Oui
+SCHEDULE_WARNING=Attention : Pour activer la planification, Create Synchronicity doit s'enregistrer comme programme au démarrage. La synchronisation n'aura pas lieu si vous désactivez le démarrage automatique, ou si votre session est fermée à l'heure planifiée.
+SCHEDULE_ENABLE=Activer la planification de ce profil,
+EVERY_DAY=Tous les jours, à  
+EVERY_WEEK=Toutes les semaines, le 
+EVERY_MONTH=Tous les mois, au jour 
+AT=À
+H_M_SEP=h
+WEEK_DAYS=Dimanche;Lundi;Mardi;Mercredi;Jeudi;Vendredi;Samedi
