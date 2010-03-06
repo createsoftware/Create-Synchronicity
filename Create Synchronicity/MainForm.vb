@@ -284,7 +284,7 @@ Public Class MainForm
 
         Try
             If Not NeedToRunAtBootTime Then
-                If My.Computer.Registry.GetValue(ConfigOptions.RegistryBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
+                If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True)
             End If
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UNREG_ERROR"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)

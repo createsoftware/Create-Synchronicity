@@ -68,7 +68,7 @@ Public Class SchedulingForm
 
     Private Sub Scheduling_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Save.Click
         Try
-            If Not My.Computer.Registry.GetValue(ConfigOptions.RegistryBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.SetValue(ConfigOptions.RegistryBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
+            If Not My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
 
             If Not Scheduling_Enable.Checked Then
                 Handler.Scheduler.Frequency = ScheduleInfo.NEVER
