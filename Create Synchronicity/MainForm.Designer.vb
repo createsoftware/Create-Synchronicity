@@ -348,7 +348,7 @@ Partial Class MainForm
         Me.Main_ScheduleMenuItem.Image = CType(resources.GetObject("Main_ScheduleMenuItem.Image"), System.Drawing.Image)
         Me.Main_ScheduleMenuItem.Name = "Main_ScheduleMenuItem"
         Me.Main_ScheduleMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.Main_ScheduleMenuItem.Text = "\SCHEDULE"
+        Me.Main_ScheduleMenuItem.Text = "\SCHEDULING"
         '
         'Main_AboutLinkLabel
         '
