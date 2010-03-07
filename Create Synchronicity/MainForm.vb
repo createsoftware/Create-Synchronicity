@@ -13,8 +13,6 @@ Public Class MainForm
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
-    Dim ExitScheduler As Boolean = False
-
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
@@ -89,7 +87,13 @@ Public Class MainForm
 
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
-        Main_ActionsMenu.Show(Main_Actions, e.Location)
+
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            Main_Actions.LabelEdit = True
+            Main_Actions.SelectedItems(0).BeginEdit()
+        Else
+            Main_ActionsMenu.Show(Main_Actions, e.Location)
+        End If
     End Sub
 
     Private Sub Main_Actions_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Actions.DoubleClick
@@ -100,12 +104,19 @@ Public Class MainForm
     End Sub
 
     Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
-        e.CancelEdit = True
         Main_Actions.LabelEdit = False
-        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then Exit Sub
+        If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then
+            e.CancelEdit = True
+            Exit Sub
+        End If
 
-        Dim SettingsForm As New SettingsForm(e.Label)
-        SettingsForm.ShowDialog()
+        If e.Item = 0 Then
+            e.CancelEdit = True
+            Dim SettingsForm As New SettingsForm(e.Label)
+            SettingsForm.ShowDialog()
+        Else
+            If Not Profiles(Main_Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
+        End If
         Main_ReloadConfigs()
     End Sub
 
@@ -176,6 +187,7 @@ Public Class MainForm
         Dim SchedForm As New SchedulingForm(CurrentProfile)
         SchedForm.ShowDialog()
         Main_ReloadConfigs()
+        Main_TryUnregStartAtBoot()
     End Sub
 
     Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplicationTimer.Tick
@@ -192,7 +204,7 @@ Public Class MainForm
             For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
         End If
 
-        If ProfilesQueue.Peek().Value < Date.Now Then
+        If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then
             Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
             Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, False)
             ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
@@ -295,4 +307,5 @@ Public Class MainForm
         Return Main_Actions.SelectedItems(0).Text
     End Function
 #End Region
+
 End Class

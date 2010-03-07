@@ -89,15 +89,14 @@ Public Class SynchronizeForm
         Quiet = Not DisplayForm
         If Quiet Then
             Me.Visible = False
-            SingleTask = True
-        End If
-
-        SingleTask = _SingleTask
-        If SingleTask Then
             StatusIcon.Visible = True
             StatusIcon.BalloonTipText = String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName)
             StatusIcon.ShowBalloonTip(1000)
+        Else
+            Me.Visible = True
         End If
+
+        SingleTask = _SingleTask
 
         If DisplayPreview Then
             PreviewList.Items.Clear()
@@ -137,6 +136,11 @@ Public Class SynchronizeForm
 
     Private Sub StatusIcon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles StatusIcon.Click
         Me.Visible = Not Me.Visible
+        Me.WindowState = FormWindowState.Normal
+    End Sub
+
+    Private Sub SynchronizeForm_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        If Me.WindowState = FormWindowState.Minimized And Quiet Then Me.Visible = False
     End Sub
 
     Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimeCounter.Tick

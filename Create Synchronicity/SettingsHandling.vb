@@ -282,6 +282,18 @@ Class ProfileHandler
         End If
     End Function
 
+    Function RenameProfile(ByVal NewName As String) As Boolean
+        If IO.File.Exists(ProgramConfig.GetLogPath(NewName)) Or IO.File.Exists(ProgramConfig.GetConfigPath(NewName)) Then Return False
+
+        Try
+            IO.File.Move(ProgramConfig.GetLogPath(ProfileName), ProgramConfig.GetLogPath(NewName))
+            IO.File.Move(ProgramConfig.GetConfigPath(ProfileName), ProgramConfig.GetConfigPath(NewName))
+        Catch
+            Return False
+        End Try
+        Return True
+    End Function
+
     Sub DeleteConfigFile()
         IO.File.Delete(ProgramConfig.GetConfigPath(ProfileName))
         DeleteLogFile()
