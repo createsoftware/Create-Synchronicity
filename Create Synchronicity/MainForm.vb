@@ -249,19 +249,23 @@ Public Class MainForm
         Main_LimitedCopy.Text = ""
         Main_FileTypes.Text = ""
 
-        If Clear Then
-            Exit Sub
-        End If
-        Main_Method.Text = GetMethodName(Name)
+        If Clear Then Exit Sub
 
+        Main_Method.Text = GetMethodName(Name)
         Main_Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
         Main_Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
+
+        Main_Scheduling.Text = Profiles(Name).GetSetting(ConfigOptions.Scheduling)
+        Main_TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
 
         Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
             Case 0
                 Main_LimitedCopy.Text = Translation.Translate("\NO")
             Case 1, 2
                 Main_LimitedCopy.Text = Translation.Translate("\YES")
+        End Select
+
+        Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
             Case 1
                 Main_FileTypes.Text = Profiles(Name).GetSetting(ConfigOptions.IncludedTypes, "")
             Case 2
