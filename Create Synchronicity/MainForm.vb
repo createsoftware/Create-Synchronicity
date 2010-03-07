@@ -71,7 +71,7 @@ Public Class MainForm
         If TaskToRun <> "" Then
             If Profiles.ContainsKey(TaskToRun) Then
                 If Profiles(TaskToRun).ValidateConfigFile() Then
-                    Dim SyncForm As New SynchronizeForm(TaskToRun, ShowPreview, Not Quiet, True)
+                    Dim SyncForm As New SynchronizeForm(TaskToRun, ShowPreview, False, Quiet, True)
                     Main_HideForm()
                 Else
                     Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
@@ -147,7 +147,7 @@ Public Class MainForm
 
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         If Not CheckValidity() Then Exit Sub
-        Dim SyncForm As New SynchronizeForm(CurrentProfile, True)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, False, True, False)
         Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
         SyncForm.Dispose()
     End Sub
@@ -155,7 +155,7 @@ Public Class MainForm
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
         If Not CheckValidity() Then Exit Sub
 
-        Dim SyncForm As New SynchronizeForm(CurrentProfile, False)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, False, True, False)
         Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
         SyncForm.Dispose()
     End Sub
@@ -206,7 +206,7 @@ Public Class MainForm
 
         If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then
             Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
-            Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, False)
+            Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, True, False)
             ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
         End If
     End Sub
