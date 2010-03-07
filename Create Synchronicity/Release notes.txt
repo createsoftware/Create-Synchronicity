@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Mar.  7, 2010 - NEW: Rename profiles by right-clicking.
+Mar.  6, 2010 - NEW: !Full scheduling support, including fully customizable schedule settings (inlcuding a GUI).
 Mar.  5, 2010 - NEW: !Initial, command-line only support for task scheduling.
 Mar.  3, 2010 - FIX: When running from a write-protected directory, display a warning if configuration files were found. Fixes a privileges-related bug on Windows Vista.
 Mar.  1, 2010 - NEW: !Native supports for relative paths, such as "..\..\Documents"
