@@ -85,6 +85,24 @@ Public Class MainForm
         End If
     End Sub
 
+#If 0 Then
+    Private Sub Main_Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Main_Actions.KeyDown
+        If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
+
+        If e.KeyCode = Keys.Enter Then
+            If Main_Actions.SelectedIndices(0) = 0 Then
+                Main_Actions.LabelEdit = True
+                Main_Actions.SelectedItems(0).BeginEdit()
+            Else
+                Main_ActionsMenu.Show(Main_Actions, New Drawing.Point(Main_Actions.SelectedItems(0).Bounds.Location.X, Main_Actions.SelectedItems(0).Bounds.Location.Y + Main_Actions.SelectedItems(0).Bounds.Height))
+            End If
+        ElseIf e.KeyCode = Keys.F2 And Not Main_Actions.SelectedIndices(0) = 0 Then
+            Main_Actions.LabelEdit = True
+            Main_Actions.SelectedItems(0).BeginEdit()
+        End If
+    End Sub
+#End If
+
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
 
