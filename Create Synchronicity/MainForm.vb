@@ -165,7 +165,7 @@ Public Class MainForm
 
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         If Not CheckValidity() Then Exit Sub
-        Dim SyncForm As New SynchronizeForm(CurrentProfile, False, True, False)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, True, True, False)
         Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
         SyncForm.Dispose()
     End Sub

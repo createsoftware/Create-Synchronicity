@@ -53,7 +53,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal ShowModal As Boolean, ByVal _Quiet As Boolean, Optional ByVal _SingleTask As Boolean = False)
+    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal WillShowModal As Boolean, ByVal _Quiet As Boolean, Optional ByVal _SingleTask As Boolean = False)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -92,7 +92,7 @@ Public Class SynchronizeForm
             StatusIcon.Visible = True
             StatusIcon.BalloonTipText = String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName)
             StatusIcon.ShowBalloonTip(1000)
-        ElseIf Not ShowModal Then
+        ElseIf Not WillShowModal Then
             Me.Visible = True
         End If
 
