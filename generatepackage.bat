@@ -6,8 +6,23 @@ REM You should have received a copy of the GNU General Public License along with
 REM Created by:	Clément Pit--Claudel.
 REM Web site:		http://synchronicity.sourceforge.net.
 
-echo %1 %2 %3 %4 %5
+@set REV=%4
+mkdir build
+
+(
+echo Packaging log for r%REV% & date /t & time /t
+
+echo.
+echo -----
 "C:\Program Files\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
-move Create_Synchronicity_Setup.exe Create_Synchronicity_Setup-r%4.exe
+
+echo.
+echo -----
+move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe"
+
 cd "Create Synchronicity\bin\Release"
-"C:\Program Files\7-Zip\7z.exe" a "..\..\..\Create_Synchronicity-r%4.zip" "Create Synchronicity.exe" "COPYING" "languages\*"
+echo.
+echo -----
+"C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%.zip" "Create Synchronicity.exe" "COPYING" "languages\*"
+cd ..\..\..
+) > "build\buildlog-r%REV%.txt"
