@@ -31,9 +31,9 @@ Partial Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Main_Actions = New System.Windows.Forms.ListView
         Me.Actions_NameColumn = New System.Windows.Forms.ColumnHeader
@@ -41,6 +41,9 @@ Partial Class MainForm
         Me.Main_SyncIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.Main_InfoPanel = New System.Windows.Forms.Panel
         Me.Main_InfoLayout = New System.Windows.Forms.TableLayoutPanel
+        Me.Main_TimeOffset = New System.Windows.Forms.Label
+        Me.Main_Scheduling = New System.Windows.Forms.Label
+        Me.Main_SchedulingLabel = New System.Windows.Forms.Label
         Me.Main_Destination = New System.Windows.Forms.Label
         Me.Main_DestinationLabel = New System.Windows.Forms.Label
         Me.Main_Source = New System.Windows.Forms.Label
@@ -53,6 +56,7 @@ Partial Class MainForm
         Me.Main_LimitedCopyLabel = New System.Windows.Forms.Label
         Me.Main_Name = New System.Windows.Forms.Label
         Me.Main_NameLabel = New System.Windows.Forms.Label
+        Me.Main_TimeOffsetLabel = New System.Windows.Forms.Label
         Me.Main_ActionsMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.PreviewMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.SynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -65,10 +69,6 @@ Partial Class MainForm
         Me.Main_ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.Main_TimeOffsetLabel = New System.Windows.Forms.Label
-        Me.Main_SchedulingLabel = New System.Windows.Forms.Label
-        Me.Main_Scheduling = New System.Windows.Forms.Label
-        Me.Main_TimeOffset = New System.Windows.Forms.Label
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
@@ -78,14 +78,14 @@ Partial Class MainForm
         '
         Me.Main_Actions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Actions_NameColumn, Me.Main_MethodsColumn})
         Me.Main_Actions.Dock = System.Windows.Forms.DockStyle.Fill
-        ListViewGroup3.Header = "\ACTIONS"
-        ListViewGroup3.Name = "Actions"
-        ListViewGroup4.Header = "\PROFILES"
-        ListViewGroup4.Name = "Profiles"
-        Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup3, ListViewGroup4})
-        ListViewItem2.Group = ListViewGroup3
-        ListViewItem2.StateImageIndex = 0
-        Me.Main_Actions.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewGroup1.Header = "\ACTIONS"
+        ListViewGroup1.Name = "Actions"
+        ListViewGroup2.Header = "\PROFILES"
+        ListViewGroup2.Name = "Profiles"
+        Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2})
+        ListViewItem1.Group = ListViewGroup1
+        ListViewItem1.StateImageIndex = 0
+        Me.Main_Actions.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.Main_Actions.LargeImageList = Me.Main_SyncIcons
         Me.Main_Actions.Location = New System.Drawing.Point(0, 0)
         Me.Main_Actions.MultiSelect = False
@@ -121,7 +121,7 @@ Partial Class MainForm
         Me.Main_InfoPanel.Location = New System.Drawing.Point(0, 262)
         Me.Main_InfoPanel.Name = "Main_InfoPanel"
         Me.Main_InfoPanel.Size = New System.Drawing.Size(355, 160)
-        Me.Main_InfoPanel.TabIndex = 1
+        Me.Main_InfoPanel.TabIndex = 2
         '
         'Main_InfoLayout
         '
@@ -161,6 +161,37 @@ Partial Class MainForm
         Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.Main_InfoLayout.Size = New System.Drawing.Size(331, 142)
         Me.Main_InfoLayout.TabIndex = 0
+        '
+        'Main_TimeOffset
+        '
+        Me.Main_TimeOffset.AutoSize = True
+        Me.Main_TimeOffset.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_TimeOffset.Location = New System.Drawing.Point(284, 57)
+        Me.Main_TimeOffset.Name = "Main_TimeOffset"
+        Me.Main_TimeOffset.Size = New System.Drawing.Size(43, 27)
+        Me.Main_TimeOffset.TabIndex = 15
+        Me.Main_TimeOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Main_Scheduling
+        '
+        Me.Main_Scheduling.AutoSize = True
+        Me.Main_Scheduling.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_Scheduling.Location = New System.Drawing.Point(104, 57)
+        Me.Main_Scheduling.Name = "Main_Scheduling"
+        Me.Main_Scheduling.Size = New System.Drawing.Size(67, 27)
+        Me.Main_Scheduling.TabIndex = 14
+        Me.Main_Scheduling.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Main_SchedulingLabel
+        '
+        Me.Main_SchedulingLabel.AutoSize = True
+        Me.Main_SchedulingLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_SchedulingLabel.Location = New System.Drawing.Point(4, 57)
+        Me.Main_SchedulingLabel.Name = "Main_SchedulingLabel"
+        Me.Main_SchedulingLabel.Size = New System.Drawing.Size(93, 27)
+        Me.Main_SchedulingLabel.TabIndex = 13
+        Me.Main_SchedulingLabel.Text = "\SCH_LABEL"
+        Me.Main_SchedulingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Main_Destination
         '
@@ -290,6 +321,17 @@ Partial Class MainForm
         Me.Main_NameLabel.Text = "\NAME"
         Me.Main_NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'Main_TimeOffsetLabel
+        '
+        Me.Main_TimeOffsetLabel.AutoSize = True
+        Me.Main_TimeOffsetLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_TimeOffsetLabel.Location = New System.Drawing.Point(178, 57)
+        Me.Main_TimeOffsetLabel.Name = "Main_TimeOffsetLabel"
+        Me.Main_TimeOffsetLabel.Size = New System.Drawing.Size(99, 27)
+        Me.Main_TimeOffsetLabel.TabIndex = 12
+        Me.Main_TimeOffsetLabel.Text = "\TIME_OFFSET"
+        Me.Main_TimeOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'Main_ActionsMenu
         '
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.Main_ActionsMenuToolStripSeparator2, Me.Main_ScheduleMenuItem})
@@ -368,7 +410,7 @@ Partial Class MainForm
         Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(193, 3)
         Me.Main_AboutLinkLabel.Name = "Main_AboutLinkLabel"
         Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(161, 13)
-        Me.Main_AboutLinkLabel.TabIndex = 2
+        Me.Main_AboutLinkLabel.TabIndex = 1
         Me.Main_AboutLinkLabel.TabStop = True
         Me.Main_AboutLinkLabel.Text = "\ABOUT_SETTINGS"
         Me.Main_AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -377,48 +419,6 @@ Partial Class MainForm
         'ApplicationTimer
         '
         Me.ApplicationTimer.Interval = 20000
-        '
-        'Main_TimeOffsetLabel
-        '
-        Me.Main_TimeOffsetLabel.AutoSize = True
-        Me.Main_TimeOffsetLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_TimeOffsetLabel.Location = New System.Drawing.Point(178, 57)
-        Me.Main_TimeOffsetLabel.Name = "Main_TimeOffsetLabel"
-        Me.Main_TimeOffsetLabel.Size = New System.Drawing.Size(99, 27)
-        Me.Main_TimeOffsetLabel.TabIndex = 12
-        Me.Main_TimeOffsetLabel.Text = "\TIME_OFFSET"
-        Me.Main_TimeOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'Main_SchedulingLabel
-        '
-        Me.Main_SchedulingLabel.AutoSize = True
-        Me.Main_SchedulingLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_SchedulingLabel.Location = New System.Drawing.Point(4, 57)
-        Me.Main_SchedulingLabel.Name = "Main_SchedulingLabel"
-        Me.Main_SchedulingLabel.Size = New System.Drawing.Size(93, 27)
-        Me.Main_SchedulingLabel.TabIndex = 13
-        Me.Main_SchedulingLabel.Text = "\SCH_LABEL"
-        Me.Main_SchedulingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'Main_Scheduling
-        '
-        Me.Main_Scheduling.AutoSize = True
-        Me.Main_Scheduling.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_Scheduling.Location = New System.Drawing.Point(104, 57)
-        Me.Main_Scheduling.Name = "Main_Scheduling"
-        Me.Main_Scheduling.Size = New System.Drawing.Size(67, 27)
-        Me.Main_Scheduling.TabIndex = 14
-        Me.Main_Scheduling.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'Main_TimeOffset
-        '
-        Me.Main_TimeOffset.AutoSize = True
-        Me.Main_TimeOffset.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_TimeOffset.Location = New System.Drawing.Point(284, 57)
-        Me.Main_TimeOffset.Name = "Main_TimeOffset"
-        Me.Main_TimeOffset.Size = New System.Drawing.Size(43, 27)
-        Me.Main_TimeOffset.TabIndex = 15
-        Me.Main_TimeOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'MainForm
         '
