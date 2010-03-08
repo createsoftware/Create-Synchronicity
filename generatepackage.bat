@@ -6,6 +6,7 @@ REM You should have received a copy of the GNU General Public License along with
 REM Created by:	Clément Pit--Claudel.
 REM Web site:		http://synchronicity.sourceforge.net.
 
+echo %1 %2 %3 %4 %5
 "C:\Program Files\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
 move Create_Synchronicity_Setup.exe Create_Synchronicity_Setup-r%4.exe
 cd "Create Synchronicity\bin\Release"
