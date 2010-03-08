@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Mar.  8, 2010 - NEW: Keyboard navigation.
 Mar.  7, 2010 - NEW: Rename profiles by right-clicking.
 Mar.  6, 2010 - NEW: !Full scheduling support, including fully customizable schedule settings (inlcuding a GUI).
 Mar.  5, 2010 - NEW: !Initial, command-line only support for task scheduling.
