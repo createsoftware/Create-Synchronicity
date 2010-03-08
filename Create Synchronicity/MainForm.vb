@@ -85,7 +85,7 @@ Public Class MainForm
         End If
     End Sub
 
-#If 0 Then
+    '#If 0 Then
     Private Sub Main_Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Main_Actions.KeyDown
         If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
 
@@ -101,7 +101,7 @@ Public Class MainForm
             Main_Actions.SelectedItems(0).BeginEdit()
         End If
     End Sub
-#End If
+    '#End If
 
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
