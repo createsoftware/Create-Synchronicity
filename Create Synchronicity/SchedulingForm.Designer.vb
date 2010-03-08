@@ -65,7 +65,7 @@ Partial Class SchedulingForm
         Me.Settings_ActionsPanel.RowCount = 1
         Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_ActionsPanel.Size = New System.Drawing.Size(200, 31)
-        Me.Settings_ActionsPanel.TabIndex = 8
+        Me.Settings_ActionsPanel.TabIndex = 4
         '
         'Scheduling_Cancel
         '
@@ -99,7 +99,7 @@ Partial Class SchedulingForm
         Me.Scheduling_WarningLabel.Location = New System.Drawing.Point(0, 0)
         Me.Scheduling_WarningLabel.Name = "Scheduling_WarningLabel"
         Me.Scheduling_WarningLabel.Size = New System.Drawing.Size(574, 51)
-        Me.Scheduling_WarningLabel.TabIndex = 9
+        Me.Scheduling_WarningLabel.TabIndex = 0
         Me.Scheduling_WarningLabel.Text = "\SCHEDULE_WARNING"
         Me.Scheduling_WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -109,7 +109,7 @@ Partial Class SchedulingForm
         Me.Scheduling_Enable.Location = New System.Drawing.Point(12, 63)
         Me.Scheduling_Enable.Name = "Scheduling_Enable"
         Me.Scheduling_Enable.Size = New System.Drawing.Size(144, 17)
-        Me.Scheduling_Enable.TabIndex = 10
+        Me.Scheduling_Enable.TabIndex = 1
         Me.Scheduling_Enable.Text = "\SCHEDULE_ENABLE"
         Me.Scheduling_Enable.UseVisualStyleBackColor = True
         '
@@ -121,7 +121,7 @@ Partial Class SchedulingForm
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(550, 23)
-        Me.FlowLayoutPanel1.TabIndex = 13
+        Me.FlowLayoutPanel1.TabIndex = 0
         '
         'Scheduling_EveryDay
         '
@@ -145,7 +145,7 @@ Partial Class SchedulingForm
         Me.Scheduling_Panel.Location = New System.Drawing.Point(12, 86)
         Me.Scheduling_Panel.Name = "Scheduling_Panel"
         Me.Scheduling_Panel.Size = New System.Drawing.Size(550, 77)
-        Me.Scheduling_Panel.TabIndex = 14
+        Me.Scheduling_Panel.TabIndex = 2
         '
         'FlowLayoutPanel3
         '
@@ -156,7 +156,7 @@ Partial Class SchedulingForm
         Me.FlowLayoutPanel3.Location = New System.Drawing.Point(0, 50)
         Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
         Me.FlowLayoutPanel3.Size = New System.Drawing.Size(550, 27)
-        Me.FlowLayoutPanel3.TabIndex = 15
+        Me.FlowLayoutPanel3.TabIndex = 2
         '
         'Scheduling_EveryMonth
         '
@@ -192,7 +192,7 @@ Partial Class SchedulingForm
         Me.FlowLayoutPanel2.Location = New System.Drawing.Point(0, 23)
         Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
         Me.FlowLayoutPanel2.Size = New System.Drawing.Size(550, 27)
-        Me.FlowLayoutPanel2.TabIndex = 14
+        Me.FlowLayoutPanel2.TabIndex = 1
         '
         'Scheduling_EveryWeek
         '
@@ -213,7 +213,7 @@ Partial Class SchedulingForm
         Me.Scheduling_WeekDay.Location = New System.Drawing.Point(116, 3)
         Me.Scheduling_WeekDay.Name = "Scheduling_WeekDay"
         Me.Scheduling_WeekDay.Size = New System.Drawing.Size(121, 21)
-        Me.Scheduling_WeekDay.TabIndex = 15
+        Me.Scheduling_WeekDay.TabIndex = 1
         '
         'Scheduling_AtLabel
         '
@@ -222,7 +222,7 @@ Partial Class SchedulingForm
         Me.Scheduling_AtLabel.Location = New System.Drawing.Point(3, 0)
         Me.Scheduling_AtLabel.Name = "Scheduling_AtLabel"
         Me.Scheduling_AtLabel.Size = New System.Drawing.Size(27, 27)
-        Me.Scheduling_AtLabel.TabIndex = 15
+        Me.Scheduling_AtLabel.TabIndex = 0
         Me.Scheduling_AtLabel.Text = "\AT"
         Me.Scheduling_AtLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -236,7 +236,7 @@ Partial Class SchedulingForm
         Me.Scheduling_TimeSelectionPanel.Location = New System.Drawing.Point(12, 169)
         Me.Scheduling_TimeSelectionPanel.Name = "Scheduling_TimeSelectionPanel"
         Me.Scheduling_TimeSelectionPanel.Size = New System.Drawing.Size(344, 27)
-        Me.Scheduling_TimeSelectionPanel.TabIndex = 16
+        Me.Scheduling_TimeSelectionPanel.TabIndex = 3
         '
         'Scheduling_Hour
         '
@@ -246,7 +246,7 @@ Partial Class SchedulingForm
         Me.Scheduling_Hour.Maximum = New Decimal(New Integer() {23, 0, 0, 0})
         Me.Scheduling_Hour.Name = "Scheduling_Hour"
         Me.Scheduling_Hour.Size = New System.Drawing.Size(37, 21)
-        Me.Scheduling_Hour.TabIndex = 4
+        Me.Scheduling_Hour.TabIndex = 1
         '
         'Scheduling_HMSepLabel
         '
@@ -255,7 +255,7 @@ Partial Class SchedulingForm
         Me.Scheduling_HMSepLabel.Location = New System.Drawing.Point(79, 0)
         Me.Scheduling_HMSepLabel.Name = "Scheduling_HMSepLabel"
         Me.Scheduling_HMSepLabel.Size = New System.Drawing.Size(65, 27)
-        Me.Scheduling_HMSepLabel.TabIndex = 16
+        Me.Scheduling_HMSepLabel.TabIndex = 2
         Me.Scheduling_HMSepLabel.Text = "\H_M_SEP"
         Me.Scheduling_HMSepLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -267,7 +267,7 @@ Partial Class SchedulingForm
         Me.Scheduling_Minute.Maximum = New Decimal(New Integer() {59, 0, 0, 0})
         Me.Scheduling_Minute.Name = "Scheduling_Minute"
         Me.Scheduling_Minute.Size = New System.Drawing.Size(37, 21)
-        Me.Scheduling_Minute.TabIndex = 17
+        Me.Scheduling_Minute.TabIndex = 3
         '
         'SchedulingForm
         '
