@@ -7,5 +7,6 @@ REM Created by:	Clément Pit--Claudel.
 REM Web site:		http://synchronicity.sourceforge.net.
 
 "C:\Program Files\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
+move Create_Synchronicity_Setup.exe Create_Synchronicity_Setup-r%4.exe
 cd "Create Synchronicity\bin\Release"
-"C:\Program Files\7-Zip\7z.exe" a "..\..\..\Create_Synchronicity.zip" "*"
+"C:\Program Files\7-Zip\7z.exe" a "..\..\..\Create_Synchronicity-r%4.zip" "Create Synchronicity.exe" "COPYING" "languages\*"
