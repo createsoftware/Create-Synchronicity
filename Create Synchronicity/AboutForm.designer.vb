@@ -72,7 +72,7 @@ Partial Class AboutForm
         Me.About_FlowLayoutPanel.Location = New System.Drawing.Point(146, 12)
         Me.About_FlowLayoutPanel.Name = "About_FlowLayoutPanel"
         Me.About_FlowLayoutPanel.Size = New System.Drawing.Size(344, 129)
-        Me.About_FlowLayoutPanel.TabIndex = 1
+        Me.About_FlowLayoutPanel.TabIndex = 0
         Me.About_FlowLayoutPanel.WrapContents = False
         '
         'About_LinkToProductPage
@@ -153,7 +153,7 @@ Partial Class AboutForm
         Me.About_Updates.Location = New System.Drawing.Point(12, 147)
         Me.About_Updates.Name = "About_Updates"
         Me.About_Updates.Size = New System.Drawing.Size(478, 34)
-        Me.About_Updates.TabIndex = 2
+        Me.About_Updates.TabIndex = 1
         Me.About_Updates.Text = "\UPDATES"
         Me.About_Updates.UseVisualStyleBackColor = False
         '
@@ -164,7 +164,7 @@ Partial Class AboutForm
         Me.About_LanguageLabel.Location = New System.Drawing.Point(12, 190)
         Me.About_LanguageLabel.Name = "About_LanguageLabel"
         Me.About_LanguageLabel.Size = New System.Drawing.Size(75, 13)
-        Me.About_LanguageLabel.TabIndex = 3
+        Me.About_LanguageLabel.TabIndex = 2
         Me.About_LanguageLabel.Text = "\LANGUAGE"
         Me.About_LanguageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -176,7 +176,7 @@ Partial Class AboutForm
         Me.About_LanguagesList.Location = New System.Drawing.Point(353, 187)
         Me.About_LanguagesList.Name = "About_LanguagesList"
         Me.About_LanguagesList.Size = New System.Drawing.Size(137, 21)
-        Me.About_LanguagesList.TabIndex = 4
+        Me.About_LanguagesList.TabIndex = 3
         '
         'AboutForm
         '
