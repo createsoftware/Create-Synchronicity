@@ -222,6 +222,8 @@ Public Class MainForm
             For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
         End If
 
+        If ProfilesQueue.Count = 0 Then Exit Sub
+
         If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then
             Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
             Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, True, False)
