@@ -71,7 +71,6 @@ Partial Class SynchronizeForm
         Me.DirectionColumn = New System.Windows.Forms.ColumnHeader
         Me.PathColumn = New System.Windows.Forms.ColumnHeader
         Me.SyncingIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.StatusIcon = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
@@ -542,14 +541,6 @@ Partial Class SynchronizeForm
         Me.SyncingIcons.Images.SetKeyName(4, "delete-folder.png")
         Me.SyncingIcons.Images.SetKeyName(5, "process-stop.png")
         '
-        'StatusIcon
-        '
-        Me.StatusIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
-        Me.StatusIcon.BalloonTipText = "\RUNNING"
-        Me.StatusIcon.BalloonTipTitle = "Create Synchronicity"
-        Me.StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
-        Me.StatusIcon.Text = "\RUNNING"
-        '
         'SyncingTimeCounter
         '
         Me.SyncingTimeCounter.Enabled = True
@@ -622,6 +613,5 @@ Partial Class SynchronizeForm
     Friend WithEvents FoldersCreatedLabel As System.Windows.Forms.Label
     Friend WithEvents SyncingIcons As System.Windows.Forms.ImageList
     Friend WithEvents BlankMargin As System.Windows.Forms.Label
-    Friend WithEvents StatusIcon As System.Windows.Forms.NotifyIcon
     Friend WithEvents SyncingTimeCounter As System.Windows.Forms.Timer
 End Class
