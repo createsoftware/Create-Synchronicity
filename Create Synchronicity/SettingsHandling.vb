@@ -446,8 +446,8 @@ Public Module Interaction
     Public StatusIcon As NotifyIcon = New NotifyIcon()
 
     Public Sub LoadStatusIcon()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
+        Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
+        StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("Create_Synchronicity.create-synchronicity-icon-16x16.ico"))
     End Sub
 
     Public Sub ShowBallonTip(ByVal Msg As String)
