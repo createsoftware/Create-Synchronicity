@@ -37,8 +37,6 @@ Public Module ConfigOptions
     Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
     Public Const RegistryBootKey As String = "Software\Microsoft\Windows\CurrentVersion\Run"
     Public Const RegistryRootedBootKey As String = "HKEY_CURRENT_USER\" & RegistryBootKey
-
-    Public StatusIcon As NotifyIcon = New NotifyIcon()
 End Module
 
 Public Class ConfigHandler
@@ -69,7 +67,7 @@ Public Class ConfigHandler
     End Function
 
     Public Function GetIcon() As Drawing.Icon
-        Static Icon As Drawing.Icon
+        Static Icon As Drawing.Icon 'TODO: Check if run from a UCN path
         If Icon Is Nothing Then Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
 
         Return Icon
@@ -443,6 +441,19 @@ End Module
 
 Public Module Interaction
     Public AsAService As Boolean = False
+    Public StatusIcon As NotifyIcon = New NotifyIcon()
+
+    Public Sub LoadStatusIcon()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+        StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
+    End Sub
+
+    Public Sub ShowBallonTip(ByVal Msg As String)
+        StatusIcon.BalloonTipTitle = "Create Synchronicity"
+        StatusIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
+        StatusIcon.BalloonTipText = Msg
+        StatusIcon.ShowBalloonTip(1000)
+    End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
         If AsAService Then

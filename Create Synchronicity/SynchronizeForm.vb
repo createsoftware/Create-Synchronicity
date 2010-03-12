@@ -89,18 +89,14 @@ Public Class SynchronizeForm
         Quiet = _Quiet
         If Quiet Then
             Me.Visible = False
-            StatusIcon.Visible = True
 
             AddHandler StatusIcon.Click, AddressOf StatusIcon_Click
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SynchronizeForm))
 
-            StatusIcon.Text = "\RUNNING"
-            StatusIcon.Icon = CType(resources.GetObject("StatusIcon.Icon"), System.Drawing.Icon)
+            Interaction.LoadStatusIcon()
+            Interaction.StatusIcon.Text = "\RUNNING"
 
-            StatusIcon.BalloonTipTitle = "Create Synchronicity"
-            StatusIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
-            StatusIcon.BalloonTipText = String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName)
-            StatusIcon.ShowBalloonTip(1000)
+            Interaction.StatusIcon.Visible = True
+            Interaction.ShowBallonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
         ElseIf Not WillShowModal Then
             Me.Visible = True
         End If
@@ -122,7 +118,7 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
-        StatusIcon.Visible = False
+        Interaction.StatusIcon.Visible = False
         If SingleTask Then Application.Exit()
     End Sub
 
