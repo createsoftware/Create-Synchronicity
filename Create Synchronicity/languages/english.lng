@@ -139,4 +139,5 @@ SCHEDULING=Scheduling
 REG_ERROR=There was an error registering as a startup program. Please ensure that you have registry access rights.
 UNREG_ERROR=Although no profiles are scheduled, Create Synchronicity could not unregister from startup programs. Please ensure that you have registry access rights.
 SCH_LABEL=Scheduling:
-SCH_WAITING=Create Synchronicity is waiting to execute {0}. Next execution is planned on {1}, at {2}.
+# Should be less than 64 chars long, with profile name and date.
+SCH_WAITING=Next run: "{0}", {1}.
