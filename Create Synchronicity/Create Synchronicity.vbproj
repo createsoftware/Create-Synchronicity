@@ -180,6 +180,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="create-synchronicity-icon-16x16.ico" />
     <Content Include="create-synchronicity-icon.ico" />
     <Content Include="Release notes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
