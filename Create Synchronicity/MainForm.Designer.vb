@@ -69,9 +69,12 @@ Partial Class MainForm
         Me.Main_ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
+        Me.StatusIconMenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'Main_Actions
@@ -336,7 +339,6 @@ Partial Class MainForm
         '
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.Main_ChangeSettingsMenuItem, Me.Main_ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.Main_ActionsMenuToolStripSeparator2, Me.Main_ScheduleMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
-        Me.Main_ActionsMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 170)
         '
         'PreviewMenuItem
@@ -420,6 +422,19 @@ Partial Class MainForm
         '
         Me.ApplicationTimer.Interval = 10
         '
+        'StatusIconMenu
+        '
+        Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
+        Me.StatusIconMenu.Name = "StatusIconMenu"
+        Me.StatusIconMenu.ShowImageMargin = False
+        Me.StatusIconMenu.Size = New System.Drawing.Size(68, 26)
+        '
+        'ExitToolStripMenuItem
+        '
+        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(67, 22)
+        Me.ExitToolStripMenuItem.Text = "Exit"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -436,6 +451,7 @@ Partial Class MainForm
         Me.Main_InfoLayout.ResumeLayout(False)
         Me.Main_InfoLayout.PerformLayout()
         Me.Main_ActionsMenu.ResumeLayout(False)
+        Me.StatusIconMenu.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -473,4 +489,6 @@ Partial Class MainForm
     Friend WithEvents Main_Scheduling As System.Windows.Forms.Label
     Friend WithEvents Main_SchedulingLabel As System.Windows.Forms.Label
     Friend WithEvents Main_TimeOffsetLabel As System.Windows.Forms.Label
+    Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

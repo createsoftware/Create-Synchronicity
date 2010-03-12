@@ -83,6 +83,7 @@ Public Class MainForm
             Main_HideForm()
 
             Interaction.LoadStatusIcon()
+            Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.StatusIcon.Visible = True
 
             ApplicationTimer.Start()
@@ -91,6 +92,10 @@ Public Class MainForm
 
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         StatusIcon.Visible = False
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
     End Sub
 
     '#If 0 Then
