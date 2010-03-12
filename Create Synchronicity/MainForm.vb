@@ -49,6 +49,7 @@ Public Class MainForm
 
         Translation.TranslateControl(Me)
         Translation.TranslateControl(Me.Main_ActionsMenu)
+        Translation.TranslateControl(Me.StatusIconMenu)
 
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
