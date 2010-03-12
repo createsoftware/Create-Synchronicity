@@ -271,8 +271,10 @@ Partial Class SchedulingForm
         '
         'SchedulingForm
         '
+        Me.AcceptButton = Me.Scheduling_Save
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Scheduling_Cancel
         Me.ClientSize = New System.Drawing.Size(574, 212)
         Me.Controls.Add(Me.Scheduling_TimeSelectionPanel)
         Me.Controls.Add(Me.Scheduling_Panel)
