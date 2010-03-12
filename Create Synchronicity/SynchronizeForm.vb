@@ -13,7 +13,7 @@ Public Class SynchronizeForm
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
-    'TODO: Unify vars definitions in one big object.
+    'TODO: Unify in one big struct.
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
     Dim IncludedPatterns As New List(Of FileNamePattern)
@@ -89,6 +89,7 @@ Public Class SynchronizeForm
         Quiet = _Quiet
         If Quiet Then
             Me.Visible = False
+            ProgramConfig.CanGoOn = False
 
             AddHandler StatusIcon.Click, AddressOf StatusIcon_Click
 
@@ -118,8 +119,14 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
-        Interaction.StatusIcon.Visible = False
-        If SingleTask Then Application.Exit()
+        ProgramConfig.CanGoOn = True
+
+        If SingleTask Then
+            Interaction.StatusIcon.Visible = False
+            Application.Exit()
+        Else
+            Interaction.StatusIcon.Text = Translation.Translate("\WAITING")
+        End If
     End Sub
 
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click

@@ -232,6 +232,7 @@ Public Class MainForm
         End If
 
         If ProfilesQueue.Count = 0 Then Exit Sub
+        If ProgramConfig.CanGoOn = False Then Exit Sub
 
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, ProfilesQueue.Peek().Value.ToString())
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
