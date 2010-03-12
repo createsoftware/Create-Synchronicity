@@ -96,6 +96,7 @@ Public Class MainForm
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
         Me.Close()
+        Application.Exit()
     End Sub
 
     '#If 0 Then
