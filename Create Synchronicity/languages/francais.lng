@@ -1,5 +1,5 @@
 ﻿# Create Synchronicity French Language file
-# Last update: 03.06.2010
+# Last update: 03.11.2010
 # Translation by Clément Pit--Claudel
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -139,3 +139,4 @@ SCHEDULING=Planification
 REG_ERROR=Impossible d'enregistrer l'application au démarrage. Veuillez vous assurer que vous disposez des droits d'accès au registre.
 UNREG_ERROR=Quoiqu'aucun profil ne requiert le démarrage automatique du programme, Create Synchronicity n'a pas pu le désactiver. Veuillez vous assurer que vous disposez des droits d'accès au registre.
 SCH_LABEL=Planification :
+WAITING=Create Syncrhonicity attend d'éxecuter "{0}". La prochaine éxecution est prévue le {1}, à {2}.
