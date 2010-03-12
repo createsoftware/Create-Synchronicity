@@ -139,4 +139,4 @@ SCHEDULING=Planification
 REG_ERROR=Impossible d'enregistrer l'application au démarrage. Veuillez vous assurer que vous disposez des droits d'accès au registre.
 UNREG_ERROR=Quoiqu'aucun profil ne requiert le démarrage automatique du programme, Create Synchronicity n'a pas pu le désactiver. Veuillez vous assurer que vous disposez des droits d'accès au registre.
 SCH_LABEL=Planification :
-WAITING=Create Syncrhonicity attend d'éxecuter "{0}". La prochaine éxecution est prévue le {1}, à {2}.
+SCH_WAITING=Create Syncrhonicity attend d'éxecuter "{0}". La prochaine éxecution est prévue le {1}, à {2}.
