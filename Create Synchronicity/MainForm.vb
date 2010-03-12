@@ -83,7 +83,6 @@ Public Class MainForm
             Main_HideForm()
 
             Interaction.LoadStatusIcon()
-            Interaction.StatusIcon.Text = "\WAITING"
             Interaction.StatusIcon.Visible = True
 
             ApplicationTimer.Start()
@@ -220,6 +219,7 @@ Public Class MainForm
     Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplicationTimer.Tick
         Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
         If ProfilesQueue Is Nothing Then
+            ApplicationTimer.Interval = 20000 'First tick was forced by the very low interval.
             ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
             Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
 
@@ -232,6 +232,9 @@ Public Class MainForm
         End If
 
         If ProfilesQueue.Count = 0 Then Exit Sub
+
+        Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, ProfilesQueue.Peek().Value.ToString())
+        Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
         If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then
             Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
@@ -340,5 +343,4 @@ Public Class MainForm
         Return Main_Actions.SelectedItems(0).Text
     End Function
 #End Region
-
 End Class

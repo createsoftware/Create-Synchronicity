@@ -418,7 +418,7 @@ Partial Class MainForm
         '
         'ApplicationTimer
         '
-        Me.ApplicationTimer.Interval = 20000
+        Me.ApplicationTimer.Interval = 10
         '
         'MainForm
         '
