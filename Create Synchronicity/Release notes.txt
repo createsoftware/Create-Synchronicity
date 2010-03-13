@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Mar. 13, 2010 - UPD: Improve application reactiveness when running scheduled tasks.
 Mar. 13, 2010 - FIX: Better handling of manually modified config files.
 Mar.  8, 2010 - NEW: Keyboard navigation.
 Mar.  7, 2010 - NEW: Rename profiles by right-clicking.
@@ -26,7 +27,7 @@ Mar.  1, 2010 - NEW: !Native support for relative paths, such as "..\..\Document
 Feb. 28, 2010 - NEW: !Native support for UCN paths (paths to network drives such as "\\dlink-6A4EA4\Documents").
 Feb. 26, 2010 - NEW: !German translation by Florian Haag. Thanks!
 Feb. 26, 2010 - NEW: !When running from a write-protected directory, store settings in the ApplicationData folder.
-Feb. 26, 2010 - NEW: Add a "swap" button, to swap left and right folders.
+Feb. 26, 2010 - NEW: New "swap" button, to swap left and right folders.
 
 -- Version 3.0 --
 Feb. 25, 2010 - SYN: Major update: translations, full regex support, cosmetic updates and a few new options.
