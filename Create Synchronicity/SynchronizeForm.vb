@@ -434,7 +434,7 @@ Public Class SynchronizeForm
         '         entry, indicating that the root folder is to be synced
         '         too.
         '         
-        '         And easy way to achieve this behaviour is to copy-paste
+        '         An easy way to achieve this behaviour is to copy-paste
         '         the "Destination folders to be synchronized:" list,
         '         prefixing it with a semi-colon.
     End Sub
@@ -507,7 +507,6 @@ Public Class SynchronizeForm
             End Try
         Next
     End Sub
-
 
     Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
