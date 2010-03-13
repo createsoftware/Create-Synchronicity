@@ -92,7 +92,7 @@ Public Class FileNamePattern
         PatternsList = New List(Of FileNamePattern)
 
         For Each Pattern As String In Patterns
-            PatternsList.Add(GetPattern(Pattern))
+            If Not Pattern = "" Then PatternsList.Add(GetPattern(Pattern))
         Next
     End Sub
 End Class
