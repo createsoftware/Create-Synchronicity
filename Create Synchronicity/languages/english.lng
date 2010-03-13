@@ -141,3 +141,5 @@ UNREG_ERROR=Although no profiles are scheduled, Create Synchronicity could not u
 SCH_LABEL=Scheduling:
 # Should be less than 64 chars long, with profile name and date.
 SCH_WAITING=Next run: "{0}", {1}.
+SYNCED_W_ERRORS=Create Synchronicity has finished syncing "{0}". However, a few errors occured: please check the log file for more information.
+SYNCED_OK=Create Synchronicity has successfully finished syncing "{0}".

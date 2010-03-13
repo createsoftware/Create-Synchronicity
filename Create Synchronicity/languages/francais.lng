@@ -140,3 +140,5 @@ REG_ERROR=Impossible d'enregistrer l'application au démarrage. Veuillez vous as
 UNREG_ERROR=Quoiqu'aucun profil ne requiert le démarrage automatique du programme, Create Synchronicity n'a pas pu le désactiver. Veuillez vous assurer que vous disposez des droits d'accès au registre.
 SCH_LABEL=Planification :
 SCH_WAITING=Prochaine exécution : "{0}", {1}.
+SYNCED_W_ERRORS=Create Synchronicity a terminé la synchronisation de "{0}". Néanmoins, quelques erreurs se sont produites. Veuillez consulter le rapport pour plus d'informations.
+SYNCED_OK=Create Synchronicity a terminé sans rencontrer d'erreurs la synchronisation de "{0}".
