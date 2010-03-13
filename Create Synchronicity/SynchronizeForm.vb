@@ -298,7 +298,11 @@ Public Class SynchronizeForm
 
                 Log.SaveAndDispose()
                 SyncingTimeCounter.Stop()
-                StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
+                If Quiet And Not Me.Visible Then
+                    Me.Close()
+                Else
+                    StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
+                End If
         End Select
     End Sub
 
