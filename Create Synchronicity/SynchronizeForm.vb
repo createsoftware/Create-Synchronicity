@@ -397,6 +397,46 @@ Public Class SynchronizeForm
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
         Me.Invoke(TaskDoneDelegate, 1)
+
+        'NOTE: [to sysadmins] (March 13, 2010)
+        '
+        '      When mirroring a folder, the folders included for cleanup
+        '      deletions are all the right folders. This means that if
+        '      you have the following tree:
+        '      o A (contains f1.abc, f2.def, f3.ghi)
+        '        x B
+        '        x C
+        '        x D
+        '        o E
+        '      and A and E are unchecked, while B, C, D are, you will end 
+        '      up, regardless of the original situation, with 
+        '      A (containing no files)
+        '        B
+        '        C
+        '        D
+        '      
+        '      The folder labelled E will be deleted: having unchecked A
+        '      only means that you do not want its files to be synced.
+        '      
+        '      If you however wish E to NOT be deleted, then you /must/
+        '      manually specify it by editing the configuration file:
+        '         Find the "Destination folders to be synchronized:" line
+        '         
+        '         There, add all the folders where Create Synchronicity 
+        '         should search for potential files to remove, optionally
+        '         followed by a * to include subfolders. In the previous 
+        '         example, if you want folder E to not be deleted, but 
+        '         but not otherwise change the syncing behaviour, you would
+        '         input the following:
+        '             ;\B*;\C*;\D*     
+        '         
+        '         Note the preceding semi-colon, indicating the empty
+        '         entry, indicating that the root folder is to be synced
+        '         too.
+        '         
+        '         And easy way to achieve this behaviour is to copy-paste
+        '         the "Destination folders to be synchronized:" list,
+        '         prefixing it with a semi-colon.
     End Sub
 
     Sub Do_SecondThirdStep()
