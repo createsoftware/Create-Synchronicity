@@ -451,10 +451,12 @@ Public Module Interaction
     End Sub
 
     Public Sub ShowBallonTip(ByVal Msg As String)
+        If Not StatusIcon.Visible Then Exit Sub
+
         StatusIcon.BalloonTipTitle = "Create Synchronicity"
         StatusIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
         StatusIcon.BalloonTipText = Msg
-        StatusIcon.ShowBalloonTip(1000)
+        StatusIcon.ShowBalloonTip(2000)
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
