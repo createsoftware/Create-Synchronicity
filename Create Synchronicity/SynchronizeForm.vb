@@ -510,10 +510,12 @@ Public Class SynchronizeForm
 
     Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
-            If Context.Action = TypeOfAction.Create Then
-                SearchForChanges(Folder, FoldersList(Folder), Context)
-            ElseIf Context.Action = TypeOfAction.Delete Then
-                SearchForCrap(Folder, FoldersList(Folder), Context)
+            If IO.Directory.Exists(Folder) Then
+                If Context.Action = TypeOfAction.Create Then
+                    SearchForChanges(Folder, FoldersList(Folder), Context)
+                ElseIf Context.Action = TypeOfAction.Delete Then
+                    SearchForCrap(Folder, FoldersList(Folder), Context)
+                End If
             End If
         Next
     End Sub
@@ -753,7 +755,7 @@ Public Class SynchronizeForm
     Function HasAcceptedFilename(ByVal Path As String) As Boolean
         Try
             Select Case Handler.GetSetting(ConfigOptions.Restrictions)
-                'TODO: Add an option to allow for both inclusion and exclusion (useful because of regex patterns)
+                'TODO: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
                 Case "1"
                     Return MatchesPattern(Path, IncludedPatterns)
                 Case "2"
