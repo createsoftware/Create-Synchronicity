@@ -510,7 +510,7 @@ Public Class SynchronizeForm
 
     Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
-            If IO.Directory.Exists(Folder) Then
+            If IO.Directory.Exists(Context.SourcePath & Folder) Then
                 If Context.Action = TypeOfAction.Create Then
                     SearchForChanges(Folder, FoldersList(Folder), Context)
                 ElseIf Context.Action = TypeOfAction.Delete Then
