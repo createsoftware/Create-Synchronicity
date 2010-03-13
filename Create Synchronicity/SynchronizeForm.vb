@@ -120,6 +120,7 @@ Public Class SynchronizeForm
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
         ProgramConfig.CanGoOn = True
+        RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
         If SingleTask Then
             Interaction.StatusIcon.Visible = False
