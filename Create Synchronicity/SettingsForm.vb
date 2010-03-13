@@ -338,9 +338,11 @@ Public Class SettingsForm
                 End If
 
                 If Settings_RightView.Enabled Then
-                    Handler.RightCheckedNodes.Clear()
-                    Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
-                    Handler.SetSetting(ConfigOptions.RightSubFolders, Settings_GetString(Handler.RightCheckedNodes))
+                    If Settings_RightView.CheckBoxes Or Handler.GetSetting(ConfigOptions.RightSubFolders) Is Nothing Then
+                        Handler.RightCheckedNodes.Clear()
+                        Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
+                        Handler.SetSetting(ConfigOptions.RightSubFolders, Settings_GetString(Handler.RightCheckedNodes))
+                    End If
                 End If
             Case True
                 Settings_ReloadTrees()
