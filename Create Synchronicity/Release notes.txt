@@ -90,4 +90,4 @@ Jun. 11, 2009 - FIX: Invoke was called before window handle was created, resulti
 -- Version 0.1 --
 Jun. 10, 2009 - SYN: First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
 
-Many thanks to mohican for bug reports and testing.
+Many thanks to mohican and Fabien Delpierre for tireless bug reports, suggestions and testing.
