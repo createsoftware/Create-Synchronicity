@@ -780,10 +780,12 @@ Public Class SynchronizeForm
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         If IO.File.Exists(Dest & Path) Then IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal)
         IO.File.Copy(Source & Path, Dest & Path, True)
+
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
             IO.File.SetLastWriteTimeUtc(Dest & Path, IO.File.GetLastWriteTimeUtc(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
+
         Status_CreatedFiles += 1
         Status_BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
     End Sub
