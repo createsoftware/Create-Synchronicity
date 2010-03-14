@@ -62,7 +62,6 @@ Public Class MainForm
             Quiet = ArgsList.Contains("/quiet")
             ShowPreview = ArgsList.Contains("/preview")
 
-
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
                 TaskToRun = ArgsList(RunArgIndex + 1)
@@ -100,10 +99,14 @@ Public Class MainForm
         Application.Exit()
     End Sub
 
-    '#If 0 Then
     Private Sub Main_Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Main_Actions.KeyDown
-        If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
+        If e.KeyCode = Keys.N And e.Control Then
+            Main_Actions.LabelEdit = True
+            Main_Actions.Items(0).BeginEdit()
+            Exit Sub
+        End If
 
+        If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
         If e.KeyCode = Keys.Enter Then
             If Main_Actions.SelectedIndices(0) = 0 Then
                 Main_Actions.LabelEdit = True
@@ -116,7 +119,6 @@ Public Class MainForm
             Main_Actions.SelectedItems(0).BeginEdit()
         End If
     End Sub
-    '#End If
 
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
@@ -288,6 +290,8 @@ Public Class MainForm
         Main_Destination.Text = ""
         Main_LimitedCopy.Text = ""
         Main_FileTypes.Text = ""
+        Main_Scheduling.Text = ""
+        Main_TimeOffset.Text = ""
 
         If Clear Then Exit Sub
 
@@ -295,7 +299,7 @@ Public Class MainForm
         Main_Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
         Main_Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
 
-        Main_Scheduling.Text = Profiles(Name).GetSetting(ConfigOptions.Scheduling)
+        Main_Scheduling.Text = If(Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER, "", Profiles(Name).Scheduler.NextRun().ToString)
         Main_TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
 
         Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
