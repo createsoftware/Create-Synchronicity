@@ -412,7 +412,7 @@ Structure ScheduleInfo
                 Interval = Today.AddMonths(1) - Today
                 RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute) 'Cint works, because Interval represents a whole number of days
             Case Else
-                Return Date.Now.AddYears(-1)
+                Return Date.MinValue 'aka never
         End Select
 
         While Now > RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
