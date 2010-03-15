@@ -91,7 +91,8 @@ Public Class SynchronizeForm
             Me.Visible = False
             ProgramConfig.CanGoOn = False
 
-            AddHandler StatusIcon.Click, AddressOf StatusIcon_Click
+            Interaction.StatusIcon.ContextMenuStrip = Nothing
+            AddHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
             Interaction.LoadStatusIcon()
             Interaction.StatusIcon.Text = "\RUNNING"
@@ -120,6 +121,7 @@ Public Class SynchronizeForm
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
         ProgramConfig.CanGoOn = True
+        Interaction.StatusIcon.ContextMenuStrip = MainForm.StatusIconMenu 'TODO: Test
         RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
         If SingleTask Then
