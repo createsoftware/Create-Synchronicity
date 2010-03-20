@@ -121,7 +121,7 @@ Public Class SynchronizeForm
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
         ProgramConfig.CanGoOn = True
-        Interaction.StatusIcon.ContextMenuStrip = MainForm.StatusIconMenu 'TODO: Test
+        Interaction.StatusIcon.ContextMenuStrip = MainForm.StatusIconMenu
         RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
         If SingleTask Then
@@ -249,8 +249,11 @@ Public Class SynchronizeForm
     End Sub
 
     Sub TaskDone(ByVal Id As Integer)
+        If Not Status_CurrentStep = Id Then Exit Sub
+
         Select Case Id
             Case 1
+                Status_CurrentStep = 2
                 UpdateLabel(1, Translation.Translate("\FINISHED"))
                 Step1ProgressBar.Maximum = 100
                 Step1ProgressBar.Value = Step1ProgressBar.Maximum
@@ -260,17 +263,17 @@ Public Class SynchronizeForm
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 SyncingTimeCounter.Stop()
-                Status_CurrentStep = 2
                 TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
 
             Case 2
+                Status_CurrentStep = 3
                 UpdateLabel(2, Translation.Translate("\FINISHED"))
                 Step2ProgressBar.Maximum = 100
                 Step2ProgressBar.Value = Step2ProgressBar.Maximum
                 Step2ProgressBar.Style = ProgressBarStyle.Blocks
-                Status_CurrentStep = 3
 
             Case 3
+                Status_CurrentStep = -1 'Done.
                 UpdateLabel(3, Translation.Translate("\FINISHED"))
                 Step3ProgressBar.Maximum = 100
                 Step3ProgressBar.Value = Step3ProgressBar.Maximum
