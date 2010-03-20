@@ -3,6 +3,8 @@
 # Translation by Clément Pit--Claudel
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
+# SCH_WAITING should be less than 64 chars long, including profile name and date.
+#
 ABOUT_SETTINGS=About/Settings
 ACTION=Action
 ACTIONS=Actions
@@ -139,7 +141,6 @@ SCHEDULING=Scheduling
 REG_ERROR=There was an error registering as a startup program. Please ensure that you have registry access rights.
 UNREG_ERROR=Although no profiles are scheduled, Create Synchronicity could not unregister from startup programs. Please ensure that you have registry access rights.
 SCH_LABEL=Scheduling:
-# Should be less than 64 chars long, with profile name and date.
 SCH_WAITING=Next run: "{0}", {1}.
 SYNCED_W_ERRORS=Create Synchronicity has finished syncing "{0}". However, a few errors occured: please check the log file for more information.
 SYNCED_OK=Create Synchronicity has successfully finished syncing "{0}".
