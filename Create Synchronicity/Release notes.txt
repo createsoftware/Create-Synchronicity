@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Feb. 20, 2010 - NEW: !Portuguese translation by André Modesto. Obrigado!
 Mar. 13, 2010 - UPD: Improve application reactiveness when running scheduled tasks.
 Mar. 13, 2010 - FIX: Better handling of manually modified config files.
 Mar.  8, 2010 - NEW: Keyboard navigation.
