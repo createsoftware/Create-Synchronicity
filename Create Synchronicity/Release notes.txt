@@ -5,7 +5,7 @@ Created on:		June 3, 2009
 Created by:		Clément Pit--Claudel (Create Software)
 License:		GNU GPL v3 or later (see "COPYING")
 Coded in:		Visual Basic .Net
-Translations:	Clément Pit--Claudel, Florian Haag, André Modesto
+Translations:	Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo
 Requires:		.Net Framework v2
 
 * Contact
