@@ -135,7 +135,7 @@ Public Class SettingsForm
         'When the CheckBoxes' display is switched on, the checked property is not taken into account for the display.
         'That is, ir Node.Checked = True but TreeView.CheckBoxes = False, then when Chekboxes = true Node
 
-        'Therefore, re-check the tree (if at has already been loaded)
+        'Therefore, re-check the tree (if it has already been loaded)
         If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then
             Settings_CheckTree(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & "\")
         End If
