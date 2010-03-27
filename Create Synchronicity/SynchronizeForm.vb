@@ -85,11 +85,11 @@ Public Class SynchronizeForm
         SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
+        ProgramConfig.CanGoOn = False
 
         Quiet = _Quiet
         If Quiet Then
             Me.Visible = False
-            ProgramConfig.CanGoOn = False
 
             Interaction.StatusIcon.ContextMenuStrip = Nothing
             AddHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
