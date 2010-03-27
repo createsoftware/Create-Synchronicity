@@ -7,7 +7,11 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class MainForm
-    Dim Quiet As Boolean
+    Dim Quiet As Boolean = False
+    Dim TasksToRun As String = ""
+    Dim ShowPreview As Boolean = False
+    Dim RunAsScheduler As Boolean = False 'TODO: Enum for RunAs: Scheduler, Enqueuing, Normal
+
     Dim Profiles As Dictionary(Of String, ProfileHandler)
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
@@ -54,8 +58,6 @@ Public Class MainForm
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
 
-        Dim TaskToRun As String = ""
-        Dim ShowPreview As Boolean = False
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
         If ArgsList.Count > 1 Then
@@ -64,21 +66,13 @@ Public Class MainForm
 
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
-                TaskToRun = ArgsList(RunArgIndex + 1)
+                TasksToRun = ArgsList(RunArgIndex + 1)
             End If
         End If
 
-        If TaskToRun <> "" Then
-            If Profiles.ContainsKey(TaskToRun) Then
-                If Profiles(TaskToRun).ValidateConfigFile() Then
-                    Dim SyncForm As New SynchronizeForm(TaskToRun, ShowPreview, False, Quiet, True)
-                    Main_HideForm()
-                Else
-                    Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
-                End If
-            Else
-                Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
-            End If
+        If TasksToRun <> "" Then
+            Main_HideForm()
+            ApplicationTimer.Start()
         ElseIf ArgsList.Contains("/scheduler") Then
             Main_HideForm()
 
@@ -86,6 +80,7 @@ Public Class MainForm
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.StatusIcon.Visible = True
 
+            RunAsScheduler = True
             ApplicationTimer.Start()
         End If
     End Sub
@@ -228,28 +223,51 @@ Public Class MainForm
     Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplicationTimer.Tick
         Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
         If ProfilesQueue Is Nothing Then
+            ProgramConfig.CanGoOn = False
             ApplicationTimer.Interval = 20000 'First tick was forced by the very low interval.
             ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
-            Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
+            If RunAsScheduler Then
+                Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
 
-            For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-                If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profile.Value.Scheduler.NextRun(), Profile.Key))
-            Next
+                For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
+                    If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profile.Value.Scheduler.NextRun(), Profile.Key))
+                Next
 
-            ProfilesToRun.Sort()
-            For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
+                ProfilesToRun.Sort()
+                For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
+            Else
+                For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
+                    If Profiles.ContainsKey(Profile) Then
+                        If Profiles(Profile).ValidateConfigFile() Then
+                            ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(Profile, Date.Now.AddDays(-1)))
+                        Else
+                            Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
+                        End If
+                    Else
+                        Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
+                    End If
+                Next
+            End If
+            ProgramConfig.CanGoOn = True
         End If
 
-        If ProfilesQueue.Count = 0 Then Exit Sub
         If ProgramConfig.CanGoOn = False Then Exit Sub
+        If ProfilesQueue.Count = 0 Then
+            Interaction.StatusIcon.Visible = False
+            Application.Exit() 'TODO: Exit app?
+            Exit Sub
+        End If
 
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, ProfilesQueue.Peek().Value.ToString())
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
         If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then
             Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
-            Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, True, False)
-            ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
+            If RunAsScheduler Then
+                Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, True)
+            Else
+                Dim SyncForm As New SynchronizeForm(NextProfile.Key, ShowPreview, False, Quiet)
+            End If
         End If
     End Sub
 #End Region

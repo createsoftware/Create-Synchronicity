@@ -34,6 +34,8 @@ Public Module ConfigOptions
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
 
+    Public Const EnqueuingSeparator As Char = "|"
+
     Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
     Public Const RegistryBootKey As String = "Software\Microsoft\Windows\CurrentVersion\Run"
     Public Const RegistryRootedBootKey As String = "HKEY_CURRENT_USER\" & RegistryBootKey

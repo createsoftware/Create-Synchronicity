@@ -53,7 +53,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal WillShowModal As Boolean, ByVal _Quiet As Boolean, Optional ByVal _SingleTask As Boolean = False)
+    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal WillShowModal As Boolean, ByVal _Quiet As Boolean)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -103,8 +103,6 @@ Public Class SynchronizeForm
             Me.Visible = True
         End If
 
-        SingleTask = _SingleTask
-
         If DisplayPreview Then
             PreviewList.Items.Clear()
             FirstSyncThread.Start()
@@ -124,12 +122,7 @@ Public Class SynchronizeForm
         Interaction.StatusIcon.ContextMenuStrip = MainForm.StatusIconMenu
         RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
-        If SingleTask Then
-            Interaction.StatusIcon.Visible = False
-            Application.Exit()
-        Else
-            Interaction.StatusIcon.Text = Translation.Translate("\WAITING")
-        End If
+        Interaction.StatusIcon.Text = Translation.Translate("\WAITING")
     End Sub
 
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
