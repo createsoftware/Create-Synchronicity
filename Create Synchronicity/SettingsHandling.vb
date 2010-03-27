@@ -48,7 +48,7 @@ Public Class ConfigHandler
 
     Public LanguageRootDir As String = Application.StartupPath & "\languages"
 
-    Public CanGoOn As Boolean = True 'To check whether a synchronization is running (in scheduler mode).
+    Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode, or when queuing multiple profiles).
 
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
