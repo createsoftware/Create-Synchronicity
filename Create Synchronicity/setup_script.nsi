@@ -30,8 +30,8 @@ Var StartMenuFolder
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 
-!define MUI_STARTMENUPAGE_REGISTRY_ROOT			"HKCU" 
-!define MUI_STARTMENUPAGE_REGISTRY_KEY			"${SUBREGPATH}" 
+!define MUI_STARTMENUPAGE_REGISTRY_ROOT			"HKCU"
+!define MUI_STARTMENUPAGE_REGISTRY_KEY			"${SUBREGPATH}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME	"StartMenuFolder"
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER			"${PRODUCTPATH}"
 !insertmacro MUI_PAGE_STARTMENU AppStartMenu $StartMenuFolder
@@ -83,7 +83,7 @@ Section "Uninstall"
 	RMDir /r "$INSTDIR\config"
 	RMDir /r "$INSTDIR\log"
 	RMDir "$INSTDIR"
-	
+
 	RMDir "${COMPANYPATH}" #remove the "Create Software" folder if empty
 	DeleteRegKey HKLM "${SUBREGPATH}"
 	DeleteRegKey /ifempty HKLM "${REGPATH}" #remove the "Create Software" key if empty
