@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Create Synchronicity", "Create Synchronicity\Create Synchronicity.vbproj", "{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Create Synchronicity Setup", "Create Synchronicity Setup\Create Synchronicity Setup.wixproj", "{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,16 +23,6 @@ Global
 		{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}.Release|x86.ActiveCfg = Release|Any CPU
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Debug|x86.ActiveCfg = Debug|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Debug|x86.Build.0 = Debug|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Release|Any CPU.ActiveCfg = Release|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Release|Mixed Platforms.Build.0 = Release|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Release|x86.ActiveCfg = Release|x86
-		{B9FAA059-BC4B-4CEC-A8D2-BD7EB8363DE2}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
