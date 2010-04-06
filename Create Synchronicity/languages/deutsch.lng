@@ -1,5 +1,5 @@
-﻿# Create Synchronicity German Language file
-# Last update: 02.26.2010
+# Create Synchronicity German Language file
+# Last update: 05.04.2010
 # Translation by Florian Haag
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -129,18 +129,18 @@ WARNING=Warnung
 WARNING_SWAP=Das Vertauschen der Ordner auf der linken und der rechten Seite macht es erforderlich, die Ordnerhierarchien neu zu laden. Alle ungespeicherten Änderungen gehen verloren. Fortfahren?
 WELCOME_MSG=Willkommen in Create Synchronicity! Möchten Sie, dass das Programm beim Start nach Aktualisierungen sucht?
 YES=Ja
-->SCHEDULE_WARNING=
-->SCHEDULE_ENABLE=
-->EVERY_DAY=
-->EVERY_WEEK=
-->EVERY_MONTH=
-->AT=
-->H_M_SEP=
-->WEEK_DAYS=
-->SCHEDULING=
-->REG_ERROR=
-->UNREG_ERROR=
-->SCH_LABEL=
-->SCH_WAITING=
-->SYNCED_W_ERRORS=
-->SYNCED_OK=
+SCHEDULE_WARNING=Um die automatische Synchronisierung zu aktivieren, muss Create Synchronicity als Autostart-Programm registriert werden. Die Synchronisierung wird nicht erfolgen, wenn Sie den automatischen Start deaktivieren oder wenn Sie zur voreingestellten Zeit nicht angemeldet sind.
+SCHEDULE_ENABLE=Synchronisierungsplanung für dieses Profil aktivieren,
+EVERY_DAY=Jeden Tag
+EVERY_WEEK=Jede Woche am 
+EVERY_MONTH=Jeden Monat am #. Tag
+AT=Um
+H_M_SEP=:
+WEEK_DAYS=Sonntag;Montag;Dienstag;Mittwoch;Donnerstag;Freitag;Samstag
+SCHEDULING=Synchronisierungsplanung
+REG_ERROR=Beim Registrieren als Autostart-Programm ist ein Fehler aufgetreten. Bitte stellen Sie sicher, dass Sie über Schreibrechte für die Registry verfügen.
+UNREG_ERROR=Obwohl für kein Profil Synchronisierungen geplant sind, konnte sich Create Synchronicity nicht aus der Liste der Autostart-Programme austragen. Bitte stellen Sie sicher, dass Sie über Schreibrechte für die Registry verfügen.
+SCH_LABEL=Synchronisierungsplanung:
+SCH_WAITING=Nächster Durchlauf: "{0}", {1}.
+SYNCED_W_ERRORS=Create Synchronicity hat die Synchronisierung von "{0}" abgeschlossen. Es sind jedoch Fehler aufgetreten: Bitte sehen Sie sich das Protokoll an, um mehr Informationen zu erhalten.
+SYNCED_OK=Create Synchronicity hat die Synchronisierung von "{0}" erfolgreich abgeschlossen.
