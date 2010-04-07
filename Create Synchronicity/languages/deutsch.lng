@@ -1,6 +1,6 @@
-# Create Synchronicity German Language file
-# Last update: 05.04.2010
-# Translation by Florian Haag
+﻿# Create Synchronicity German Language file
+# Last update: 04.06.2010
+# Translation by Florian Haag, with few additions by Jeanne Tourette
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -131,8 +131,8 @@ WELCOME_MSG=Willkommen in Create Synchronicity! Möchten Sie, dass das Programm 
 YES=Ja
 SCHEDULE_WARNING=Um die automatische Synchronisierung zu aktivieren, muss Create Synchronicity als Autostart-Programm registriert werden. Die Synchronisierung wird nicht erfolgen, wenn Sie den automatischen Start deaktivieren oder wenn Sie zur voreingestellten Zeit nicht angemeldet sind.
 SCHEDULE_ENABLE=Synchronisierungsplanung für dieses Profil aktivieren,
-EVERY_DAY=Jeden Tag
-EVERY_WEEK=Jede Woche am 
+EVERY_DAY=Täglich
+EVERY_WEEK=Wöchentlich am 
 EVERY_MONTH=Jeden Monat am #. Tag
 AT=Um
 H_M_SEP=:
