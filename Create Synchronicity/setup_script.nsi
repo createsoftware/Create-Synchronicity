@@ -86,8 +86,8 @@ Section "Uninstall"
 	RMDir /r "$INSTDIR\log"
 	RMDir "$INSTDIR"
 
-	RMDir /r "$LOCALAPPDATA\Create Software\Create Synchronicity"
-	RMDir "$LOCALAPPDATA\Create Software" #remove the "Create Software" folder if empty
+	RMDir /r "$APPDATA\Create Software\Create Synchronicity"
+	RMDir "$APPDATA\Create Software" #remove the "Create Software" folder if empty
 
 	RMDir "${COMPANYPATH}" #remove the "Create Software" folder if empty
 	DeleteRegKey HKLM "${SUBREGPATH}"
