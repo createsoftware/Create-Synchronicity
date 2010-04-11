@@ -374,7 +374,7 @@ End Class
 Structure ScheduleInfo
     Public Frequency As String
 
-    Public WeekDay As String 'Sunday = 0
+    Public WeekDay As Integer 'Sunday = 0
     Public MonthDay As Integer
     Public Hour, Minute As Integer
 
@@ -387,7 +387,7 @@ Structure ScheduleInfo
         Frequency = _Frequency
     End Sub
 
-    Sub New(ByVal _Frequency As String, ByVal _WeekDay As String, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
+    Sub New(ByVal _Frequency As String, ByVal _WeekDay As Integer, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
         Frequency = _Frequency
 
         Hour = _Hour
