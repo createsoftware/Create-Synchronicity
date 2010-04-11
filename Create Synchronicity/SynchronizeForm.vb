@@ -13,7 +13,6 @@ Public Class SynchronizeForm
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
-    'TODO: Unify in one big struct.
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
     Dim IncludedPatterns As New List(Of FileNamePattern)
@@ -22,17 +21,21 @@ Public Class SynchronizeForm
     Dim Quiet As Boolean
     Dim SingleTask As Boolean
     Dim [STOP] As Boolean
-    Dim Status_StartTime As Date
-    Dim Status_BytesCopied As Long
-    Dim Status_FilesScanned As Long
-    Dim Status_ActionsDone As Integer
-    Dim Status_CreatedFiles As Integer
-    Dim Status_CreatedFolders As Integer
-    Dim Status_TotalActionsCount As Integer
-    Dim Status_CurrentStep As Integer
-    Dim Status_TimeElapsed As TimeSpan
-    Dim Status_MillisecondsSpeed As Double
-    Dim Status_BytesToCreate As Long
+
+    Structure Status
+        Dim Random As Byte
+        Shared StartTime As Date
+        Shared BytesCopied As Long
+        Shared FilesScanned As Long
+        Shared ActionsDone As Integer
+        Shared CreatedFiles As Integer
+        Shared CreatedFolders As Integer
+        Shared TotalActionsCount As Integer
+        Shared CurrentStep As Integer
+        Shared TimeElapsed As TimeSpan
+        Shared MillisecondsSpeed As Double
+        Shared BytesToCreate As Long
+    End Structure
 
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
 
@@ -66,13 +69,13 @@ Public Class SynchronizeForm
         SyncBtn.Enabled = False
         SyncBtn.Visible = DisplayPreview
 
-        Status_BytesCopied = 0
-        Status_FilesScanned = 0
-        Status_ActionsDone = 0
-        Status_CreatedFiles = 0
-        Status_CreatedFolders = 0
-        Status_TotalActionsCount = 0
-        Status_CurrentStep = 1
+        Status.BytesCopied = 0
+        Status.FilesScanned = 0
+        Status.ActionsDone = 0
+        Status.CreatedFiles = 0
+        Status.CreatedFolders = 0
+        Status.TotalActionsCount = 0
+        Status.CurrentStep = 1
 
         Log = New LogHandler(ConfigName)
         Handler = New ProfileHandler(ConfigName)
@@ -156,28 +159,28 @@ Public Class SynchronizeForm
     End Sub
 
     Sub UpdateStatuses()
-        Status_TimeElapsed = DateTime.Now - Status_StartTime
-        ElapsedTime.Text = If(Status_TimeElapsed.Hours = 0, "", Status_TimeElapsed.Hours.ToString & "h, ") & If(Status_TimeElapsed.Minutes = 0, "", Status_TimeElapsed.Minutes.ToString & "m, ") & Status_TimeElapsed.Seconds.ToString & "s."
+        Status.TimeElapsed = DateTime.Now - Status.StartTime
+        ElapsedTime.Text = If(Status.TimeElapsed.Hours = 0, "", Status.TimeElapsed.Hours.ToString & "h, ") & If(Status.TimeElapsed.Minutes = 0, "", Status.TimeElapsed.Minutes.ToString & "m, ") & Status.TimeElapsed.Seconds.ToString & "s."
 
-        If Status_TimeElapsed.TotalMilliseconds = 0 Then Status_TimeElapsed = New System.TimeSpan(1)
+        If Status.TimeElapsed.TotalMilliseconds = 0 Then Status.TimeElapsed = New System.TimeSpan(1)
 
-        If Status_CurrentStep = 1 Then
-            Speed.Text = Math.Round(Status_FilesScanned / (Status_TimeElapsed.TotalMilliseconds / 1000)).ToString & " files/s"
+        If Status.CurrentStep = 1 Then
+            Speed.Text = Math.Round(Status.FilesScanned / (Status.TimeElapsed.TotalMilliseconds / 1000)).ToString & " files/s"
         Else
-            Status_MillisecondsSpeed = Status_BytesCopied / (Status_TimeElapsed.TotalMilliseconds / 1000)
+            Status.MillisecondsSpeed = Status.BytesCopied / (Status.TimeElapsed.TotalMilliseconds / 1000)
 
-            Select Case Status_MillisecondsSpeed
+            Select Case Status.MillisecondsSpeed
                 Case Is > 1024 * 1000 * 1000
-                    Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
+                    Speed.Text = Math.Round(Status.MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
                 Case Is > 1024 * 1000
-                    Speed.Text = Math.Round(Status_MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
+                    Speed.Text = Math.Round(Status.MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
                 Case Is > 1024
-                    Speed.Text = Math.Round(Status_MillisecondsSpeed / 1024, 2).ToString & "kB/s"
+                    Speed.Text = Math.Round(Status.MillisecondsSpeed / 1024, 2).ToString & "kB/s"
                 Case Else
-                    Speed.Text = Math.Round(Status_MillisecondsSpeed, 2).ToString & "B/s"
+                    Speed.Text = Math.Round(Status.MillisecondsSpeed, 2).ToString & "B/s"
             End Select
         End If
-        Done.Text = Status_ActionsDone : FilesCreated.Text = Status_CreatedFiles : FoldersCreated.Text = Status_CreatedFolders
+        Done.Text = Status.ActionsDone : FilesCreated.Text = Status.CreatedFiles : FoldersCreated.Text = Status.CreatedFolders
     End Sub
 #End Region
 
@@ -242,11 +245,11 @@ Public Class SynchronizeForm
     End Sub
 
     Sub TaskDone(ByVal Id As Integer)
-        If Not Status_CurrentStep = Id Then Exit Sub
+        If Not Status.CurrentStep = Id Then Exit Sub
 
         Select Case Id
             Case 1
-                Status_CurrentStep = 2
+                Status.CurrentStep = 2
                 UpdateLabel(1, Translation.Translate("\FINISHED"))
                 Step1ProgressBar.Maximum = 100
                 Step1ProgressBar.Value = Step1ProgressBar.Maximum
@@ -259,14 +262,14 @@ Public Class SynchronizeForm
                 TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
 
             Case 2
-                Status_CurrentStep = 3
+                Status.CurrentStep = 3
                 UpdateLabel(2, Translation.Translate("\FINISHED"))
                 Step2ProgressBar.Maximum = 100
                 Step2ProgressBar.Value = Step2ProgressBar.Maximum
                 Step2ProgressBar.Style = ProgressBarStyle.Blocks
 
             Case 3
-                Status_CurrentStep = -1 'Done.
+                Status.CurrentStep = -1 'Done.
                 UpdateLabel(3, Translation.Translate("\FINISHED"))
                 Step3ProgressBar.Maximum = 100
                 Step3ProgressBar.Value = Step3ProgressBar.Maximum
@@ -352,8 +355,8 @@ Public Class SynchronizeForm
     End Sub
 
     Sub LaunchTimer()
-        Status_BytesCopied = 0
-        Status_StartTime = DateTime.Now
+        Status.BytesCopied = 0
+        Status.StartTime = DateTime.Now
         SyncingTimeCounter.Start()
     End Sub
 
@@ -485,7 +488,7 @@ Public Class SynchronizeForm
                         Select Case Entry.Action
                             Case TypeOfAction.Create
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
-                                Status_CreatedFolders += 1
+                                Status.CreatedFolders += 1
                             Case TypeOfAction.Delete
                                 If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then
                                     Try
@@ -498,7 +501,7 @@ Public Class SynchronizeForm
                                 End If
                         End Select
                 End Select
-                Status_ActionsDone += 1
+                Status.ActionsDone += 1
                 Log.LogAction(Entry, True)
 
             Catch StopEx As System.Threading.ThreadAbortException
@@ -606,8 +609,8 @@ Public Class SynchronizeForm
 #End If
                 End If
 
-                Status_FilesScanned += 1
-                'Status_BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+                Status.FilesScanned += 1
+                'Status.BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
             Next
         Catch Ex As Exception
 #If DEBUG Then
@@ -659,8 +662,8 @@ Public Class SynchronizeForm
 #End If
                 End If
 
-                Status_FilesScanned += 1
-                'Status_BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+                Status.FilesScanned += 1
+                'Status.BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
             Next
         Catch Ex As Exception
 #If DEBUG Then
@@ -707,8 +710,8 @@ Public Class SynchronizeForm
                 Dim SourceFile As String = File
                 Dim DestinationFile As String = Context.DestinationPath & Folder & "\" & GetFileOrFolderName(File)
                 'Needs to be more efficient.
-                'Status_BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
-                Status_FilesScanned += 1
+                'Status.BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+                Status.FilesScanned += 1
 
                 If Not HasValidExtension(File) Then Continue For
                 If IO.File.Exists(DestinationFile) AndAlso (Not FileHasBeenUpdated(SourceFile, DestinationFile) Or Context.Action = TypeOfAction.Delete) Then Continue For
@@ -784,8 +787,8 @@ Public Class SynchronizeForm
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
 
-        Status_CreatedFiles += 1
-        Status_BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+        Status.CreatedFiles += 1
+        Status.BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
     End Sub
 #End Region
 
