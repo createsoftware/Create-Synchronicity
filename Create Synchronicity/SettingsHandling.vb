@@ -115,9 +115,11 @@ Public Class ConfigHandler
             Writable = Writable And (Not (IO.File.GetAttributes(File) And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
         Next
 
+        ' When a user folder exists, and no confi folder exists in the install dir, use the user's folder.
         If Writable And (ProgramPathExists Or Not IO.Directory.Exists(UserPath)) Then
             UserFilesRootDir = Application.StartupPath & "\"
         Else
+            'Not translated, since it happens before loading translation files
             If ProgramPathExists Then Interaction.ShowMsg("Create Synchronicity cannot write to your installation directory, although it contains configuration files. Your Application Data folder will therefore be used instead.", "Information", , MessageBoxIcon.Information)
             UserFilesRootDir = UserPath
         End If
