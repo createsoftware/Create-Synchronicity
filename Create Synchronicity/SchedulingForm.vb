@@ -57,9 +57,7 @@ Public Class SchedulingForm
                     Case ScheduleInfo.MONTHLY
                         Scheduling_EveryMonth.Checked = True
                         Scheduling_MonthDay.Value = Handler.Scheduler.MonthDay
-                    Case Else
-                        'TODO
-                End Select
+                End Select 'Discard wrong values
         End Select
     End Sub
 

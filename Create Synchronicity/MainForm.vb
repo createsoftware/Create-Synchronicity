@@ -254,7 +254,7 @@ Public Class MainForm
         If ProgramConfig.CanGoOn = False Then Exit Sub
         If ProfilesQueue.Count = 0 Then
             Interaction.StatusIcon.Visible = False
-            Application.Exit() 'TODO: Exit app?
+            Application.Exit() 'TODO: Exit app? -> YUP
             Exit Sub
         End If
 
@@ -274,7 +274,6 @@ Public Class MainForm
 
 #Region " Functions and Routines "
     Sub Main_HideForm()
-        'TODO: Yuck
         Me.Opacity = 0
         Me.WindowState = FormWindowState.Minimized
         Me.ShowInTaskbar = False
@@ -327,7 +326,9 @@ Public Class MainForm
                 Main_Scheduling.Text &= Profiles(Name).Scheduler.MonthDay
         End Select
 
-        If Not Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
+        If Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
+            Main_Scheduling.Text = ""
+        Else
             Main_Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute
         End If
 
