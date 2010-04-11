@@ -133,7 +133,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryDay.Size = New System.Drawing.Size(98, 17)
         Me.Scheduling_EveryDay.TabIndex = 0
         Me.Scheduling_EveryDay.TabStop = True
-        Me.Scheduling_EveryDay.Text = "\EVERY_DAY"
+        Me.Scheduling_EveryDay.Text = "\DAILY"
         Me.Scheduling_EveryDay.UseVisualStyleBackColor = True
         '
         'Scheduling_Panel
@@ -167,7 +167,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryMonth.Size = New System.Drawing.Size(115, 21)
         Me.Scheduling_EveryMonth.TabIndex = 0
         Me.Scheduling_EveryMonth.TabStop = True
-        Me.Scheduling_EveryMonth.Text = "\EVERY_MONTH"
+        Me.Scheduling_EveryMonth.Text = "\MONTHLY"
         Me.Scheduling_EveryMonth.UseVisualStyleBackColor = True
         '
         'Scheduling_MonthDay
@@ -203,7 +203,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryWeek.Size = New System.Drawing.Size(107, 21)
         Me.Scheduling_EveryWeek.TabIndex = 0
         Me.Scheduling_EveryWeek.TabStop = True
-        Me.Scheduling_EveryWeek.Text = "\EVERY_WEEK"
+        Me.Scheduling_EveryWeek.Text = "\WEEKLY"
         Me.Scheduling_EveryWeek.UseVisualStyleBackColor = True
         '
         'Scheduling_WeekDay
