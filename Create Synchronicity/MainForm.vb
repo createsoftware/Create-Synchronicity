@@ -317,7 +317,20 @@ Public Class MainForm
         Main_Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
         Main_Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
 
-        Main_Scheduling.Text = If(Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER, "", Profiles(Name).Scheduler.NextRun().ToString)
+        Main_Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper)
+
+        Select Case Profiles(Name).Scheduler.Frequency
+            Case ScheduleInfo.WEEKLY
+                Dim Day As String = Translation.Translate("\WEEK_DAYS", ";;;;;;").Split(";")(Profiles(Name).Scheduler.WeekDay)
+                Main_Scheduling.Text &= Day
+            Case ScheduleInfo.MONTHLY
+                Main_Scheduling.Text &= Profiles(Name).Scheduler.MonthDay
+        End Select
+
+        If Not Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
+            Main_Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute
+        End If
+
         Main_TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
 
         Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
