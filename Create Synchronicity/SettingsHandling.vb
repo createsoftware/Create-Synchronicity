@@ -71,7 +71,7 @@ Public Class ConfigHandler
     End Function
 
     Public Function GetIcon() As Drawing.Icon
-        Static Icon As Drawing.Icon 'TODO: Check if run from a UCN path
+        Static Icon As Drawing.Icon 'TODO: Check if running from a UCN path
         If Icon Is Nothing Then Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
 
         Return Icon
@@ -190,16 +190,16 @@ Class ProfileHandler
         LoadConfigFile()
 
         PredicateConfigMatchingList = New Dictionary(Of String, String)
-        PredicateConfigMatchingList.Add(ConfigOptions.IncludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
-        PredicateConfigMatchingList.Add(ConfigOptions.ExcludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
-        PredicateConfigMatchingList.Add(ConfigOptions.LeftSubFolders, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
         PredicateConfigMatchingList.Add(ConfigOptions.Destination, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.ExcludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
+        PredicateConfigMatchingList.Add(ConfigOptions.IncludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
+        PredicateConfigMatchingList.Add(ConfigOptions.LeftSubFolders, ".*")
         PredicateConfigMatchingList.Add(ConfigOptions.Method, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.Restrictions, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
-        'TODO: add regexps for new settings.
+        PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
+        'NOTE: Only vital settings should be checked, since the config will be rejected if a setting is unset.
     End Sub
 
     Function LoadConfigFile() As Boolean
@@ -208,12 +208,14 @@ Class ProfileHandler
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
+            Dim ConfigLine As String = ""
             Try
-                Dim ConfigLine As String = FileReader.ReadLine()
+                ConfigLine = FileReader.ReadLine()
                 Dim Key As String = ConfigLine.Substring(0, ConfigLine.IndexOf(":"))
                 Dim Value As String = ConfigLine.Substring(ConfigLine.IndexOf(":") + 1)
                 If Not Configuration.ContainsKey(Key) Then Configuration.Add(Key, Value)
-            Catch ex As Exception 'TODO: Catch ex.
+            Catch ex As Exception
+                Interaction.ShowMsg(String.Format(Translation.Translate("\INVALID_SETTING"), ConfigLine))
             End Try
         End While
 
@@ -336,7 +338,7 @@ Class ProfileHandler
             Case ConfigOptions.SchedulingSettingsCount
                 Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4))
             Case Else
-                Scheduler = New ScheduleInfo(ScheduleInfo.NEVER) 'TODO: Invalid string
+                Scheduler = New ScheduleInfo(ScheduleInfo.NEVER) 'NOTE: Wrong strings default to never
         End Select
     End Sub
 
