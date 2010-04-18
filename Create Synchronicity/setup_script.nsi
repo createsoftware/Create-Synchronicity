@@ -19,6 +19,8 @@
 !define 		PROGRAMPATH	"${COMPANYPATH}\${PRODUCTNAME}"
 !define			PRODUCTPATH	"${COMPANY}\${PRODUCTNAME}"
 
+SetCompressor /SOLID lzma
+
 Name "${PRODUCTNAME} ${VERSION}"
 OutFile "..\Create_Synchronicity_Setup.exe"
 InstallDir "${PROGRAMPATH}"
@@ -83,11 +85,11 @@ Section "Uninstall"
 	RMDir /r "$INSTDIR\config\"
 	RMDir /r "$INSTDIR\log\"
 	RMDir "$INSTDIR\"
+	RMDir "${COMPANYPATH}\" #remove the "Create Software" folder if empty
 
 	RMDir /r "$APPDATA\Create Software\Create Synchronicity\"
 	RMDir "$APPDATA\Create Software\" #remove the "Create Software" folder if empty
 
-	RMDir "${COMPANYPATH}" #remove the "Create Software" folder if empty
 	DeleteRegKey HKLM "${SUBREGPATH}"
 	DeleteRegKey /ifempty HKLM "${REGPATH}" #remove the "Create Software" key if empty
 SectionEnd
