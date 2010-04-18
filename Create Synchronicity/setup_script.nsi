@@ -19,7 +19,7 @@
 !define 		PROGRAMPATH	"${COMPANYPATH}\${PRODUCTNAME}"
 !define			PRODUCTPATH	"${COMPANY}\${PRODUCTNAME}"
 
-SetCompressor /SOLID lzma
+#SetCompressor /SOLID lzma
 
 Name "${PRODUCTNAME} ${VERSION}"
 OutFile "..\Create_Synchronicity_Setup.exe"
