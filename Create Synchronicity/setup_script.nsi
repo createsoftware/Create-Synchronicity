@@ -71,23 +71,21 @@ Section "Uninstall"
 	Delete "$INSTDIR\Release notes.txt"
 	Delete "$INSTDIR\COPYING"
 	Delete "$INSTDIR\Uninstall.exe"
-	RMDir /r "$INSTDIR\languages"
 
 	!insertmacro MUI_STARTMENU_GETFOLDER AppStartMenu $StartMenuFolder
 
 	Delete "$SMPROGRAMS\$StartMenuFolder\${PRODUCTNAME}.lnk"
 	Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
 	RMDir "$SMPROGRAMS\$StartMenuFolder"
-	RMDir "$SMPROGRAMS\${COMPANY}" #remove the "Create Software" folder if empty
+	RMDir "$SMPROGRAMS\${COMPANY}\" #remove the "Create Software" folder if empty
 
-	RMDir /r "$INSTDIR\config"
+	RMDir /r "$INSTDIR\languages\"
+	RMDir /r "$INSTDIR\config\"
+	RMDir /r "$INSTDIR\log\"
+	RMDir "$INSTDIR\"
 
-	RMDir /r "$INSTDIR\config"
-	RMDir /r "$INSTDIR\log"
-	RMDir "$INSTDIR"
-
-	RMDir /r "$APPDATA\Create Software\Create Synchronicity"
-	RMDir "$APPDATA\Create Software" #remove the "Create Software" folder if empty
+	RMDir /r "$APPDATA\Create Software\Create Synchronicity\"
+	RMDir "$APPDATA\Create Software\" #remove the "Create Software" folder if empty
 
 	RMDir "${COMPANYPATH}" #remove the "Create Software" folder if empty
 	DeleteRegKey HKLM "${SUBREGPATH}"
