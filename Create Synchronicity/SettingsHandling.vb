@@ -110,12 +110,19 @@ Public Class ConfigHandler
         For Each Folder As String In WriteNeededFolders
             Dim FolderInfo As New IO.DirectoryInfo(Folder)
             Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
+
+            Try
+                IO.File.Create(Folder & "\" & "write-permissions").Close()
+                IO.File.Delete(Folder & "\" & "write-permissions")
+            Catch
+                Writable = False
+            End Try
         Next
         For Each File As String In WriteNeededFiles
             Writable = Writable And (Not (IO.File.GetAttributes(File) And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
         Next
 
-        ' When a user folder exists, and no confi folder exists in the install dir, use the user's folder.
+        ' When a user folder exists, and no config folder exists in the install dir, use the user's folder.
         If Writable And (ProgramPathExists Or Not IO.Directory.Exists(UserPath)) Then
             UserFilesRootDir = Application.StartupPath & "\"
         Else
@@ -443,6 +450,9 @@ Public Module Updates
             End If
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR"), Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
+#If DEBUG Then
+            Interaction.ShowMsg(Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
+#End If
         End Try
     End Sub
 End Module
