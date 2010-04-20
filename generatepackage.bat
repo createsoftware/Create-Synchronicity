@@ -23,6 +23,6 @@ move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe
 cd "Create Synchronicity\bin\Release"
 echo.
 echo -----
-"C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%.zip" "Create Synchronicity.exe" "COPYING" "languages\*"
+"C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%.zip" "Release notes.txt" "Create Synchronicity.exe" "COPYING" "languages\*"
 cd ..\..\..
 ) > "build\buildlog-r%REV%.txt"
