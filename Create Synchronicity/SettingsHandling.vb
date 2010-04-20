@@ -71,8 +71,14 @@ Public Class ConfigHandler
     End Function
 
     Public Function GetIcon() As Drawing.Icon
-        Static Icon As Drawing.Icon 'TODO: Check if running from a UCN path
-        If Icon Is Nothing Then Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
+        Static Icon As Drawing.Icon
+        If Icon Is Nothing Then
+            Try
+                Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
+            Catch
+                Icon = Drawing.Icon.FromHandle((New Drawing.Bitmap(32, 32)).GetHicon)
+            End Try
+        End If
 
         Return Icon
     End Function
