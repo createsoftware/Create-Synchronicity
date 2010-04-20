@@ -1,10 +1,11 @@
 ﻿# Create Synchronicity German Language file
-# Last update: 04.06.2010
+# Last update: 04.20.2010
 # Translation by Florian Haag, with few additions by Jeanne Tourette
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
 #
+ABOUT=Info
 ABOUT_SETTINGS=Info/Einstellungen
 ACTION=Aktion
 ACTIONS=Aktionen
