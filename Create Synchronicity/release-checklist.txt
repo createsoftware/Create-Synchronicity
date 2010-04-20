@@ -9,8 +9,9 @@
 
 * Updated PAD file
 * Updated download page and other mentions to zip size
-* Uploaded file to download server
+* Uploaded release files to download server
 * Updated .htaccess redirection
 * Updated help file
+* Uncommented mentions to new version in web pages
 * Uploaded website contents and PAD file
 * Sent recap e-mail
