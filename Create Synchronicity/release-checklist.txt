@@ -1,0 +1,13 @@
+-- Release checklist --
+* Fixed remaining TODOs
+* Updated DEBUG and RELEASE versions numbers
+* Updated release notes, added a "SYN:" entry
+* Rebuilt everything from source
+* Tested package on Guest session
+
+* Uploaded file to download server
+* Updated .htaccess redirection
+* Updated version.txt in website architecture
+* Updated help file
+* Uploaded website contents
+* Sent recap e-mail
