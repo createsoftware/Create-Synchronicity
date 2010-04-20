@@ -10,7 +10,7 @@ REM Web site:		http://synchronicity.sourceforge.net.
 mkdir build
 
 (
-echo Packaging log for r%REV% & date /t & time /t
+echo Packaging log for v%VER% & date /t & time /t
 
 echo.
 echo -----
