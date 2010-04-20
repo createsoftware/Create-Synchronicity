@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+
+-- Version 3.5 --
 Apr. 20, 2010 - SYN: 3 new translations, lots of new features (including scheduling, profiles queuing, and new path formats), and usability improvements.
 Apr. 18, 2010 - UPD: Improve installer compression, decreasing installer size by 15%.
 Mar. 27, 2010 - NEW: Support for queuing profiles (using the command line).
