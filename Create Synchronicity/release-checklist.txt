@@ -7,8 +7,10 @@
 * Build installer package and zip file
 * Tested package on Guest session
 
+* Updated PAD file
+* Updated download page and other mentions to zip size
 * Uploaded file to download server
 * Updated .htaccess redirection
 * Updated help file
-* Uploaded website contents
+* Uploaded website contents and PAD file
 * Sent recap e-mail
