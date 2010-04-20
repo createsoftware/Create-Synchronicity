@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Apr. 20, 2010 - SYN: 3 new translations, lots of new features (including scheduling, profiles queuing, and new path formats), and usability improvements.
 Apr. 18, 2010 - UPD: Improve installer compression, decreasing installer size by 15%.
 Mar. 27, 2010 - NEW: Support for queuing profiles (using the command line).
 Mar. 25, 2010 - NEW: !Spanish translation by Teo Rojo. ¡Muchas gracias!
@@ -52,7 +53,7 @@ Oct. 20, 2009 - UPD: Nicer log display (HTML Logs)
 Oct. 18, 2009 - NEW: !Automated installer for Create Synchronicity.
 
 -- Version 2.1 --
-Oct. 17, 2009 - SYN: Many bug fixes,a few small improvements, better log handling.
+Oct. 17, 2009 - SYN: Many bug fixes, a few small improvements, better log handling.
 Oct. 12, 2009 - FIX: Update the way attributes are copied, to avoid "Access denied" errors.
 Oct. 11, 2009 - FIX: A few changes in the way flenames are handled, fixing an uppercase/lowercase-related bug.
 Sep. 28, 2009 - FIX: Better handling of filetimes.
