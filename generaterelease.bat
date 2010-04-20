@@ -18,7 +18,7 @@ echo -----
 
 echo.
 echo -----
-move Create_Synchronicity_Setup.exe "Create_Synchronicity_Setup-%VER%_Setup.exe"
+move Create_Synchronicity_Setup.exe "Create_Synchronicity-%VER%_Setup.exe"
 
 cd "Create Synchronicity\bin\Release"
 echo.
