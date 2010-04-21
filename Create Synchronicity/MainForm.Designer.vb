@@ -113,7 +113,7 @@ Partial Class MainForm
         Me.Main_SyncIcons.TransparentColor = System.Drawing.Color.Empty
         Me.Main_SyncIcons.Images.SetKeyName(0, "edit-redo.png")
         Me.Main_SyncIcons.Images.SetKeyName(1, "edit-redo-add.png")
-        Me.Main_SyncIcons.Images.SetKeyName(2, "view-refresh-32.png")
+        Me.Main_SyncIcons.Images.SetKeyName(2, "view-refresh.png")
         Me.Main_SyncIcons.Images.SetKeyName(3, "document-new.png")
         '
         'Main_InfoPanel
