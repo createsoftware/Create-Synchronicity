@@ -31,17 +31,17 @@ Partial Class AboutForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AboutForm))
-        Me.About_Logo = New System.Windows.Forms.PictureBox
-        Me.About_FlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel
-        Me.About_LinkToProductPage = New System.Windows.Forms.LinkLabel
-        Me.About_LinkToWebsite = New System.Windows.Forms.LinkLabel
-        Me.About_VersionInfo = New System.Windows.Forms.LinkLabel
-        Me.About_ContactLink = New System.Windows.Forms.LinkLabel
-        Me.About_LinkToLicense = New System.Windows.Forms.LinkLabel
-        Me.About_BugReport = New System.Windows.Forms.LinkLabel
-        Me.About_Updates = New System.Windows.Forms.CheckBox
-        Me.About_LanguageLabel = New System.Windows.Forms.Label
-        Me.About_LanguagesList = New System.Windows.Forms.ComboBox
+        Me.About_Logo = New System.Windows.Forms.PictureBox()
+        Me.About_FlowLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
+        Me.About_LinkToProductPage = New System.Windows.Forms.LinkLabel()
+        Me.About_LinkToWebsite = New System.Windows.Forms.LinkLabel()
+        Me.About_VersionInfo = New System.Windows.Forms.LinkLabel()
+        Me.About_ContactLink = New System.Windows.Forms.LinkLabel()
+        Me.About_LinkToLicense = New System.Windows.Forms.LinkLabel()
+        Me.About_BugReport = New System.Windows.Forms.LinkLabel()
+        Me.About_Updates = New System.Windows.Forms.CheckBox()
+        Me.About_LanguageLabel = New System.Windows.Forms.Label()
+        Me.About_LanguagesList = New System.Windows.Forms.ComboBox()
         CType(Me.About_Logo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.About_FlowLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
