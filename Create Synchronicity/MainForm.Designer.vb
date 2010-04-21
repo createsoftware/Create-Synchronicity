@@ -94,7 +94,6 @@ Partial Class MainForm
         Me.Main_Actions.MultiSelect = False
         Me.Main_Actions.Name = "Main_Actions"
         Me.Main_Actions.Size = New System.Drawing.Size(355, 262)
-        Me.Main_Actions.SmallImageList = Me.Main_SyncIcons
         Me.Main_Actions.TabIndex = 0
         Me.Main_Actions.TileSize = New System.Drawing.Size(160, 40)
         Me.Main_Actions.UseCompatibleStateImageBehavior = False
@@ -114,7 +113,7 @@ Partial Class MainForm
         Me.Main_SyncIcons.TransparentColor = System.Drawing.Color.Empty
         Me.Main_SyncIcons.Images.SetKeyName(0, "edit-redo.png")
         Me.Main_SyncIcons.Images.SetKeyName(1, "edit-redo-add.png")
-        Me.Main_SyncIcons.Images.SetKeyName(2, "view-refresh.png")
+        Me.Main_SyncIcons.Images.SetKeyName(2, "view-refresh-32.png")
         Me.Main_SyncIcons.Images.SetKeyName(3, "document-new.png")
         '
         'Main_InfoPanel
