@@ -22,25 +22,25 @@ Partial Class SchedulingForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Settings_ActionsPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.Scheduling_Cancel = New System.Windows.Forms.Button
-        Me.Scheduling_Save = New System.Windows.Forms.Button
-        Me.Scheduling_WarningLabel = New System.Windows.Forms.Label
-        Me.Scheduling_Enable = New System.Windows.Forms.CheckBox
-        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel
-        Me.Scheduling_EveryDay = New System.Windows.Forms.RadioButton
-        Me.Scheduling_Panel = New System.Windows.Forms.Panel
-        Me.FlowLayoutPanel3 = New System.Windows.Forms.FlowLayoutPanel
-        Me.Scheduling_EveryMonth = New System.Windows.Forms.RadioButton
-        Me.Scheduling_MonthDay = New System.Windows.Forms.NumericUpDown
-        Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel
-        Me.Scheduling_EveryWeek = New System.Windows.Forms.RadioButton
-        Me.Scheduling_WeekDay = New System.Windows.Forms.ComboBox
-        Me.Scheduling_AtLabel = New System.Windows.Forms.Label
-        Me.Scheduling_TimeSelectionPanel = New System.Windows.Forms.FlowLayoutPanel
-        Me.Scheduling_Hour = New System.Windows.Forms.NumericUpDown
-        Me.Scheduling_HMSepLabel = New System.Windows.Forms.Label
-        Me.Scheduling_Minute = New System.Windows.Forms.NumericUpDown
+        Me.Settings_ActionsPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Scheduling_Cancel = New System.Windows.Forms.Button()
+        Me.Scheduling_Save = New System.Windows.Forms.Button()
+        Me.Scheduling_WarningLabel = New System.Windows.Forms.Label()
+        Me.Scheduling_Enable = New System.Windows.Forms.CheckBox()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Scheduling_EveryDay = New System.Windows.Forms.RadioButton()
+        Me.Scheduling_Panel = New System.Windows.Forms.Panel()
+        Me.FlowLayoutPanel3 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Scheduling_EveryMonth = New System.Windows.Forms.RadioButton()
+        Me.Scheduling_MonthDay = New System.Windows.Forms.NumericUpDown()
+        Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Scheduling_EveryWeek = New System.Windows.Forms.RadioButton()
+        Me.Scheduling_WeekDay = New System.Windows.Forms.ComboBox()
+        Me.Scheduling_AtLabel = New System.Windows.Forms.Label()
+        Me.Scheduling_TimeSelectionPanel = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Scheduling_Hour = New System.Windows.Forms.NumericUpDown()
+        Me.Scheduling_HMSepLabel = New System.Windows.Forms.Label()
+        Me.Scheduling_Minute = New System.Windows.Forms.NumericUpDown()
         Me.Settings_ActionsPanel.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Scheduling_Panel.SuspendLayout()
@@ -130,7 +130,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryDay.Checked = True
         Me.Scheduling_EveryDay.Location = New System.Drawing.Point(3, 3)
         Me.Scheduling_EveryDay.Name = "Scheduling_EveryDay"
-        Me.Scheduling_EveryDay.Size = New System.Drawing.Size(98, 17)
+        Me.Scheduling_EveryDay.Size = New System.Drawing.Size(65, 17)
         Me.Scheduling_EveryDay.TabIndex = 0
         Me.Scheduling_EveryDay.TabStop = True
         Me.Scheduling_EveryDay.Text = "\DAILY"
@@ -164,7 +164,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryMonth.AutoSize = True
         Me.Scheduling_EveryMonth.Location = New System.Drawing.Point(3, 3)
         Me.Scheduling_EveryMonth.Name = "Scheduling_EveryMonth"
-        Me.Scheduling_EveryMonth.Size = New System.Drawing.Size(115, 21)
+        Me.Scheduling_EveryMonth.Size = New System.Drawing.Size(84, 21)
         Me.Scheduling_EveryMonth.TabIndex = 0
         Me.Scheduling_EveryMonth.TabStop = True
         Me.Scheduling_EveryMonth.Text = "\MONTHLY"
@@ -174,7 +174,7 @@ Partial Class SchedulingForm
         '
         Me.Scheduling_MonthDay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_MonthDay.AutoSize = True
-        Me.Scheduling_MonthDay.Location = New System.Drawing.Point(124, 3)
+        Me.Scheduling_MonthDay.Location = New System.Drawing.Point(93, 3)
         Me.Scheduling_MonthDay.Maximum = New Decimal(New Integer() {28, 0, 0, 0})
         Me.Scheduling_MonthDay.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.Scheduling_MonthDay.Name = "Scheduling_MonthDay"
@@ -200,7 +200,7 @@ Partial Class SchedulingForm
         Me.Scheduling_EveryWeek.AutoSize = True
         Me.Scheduling_EveryWeek.Location = New System.Drawing.Point(3, 3)
         Me.Scheduling_EveryWeek.Name = "Scheduling_EveryWeek"
-        Me.Scheduling_EveryWeek.Size = New System.Drawing.Size(107, 21)
+        Me.Scheduling_EveryWeek.Size = New System.Drawing.Size(76, 21)
         Me.Scheduling_EveryWeek.TabIndex = 0
         Me.Scheduling_EveryWeek.TabStop = True
         Me.Scheduling_EveryWeek.Text = "\WEEKLY"
@@ -210,7 +210,7 @@ Partial Class SchedulingForm
         '
         Me.Scheduling_WeekDay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Scheduling_WeekDay.FormattingEnabled = True
-        Me.Scheduling_WeekDay.Location = New System.Drawing.Point(116, 3)
+        Me.Scheduling_WeekDay.Location = New System.Drawing.Point(85, 3)
         Me.Scheduling_WeekDay.Name = "Scheduling_WeekDay"
         Me.Scheduling_WeekDay.Size = New System.Drawing.Size(121, 21)
         Me.Scheduling_WeekDay.TabIndex = 1
