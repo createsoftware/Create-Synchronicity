@@ -30,54 +30,54 @@ Partial Class SettingsForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SettingsForm))
-        Me.Settings_FromTextBox = New System.Windows.Forms.TextBox
-        Me.Settings_DirectoriesBox = New System.Windows.Forms.GroupBox
-        Me.Settings_SwapButton = New System.Windows.Forms.Button
-        Me.Settings_BrowseRButton = New System.Windows.Forms.Button
-        Me.Settings_BrowseLButton = New System.Windows.Forms.Button
-        Me.Settings_ToTextBox = New System.Windows.Forms.TextBox
-        Me.Settings_ToLabel = New System.Windows.Forms.Label
-        Me.Settings_FromLabel = New System.Windows.Forms.Label
-        Me.Settings_ViewsLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.Settings_LeftView = New System.Windows.Forms.TreeView
+        Me.Settings_FromTextBox = New System.Windows.Forms.TextBox()
+        Me.Settings_DirectoriesBox = New System.Windows.Forms.GroupBox()
+        Me.Settings_SwapButton = New System.Windows.Forms.Button()
+        Me.Settings_BrowseRButton = New System.Windows.Forms.Button()
+        Me.Settings_BrowseLButton = New System.Windows.Forms.Button()
+        Me.Settings_ToTextBox = New System.Windows.Forms.TextBox()
+        Me.Settings_ToLabel = New System.Windows.Forms.Label()
+        Me.Settings_FromLabel = New System.Windows.Forms.Label()
+        Me.Settings_ViewsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Settings_LeftView = New System.Windows.Forms.TreeView()
         Me.Settings_TreeViewMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Settings_SynchronizeAllSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Settings_DontSynchronizeSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Settings_RightView = New System.Windows.Forms.TreeView
-        Me.Settings_ReloadButton = New System.Windows.Forms.Button
-        Me.Settings_LeftViewLabel = New System.Windows.Forms.Label
-        Me.Settings_RightViewLabel = New System.Windows.Forms.Label
-        Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox
-        Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox
-        Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox
-        Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton
-        Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton
-        Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton
-        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label
-        Me.Settings_Tips = New System.Windows.Forms.Label
-        Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox
-        Me.Settings_CopyAllFilesCheckBox = New System.Windows.Forms.CheckBox
-        Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.Settings_IncludedTypesTextBox = New System.Windows.Forms.TextBox
-        Me.Settings_ExcludedTypesTextBox = New System.Windows.Forms.TextBox
-        Me.Settings_IncludeFilesOption = New System.Windows.Forms.RadioButton
-        Me.Settings_ExcludeFilesOption = New System.Windows.Forms.RadioButton
-        Me.Settings_ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox
-        Me.Settings_PropagateUpdatesOption = New System.Windows.Forms.CheckBox
-        Me.Settings_ActionsPanel = New System.Windows.Forms.TableLayoutPanel
-        Me.Settings_CancelButton = New System.Windows.Forms.Button
-        Me.Settings_SaveButton = New System.Windows.Forms.Button
-        Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog
-        Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox
-        Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox
-        Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox
-        Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label
-        Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown
-        Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label
-        Me.Settings_BottomDescLabel = New System.Windows.Forms.Label
+        Me.Settings_SynchronizeAllSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Settings_DontSynchronizeSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Settings_RightView = New System.Windows.Forms.TreeView()
+        Me.Settings_ReloadButton = New System.Windows.Forms.Button()
+        Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
+        Me.Settings_RightViewLabel = New System.Windows.Forms.Label()
+        Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox()
+        Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox()
+        Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox()
+        Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Settings_TwoWaysIncrementalMethodOption = New System.Windows.Forms.RadioButton()
+        Me.Settings_LRIncrementalMethodOption = New System.Windows.Forms.RadioButton()
+        Me.Settings_LRMirrorMethodOption = New System.Windows.Forms.RadioButton()
+        Me.Settings_DescriptionLabel = New System.Windows.Forms.Label()
+        Me.Settings_Tips = New System.Windows.Forms.Label()
+        Me.Settings_IncludeExcludeBox = New System.Windows.Forms.GroupBox()
+        Me.Settings_CopyAllFilesCheckBox = New System.Windows.Forms.CheckBox()
+        Me.Settings_IncludeExcludeLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Settings_IncludedTypesTextBox = New System.Windows.Forms.TextBox()
+        Me.Settings_ExcludedTypesTextBox = New System.Windows.Forms.TextBox()
+        Me.Settings_IncludeFilesOption = New System.Windows.Forms.RadioButton()
+        Me.Settings_ExcludeFilesOption = New System.Windows.Forms.RadioButton()
+        Me.Settings_ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox()
+        Me.Settings_PropagateUpdatesOption = New System.Windows.Forms.CheckBox()
+        Me.Settings_ActionsPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Settings_CancelButton = New System.Windows.Forms.Button()
+        Me.Settings_SaveButton = New System.Windows.Forms.Button()
+        Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog()
+        Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox()
+        Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox()
+        Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox()
+        Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label()
+        Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown()
+        Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label()
+        Me.Settings_BottomDescLabel = New System.Windows.Forms.Label()
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -190,7 +190,7 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.Location = New System.Drawing.Point(3, 17)
         Me.Settings_ViewsLayoutPanel.Name = "Settings_ViewsLayoutPanel"
         Me.Settings_ViewsLayoutPanel.RowCount = 2
-        Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(668, 140)
         Me.Settings_ViewsLayoutPanel.TabIndex = 0
@@ -298,7 +298,7 @@ Partial Class SettingsForm
         Me.Settings_StrictMirrorOption.AutoSize = True
         Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 87)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
-        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(155, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 2
         Me.Settings_StrictMirrorOption.Text = "\STRICT_MIRROR_DESC"
         Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
@@ -306,17 +306,17 @@ Partial Class SettingsForm
         'Settings_MethodLayoutPanel
         '
         Me.Settings_MethodLayoutPanel.ColumnCount = 3
-        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
-        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333282!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333397!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333397!))
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_TwoWaysIncrementalMethodOption, 2, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
         Me.Settings_MethodLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 17)
+        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 16)
         Me.Settings_MethodLayoutPanel.Name = "Settings_MethodLayoutPanel"
         Me.Settings_MethodLayoutPanel.RowCount = 1
-        Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_MethodLayoutPanel.Size = New System.Drawing.Size(668, 23)
         Me.Settings_MethodLayoutPanel.TabIndex = 0
         '
@@ -404,7 +404,7 @@ Partial Class SettingsForm
         Me.Settings_CopyAllFilesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_CopyAllFilesCheckBox.Location = New System.Drawing.Point(6, 20)
         Me.Settings_CopyAllFilesCheckBox.Name = "Settings_CopyAllFilesCheckBox"
-        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(90, 17)
+        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(85, 17)
         Me.Settings_CopyAllFilesCheckBox.TabIndex = 0
         Me.Settings_CopyAllFilesCheckBox.Text = "\ALL_FILES"
         Me.Settings_CopyAllFilesCheckBox.UseVisualStyleBackColor = True
@@ -423,8 +423,8 @@ Partial Class SettingsForm
         Me.Settings_IncludeExcludeLayoutPanel.Location = New System.Drawing.Point(3, 43)
         Me.Settings_IncludeExcludeLayoutPanel.Name = "Settings_IncludeExcludeLayoutPanel"
         Me.Settings_IncludeExcludeLayoutPanel.RowCount = 2
-        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
-        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle)
+        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.Settings_IncludeExcludeLayoutPanel.Size = New System.Drawing.Size(668, 51)
         Me.Settings_IncludeExcludeLayoutPanel.TabIndex = 2
@@ -475,9 +475,9 @@ Partial Class SettingsForm
         Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
         Me.Settings_ReplicateEmptyDirectoriesOption.Checked = True
         Me.Settings_ReplicateEmptyDirectoriesOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(532, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(538, 20)
         Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
-        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(139, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(133, 17)
         Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 1
         Me.Settings_ReplicateEmptyDirectoriesOption.Text = "\REPLICATE_EMPTY"
         Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -490,7 +490,7 @@ Partial Class SettingsForm
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(6, 20)
         Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
-        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(101, 17)
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(97, 17)
         Me.Settings_PropagateUpdatesOption.TabIndex = 0
         Me.Settings_PropagateUpdatesOption.Tag = "\PROPAGATE_TAG"
         Me.Settings_PropagateUpdatesOption.Text = "\PROPAGATE"
@@ -545,7 +545,7 @@ Partial Class SettingsForm
         Me.Settings_ComputeHashOption.AutoSize = True
         Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(6, 44)
         Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
-        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(126, 17)
+        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(120, 17)
         Me.Settings_ComputeHashOption.TabIndex = 1
         Me.Settings_ComputeHashOption.Tag = "\COMPUTEHASH_TAG"
         Me.Settings_ComputeHashOption.Text = "\COMPUTE_HASH"
@@ -574,9 +574,9 @@ Partial Class SettingsForm
         Me.Settings_StrictDateComparisonOption.AutoSize = True
         Me.Settings_StrictDateComparisonOption.Checked = True
         Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(506, 20)
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(520, 20)
         Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
-        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(148, 17)
         Me.Settings_StrictDateComparisonOption.TabIndex = 2
         Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
         Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
