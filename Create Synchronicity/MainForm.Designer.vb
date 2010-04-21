@@ -30,47 +30,47 @@ Partial Class MainForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
+        Me.components = New System.ComponentModel.Container()
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
-        Me.Main_Actions = New System.Windows.Forms.ListView
-        Me.Actions_NameColumn = New System.Windows.Forms.ColumnHeader
-        Me.Main_MethodsColumn = New System.Windows.Forms.ColumnHeader
+        Me.Main_Actions = New System.Windows.Forms.ListView()
+        Me.Actions_NameColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Main_MethodsColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Main_SyncIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.Main_InfoPanel = New System.Windows.Forms.Panel
-        Me.Main_InfoLayout = New System.Windows.Forms.TableLayoutPanel
-        Me.Main_TimeOffset = New System.Windows.Forms.Label
-        Me.Main_Scheduling = New System.Windows.Forms.Label
-        Me.Main_SchedulingLabel = New System.Windows.Forms.Label
-        Me.Main_Destination = New System.Windows.Forms.Label
-        Me.Main_DestinationLabel = New System.Windows.Forms.Label
-        Me.Main_Source = New System.Windows.Forms.Label
-        Me.Main_SourceLabel = New System.Windows.Forms.Label
-        Me.Main_FileTypes = New System.Windows.Forms.Label
-        Me.Main_FileTypesLabel = New System.Windows.Forms.Label
-        Me.Main_Method = New System.Windows.Forms.Label
-        Me.Main_MethodLabel = New System.Windows.Forms.Label
-        Me.Main_LimitedCopy = New System.Windows.Forms.Label
-        Me.Main_LimitedCopyLabel = New System.Windows.Forms.Label
-        Me.Main_Name = New System.Windows.Forms.Label
-        Me.Main_NameLabel = New System.Windows.Forms.Label
-        Me.Main_TimeOffsetLabel = New System.Windows.Forms.Label
+        Me.Main_InfoPanel = New System.Windows.Forms.Panel()
+        Me.Main_InfoLayout = New System.Windows.Forms.TableLayoutPanel()
+        Me.Main_TimeOffset = New System.Windows.Forms.Label()
+        Me.Main_Scheduling = New System.Windows.Forms.Label()
+        Me.Main_SchedulingLabel = New System.Windows.Forms.Label()
+        Me.Main_Destination = New System.Windows.Forms.Label()
+        Me.Main_DestinationLabel = New System.Windows.Forms.Label()
+        Me.Main_Source = New System.Windows.Forms.Label()
+        Me.Main_SourceLabel = New System.Windows.Forms.Label()
+        Me.Main_FileTypes = New System.Windows.Forms.Label()
+        Me.Main_FileTypesLabel = New System.Windows.Forms.Label()
+        Me.Main_Method = New System.Windows.Forms.Label()
+        Me.Main_MethodLabel = New System.Windows.Forms.Label()
+        Me.Main_LimitedCopy = New System.Windows.Forms.Label()
+        Me.Main_LimitedCopyLabel = New System.Windows.Forms.Label()
+        Me.Main_Name = New System.Windows.Forms.Label()
+        Me.Main_NameLabel = New System.Windows.Forms.Label()
+        Me.Main_TimeOffsetLabel = New System.Windows.Forms.Label()
         Me.Main_ActionsMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.PreviewMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.SynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Main_ChangeSettingsMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Main_ActionsMenuToolStripSeparator = New System.Windows.Forms.ToolStripSeparator
-        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ViewLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.ClearLogMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Main_ActionsMenuToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.Main_ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel
+        Me.PreviewMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Main_ChangeSettingsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Main_ActionsMenuToolStripSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ViewLogMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearLogMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Main_ActionsMenuToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.Main_ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Main_AboutLinkLabel = New System.Windows.Forms.LinkLabel()
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
@@ -81,14 +81,14 @@ Partial Class MainForm
         '
         Me.Main_Actions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Actions_NameColumn, Me.Main_MethodsColumn})
         Me.Main_Actions.Dock = System.Windows.Forms.DockStyle.Fill
-        ListViewGroup3.Header = "\ACTIONS"
-        ListViewGroup3.Name = "Actions"
-        ListViewGroup4.Header = "\PROFILES"
-        ListViewGroup4.Name = "Profiles"
-        Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup3, ListViewGroup4})
-        ListViewItem2.Group = ListViewGroup3
-        ListViewItem2.StateImageIndex = 0
-        Me.Main_Actions.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewGroup1.Header = "\ACTIONS"
+        ListViewGroup1.Name = "Actions"
+        ListViewGroup2.Header = "\PROFILES"
+        ListViewGroup2.Name = "Profiles"
+        Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2})
+        ListViewItem1.Group = ListViewGroup1
+        ListViewItem1.StateImageIndex = 0
+        Me.Main_Actions.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.Main_Actions.LargeImageList = Me.Main_SyncIcons
         Me.Main_Actions.Location = New System.Drawing.Point(0, 0)
         Me.Main_Actions.MultiSelect = False
@@ -133,9 +133,9 @@ Partial Class MainForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Main_InfoLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
         Me.Main_InfoLayout.ColumnCount = 4
-        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
-        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
         Me.Main_InfoLayout.Controls.Add(Me.Main_TimeOffset, 3, 2)
         Me.Main_InfoLayout.Controls.Add(Me.Main_Scheduling, 1, 2)
