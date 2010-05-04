@@ -28,6 +28,10 @@ Public Class SettingsForm
         Settings_Update_Form_Enabled_Components()
     End Sub
 
+    Private Sub Settings_From_To_TextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged, Settings_ToTextBox.TextChanged
+        Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
+    End Sub
+
     Private Sub Settings_SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SaveButton.Click
         Settings_Update(False)
         If Handler.ValidateConfigFile() Then
@@ -60,6 +64,7 @@ Public Class SettingsForm
 
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
         Settings_ReloadTrees()
+        Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
     End Sub
 
     Private Sub Settings_MethodOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter

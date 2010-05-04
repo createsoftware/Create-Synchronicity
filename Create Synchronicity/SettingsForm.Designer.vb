@@ -245,7 +245,7 @@ Partial Class SettingsForm
         Me.Settings_ReloadButton.Name = "Settings_ReloadButton"
         Me.Settings_ReloadButton.Size = New System.Drawing.Size(29, 29)
         Me.Settings_ReloadButton.TabIndex = 4
-        Me.Settings_ReloadButton.UseVisualStyleBackColor = True
+        Me.Settings_ReloadButton.UseVisualStyleBackColor = False
         '
         'Settings_LeftViewLabel
         '
@@ -306,9 +306,9 @@ Partial Class SettingsForm
         'Settings_MethodLayoutPanel
         '
         Me.Settings_MethodLayoutPanel.ColumnCount = 3
-        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333282!))
-        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333397!))
-        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3333397!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
+        Me.Settings_MethodLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334!))
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_TwoWaysIncrementalMethodOption, 2, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
