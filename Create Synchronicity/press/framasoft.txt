@@ -1,0 +1,46 @@
+[[!Attente]] [[!MAJ]]
+
+!Nom: Create Synchronicity
+
+*URL du soft: http://synchronicity.sourceforge.net 
+*Capture d'ecran: http://synchronicity.sourceforge.net/images/main-window.png 
+*Categorie: Gestion de Fichiers, Archivage
+*Langues : Anglais, Français, Allemand
+*Licence : GNU General Public License 
+*Systeme(s) d'exploitation : Windows 
+*Taille : 10 ko < ... < 100 ko 
+*Page de dons : http://sourceforge.net/donate/index.php?group_id=264348
+*Code: Visual Basic .Net 
+*Version testée: 3.0
+*Auteur(s) notice : CFP
+
+Chapo 
+
+Create Synchronicity synchronise efficacement fichiers et dossiers.
+
+Create synchronicity est un logiciel de synchronisation et de sauvegarde de fichiers. Il permet de conserver deux copies d'un même répertoire dans le même état, en ne mettant à jour que les fichiers modifiés.
+Tout en visant à être aussi personnalisable que possible, le logiciel reste très simple d'emploi. Un [tutoriel->http://synchronicity.sourceforge.net/help.html] est disponible sur le site de l'auteur.
+Create Synchronicity est particulièrement léger (moins de 90 ko), et entièrement portable.
+
+Create Synchronicity est un logiciel plutôt riche en termes de fonctionnalités :
+-* Synchronisation entièrement personnalisable :
+-* Synchronisation partielle : certains dossiers seulement, seulement le contenu d'un dossier et non ses sous-dossiers.
+-* Sélection des fichiers par extension (inclusion/exclusion), avec support complet des expressions régulières.
+-* 3 méthodes de synchronisation:
+-** Miroir
+-** Incrémental unidirectionnel
+-** Incrémental bidirectionnel
+-* Aperçu avant synchronisation.
+-* Affichage détaillé de l'avancement.
+-* Portable : les paramètres sont enregistrés dans un fichier.
+-* Interface graphique.
+
+Malgré le grand nombre de logiciels de ce type, Create Synchronicity se distingue par sa légèreté et sa rapidité (lié notamment à l'utilisation du cache du disque dur). Le panel de fonctions proposées est assez large, et la synchronisation, rapide. Un point fort est celui de l'interface, très conviviale, et de l'affichage précis de l'avancement, en plus du caractère libre.
+Face à ses concurrents, Create Synchronicity s'en tire bien : dans le domaine du non-libre, on se rappellera de SyncToy de Microsoft, qui présente le cruel inconvénient de ne pas supprimer totalement les fichiers devenus obsolètes, allant jusqu'à rendre une copie "miroir" d'un dossier deux fois plus grande que le dossier original, quand ces copies devraient être identiques, et des ses fréquents crash. Dans le monde du libre, Unison est certes très complet, mais ce logiciel présenté se rapproche plus de Synkron. Notons que les application développées en Java, nombreuses dans le domaine de la synchronisation, quoique très portables, sont quelquefois un peu plus lentes.
+
+
+Logiciel efficace et rapide, plutôt bien pensé et clair, mais manquant quelque peu d'options pour les plus techniciens : en effet, on regrettera l'absence de support FTP/SFTP par exemple. Notons qu'avec les versions, de nouvelles options apparaissent : une option par exemple pour copier sans problèmes de NTFS vers FAT (les dates ne sont pas gérées de la même manière dans ces deux systèmes), une option de hashage avant comparaison, et un support complet du ddécalage horaire. Un bémol demeure cependant, à savoir que l'inclusion/exclusion des dossiers à synchroniser est plutôt complexe, pour qui souhaite régler finement ces paramètres : l'auteur a tenu à ce qu'il soit possible de synchroniser que les sous-dossiers d'un dossier, sans en synchroniser les fichiers, ou bien qu'il soit possible de synchroniser les fichiers mais pas les sous-dossiers d'un dossier. Ceci rend le logiciel très paramétrable, mais il faut saisir le concept sans se tromper. Un truc : le clic droit permet de cocher une branche toute entière de l'arborescence de dossier. Notons que  le langage utilisé permet justement à ce logiciel d'être multi-plateforme de même que les applications QT ou Java, quoique la transition vers Linux n'ait pas été finalisée pour l'instant. Ce logiciel a été francisé dans sa version 3.
+
+Un logiciel de synchronisation parmi tant d'autres, celui-ci sera-t-il votre futur choix ?
+
+{Merci à CFP pour la rédaction de cette notice sur le wiki de Framasoft !}
