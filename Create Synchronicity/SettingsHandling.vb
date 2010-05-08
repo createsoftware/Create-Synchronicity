@@ -441,6 +441,7 @@ Structure ScheduleInfo
                 Return Date.MinValue 'aka never
         End Select
 
+        '>=: Won't run /just/ now (prevent double-syncing.
         While Now >= RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
         Return RunAt
     End Function
