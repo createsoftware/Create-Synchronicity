@@ -287,7 +287,7 @@ Public Class MainForm
         Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
         For Each ConfigFile As String In IO.Directory.GetFiles(ProgramConfig.ConfigRootDir, "*.sync")
-            Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf("\") + 1)
+            Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf(ConfigOptions.DirSep) + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
 
             Profiles.Add(Name, New ProfileHandler(Name))
