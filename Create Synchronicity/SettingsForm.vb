@@ -117,7 +117,7 @@ Public Class SettingsForm
             If Node.Nodes.Count <> 0 Then Continue For
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Settings_ToTextBox.Text, Settings_FromTextBox.Text) & Node.FullPath)
-                    Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+                    Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
                 Next
@@ -142,7 +142,7 @@ Public Class SettingsForm
 
         'Therefore, re-check the tree (if it has already been loaded)
         If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then
-            Settings_CheckTree(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & "\")
+            Settings_CheckTree(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & ConfigOptions.DirSep)
         End If
     End Sub
 
@@ -222,20 +222,20 @@ Public Class SettingsForm
     End Function
 
     Sub Settings_ReloadTrees()
-        LoadTree(Settings_LeftView, Settings_FromTextBox.Text & "\")
-        LoadTree(Settings_RightView, Settings_ToTextBox.Text & "\")
+        LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep)) 'TODO: Ok to return empty path?
+        LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
     End Sub
 
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
         Tree.Nodes.Clear()
 
-        Tree.Enabled = IO.Directory.Exists(Path) AndAlso Path <> "\" 'Potential problem for moving to linux -> / is a valid path.
+        Tree.Enabled = Path <> "" AndAlso IO.Directory.Exists(Path)  'TODO: Check if empty path change is truly ok. 'Potential problem for moving to linux -> / is a valid path.
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(Path)
-                    Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf("\") + 1))
+                    Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                 Next
 
                 Tree.Nodes(0).Expand()
@@ -254,12 +254,12 @@ Public Class SettingsForm
             Case True
                 Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
                 For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.LeftCheckedNodes
-                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\"c)), CheckedPath.Value)
+                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
                 Next
             Case False
                 Dim BaseNode As TreeNode = Settings_RightView.Nodes(0)
                 For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.RightCheckedNodes
-                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split("\"c)), CheckedPath.Value)
+                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
                 Next
         End Select
     End Sub
@@ -292,8 +292,8 @@ Public Class SettingsForm
 
 #Region " Settings Handling "
     Sub Settings_Update(ByVal LoadToForm As Boolean)
-        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd("\"c)
-        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd("\"c)
+        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(ConfigOptions.DirSep)
+        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(ConfigOptions.DirSep)
 
         Handler.SetSetting(ConfigOptions.Source, Settings_FromTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.Destination, Settings_ToTextBox.Text, LoadToForm)
