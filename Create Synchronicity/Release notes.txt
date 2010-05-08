@@ -17,6 +17,10 @@ Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 
+May.  9, 2010 - UPD: Nicer progress display.
+May.  8, 2010 - UPD: Easier directory inclusion/exclusion.
+May.  7, 2010 - FIX: Small scheduler date miscalculation.
+
 -- Version 3.5 --
 Apr. 20, 2010 - SYN: 3 new translations, lots of new features (including scheduling, profiles queuing, and new path formats), and usability improvements.
 Apr. 18, 2010 - UPD: Improve installer compression, decreasing installer size by 15%.
