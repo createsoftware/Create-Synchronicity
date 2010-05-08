@@ -1,4 +1,4 @@
-deutsch:4
+deutsch:7
 english:0
 francais:0
 portuguese:4
