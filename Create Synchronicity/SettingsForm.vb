@@ -229,7 +229,7 @@ Public Class SettingsForm
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
         Tree.Nodes.Clear()
 
-        Tree.Enabled = IO.Directory.Exists(Path) AndAlso Path <> "\"
+        Tree.Enabled = IO.Directory.Exists(Path) AndAlso Path <> "\" 'Potential problem for moving to linux -> / is a valid path.
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
