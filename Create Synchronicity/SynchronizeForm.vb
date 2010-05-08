@@ -30,6 +30,8 @@ Public Class SynchronizeForm
         Shared ActionsDone As Integer
         Shared CreatedFiles As Integer
         Shared CreatedFolders As Integer
+        Shared DeletedFiles As Integer
+        Shared DeletedFolders As Integer
         Shared TotalActionsCount As Integer
         Shared CurrentStep As Integer
         Shared TimeElapsed As TimeSpan
@@ -74,6 +76,8 @@ Public Class SynchronizeForm
         Status.ActionsDone = 0
         Status.CreatedFiles = 0
         Status.CreatedFolders = 0
+        Status.DeletedFiles = 0
+        Status.DeletedFolders = 0
         Status.TotalActionsCount = 0
         Status.CurrentStep = 1
 
@@ -180,7 +184,10 @@ Public Class SynchronizeForm
                     Speed.Text = Math.Round(Status.MillisecondsSpeed, 2).ToString & "B/s"
             End Select
         End If
-        Done.Text = Status.ActionsDone : FilesCreated.Text = Status.CreatedFiles : FoldersCreated.Text = Status.CreatedFolders
+
+        Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
+        FilesCreated.Text = Status.CreatedFiles : FilesDeleted.Text = Status.DeletedFiles
+        FoldersCreated.Text = Status.CreatedFolders : FoldersDeleted.Text = Status.DeletedFiles
     End Sub
 #End Region
 
@@ -259,7 +266,7 @@ Public Class SynchronizeForm
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 SyncingTimeCounter.Stop()
-                TotalCount.Text = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
+                Status.TotalActionsCount = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
 
             Case 2
                 Status.CurrentStep = 3
@@ -480,8 +487,10 @@ Public Class SynchronizeForm
                             Case TypeOfAction.Create
                                 CopyFile(Entry.Path, Source, Destination)
                             Case TypeOfAction.Delete
+
                                 IO.File.SetAttributes(Source & Entry.Path, IO.FileAttributes.Normal)
                                 IO.File.Delete(Source & Entry.Path)
+                                Status.DeletedFiles += 1
                         End Select
 
                     Case TypeOfItem.Folder
@@ -498,6 +507,7 @@ Public Class SynchronizeForm
                                         DirInfo.Attributes = IO.FileAttributes.Normal
                                         DirInfo.Delete()
                                     End Try
+                                    Status.DeletedFolders += 1
                                 End If
                         End Select
                 End Select
