@@ -222,14 +222,14 @@ Public Class SettingsForm
     End Function
 
     Sub Settings_ReloadTrees()
-        LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep)) 'TODO: Ok to return empty path?
+        LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
         LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
     End Sub
 
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
         Tree.Nodes.Clear()
 
-        Tree.Enabled = Path <> "" AndAlso IO.Directory.Exists(Path)  'TODO: Check if empty path change is truly ok. 'Potential problem for moving to linux -> / is a valid path.
+        Tree.Enabled = Path <> "" AndAlso IO.Directory.Exists(Path)
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
