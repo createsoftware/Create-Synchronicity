@@ -794,7 +794,7 @@ Public Class SynchronizeForm
 
 #Region " Functions "
     Function GetFileOrFolderName(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf("\") + 1)
+        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1)
     End Function
 
     Function GetExtension(ByVal Path As String) As String
