@@ -35,7 +35,7 @@ Public Class AboutForm
 
         About_LanguagesList.Items.Clear()
         For Each File As String In IO.Directory.GetFiles(ProgramConfig.LanguageRootDir)
-            About_LanguagesList.Items.Add(File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf("\") + 1))
+            About_LanguagesList.Items.Add(File.Remove(File.LastIndexOf(".")).Substring(File.LastIndexOf(ConfigOptions.DirSep) + 1))
         Next
 
         ProgramConfig.LoadProgramSettings()
