@@ -35,6 +35,11 @@ Public Module ConfigOptions
     Public Const SettingsFileName As String = "mainconfig.ini"
 
     Public Const EnqueuingSeparator As Char = "|"
+#If LINUX Then
+    Public Const DirSep As Char = "/"
+#Else
+    Public Const DirSep As Char = "\"
+#End If
 
     Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
     Public Const RegistryBootKey As String = "Software\Microsoft\Windows\CurrentVersion\Run"
@@ -47,6 +52,7 @@ Public Class ConfigHandler
     Public ConfigRootDir As String
     Public LogRootDir As String
     Public MainConfigFile As String
+    Public DirSep As Char
 
     Public LanguageRootDir As String = Application.StartupPath & "\languages"
 
@@ -56,9 +62,10 @@ Public Class ConfigHandler
     Dim ProgramSettings As New Dictionary(Of String, String)
 
     Protected Sub New()
+        DirSep = IO.Path.DirectorySeparatorChar
         ConfigRootDir = GetUserFilesRootDir() & ConfigFolderName
         LogRootDir = GetUserFilesRootDir() & LogFolderName
-        MainConfigFile = ConfigRootDir & "\" & SettingsFileName
+        MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & SettingsFileName
     End Sub
 
     Public Shared Function GetSingleton() As ConfigHandler
@@ -67,7 +74,7 @@ Public Class ConfigHandler
     End Function
 
     Public Function GetConfigPath(ByVal Name As String) As String
-        Return ConfigRootDir & "\" & Name & ".sync"
+        Return ConfigRootDir & ConfigOptions.DirSep & Name & ".sync"
     End Function
 
     Public Function GetIcon() As Drawing.Icon
@@ -85,9 +92,9 @@ Public Class ConfigHandler
 
     Public Function GetLogPath(ByVal Name As String) As String
 #If DEBUG Then
-        Return LogRootDir & "\" & Name & ".log"
+        Return LogRootDir & ConfigOptions.DirSep & Name & ".log"
 #Else
-        Return LogRootDir & "\" & Name & ".log.html"
+        Return LogRootDir & ConfigOptions.DirSep & Name & ".log.html"
 #End If
     End Function
 
@@ -95,12 +102,12 @@ Public Class ConfigHandler
         Static UserFilesRootDir As String = ""
         If Not UserFilesRootDir = "" Then Return UserFilesRootDir
 
-        Dim UserPath As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\Create Software\Create Synchronicity\"
+        Dim UserPath As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & ConfigOptions.DirSep & "Create Software" & ConfigOptions.DirSep & "Create Synchronicity" & ConfigOptions.DirSep
 
         'http://support.microsoft.com/default.aspx?scid=kb;EN-US;326549
         Dim WriteNeededFiles As New List(Of String)
         Dim WriteNeededFolders As New List(Of String)
-        Dim PotentialWriteNeededFolders As String() = {Application.StartupPath & "\" & LogFolderName, Application.StartupPath & "\" & ConfigFolderName}
+        Dim PotentialWriteNeededFolders As String() = {Application.StartupPath & ConfigOptions.DirSep & LogFolderName, Application.StartupPath & ConfigOptions.DirSep & ConfigFolderName}
 
         WriteNeededFolders.Add(Application.StartupPath)
         For Each Folder As String In PotentialWriteNeededFolders
@@ -111,15 +118,15 @@ Public Class ConfigHandler
         Next
 
         Dim Writable As Boolean = True
-        Dim ProgramPathExists As Boolean = IO.Directory.Exists(Application.StartupPath & "\" & ConfigFolderName)
+        Dim ProgramPathExists As Boolean = IO.Directory.Exists(Application.StartupPath & ConfigOptions.DirSep & ConfigFolderName)
 
         For Each Folder As String In WriteNeededFolders
             Dim FolderInfo As New IO.DirectoryInfo(Folder)
             Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
 
             Try
-                IO.File.Create(Folder & "\" & "write-permissions").Close()
-                IO.File.Delete(Folder & "\" & "write-permissions")
+                IO.File.Create(Folder & ConfigOptions.DirSep & "write-permissions").Close()
+                IO.File.Delete(Folder & ConfigOptions.DirSep & "write-permissions")
             Catch
                 Writable = False
             End Try
@@ -130,7 +137,7 @@ Public Class ConfigHandler
 
         ' When a user folder exists, and no config folder exists in the install dir, use the user's folder.
         If Writable And (ProgramPathExists Or Not IO.Directory.Exists(UserPath)) Then
-            UserFilesRootDir = Application.StartupPath & "\"
+            UserFilesRootDir = Application.StartupPath & ConfigOptions.DirSep
         Else
             'Not translated, since it happens before loading translation files
             If ProgramPathExists Then Interaction.ShowMsg("Create Synchronicity cannot write to your installation directory, although it contains configuration files. Your Application Data folder will therefore be used instead.", "Information", , MessageBoxIcon.Information)
