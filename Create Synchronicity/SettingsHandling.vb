@@ -441,7 +441,7 @@ Structure ScheduleInfo
                 Return Date.MinValue 'aka never
         End Select
 
-        While Now > RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
+        While Now >= RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
         Return RunAt
     End Function
 End Structure

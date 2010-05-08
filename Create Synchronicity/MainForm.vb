@@ -239,7 +239,7 @@ Public Class MainForm
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
                         If Profiles(Profile).ValidateConfigFile() Then
-                            ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(Profile, Date.Now.AddDays(-1)))
+                            ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(Profile, Date.Now.AddDays(-1))) 'Make sure it runs immediately
                         Else
                             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
                         End If
@@ -265,6 +265,7 @@ Public Class MainForm
             Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
             If RunAsScheduler Then
                 Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, True)
+                ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
             Else
                 Dim SyncForm As New SynchronizeForm(NextProfile.Key, ShowPreview, False, Quiet)
             End If
