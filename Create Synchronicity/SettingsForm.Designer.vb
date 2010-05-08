@@ -43,8 +43,12 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Settings_LeftView = New System.Windows.Forms.TreeView()
         Me.Settings_TreeViewMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Settings_SynchronizeAllSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Settings_DontSynchronizeSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Settings_SynchronizeFolderAndSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.Settings_SynchronizeFilesOnlyMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Settings_SynchronizeSubFoldersOnlyMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.Settings_DontSynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Settings_RightView = New System.Windows.Forms.TreeView()
         Me.Settings_ReloadButton = New System.Windows.Forms.Button()
         Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
@@ -209,23 +213,45 @@ Partial Class SettingsForm
         '
         'Settings_TreeViewMenuStrip
         '
-        Me.Settings_TreeViewMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Settings_SynchronizeAllSubfoldersMenuItem, Me.Settings_DontSynchronizeSubfoldersMenuItem})
+        Me.Settings_TreeViewMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Settings_SynchronizeFolderAndSubfoldersMenuItem, Me.ToolStripSeparator1, Me.Settings_SynchronizeFilesOnlyMenuItem, Me.Settings_SynchronizeSubFoldersOnlyMenuItem, Me.ToolStripSeparator2, Me.Settings_DontSynchronizeMenuItem})
         Me.Settings_TreeViewMenuStrip.Name = "Settings_TreeViewMenuStrip"
         Me.Settings_TreeViewMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Settings_TreeViewMenuStrip.ShowImageMargin = False
-        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(149, 48)
+        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(201, 126)
         '
-        'Settings_SynchronizeAllSubfoldersMenuItem
+        'Settings_SynchronizeFolderAndSubfoldersMenuItem
         '
-        Me.Settings_SynchronizeAllSubfoldersMenuItem.Name = "Settings_SynchronizeAllSubfoldersMenuItem"
-        Me.Settings_SynchronizeAllSubfoldersMenuItem.Size = New System.Drawing.Size(148, 22)
-        Me.Settings_SynchronizeAllSubfoldersMenuItem.Text = "\ALL_SUBFOLDERS"
+        Me.Settings_SynchronizeFolderAndSubfoldersMenuItem.Name = "Settings_SynchronizeFolderAndSubfoldersMenuItem"
+        Me.Settings_SynchronizeFolderAndSubfoldersMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.Settings_SynchronizeFolderAndSubfoldersMenuItem.Text = "\FOLDER_AND_SUBFOLDERS"
         '
-        'Settings_DontSynchronizeSubfoldersMenuItem
+        'ToolStripSeparator1
         '
-        Me.Settings_DontSynchronizeSubfoldersMenuItem.Name = "Settings_DontSynchronizeSubfoldersMenuItem"
-        Me.Settings_DontSynchronizeSubfoldersMenuItem.Size = New System.Drawing.Size(148, 22)
-        Me.Settings_DontSynchronizeSubfoldersMenuItem.Text = "\NO_SUBFOLDERS"
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(197, 6)
+        '
+        'Settings_SynchronizeFilesOnlyMenuItem
+        '
+        Me.Settings_SynchronizeFilesOnlyMenuItem.Name = "Settings_SynchronizeFilesOnlyMenuItem"
+        Me.Settings_SynchronizeFilesOnlyMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.Settings_SynchronizeFilesOnlyMenuItem.Text = "\FILES_ONLY"
+        '
+        'Settings_SynchronizeSubFoldersOnlyMenuItem
+        '
+        Me.Settings_SynchronizeSubFoldersOnlyMenuItem.Name = "Settings_SynchronizeSubFoldersOnlyMenuItem"
+        Me.Settings_SynchronizeSubFoldersOnlyMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.Settings_SynchronizeSubFoldersOnlyMenuItem.Text = "\SUBFOLDERS_ONLY"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(197, 6)
+        '
+        'Settings_DontSynchronizeMenuItem
+        '
+        Me.Settings_DontSynchronizeMenuItem.Name = "Settings_DontSynchronizeMenuItem"
+        Me.Settings_DontSynchronizeMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.Settings_DontSynchronizeMenuItem.Text = "\NO_SYNC"
         '
         'Settings_RightView
         '
@@ -693,8 +719,7 @@ Partial Class SettingsForm
     Friend WithEvents Settings_SaveButton As System.Windows.Forms.Button
     Friend WithEvents Settings_FolderBrowser As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents Settings_TreeViewMenuStrip As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents Settings_SynchronizeAllSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents Settings_DontSynchronizeSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Settings_DontSynchronizeMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_ComputeHashOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_PropagateUpdatesOption As System.Windows.Forms.CheckBox
@@ -707,4 +732,9 @@ Partial Class SettingsForm
     Friend WithEvents Settings_TimeOffsetLabel As System.Windows.Forms.Label
     Friend WithEvents Settings_StrictDateComparisonOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_SwapButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_SynchronizeFolderAndSubfoldersMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Settings_SynchronizeFilesOnlyMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents Settings_SynchronizeSubFoldersOnlyMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
 End Class

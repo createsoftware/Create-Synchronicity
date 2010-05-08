@@ -125,11 +125,20 @@ Public Class SettingsForm
         Next
     End Sub
 
-    Private Sub Settings_SynchronizeAllSubfoldersMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeAllSubfoldersMenuItem.Click
+    Private Sub Settings_SynchronizeAllSubfoldersMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeFolderAndSubfoldersMenuItem.Click
         Settings_Update_CheckStatus(True)
     End Sub
 
-    Private Sub Settings_DontSynchronizeSubfoldersMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_DontSynchronizeSubfoldersMenuItem.Click
+    Private Sub Settings_SynchronizeFilesOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeFilesOnlyMenuItem.Click
+        Settings_CheckSelectedNode(True)
+    End Sub
+
+    Private Sub Settings_SynchronizeSubFoldersOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeSubFoldersOnlyMenuItem.CLick
+        Settings_Update_CheckStatus(True)
+        Settings_CheckSelectedNode(False)
+    End Sub
+
+    Private Sub Settings_DontSynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_DontSynchronizeMenuItem.Click
         Settings_Update_CheckStatus(False)
     End Sub
 
@@ -159,6 +168,14 @@ Public Class SettingsForm
         Settings_IncludeExcludeLayoutPanel.Enabled = Not Settings_CopyAllFilesCheckBox.Checked
         Settings_IncludedTypesTextBox.Enabled = Settings_IncludeFilesOption.Checked
         Settings_ExcludedTypesTextBox.Enabled = Settings_ExcludeFilesOption.Checked
+    End Sub
+
+    Sub Settings_CheckSelectedNode(ByVal Checked As Boolean)
+        If ClickedRightTreeView Then
+            Settings_RightView.SelectedNode.Checked = Checked
+        Else
+            Settings_LeftView.SelectedNode.Checked = Checked
+        End If
     End Sub
 
     Sub Settings_Update_CheckStatus(ByVal Checked As Boolean)
