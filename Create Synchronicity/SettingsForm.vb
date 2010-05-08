@@ -64,7 +64,6 @@ Public Class SettingsForm
 
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
         Settings_ReloadTrees()
-        Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
     End Sub
 
     Private Sub Settings_MethodOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter
@@ -222,8 +221,11 @@ Public Class SettingsForm
     End Function
 
     Sub Settings_ReloadTrees()
+        Settings_ReloadButton.Enabled = False 'Todo: DOEvents
+        Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
         LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
         LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
+        Settings_ReloadButton.Enabled = True
     End Sub
 
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
