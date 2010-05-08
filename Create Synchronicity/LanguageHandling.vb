@@ -15,9 +15,9 @@ Public Class LanguageHandler
         IO.Directory.CreateDirectory(Configuration.LanguageRootDir)
 
         Strings = New Dictionary(Of String, String)
-        Dim DictFile As String = Configuration.LanguageRootDir & "\" & Configuration.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
+        Dim DictFile As String = Configuration.LanguageRootDir & ConfigOptions.DirSep & Configuration.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
 
-        If Not IO.File.Exists(DictFile) Then DictFile = Configuration.LanguageRootDir & "\" & ConfigOptions.DefaultLanguage & ".lng"
+        If Not IO.File.Exists(DictFile) Then DictFile = Configuration.LanguageRootDir & ConfigOptions.DirSep & ConfigOptions.DefaultLanguage & ".lng"
         If Not IO.File.Exists(DictFile) Then
             Interaction.ShowMsg("No language file found!")
         Else
