@@ -115,7 +115,7 @@ Public Class SettingsForm
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
             Try
-                For Each Dir As String In IO.Directory.GetDirectories(If(ClickedRightTreeView, Settings_ToTextBox.Text, Settings_FromTextBox.Text) & Node.FullPath)
+                For Each Dir As String In IO.Directory.GetDirectories(Node.FullPath)
                     Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
@@ -237,11 +237,23 @@ Public Class SettingsForm
         Return -1
     End Function
 
+    Sub Settings_SetRootPathDisplay(ByVal Show As Boolean)
+        If Show Then
+            If Not Settings_FromTextBox.Text = "" And Settings_LeftView.Nodes.Count > 0 Then Settings_LeftView.Nodes(0).Text = Settings_FromTextBox.Text
+            If Not Settings_ToTextBox.Text = "" And Settings_RightView.Nodes.Count > 0 Then Settings_RightView.Nodes(0).Text = Settings_ToTextBox.Text
+        Else
+            If Settings_LeftView.Nodes.Count > 0 Then Settings_LeftView.Nodes(0).Text = ""
+            If Settings_RightView.Nodes.Count > 0 Then Settings_RightView.Nodes(0).Text = ""
+        End If
+    End Sub
+
     Sub Settings_ReloadTrees()
         Settings_ReloadButton.Enabled = False 'Todo: DOEvents
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
         LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
         LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
+        Settings_SetRootPathDisplay(True)
+
         Settings_ReloadButton.Enabled = True
     End Sub
 
@@ -355,6 +367,7 @@ Public Class SettingsForm
 
         Select Case LoadToForm
             Case False
+                Settings_SetRootPathDisplay(False)
                 If Settings_LeftView.Enabled Then
                     Handler.LeftCheckedNodes.Clear()
                     Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
@@ -368,6 +381,7 @@ Public Class SettingsForm
                         Handler.SetSetting(ConfigOptions.RightSubFolders, Settings_GetString(Handler.RightCheckedNodes))
                     End If
                 End If
+                Settings_SetRootPathDisplay(True)
             Case True
                 Settings_ReloadTrees()
         End Select
