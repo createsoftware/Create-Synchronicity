@@ -23,7 +23,7 @@ Public Class SynchronizeForm
     Dim [STOP] As Boolean
 
     Structure Status
-        Dim Random As Byte
+        Dim Junk As Boolean
         Shared StartTime As Date
         Shared BytesCopied As Long
         Shared FilesScanned As Long
@@ -39,6 +39,7 @@ Public Class SynchronizeForm
         Shared BytesToCreate As Long
     End Structure
 
+    Dim ColumnSorter As ListViewColumnSorter
     Dim DisplayPreview As Boolean, PreviewFinished As Boolean
 
     Dim FullSyncThread As Threading.Thread
@@ -83,6 +84,9 @@ Public Class SynchronizeForm
 
         Log = New LogHandler(ConfigName)
         Handler = New ProfileHandler(ConfigName)
+
+        ColumnSorter = New ListViewColumnSorter(3)
+        PreviewList.ListViewItemSorter = ColumnSorter
 
         FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
         FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
@@ -160,6 +164,31 @@ Public Class SynchronizeForm
 
     Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimeCounter.Tick
         UpdateStatuses()
+    End Sub
+
+    Private Sub PreviewList_ColumnClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles PreviewList.ColumnClick
+        If e.Column = ColumnSorter.SortColumn Then
+            ColumnSorter.Order = If(ColumnSorter.Order = SortOrder.Ascending, SortOrder.Descending, SortOrder.Ascending)
+        Else
+            ColumnSorter.SortColumn = e.Column
+            ColumnSorter.Order = SortOrder.Ascending
+        End If
+
+        PreviewList.Sort()
+    End Sub
+
+    Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
+        If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
+
+        Dim Address As String = ""
+        Select Case PreviewList.SelectedItems(0).Tag
+            Case "LR"
+                Address = Handler.GetSetting(ConfigOptions.Source) & PreviewList.SelectedItems(0).SubItems(3).Text
+            Case "RL"
+                Address = Handler.GetSetting(ConfigOptions.Destination) & PreviewList.SelectedItems(0).SubItems(2).Text
+        End Select
+
+        If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(Address)
     End Sub
 
     Sub UpdateStatuses()
@@ -337,8 +366,10 @@ Public Class SynchronizeForm
         Dim DirectionString As String = ""
         Select Case Side
             Case SideOfSource.Left
+                ListItem.Tag = "LR"
                 DirectionString = Translation.Translate("\LR")
             Case SideOfSource.Right
+                ListItem.Tag = "RL"
                 DirectionString = Translation.Translate("\RL")
         End Select
         ListItem.SubItems.Add(DirectionString)
@@ -384,8 +415,6 @@ Public Class SynchronizeForm
     Sub Do_FirstStep()
         Dim Context As New SyncingAction
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
-        Dim Left As String = Handler.GetSetting(ConfigOptions.Source)
-        Dim Right As String = Handler.GetSetting(ConfigOptions.Destination)
 
         SyncingList.Clear()
         SyncingList.Add(SideOfSource.Left, New List(Of SyncingItem))
