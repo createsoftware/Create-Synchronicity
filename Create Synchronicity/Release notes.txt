@@ -17,6 +17,8 @@ Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 
+May.  9, 2010 - UPD: Sort preview list by clicking column headers.
+May.  9, 2010 - UPD: Open files from preview list by double-clicking.
 May.  9, 2010 - UPD: Nicer progress display.
 May.  8, 2010 - UPD: Easier directory inclusion/exclusion.
 May.  7, 2010 - FIX: Small scheduler date miscalculation.
