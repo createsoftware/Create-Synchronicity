@@ -52,16 +52,20 @@ Partial Class SynchronizeForm
         Me.SyncBtn = New System.Windows.Forms.Button()
         Me.StopBtn = New System.Windows.Forms.Button()
         Me.StatisticsPanel = New System.Windows.Forms.TableLayoutPanel()
-        Me.FoldersCreated = New System.Windows.Forms.Label()
+        Me.FoldersDeleted = New System.Windows.Forms.Label()
+        Me.FoldersDeletedLabel = New System.Windows.Forms.Label()
+        Me.ElapsedTimeLabel = New System.Windows.Forms.Label()
+        Me.ElapsedTime = New System.Windows.Forms.Label()
+        Me.SpeedLabel = New System.Windows.Forms.Label()
+        Me.Speed = New System.Windows.Forms.Label()
         Me.FilesCreatedLabel = New System.Windows.Forms.Label()
         Me.FilesCreated = New System.Windows.Forms.Label()
-        Me.FoldersCreatedLabel = New System.Windows.Forms.Label()
-        Me.Done = New System.Windows.Forms.Label()
         Me.DoneLabel = New System.Windows.Forms.Label()
-        Me.Speed = New System.Windows.Forms.Label()
-        Me.SpeedLabel = New System.Windows.Forms.Label()
-        Me.ElapsedTime = New System.Windows.Forms.Label()
-        Me.ElapsedTimeLabel = New System.Windows.Forms.Label()
+        Me.Done = New System.Windows.Forms.Label()
+        Me.FilesDeletedLabel = New System.Windows.Forms.Label()
+        Me.FoldersCreatedLabel = New System.Windows.Forms.Label()
+        Me.FoldersCreated = New System.Windows.Forms.Label()
+        Me.FilesDeleted = New System.Windows.Forms.Label()
         Me.PreviewList = New System.Windows.Forms.ListView()
         Me.TypeColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ActionColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -69,10 +73,6 @@ Partial Class SynchronizeForm
         Me.PathColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SyncingIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
-        Me.FilesDeletedLabel = New System.Windows.Forms.Label()
-        Me.FoldersDeletedLabel = New System.Windows.Forms.Label()
-        Me.FilesDeleted = New System.Windows.Forms.Label()
-        Me.FoldersDeleted = New System.Windows.Forms.Label()
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
         Me.Step3_ProgressLayout.SuspendLayout()
@@ -359,14 +359,62 @@ Partial Class SynchronizeForm
         Me.StatisticsPanel.Size = New System.Drawing.Size(344, 69)
         Me.StatisticsPanel.TabIndex = 2
         '
-        'FoldersCreated
+        'FoldersDeleted
         '
-        Me.FoldersCreated.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FoldersCreated.Location = New System.Drawing.Point(99, 34)
-        Me.FoldersCreated.Name = "FoldersCreated"
-        Me.FoldersCreated.Size = New System.Drawing.Size(69, 17)
-        Me.FoldersCreated.TabIndex = 11
-        Me.FoldersCreated.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.FoldersDeleted.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FoldersDeleted.Location = New System.Drawing.Point(99, 51)
+        Me.FoldersDeleted.Name = "FoldersDeleted"
+        Me.FoldersDeleted.Size = New System.Drawing.Size(69, 18)
+        Me.FoldersDeleted.TabIndex = 15
+        Me.FoldersDeleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'FoldersDeletedLabel
+        '
+        Me.FoldersDeletedLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FoldersDeletedLabel.Location = New System.Drawing.Point(3, 51)
+        Me.FoldersDeletedLabel.Name = "FoldersDeletedLabel"
+        Me.FoldersDeletedLabel.Size = New System.Drawing.Size(90, 18)
+        Me.FoldersDeletedLabel.TabIndex = 13
+        Me.FoldersDeletedLabel.Text = "\FOLDERS_DELETED"
+        Me.FoldersDeletedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ElapsedTimeLabel
+        '
+        Me.ElapsedTimeLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ElapsedTimeLabel.Location = New System.Drawing.Point(174, 0)
+        Me.ElapsedTimeLabel.Name = "ElapsedTimeLabel"
+        Me.ElapsedTimeLabel.Size = New System.Drawing.Size(80, 17)
+        Me.ElapsedTimeLabel.TabIndex = 0
+        Me.ElapsedTimeLabel.Text = "\ELAPSED"
+        Me.ElapsedTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ElapsedTime
+        '
+        Me.ElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ElapsedTime.Location = New System.Drawing.Point(260, 0)
+        Me.ElapsedTime.Name = "ElapsedTime"
+        Me.ElapsedTime.Size = New System.Drawing.Size(81, 17)
+        Me.ElapsedTime.TabIndex = 1
+        Me.ElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'SpeedLabel
+        '
+        Me.SpeedLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SpeedLabel.Location = New System.Drawing.Point(174, 17)
+        Me.SpeedLabel.Name = "SpeedLabel"
+        Me.SpeedLabel.Size = New System.Drawing.Size(80, 17)
+        Me.SpeedLabel.TabIndex = 2
+        Me.SpeedLabel.Text = "\SPEED"
+        Me.SpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Speed
+        '
+        Me.Speed.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Speed.Location = New System.Drawing.Point(260, 17)
+        Me.Speed.Name = "Speed"
+        Me.Speed.Size = New System.Drawing.Size(81, 17)
+        Me.Speed.TabIndex = 3
+        Me.Speed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'FilesCreatedLabel
         '
@@ -387,25 +435,6 @@ Partial Class SynchronizeForm
         Me.FilesCreated.TabIndex = 9
         Me.FilesCreated.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'FoldersCreatedLabel
-        '
-        Me.FoldersCreatedLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FoldersCreatedLabel.Location = New System.Drawing.Point(3, 34)
-        Me.FoldersCreatedLabel.Name = "FoldersCreatedLabel"
-        Me.FoldersCreatedLabel.Size = New System.Drawing.Size(90, 17)
-        Me.FoldersCreatedLabel.TabIndex = 8
-        Me.FoldersCreatedLabel.Text = "\FOLDERS_CREATED"
-        Me.FoldersCreatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'Done
-        '
-        Me.Done.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Done.Location = New System.Drawing.Point(260, 51)
-        Me.Done.Name = "Done"
-        Me.Done.Size = New System.Drawing.Size(81, 18)
-        Me.Done.TabIndex = 5
-        Me.Done.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
         'DoneLabel
         '
         Me.DoneLabel.Dock = System.Windows.Forms.DockStyle.Fill
@@ -416,43 +445,52 @@ Partial Class SynchronizeForm
         Me.DoneLabel.Text = "\DONE"
         Me.DoneLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'Speed
+        'Done
         '
-        Me.Speed.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Speed.Location = New System.Drawing.Point(260, 17)
-        Me.Speed.Name = "Speed"
-        Me.Speed.Size = New System.Drawing.Size(81, 17)
-        Me.Speed.TabIndex = 3
-        Me.Speed.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Done.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Done.Location = New System.Drawing.Point(260, 51)
+        Me.Done.Name = "Done"
+        Me.Done.Size = New System.Drawing.Size(81, 18)
+        Me.Done.TabIndex = 5
+        Me.Done.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'SpeedLabel
+        'FilesDeletedLabel
         '
-        Me.SpeedLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SpeedLabel.Location = New System.Drawing.Point(174, 17)
-        Me.SpeedLabel.Name = "SpeedLabel"
-        Me.SpeedLabel.Size = New System.Drawing.Size(80, 17)
-        Me.SpeedLabel.TabIndex = 2
-        Me.SpeedLabel.Text = "\SPEED"
-        Me.SpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.FilesDeletedLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FilesDeletedLabel.Location = New System.Drawing.Point(3, 17)
+        Me.FilesDeletedLabel.Name = "FilesDeletedLabel"
+        Me.FilesDeletedLabel.Size = New System.Drawing.Size(90, 17)
+        Me.FilesDeletedLabel.TabIndex = 12
+        Me.FilesDeletedLabel.Text = "\FILES_DELETED"
+        Me.FilesDeletedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ElapsedTime
+        'FoldersCreatedLabel
         '
-        Me.ElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ElapsedTime.Location = New System.Drawing.Point(260, 0)
-        Me.ElapsedTime.Name = "ElapsedTime"
-        Me.ElapsedTime.Size = New System.Drawing.Size(81, 17)
-        Me.ElapsedTime.TabIndex = 1
-        Me.ElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.FoldersCreatedLabel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FoldersCreatedLabel.Location = New System.Drawing.Point(3, 34)
+        Me.FoldersCreatedLabel.Name = "FoldersCreatedLabel"
+        Me.FoldersCreatedLabel.Size = New System.Drawing.Size(90, 17)
+        Me.FoldersCreatedLabel.TabIndex = 8
+        Me.FoldersCreatedLabel.Text = "\FOLDERS_CREATED"
+        Me.FoldersCreatedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ElapsedTimeLabel
+        'FoldersCreated
         '
-        Me.ElapsedTimeLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ElapsedTimeLabel.Location = New System.Drawing.Point(174, 0)
-        Me.ElapsedTimeLabel.Name = "ElapsedTimeLabel"
-        Me.ElapsedTimeLabel.Size = New System.Drawing.Size(80, 17)
-        Me.ElapsedTimeLabel.TabIndex = 0
-        Me.ElapsedTimeLabel.Text = "\ELAPSED"
-        Me.ElapsedTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.FoldersCreated.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FoldersCreated.Location = New System.Drawing.Point(99, 34)
+        Me.FoldersCreated.Name = "FoldersCreated"
+        Me.FoldersCreated.Size = New System.Drawing.Size(69, 17)
+        Me.FoldersCreated.TabIndex = 11
+        Me.FoldersCreated.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'FilesDeleted
+        '
+        Me.FilesDeleted.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.FilesDeleted.Location = New System.Drawing.Point(99, 17)
+        Me.FilesDeleted.Name = "FilesDeleted"
+        Me.FilesDeleted.Size = New System.Drawing.Size(69, 17)
+        Me.FilesDeleted.TabIndex = 14
+        Me.FilesDeleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'PreviewList
         '
@@ -506,44 +544,6 @@ Partial Class SynchronizeForm
         '
         Me.SyncingTimeCounter.Enabled = True
         Me.SyncingTimeCounter.Interval = 50
-        '
-        'FilesDeletedLabel
-        '
-        Me.FilesDeletedLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FilesDeletedLabel.Location = New System.Drawing.Point(3, 17)
-        Me.FilesDeletedLabel.Name = "FilesDeletedLabel"
-        Me.FilesDeletedLabel.Size = New System.Drawing.Size(90, 17)
-        Me.FilesDeletedLabel.TabIndex = 12
-        Me.FilesDeletedLabel.Text = "\FILES_DELETED"
-        Me.FilesDeletedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'FoldersDeletedLabel
-        '
-        Me.FoldersDeletedLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FoldersDeletedLabel.Location = New System.Drawing.Point(3, 51)
-        Me.FoldersDeletedLabel.Name = "FoldersDeletedLabel"
-        Me.FoldersDeletedLabel.Size = New System.Drawing.Size(90, 18)
-        Me.FoldersDeletedLabel.TabIndex = 13
-        Me.FoldersDeletedLabel.Text = "\FOLDERS_DELETED"
-        Me.FoldersDeletedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'FilesDeleted
-        '
-        Me.FilesDeleted.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FilesDeleted.Location = New System.Drawing.Point(99, 17)
-        Me.FilesDeleted.Name = "FilesDeleted"
-        Me.FilesDeleted.Size = New System.Drawing.Size(69, 17)
-        Me.FilesDeleted.TabIndex = 14
-        Me.FilesDeleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'FoldersDeleted
-        '
-        Me.FoldersDeleted.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.FoldersDeleted.Location = New System.Drawing.Point(99, 51)
-        Me.FoldersDeleted.Name = "FoldersDeleted"
-        Me.FoldersDeleted.Size = New System.Drawing.Size(69, 18)
-        Me.FoldersDeleted.TabIndex = 15
-        Me.FoldersDeleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'SynchronizeForm
         '

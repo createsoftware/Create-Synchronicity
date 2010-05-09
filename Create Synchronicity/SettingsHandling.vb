@@ -498,6 +498,24 @@ Public Module Interaction
     End Function
 End Module
 
+Public Class ListViewColumnSorter
+    Implements System.Collections.IComparer
+
+    Public Order As SortOrder
+    Public SortColumn As Integer
+    Private ObjectCompare As Collections.CaseInsensitiveComparer
+
+    Public Sub New(Optional ByVal ColumnId As Integer = 0)
+        SortColumn = ColumnId
+        Order = SortOrder.Ascending
+        ObjectCompare = New Collections.CaseInsensitiveComparer()
+    End Sub
+
+    Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements Collections.IComparer.Compare
+        Return If(Order = SortOrder.Ascending, 1, If(Order = SortOrder.Descending, -1, 0)) * ObjectCompare.Compare(CType(x, ListViewItem).SubItems(SortColumn).Text, CType(y, ListViewItem).SubItems(SortColumn).Text)
+    End Function
+End Class
+
 #If 0 Then
     Sub RegisterTask()
         Dim Arguments As String = ""
