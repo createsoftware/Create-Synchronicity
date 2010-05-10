@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+May. 10, 2010 - UPD: Even nicer progress display (show more info on created/deleted files and folders).
+May. 10, 2010 - NEW: Make "rename" accessible by right click.
 May.  9, 2010 - UPD: Display root path as base node in source and destination folder tree view (aka nices directory path display/selection).
 May.  9, 2010 - UPD: Sort preview list by clicking column headers.
 May.  9, 2010 - UPD: Open files from preview list by double-clicking.
