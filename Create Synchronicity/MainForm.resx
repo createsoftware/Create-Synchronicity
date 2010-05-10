@@ -449,6 +449,18 @@
         5QAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="RenameMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
+        HOkAAAAEZ0FNQQAAsY8L/GEFAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAS5J
+        REFUOE+Vk9dOxDAQRfPrICFtIfCyEnwCfRd4pyz9B+j1OVEURenFQ+5IA4njXSkPJ04c3zsz9tgiImts
+        DyeD0Rr1YX1jOIHWwqMWqqqqSCnF4B2UZckURcHkec5kWUZje6CaBizYOXuk3fMnZu/imdm/fOmQpikM
+        av1/BhwZwpWtaYuD+Wvn22iADBBRNzi8eiOd3gZH1+8kOI5DRgNsFurVM4BQ5qY3H+S67mID1AuQMoQQ
+        gNnt5x+e5y03WCQ+vvsi4Pu+2QDnrO+4Xs7J/TcFQUBJknSPEQbN6JK2VfcahBhPH34oDEOzATpMN0DK
+        Io6iiOI4ZowZoD1hsLo9ayEGEOH4MC41kN1HCc0MIEIQMdFbWeGHCdSOeRllTesy4Wr2ucpYa2+O+Dr/
+        AmOFHfMa7znwAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="ViewLogMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -463,18 +475,6 @@
         4FofmN4DeGVsRLRjF+J328HMdqH5+k10BSexY/gxOvoH8KiiYiWBtAazg4MIqrZiTjB5N3QBc8OX8Tl7
         C7kvt5FM3oF9NIR2Zx+ubt6CsFodlvl8vuTvmziq14Nar0Bgnw7UaROiYSPopwfhGzHg0N42PFEoMNbQ
         MFN292iDoTtQW7tMK5Xfx4S5kPuSery+fnnR5eqWxD8A/t0AL3C1llAAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="RenameMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAFzUkdCAK7O
-        HOkAAAAEZ0FNQQAAsY8L/GEFAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAS5J
-        REFUOE+Vk9dOxDAQRfPrICFtIfCyEnwCfRd4pyz9B+j1OVEURenFQ+5IA4njXSkPJ04c3zsz9tgiImts
-        DyeD0Rr1YX1jOIHWwqMWqqqqSCnF4B2UZckURcHkec5kWUZje6CaBizYOXuk3fMnZu/imdm/fOmQpikM
-        av1/BhwZwpWtaYuD+Wvn22iADBBRNzi8eiOd3gZH1+8kOI5DRgNsFurVM4BQ5qY3H+S67mID1AuQMoQQ
-        gNnt5x+e5y03WCQ+vvsi4Pu+2QDnrO+4Xs7J/TcFQUBJknSPEQbN6JK2VfcahBhPH34oDEOzATpMN0DK
-        Io6iiOI4ZowZoD1hsLo9ayEGEOH4MC41kN1HCc0MIEIQMdFbWeGHCdSOeRllTesy4Wr2ucpYa2+O+Dr/
-        AmOFHfMa7znwAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="ClearLogMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

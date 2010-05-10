@@ -31,9 +31,9 @@ Partial Class MainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
+        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\ACTIONS", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("\PROFILES", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New System.Windows.Forms.ListViewItem.ListViewSubItem() {New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE_LABEL"), New System.Windows.Forms.ListViewItem.ListViewSubItem(Nothing, "\NEW_PROFILE", System.Drawing.Color.DarkGray, System.Drawing.SystemColors.Window, New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte)))}, 3)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Main_Actions = New System.Windows.Forms.ListView()
         Me.Actions_NameColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -82,14 +82,14 @@ Partial Class MainForm
         '
         Me.Main_Actions.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Actions_NameColumn, Me.Main_MethodsColumn})
         Me.Main_Actions.Dock = System.Windows.Forms.DockStyle.Fill
-        ListViewGroup1.Header = "\ACTIONS"
-        ListViewGroup1.Name = "Actions"
-        ListViewGroup2.Header = "\PROFILES"
-        ListViewGroup2.Name = "Profiles"
-        Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2})
-        ListViewItem1.Group = ListViewGroup1
-        ListViewItem1.StateImageIndex = 0
-        Me.Main_Actions.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewGroup3.Header = "\ACTIONS"
+        ListViewGroup3.Name = "Actions"
+        ListViewGroup4.Header = "\PROFILES"
+        ListViewGroup4.Name = "Profiles"
+        Me.Main_Actions.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup3, ListViewGroup4})
+        ListViewItem2.Group = ListViewGroup3
+        ListViewItem2.StateImageIndex = 0
+        Me.Main_Actions.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.Main_Actions.LargeImageList = Me.Main_SyncIcons
         Me.Main_Actions.Location = New System.Drawing.Point(0, 0)
         Me.Main_Actions.MultiSelect = False
@@ -337,7 +337,7 @@ Partial Class MainForm
         '
         'Main_ActionsMenu
         '
-        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.ChangeSettingsMenuItem, Me.ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.ViewLogMenuItem, Me.RenameMenuItem, Me.ClearLogMenuItem, Me.ActionsMenuToolStripSeparator2, Me.ScheduleMenuItem})
+        Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.ChangeSettingsMenuItem, Me.ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.RenameMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.ActionsMenuToolStripSeparator2, Me.ScheduleMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
         Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 214)
         '
