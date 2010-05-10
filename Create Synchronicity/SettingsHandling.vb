@@ -221,7 +221,7 @@ Class ProfileHandler
         PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
         PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
         PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
-        'NOTE: Only vital settings should be checked, since the config will be rejected if a setting is unset.
+        'NOTE: Only vital settings should be checked, since the config will be rejected if a mismatch occurs.
     End Sub
 
     Function LoadConfigFile() As Boolean
