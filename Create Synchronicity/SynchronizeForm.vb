@@ -367,10 +367,10 @@ Public Class SynchronizeForm
         Select Case Side
             Case SideOfSource.Left
                 ListItem.Tag = "LR"
-                DirectionString = Translation.Translate("\LR")
+                DirectionString = If(Item.Action = TypeOfAction.Create, Translation.Translate("\LR"), Translation.Translate("\LEFT"))
             Case SideOfSource.Right
                 ListItem.Tag = "RL"
-                DirectionString = Translation.Translate("\RL")
+                DirectionString = If(Item.Action = TypeOfAction.Create, Translation.Translate("\RL"), Translation.Translate("\RIGHT"))
         End Select
         ListItem.SubItems.Add(DirectionString)
         ListItem.SubItems.Add(Item.Path)
