@@ -64,6 +64,7 @@ Partial Class MainForm
         Me.ActionsMenuToolStripSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewLogMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RenameMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearLogMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ActionsMenuToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ScheduleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -71,7 +72,6 @@ Partial Class MainForm
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RenameMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
@@ -386,6 +386,13 @@ Partial Class MainForm
         Me.ViewLogMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ViewLogMenuItem.Text = "\VIEW_LOG"
         '
+        'RenameMenuItem
+        '
+        Me.RenameMenuItem.Image = CType(resources.GetObject("RenameMenuItem.Image"), System.Drawing.Image)
+        Me.RenameMenuItem.Name = "RenameMenuItem"
+        Me.RenameMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.RenameMenuItem.Text = "\RENAME"
+        '
         'ClearLogMenuItem
         '
         Me.ClearLogMenuItem.Image = CType(resources.GetObject("ClearLogMenuItem.Image"), System.Drawing.Image)
@@ -434,13 +441,6 @@ Partial Class MainForm
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(99, 22)
         Me.ExitToolStripMenuItem.Text = "\CANCEL"
-        '
-        'RenameMenuItem
-        '
-        Me.RenameMenuItem.Image = CType(resources.GetObject("RenameMenuItem.Image"), System.Drawing.Image)
-        Me.RenameMenuItem.Name = "RenameMenuItem"
-        Me.RenameMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.RenameMenuItem.Text = "\RENAME"
         '
         'MainForm
         '
