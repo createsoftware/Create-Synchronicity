@@ -148,3 +148,6 @@ SYNCED_OK=A sincronização fez-se sem erros "{0}".
 ->FILES_ONLY=
 ->SUBFOLDERS_ONLY=
 ->NO_SYNC=
+->RENAME=
+LEFT=Esquerda
+RIGHT=Direita

@@ -148,3 +148,6 @@ SYNCED_OK=Create Synchronicity hat die Synchronisierung von "{0}" erfolgreich ab
 ->FILES_ONLY=
 ->SUBFOLDERS_ONLY=
 ->NO_SYNC=
+->RENAME=
+LEFT=Links
+RIGHT=Rechts

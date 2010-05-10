@@ -148,3 +148,6 @@ FOLDER_AND_SUBFOLDERS=Synchroniser les fichiers et les sous-dossiers
 FILES_ONLY=Ne synchroniser que les fichiers
 SUBFOLDERS_ONLY=Ne synchroniser que les sous-dossiers
 NO_SYNC=Ne pas synchroniser ce dossier
+RENAME=Renommer
+LEFT=Gauche
+RIGHT=Droite
