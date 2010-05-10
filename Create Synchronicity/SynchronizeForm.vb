@@ -30,8 +30,12 @@ Public Class SynchronizeForm
         Shared ActionsDone As Integer
         Shared CreatedFiles As Integer
         Shared CreatedFolders As Integer
+        Shared FilesToCreate As Integer
+        Shared FoldersToCreate As Integer
         Shared DeletedFiles As Integer
         Shared DeletedFolders As Integer
+        Shared FilesToDelete As Integer
+        Shared FoldersToDelete As Integer
         Shared TotalActionsCount As Integer
         Shared CurrentStep As Integer
         Shared TimeElapsed As TimeSpan
@@ -77,8 +81,12 @@ Public Class SynchronizeForm
         Status.ActionsDone = 0
         Status.CreatedFiles = 0
         Status.CreatedFolders = 0
+        Status.FilesToCreate = 0
+        Status.FoldersToCreate = 0
         Status.DeletedFiles = 0
         Status.DeletedFolders = 0
+        Status.FilesToDelete = 0
+        Status.FoldersToDelete = 0
         Status.TotalActionsCount = 0
         Status.CurrentStep = 1
 
@@ -214,9 +222,11 @@ Public Class SynchronizeForm
             End Select
         End If
 
-        Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
-        FilesCreated.Text = Status.CreatedFiles : FilesDeleted.Text = Status.DeletedFiles
-        FoldersCreated.Text = Status.CreatedFolders : FoldersDeleted.Text = Status.DeletedFolders
+        If Not Status.CurrentStep = 1 Then
+            Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
+            FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate : FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
+            FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate : FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
+        End If
     End Sub
 #End Region
 
@@ -294,8 +304,8 @@ Public Class SynchronizeForm
                     UpdatePreviewList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
+                UpdateStatuses()
                 SyncingTimeCounter.Stop()
-                Status.TotalActionsCount = SyncingList(SideOfSource.Left).Count + SyncingList(SideOfSource.Right).Count
 
             Case 2
                 Status.CurrentStep = 3
@@ -377,7 +387,10 @@ Public Class SynchronizeForm
 
         Select Case Item.Action
             Case TypeOfAction.Create
-                If Item.Type = TypeOfItem.Folder Then ListItem.ImageIndex = 3
+                If Item.Type = TypeOfItem.Folder Then
+                    ListItem.ImageIndex = 3
+                    Status.FoldersToCreate += 1
+                End If
                 If Item.Type = TypeOfItem.File Then
                     Select Case Side
                         Case SideOfSource.Left
@@ -385,11 +398,19 @@ Public Class SynchronizeForm
                         Case SideOfSource.Right
                             ListItem.ImageIndex = 1
                     End Select
+                    Status.FilesToCreate += 1
                 End If
             Case TypeOfAction.Delete
-                If Item.Type = TypeOfItem.Folder Then ListItem.ImageIndex = 4
-                If Item.Type = TypeOfItem.File Then ListItem.ImageIndex = 2
+                If Item.Type = TypeOfItem.Folder Then
+                    ListItem.ImageIndex = 4
+                    Status.FoldersToDelete += 1
+                End If
+                If Item.Type = TypeOfItem.File Then
+                    ListItem.ImageIndex = 2
+                    Status.FilesToDelete += 1
+                End If
         End Select
+        Status.TotalActionsCount += 1
     End Sub
 
     Sub LaunchTimer()
