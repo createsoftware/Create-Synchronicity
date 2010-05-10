@@ -118,7 +118,7 @@ Public Class MainForm
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then Exit Sub
 
-        If e.Button = Windows.Forms.MouseButtons.Right Then
+        If e.Button = Windows.Forms.MouseButtons.Right Then 'TODO: Remove right click rename behaviour
             Main_Actions.LabelEdit = True
             Main_Actions.SelectedItems(0).BeginEdit()
         Else
@@ -190,7 +190,7 @@ Public Class MainForm
         SyncForm.Dispose()
     End Sub
 
-    Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ChangeSettingsMenuItem.Click
+    Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
         Dim SettingsForm As New SettingsForm(CurrentProfile)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
@@ -204,6 +204,11 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Sub RenameMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenameMenuItem.Click
+        Main_Actions.LabelEdit = True
+        Main_Actions.SelectedItems(0).BeginEdit()
+    End Sub
+
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
         If Not IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)) Then Exit Sub
         Diagnostics.Process.Start(ProgramConfig.GetLogPath(CurrentProfile))
@@ -213,7 +218,7 @@ Public Class MainForm
         Profiles(CurrentProfile).DeleteLogFile()
     End Sub
 
-    Private Sub Main_ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_ScheduleMenuItem.Click
+    Private Sub Main_ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScheduleMenuItem.Click
         Dim SchedForm As New SchedulingForm(CurrentProfile)
         SchedForm.ShowDialog()
         Main_ReloadConfigs()
