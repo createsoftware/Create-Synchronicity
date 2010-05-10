@@ -216,7 +216,7 @@ Public Class SynchronizeForm
 
         Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
         FilesCreated.Text = Status.CreatedFiles : FilesDeleted.Text = Status.DeletedFiles
-        FoldersCreated.Text = Status.CreatedFolders : FoldersDeleted.Text = Status.DeletedFiles
+        FoldersCreated.Text = Status.CreatedFolders : FoldersDeleted.Text = Status.DeletedFolders
     End Sub
 #End Region
 
