@@ -63,6 +63,7 @@ Class LogHandler
         LogW.WriteLine("			")
         LogW.WriteLine("			table {")
         LogW.WriteLine("				border-collapse: collapse;")
+        LogW.WriteLine("			    width: 100%;")
         LogW.WriteLine("			}")
         LogW.WriteLine("			")
         LogW.WriteLine("			th, td {")
@@ -92,7 +93,7 @@ Class LogHandler
 
     Sub PutLine(ByVal Title As String, ByVal Contents As String, ByRef LogW As IO.StreamWriter)
 #If DEBUG Then
-        LogW.WriteLine(Title & Microsoft.VisualBasic.vbTab & Contents)
+        LogW.WriteLine(Title & "	" & Contents.Replace(" -> ", "	"))
 #Else
         LogW.WriteLine("<tr><td>" & Title & "</td><td>" & Contents & "</td></tr>")
 #End If
@@ -119,10 +120,10 @@ Class LogHandler
                 Next
 #End If
                 For Each Pair As KeyValuePair(Of SyncingItem, Boolean) In Log
-                    PutLine(If(Pair.Value, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), Pair.Key.FormatType() & "	" & Pair.Key.FormatAction() & "	" & Pair.Key.Path, LogWriter)
+                    PutLine(If(Pair.Value, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), String.Join(" -> ", New String() {Pair.Key.FormatType(), Pair.Key.FormatAction(), Pair.Key.Path}), LogWriter)
                 Next
                 For Each Ex As Exception In Errors
-                    PutLine(Translation.Translate("\ERROR"), Ex.Message & "	" & Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n"), LogWriter)
+                    PutLine(Translation.Translate("\ERROR"), String.Join(" -> ", New String() {Ex.Message, Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}), LogWriter)
                 Next
 
 #If Not DEBUG Then
