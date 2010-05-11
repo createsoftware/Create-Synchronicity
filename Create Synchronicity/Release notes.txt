@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+May. 11, 2010 - UPD: Improved log display.
 May. 10, 2010 - UPD: Clarify preview screen.
 May. 10, 2010 - UPD: Even nicer progress display (show more info on created/deleted files and folders).
 May. 10, 2010 - NEW: Make "rename" accessible by right click.
