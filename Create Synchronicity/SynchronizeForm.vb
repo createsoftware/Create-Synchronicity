@@ -370,20 +370,12 @@ Public Class SynchronizeForm
 
     Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
         Dim ListItem As New ListViewItem
-        ListItem = PreviewList.Items.Add(Item.FormatType)
-
-        ListItem.SubItems.Add(Item.FormatAction)
-        Dim DirectionString As String = ""
-        Select Case Side
-            Case SideOfSource.Left
-                ListItem.Tag = "LR"
-                DirectionString = If(Item.Action = TypeOfAction.Create, Translation.Translate("\LR"), Translation.Translate("\LEFT"))
-            Case SideOfSource.Right
-                ListItem.Tag = "RL"
-                DirectionString = If(Item.Action = TypeOfAction.Create, Translation.Translate("\RL"), Translation.Translate("\RIGHT"))
-        End Select
-        ListItem.SubItems.Add(DirectionString)
+        ListItem = PreviewList.Items.Add(Item.FormatType())
+        ListItem.SubItems.Add(Item.FormatAction())
+        ListItem.SubItems.Add(Item.FormatDirection(Side))
         ListItem.SubItems.Add(Item.Path)
+
+        ListItem.Tag = If(Side = SideOfSource.Left, "LR", "RL")
 
         Select Case Item.Action
             Case TypeOfAction.Create

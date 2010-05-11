@@ -61,6 +61,17 @@ Public Class SyncingItem
                 Return Translation.Translate("\NONE")
         End Select
     End Function
+
+    Function FormatDirection(ByVal Side As SideOfSource)
+        Select Case Side
+            Case SideOfSource.Left
+                Return If(Action = TypeOfAction.Create, Translation.Translate("\LR"), Translation.Translate("\LEFT"))
+            Case SideOfSource.Right
+                Return If(Action = TypeOfAction.Create, Translation.Translate("\RL"), Translation.Translate("\RIGHT"))
+            Case Else
+                Return ""
+        End Select
+    End Function
 End Class
 
 Public Class FileNamePattern
