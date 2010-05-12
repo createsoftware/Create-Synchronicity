@@ -1,4 +1,4 @@
-﻿# Create Synchronicity German Language file
+# Create Synchronicity German Language file
 # Last update: 04.20.2010
 # Translation by Florian Haag, with few additions by Jeanne Tourette
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
@@ -38,13 +38,13 @@ EXCLUDE_THESE=Diese Dateien ausschließen:
 FAILED=Fehlgeschlagen
 FILE=Datei
 FILES_CREATED=Erzeugte Dateien:
-->FILES_DELETED=
+FILES_DELETED=Gelöschte Dateien:
 FILETYPES=Dateitypen:
 FINISHED=Fertig!
 FIRST_RUN=Erster Start
 FOLDER=Ordner
-->FOLDERS_CREATED=
-->FOLDERS_DELETED=
+FOLDERS_CREATED=Erzeugte Ordner:
+FOLDERS_DELETED=Gelöschte Ordner:
 FROM=Von: 
 HOURS=Stunden.
 INCLUDE_EXCLUDE=Dateitypen ein- oder ausschließen
@@ -144,10 +144,10 @@ SCH_LABEL=Synchronisierungsplanung:
 SCH_WAITING=Nächster Durchlauf: "{0}", {1}.
 SYNCED_W_ERRORS=Create Synchronicity hat die Synchronisierung von "{0}" abgeschlossen. Es sind jedoch Fehler aufgetreten: Bitte sehen Sie sich das Protokoll an, um mehr Informationen zu erhalten.
 SYNCED_OK=Create Synchronicity hat die Synchronisierung von "{0}" erfolgreich abgeschlossen.
-->FOLDER_AND_SUBFOLDERS=
-->FILES_ONLY=
-->SUBFOLDERS_ONLY=
-->NO_SYNC=
-->RENAME=
+FOLDER_AND_SUBFOLDERS=Dateien und Unterverzeichnisse synchronisieren
+FILES_ONLY=Nur Dateien synchronisieren
+SUBFOLDERS_ONLY=Nur Unterverzeichnisse synchronisieren
+NO_SYNC=Diesen Ordner nicht synchronisieren
+RENAME=Umbenennen
 LEFT=Links
 RIGHT=Rechts
