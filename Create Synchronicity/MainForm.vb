@@ -118,18 +118,12 @@ Public Class MainForm
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
 
-
-        If e.Button = Windows.Forms.MouseButtons.Right Then 'TODO: Remove right click rename behaviour
+        If Main_Actions.SelectedIndices(0) = 0 Then
+            If e.Button = Windows.Forms.MouseButtons.Right Then Exit Sub
             Main_Actions.LabelEdit = True
             Main_Actions.SelectedItems(0).BeginEdit()
         Else
-            If Main_Actions.SelectedIndices(0) = 0 Then
-                'TODO: Not on right click
-                Main_Actions.LabelEdit = True
-                Main_Actions.SelectedItems(0).BeginEdit()
-            Else
-                Main_ActionsMenu.Show(Main_Actions, e.Location)
-            End If
+            Main_ActionsMenu.Show(Main_Actions, e.Location)
         End If
     End Sub
 
