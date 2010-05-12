@@ -1,6 +1,6 @@
-﻿# Create Synchronicity Portuguese Language file
+# Create Synchronicity Portuguese Language file
 # Last update: 04.20.2010
-# Translation by André Modesto
+# Translation by André Modesto, Pedro Silva
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -144,10 +144,10 @@ SCH_LABEL=Agendamento:
 SCH_WAITING=Próximo arranque: "{0}", {1}.
 SYNCED_W_ERRORS=O programa acabou a sincronização "{0}". Porém, alguns erros ocorreram: Ver log para mais informações.
 SYNCED_OK=A sincronização fez-se sem erros "{0}".
-->FOLDER_AND_SUBFOLDERS=
-->FILES_ONLY=
-->SUBFOLDERS_ONLY=
-->NO_SYNC=
-->RENAME=
+FOLDER_AND_SUBFOLDERS=Sincronizar ficheiros e subpastas
+FILES_ONLY=Sincronizar ficheiros apenas
+SUBFOLDERS_ONLY=Sincronizar subpastas apenas
+NO_SYNC=Não sincronizar esta pasta
+RENAME=Renomear
 LEFT=Esquerda
 RIGHT=Direita
