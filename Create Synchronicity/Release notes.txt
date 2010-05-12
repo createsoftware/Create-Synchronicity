@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+May. 12, 2010 - NEW: Welcome Pedro Silva among translators :)
+May. 12, 2010 - UPD: Changed right-click behaviour in main window to simply display the menu.
 May. 11, 2010 - UPD: Improved log display.
 May. 10, 2010 - UPD: Clarify preview screen.
 May. 10, 2010 - UPD: Even nicer progress display (show more info on created/deleted files and folders).
