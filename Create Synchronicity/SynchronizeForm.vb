@@ -507,15 +507,15 @@ Public Class SynchronizeForm
 
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
-        Do_Task(SyncingList(SideOfSource.Left), Left, Right, 2)
+        Do_Task(SideOfSource.Left, SyncingList(SideOfSource.Left), Left, Right, 2)
         Me.Invoke(TaskDoneDelegate, 2)
 
         Me.Invoke(ProgessSetMaxCallBack, New Object() {3, SyncingList(SideOfSource.Right).Count})
-        Do_Task(SyncingList(SideOfSource.Right), Right, Left, 3)
+        Do_Task(SideOfSource.Right, SyncingList(SideOfSource.Right), Right, Left, 3)
         Me.Invoke(TaskDoneDelegate, 3)
     End Sub
 
-    Sub Do_Task(ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
+    Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
         Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
@@ -554,13 +554,13 @@ Public Class SynchronizeForm
                         End Select
                 End Select
                 Status.ActionsDone += 1
-                Log.LogAction(Entry, True)
+                Log.LogAction(Entry, Side, True)
 
             Catch StopEx As System.Threading.ThreadAbortException
 
             Catch ex As Exception
                 Log.HandleError(ex)
-                Log.LogAction(Entry, False)
+                Log.LogAction(Entry, Side, False)
 
             Finally
                 If Not [STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
