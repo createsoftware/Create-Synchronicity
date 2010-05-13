@@ -248,13 +248,14 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_ReloadTrees()
-        Settings_ReloadButton.Enabled = False 'Todo: DOEvents
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
+        Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
+        Settings_Loading.Visible = True
         LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
         LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
         Settings_SetRootPathDisplay(True)
-
-        Settings_ReloadButton.Enabled = True
+        Settings_Loading.Visible = False
+        Settings_ReloadButton.Enabled = True : Settings_SaveButton.Enabled = True
     End Sub
 
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
@@ -266,6 +267,7 @@ Public Class SettingsForm
             Tree.Nodes.Add("")
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(Path)
+                    Application.DoEvents()
                     Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                 Next
 
