@@ -82,15 +82,6 @@ Class LogHandler
         LogW.WriteLine("</html>")
       End Sub
 
-    Sub OpenSyncHeaders(ByRef LogW As IO.StreamWriter)
-        LogW.WriteLine("<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
-        LogW.WriteLine("<table><tr><th>Type</th><th>Contents</th></tr>")
-    End Sub
-
-    Sub CloseSyncHeaders(ByRef LogW As IO.StreamWriter)
-        LogW.WriteLine("</table>")
-    End Sub
-
     Sub PutLine(ByVal Title As String, ByVal Contents As String, ByRef LogW As IO.StreamWriter)
 #If DEBUG Then
         LogW.WriteLine(Title & "	" & Contents.Replace(" -> ", "	"))
@@ -99,19 +90,31 @@ Class LogHandler
 #End If
     End Sub
 
-    Sub SaveAndDispose()
+    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String)
         If Disposed Then Exit Sub
         Disposed = True
 
         Try
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
-
+            'TODO: </body> and </html> tags
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
 
             Try
 #If Not DEBUG Then
                 If NewLog Then OpenHTMLHeaders(LogWriter)
-                OpenSyncHeaders(LogWriter)
+                LogWriter.WriteLine("<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
+                LogWriter.WriteLine("<p>")
+#End If
+
+                LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\LEFT"), Left))
+#If Not DEBUG Then
+                LogWriter.WriteLine("<br />")
+#End If
+                LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\RIGHT"), Right))
+
+#If Not DEBUG Then
+                LogWriter.WriteLine("</p>")
+                LogWriter.WriteLine("<table>") '<tr><th>Type</th><th>Contents</th></tr>
 #End If
 
 #If DEBUG Then
@@ -127,7 +130,7 @@ Class LogHandler
                 Next
 
 #If Not DEBUG Then
-                CloseSyncHeaders(LogWriter)
+                LogWriter.WriteLine("</table>")
                 If NewLog Then CloseHTMLHeaders(LogWriter)
 #End If
             Catch Ex As Exception
