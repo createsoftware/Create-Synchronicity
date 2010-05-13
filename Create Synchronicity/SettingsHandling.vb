@@ -395,7 +395,7 @@ Class ProfileHandler
 
             If Path.StartsWith("""") Then
                 For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
-                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso Drive.VolumeLabel = Label Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep))
+                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep))
                 Next
                 'TODO: ElseIf Path.StartsWith(":") Then 'USBID
             End If
