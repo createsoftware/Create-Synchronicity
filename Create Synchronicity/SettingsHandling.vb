@@ -400,7 +400,7 @@ Class ProfileHandler
                 'TODO: ElseIf Path.StartsWith(":") Then 'USBID
             End If
 
-            Return ""
+            Return Path
         End If
 #End If
 
