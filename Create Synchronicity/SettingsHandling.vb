@@ -453,7 +453,10 @@ Public Module Updates
 
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
         Try
-            Dim CurrentVersion As String = (New System.Net.WebClient).DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
+            Dim UpdateClient As New System.Net.WebClient
+            UpdateClient.Proxy = System.Net.HttpWebRequest.DefaultWebProxy 'Tracker #2976549
+            Dim CurrentVersion As String = UpdateClient.DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
+
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
