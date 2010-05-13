@@ -219,9 +219,9 @@ Class ProfileHandler
         PredicateConfigMatchingList.Add(ConfigOptions.Method, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.Restrictions, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
-        PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
-        'NOTE: Only vital settings should be checked, since the config will be rejected if a mismatch occurs.
+        'PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
+        'PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*") 'Useless
+        'NOTE: Only vital settings should be checked for correctness, since the config will be rejected if a mismatch occurs.
     End Sub
 
     Function LoadConfigFile() As Boolean
@@ -283,11 +283,9 @@ Class ProfileHandler
             If Not Configuration.ContainsKey(Pair.Key) Then
                 IsValid = False
                 InvalidListing.Add(String.Format(Translation.Translate("\SETTING_UNSET"), Pair.Key))
-            Else
-                If Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
-                    IsValid = False
-                    InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
-                End If
+            ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
+                IsValid = False
+                InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
             End If
         Next
 
