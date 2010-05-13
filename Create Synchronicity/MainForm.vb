@@ -232,7 +232,8 @@ Public Class MainForm
                     If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profile.Value.Scheduler.NextRun(), Profile.Key))
                 Next
 
-                ProfilesToRun.Sort()
+                'Tracker #3000728
+                ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Value.CompareTo(Second.Value))
                 For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
             Else
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
