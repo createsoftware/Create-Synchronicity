@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+May. 13, 2010 - FIX: Scheduler would in some cases fail to compare dates.
+May. 13, 2010 - FIX: Permissions-related bug when copying write protected files with DST correction enabled.
 May. 12, 2010 - NEW: Welcome Pedro Silva among translators :)
 May. 12, 2010 - UPD: Changed right-click behaviour in main window to simply display the menu.
 May. 11, 2010 - UPD: Improved log display.
