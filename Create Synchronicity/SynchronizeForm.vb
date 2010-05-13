@@ -328,6 +328,7 @@ Public Class SynchronizeForm
                     PreviewList.Columns.Clear()
                     PreviewList.Columns.Add(Translation.Translate("\ERROR"))
                     Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add(Translation.Translate("\ERROR_DETAIL"))
+                    ColumnSorter.SortColumn = ErrorColumn.Index 'TODO: needs checking.
 
                     Dim ErrorsList As New List(Of Exception)(Log.Errors)
                     For Each Ex As Exception In ErrorsList
