@@ -196,7 +196,7 @@ Public Class SynchronizeForm
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
         End Select
 
-        If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(Address)
+        If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(If(My.Computer.Keyboard.CtrlKeyDown, Address.Substring(0, Address.LastIndexOf(ConfigOptions.DirSep)), Address))
     End Sub
 
     Sub UpdateStatuses()

@@ -405,10 +405,6 @@ Class ProfileHandler
         Return Path
     End Function
 
-    Public Shared Function GetPathFromDriveName(ByVal Label As String) As String
-
-    End Function
-
     Private Shared Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
         Dim ReturnStr As String = ""
         For Each Str As String In StrList
