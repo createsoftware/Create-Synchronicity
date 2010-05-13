@@ -269,12 +269,12 @@ Class ProfileHandler
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
-        If Not IO.Directory.Exists(GetSetting(ConfigOptions.Source)) Then
+        If Not IO.Directory.Exists(TranslatePath(GetSetting(ConfigOptions.Source))) Then
             InvalidListing.Add(Translation.Translate("\INVALID_SOURCE"))
             IsValid = False
         End If
 
-        If Not IO.Directory.Exists(GetSetting(ConfigOptions.Destination)) Then
+        If Not IO.Directory.Exists(TranslatePath(GetSetting(ConfigOptions.Destination))) Then
             InvalidListing.Add(Translation.Translate("\INVALID_DEST"))
             IsValid = False
         End If
@@ -289,17 +289,16 @@ Class ProfileHandler
             End If
         Next
 
-
         If Not IsValid Then
             Interaction.ShowMsg(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0)), Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Return False
         Else
             If WarnUnrootedPaths Then
-                If Not IO.Path.IsPathRooted(GetSetting(ConfigOptions.Source)) Then
+                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(ConfigOptions.Source))) Then
                     If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED"), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
 
-                If Not IO.Path.IsPathRooted(GetSetting(ConfigOptions.Source)) Then
+                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(ConfigOptions.Destination))) Then
                     If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED"), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
             End If
@@ -382,6 +381,32 @@ Class ProfileHandler
             End If
         Next
     End Sub
+
+    Public Shared Function TranslatePath(ByVal Path As String)
+        Dim Label As String, RelativePath As String
+        If Path.StartsWith("""") Or Path.StartsWith(":") Then
+            Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
+            If ClosingPos = 0 Then Return "" 'TODO: Missing closing operator.
+
+            Label = Path.Substring(1, ClosingPos - 1)
+            RelativePath = Path.Substring(ClosingPos + 1)
+
+            If Path.StartsWith("""") Then
+                For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
+                    If Drive.VolumeLabel = Label Then Return (Drive.Name & RelativePath)
+                Next
+                'TODO: ElseIf Path.StartsWith(":") Then 'USBID
+            End If
+
+            Return ""
+        End If
+
+        Return Path
+    End Function
+
+    Public Shared Function GetPathFromDriveName(ByVal Label As String) As String
+
+    End Function
 
     Private Shared Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
         Dim ReturnStr As String = ""

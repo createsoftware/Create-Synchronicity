@@ -191,9 +191,9 @@ Public Class SynchronizeForm
         Dim Address As String = ""
         Select Case PreviewList.SelectedItems(0).Tag
             Case "LR"
-                Address = Handler.GetSetting(ConfigOptions.Source) & PreviewList.SelectedItems(0).SubItems(3).Text
+                Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case "RL"
-                Address = Handler.GetSetting(ConfigOptions.Destination) & PreviewList.SelectedItems(0).SubItems(2).Text
+                Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(2).Text
         End Select
 
         If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(Address)
@@ -436,16 +436,19 @@ Public Class SynchronizeForm
 
         ValidFiles.Clear()
 
+        Dim Source As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
+        Dim Destination As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
+
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Context.Source = SideOfSource.Left
-        Context.SourcePath = Handler.GetSetting(ConfigOptions.Source)
-        Context.DestinationPath = Handler.GetSetting(ConfigOptions.Destination)
+        Context.SourcePath = Source
+        Context.DestinationPath = Destination
         Context.Action = TypeOfAction.Create
         Init_Synchronization(Handler.LeftCheckedNodes, Context)
 
         Context.Source = SideOfSource.Right
-        Context.SourcePath = Handler.GetSetting(ConfigOptions.Destination)
-        Context.DestinationPath = Handler.GetSetting(ConfigOptions.Source)
+        Context.SourcePath = Destination
+        Context.DestinationPath = Source
         Select Case Handler.GetSetting(ConfigOptions.Method)
             Case "0"
                 Context.Action = TypeOfAction.Delete
@@ -503,8 +506,8 @@ Public Class SynchronizeForm
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
-        Dim Left As String = Handler.GetSetting(ConfigOptions.Source)
-        Dim Right As String = Handler.GetSetting(ConfigOptions.Destination)
+        Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
+        Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
 
         Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
