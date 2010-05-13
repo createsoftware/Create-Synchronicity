@@ -835,6 +835,7 @@ Public Class SynchronizeForm
         IO.File.Copy(Source & Path, Dest & Path, True)
 
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
+            IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal) 'Tracker #2999436
             IO.File.SetLastWriteTimeUtc(Dest & Path, IO.File.GetLastWriteTimeUtc(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
