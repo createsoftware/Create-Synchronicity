@@ -441,7 +441,7 @@ Structure ScheduleInfo
                 Return Date.MinValue 'aka never
         End Select
 
-        '>=: Won't run /just/ now (prevent double-syncing.
+        '">=" prevents double-syncing.
         While Now >= RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
         Return RunAt
     End Function
@@ -463,7 +463,7 @@ Public Module Updates
                 If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
             End If
         Catch Ex As Exception
-            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR"), Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
+            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
 #If DEBUG Then
             Interaction.ShowMsg(Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
 #End If
