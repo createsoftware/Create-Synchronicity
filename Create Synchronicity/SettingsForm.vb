@@ -261,6 +261,7 @@ Public Class SettingsForm
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
         Tree.Nodes.Clear()
 
+        Path = ProfileHandler.TranslatePath(Path)
         Tree.Enabled = Path <> "" AndAlso IO.Directory.Exists(Path)
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White

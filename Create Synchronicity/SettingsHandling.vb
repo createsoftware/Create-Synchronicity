@@ -383,6 +383,7 @@ Class ProfileHandler
     End Sub
 
     Public Shared Function TranslatePath(ByVal Path As String)
+        'TODO: Windows only
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
             Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
@@ -393,7 +394,7 @@ Class ProfileHandler
 
             If Path.StartsWith("""") Then
                 For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
-                    If Drive.VolumeLabel = Label Then Return (Drive.Name & RelativePath)
+                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso Drive.VolumeLabel = Label Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep))
                 Next
                 'TODO: ElseIf Path.StartsWith(":") Then 'USBID
             End If
