@@ -193,7 +193,7 @@ Public Class SynchronizeForm
             Case "LR"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case "RL"
-                Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(2).Text
+                Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
         End Select
 
         If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(Address)
