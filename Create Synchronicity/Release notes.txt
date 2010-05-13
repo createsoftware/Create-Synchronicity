@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+May. 13, 2010 - NEW: Open folders from preview list by holding Control while double-clicking.
 May. 13, 2010 - FIX: Added proxy support.
 May. 13, 2010 - FIX: Sorting bug at scheduler startup.
 May. 13, 2010 - FIX: Permissions-related bug when copying write protected files with DST correction enabled.
@@ -25,9 +26,9 @@ May. 11, 2010 - UPD: Improved log display.
 May. 10, 2010 - UPD: Clarify preview screen.
 May. 10, 2010 - UPD: Even nicer progress display (show more info on created/deleted files and folders).
 May. 10, 2010 - NEW: Make "rename" accessible by right click.
-May.  9, 2010 - UPD: Display root path as base node in source and destination folder tree view (aka nices directory path display/selection).
-May.  9, 2010 - UPD: Sort preview list by clicking column headers.
-May.  9, 2010 - UPD: Open files from preview list by double-clicking.
+May.  9, 2010 - UPD: Display root path as base node in source and destination folder tree view (aka nicer directory path display/selection).
+May.  9, 2010 - NEW: Sort preview list by clicking column headers.
+May.  9, 2010 - NEW: Open files from preview list by double-clicking.
 May.  9, 2010 - UPD: Nicer progress display.
 May.  8, 2010 - UPD: Easier directory inclusion/exclusion.
 May.  7, 2010 - FIX: Small scheduler date miscalculation.
