@@ -393,7 +393,7 @@ Class ProfileHandler
             Label = Path.Substring(1, ClosingPos - 1)
             RelativePath = Path.Substring(ClosingPos + 1)
 
-            If Path.StartsWith("""") Then
+            If Path.StartsWith("""") And Not Label = "" Then
                 For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
                     If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep))
                 Next
