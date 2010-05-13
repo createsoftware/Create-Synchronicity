@@ -383,6 +383,7 @@ Class ProfileHandler
     End Sub
 
     Public Shared Function TranslatePath(ByVal Path As String)
+#If Not LINUX Then
         'TODO: Windows only
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
@@ -401,6 +402,7 @@ Class ProfileHandler
 
             Return ""
         End If
+#End If
 
         Return Path
     End Function
