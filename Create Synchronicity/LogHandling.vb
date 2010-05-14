@@ -6,6 +6,15 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Structure ErrorItem
+    Dim Ex As Exception
+    Dim Details As String
+
+    Sub New(ByVal _Ex As Exception, ByVal _Details As String)
+        Ex = _Ex : Details = _Details
+    End Sub
+End Structure
+
 Structure LogItem
     Dim Item As SyncingItem
     Dim Side As SideOfSource
@@ -19,7 +28,7 @@ End Structure
 
 Class LogHandler
     Dim LogName As String
-    Public Errors As List(Of Exception)
+    Public Errors As List(Of ErrorItem)
     Public Log As List(Of LogItem)
 #If DEBUG Then
     Public DebugInfo As List(Of String)
@@ -35,7 +44,7 @@ Class LogHandler
 
         Disposed = False
         LogName = _LogName
-        Errors = New List(Of Exception)
+        Errors = New List(Of ErrorItem)
         Log = New List(Of LogItem)
 
 #If DEBUG Then
@@ -45,8 +54,7 @@ Class LogHandler
 
     Sub HandleError(ByVal Ex As Exception, Optional ByVal Details As String = "")
         If TypeOf (Ex) Is Threading.ThreadAbortException Then Exit Sub
-        If Not Details = "" Then Ex = New Exception(Ex.Message & Microsoft.VisualBasic.vbNewLine & Details, Ex)
-        Errors.Add(Ex)
+        Errors.Add(New ErrorItem(Ex, Details))
     End Sub
 
     Sub LogAction(ByVal Item As SyncingItem, ByVal Side As SideOfSource, ByVal Success As Boolean)
@@ -137,8 +145,8 @@ Class LogHandler
                 For Each Record As LogItem In Log
                     PutLine(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), String.Join(" -> ", New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}), LogWriter)
                 Next
-                For Each Ex As Exception In Errors
-                    PutLine(Translation.Translate("\ERROR"), String.Join(" -> ", New String() {Ex.Message, Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}), LogWriter)
+                For Each Err As ErrorItem In Errors
+                    PutLine(Translation.Translate("\ERROR"), String.Join(" -> ", New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}), LogWriter)
                 Next
 
 #If Not DEBUG Then
