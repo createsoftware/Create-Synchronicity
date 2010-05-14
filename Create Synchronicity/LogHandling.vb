@@ -111,7 +111,8 @@ Class LogHandler
     End Sub
 
     Sub SaveAndDispose(ByVal Left As String, ByVal Right As String)
-        If Disposed Then Exit Sub : Disposed = True
+        If Disposed Then Exit Sub
+        Disposed = True
 
         Try
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
