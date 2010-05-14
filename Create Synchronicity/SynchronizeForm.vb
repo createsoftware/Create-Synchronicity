@@ -194,6 +194,9 @@ Public Class SynchronizeForm
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case "RL"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
+            Case Else
+                'TODO: Errors list
+                Exit Sub
         End Select
 
         If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(If(My.Computer.Keyboard.CtrlKeyDown, Address.Substring(0, Address.LastIndexOf(ConfigOptions.DirSep)), Address))
@@ -327,15 +330,17 @@ Public Class SynchronizeForm
                     PreviewList.Items.Clear()
                     PreviewList.Columns.Clear()
                     PreviewList.Columns.Add(Translation.Translate("\ERROR"))
+                    PreviewList.Columns.Add(Translation.Translate("\PATH"))
                     Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add(Translation.Translate("\ERROR_DETAIL"))
                     ColumnSorter.SortColumn = ErrorColumn.Index 'TODO: needs checking.
 
-                    Dim ErrorsList As New List(Of Exception)(Log.Errors)
-                    For Each Ex As Exception In ErrorsList
-                        Dim ErrorItem As New ListViewItem(Ex.Source)
-                        ErrorItem.SubItems.Add(Ex.Message)
-                        PreviewList.Items.Add(ErrorItem)
-                        ErrorItem.ImageIndex = 5
+                    Dim ErrorsList As New List(Of ErrorItem)(Log.Errors)
+                    For Each Err As ErrorItem In ErrorsList
+                        Dim ErrorListItem As New ListViewItem(Err.Ex.Source)
+                        ErrorListItem.SubItems.Add(Err.Details)
+                        ErrorListItem.SubItems.Add(Err.Ex.Message)
+                        PreviewList.Items.Add(ErrorListItem)
+                        ErrorListItem.ImageIndex = 5
                     Next
 
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
