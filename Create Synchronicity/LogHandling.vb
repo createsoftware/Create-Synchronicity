@@ -6,10 +6,21 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Structure LogItem
+    Dim Item As SyncingItem
+    Dim Side As SideOfSource
+    Dim Success As Boolean
+    'Dim ErrorId As Integer
+
+    Sub New(ByVal _Item As SyncingItem, ByVal _Side As SideOfSource, ByVal _Success As Boolean) ', Optional ByVal _ErrorId As Integer = -1)
+        Item = _Item : Side = _Side : Success = _Success ' : ErrorId = _ErrorId
+    End Sub
+End Structure
+
 Class LogHandler
     Dim LogName As String
     Public Errors As List(Of Exception)
-    Public Log As Dictionary(Of KeyValuePair(Of SyncingItem, SideOfSource), Boolean)
+    Public Log As List(Of LogItem)
 #If DEBUG Then
     Public DebugInfo As List(Of String)
 #End If
@@ -25,20 +36,21 @@ Class LogHandler
         Disposed = False
         LogName = _LogName
         Errors = New List(Of Exception)
-        Log = New Dictionary(Of KeyValuePair(Of SyncingItem, SideOfSource), Boolean)
+        Log = New List(Of LogItem)
 
 #If DEBUG Then
         DebugInfo = New List(Of String)
 #End If
     End Sub
 
-    Sub HandleError(ByVal Ex As Exception)
+    Sub HandleError(ByVal Ex As Exception, Optional ByVal Details As String = "")
         If TypeOf (Ex) Is Threading.ThreadAbortException Then Exit Sub
+        If Not Details = "" Then Ex = New Exception(Ex.Message & Microsoft.VisualBasic.vbNewLine & Details, Ex)
         Errors.Add(Ex)
     End Sub
 
     Sub LogAction(ByVal Item As SyncingItem, ByVal Side As SideOfSource, ByVal Success As Boolean)
-        Log.Add(New KeyValuePair(Of SyncingItem, SideOfSource)(Item, Side), Success) 'TODO: remove useless wrapper?
+        Log.Add(New LogItem(Item, Side, Success))
     End Sub
 
 #If DEBUG Then
@@ -122,8 +134,8 @@ Class LogHandler
                     PutLine("Info", Info, LogWriter)
                 Next
 #End If
-                For Each Pair As KeyValuePair(Of KeyValuePair(Of SyncingItem, SideOfSource), Boolean) In Log
-                    PutLine(If(Pair.Value, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), String.Join(" -> ", New String() {Pair.Key.Key.FormatType(), Pair.Key.Key.FormatAction(), Pair.Key.Key.FormatDirection(Pair.Key.Value), Pair.Key.Key.Path}), LogWriter)
+                For Each Record As LogItem In Log
+                    PutLine(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), String.Join(" -> ", New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}), LogWriter)
                 Next
                 For Each Ex As Exception In Errors
                     PutLine(Translation.Translate("\ERROR"), String.Join(" -> ", New String() {Ex.Message, Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}), LogWriter)
