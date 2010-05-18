@@ -16,7 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-May. 13, 2010 - UPD: Error messages now log file paths too.
+May. 18, 2010 - NEW: System proxy credentials are now used by default when connecting through a proxy.
+May. 15, 2010 - UPD: Error messages now include file paths.
 May. 13, 2010 - NEW: !If you have a drive labelled "MyUsb" for example, then you can now refer to it using "MyUsb"\MyFolder\MySubFolder etc. Create Synchronicity will automatically translate this path to use the right drive letter.
 May. 13, 2010 - NEW: Open folders from preview list by holding Control while double-clicking.
 May. 13, 2010 - FIX: Added proxy support.
