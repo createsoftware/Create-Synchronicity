@@ -498,8 +498,10 @@ Public Module Updates
 
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
         Try
-            Dim UpdateClient As New System.Net.WebClient
+            Dim UpdateClient As New Net.WebClient
+            UpdateClient.UseDefaultCredentials = True 'TODO: Needed?
             UpdateClient.Proxy = System.Net.HttpWebRequest.DefaultWebProxy 'Tracker #2976549
+            UpdateClient.Proxy.Credentials = Net.CredentialCache.DefaultCredentials
             Dim CurrentVersion As String = UpdateClient.DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
 
             If CurrentVersion = "" Then Throw New Exception()
