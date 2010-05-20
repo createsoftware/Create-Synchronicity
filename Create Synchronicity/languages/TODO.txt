@@ -1,5 +1,5 @@
-deutsch:8
+deutsch:0
 english:0
 francais:0
-portuguese:5
+portuguese:0
 spanish:5
