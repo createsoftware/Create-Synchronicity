@@ -548,6 +548,7 @@ Public Class SynchronizeForm
                         Select Case Entry.Action
                             Case TypeOfAction.Create
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
+                                IO.Directory.SetLastWriteTimeUtc(Destination & Entry.Path, IO.Directory.GetLastWriteTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
                                 Status.CreatedFolders += 1
                             Case TypeOfAction.Delete
                                 If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then
@@ -844,6 +845,9 @@ Public Class SynchronizeForm
         IO.File.Copy(Source & Path, Dest & Path, True)
 
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
+#If DEBUG Then
+            Log.LogInfo("""" & Path & """ has been copied with attributes " & IO.File.GetAttributes(Dest & Path) & " , now setting attributes to Normal before setting Last Write Time")
+#End If
             IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal) 'Tracker #2999436
             IO.File.SetLastWriteTimeUtc(Dest & Path, IO.File.GetLastWriteTimeUtc(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
