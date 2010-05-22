@@ -548,7 +548,7 @@ Public Class SynchronizeForm
                         Select Case Entry.Action
                             Case TypeOfAction.Create
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
-                                IO.Directory.SetLastWriteTimeUtc(Destination & Entry.Path, IO.Directory.GetLastWriteTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
+                                IO.Directory.SetCreationTimeUtc(Destination & Entry.Path, IO.Directory.GetCreationTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
                                 Status.CreatedFolders += 1
                             Case TypeOfAction.Delete
                                 If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then
