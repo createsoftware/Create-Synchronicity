@@ -72,7 +72,7 @@ Public Class AboutForm
             If ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> About_LanguagesList.SelectedItem.ToString Then
                 Interaction.ShowMsg(Translation.Translate("\RESTART"), Translation.Translate("\RESTART_NEEDED"))
             End If
-            ProgramConfig.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem)
+            ProgramConfig.SetProgramSetting(ConfigOptions.Language, About_LanguagesList.SelectedItem.ToString)
         End If
 
         ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
