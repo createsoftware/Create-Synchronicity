@@ -67,7 +67,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_MethodOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter
-        Settings_DescriptionLabel.Text = sender.Tag.Replace("%s", sender.Text)
+        Settings_DescriptionLabel.Text = CType(sender, Control).Tag.ToString.Replace("%s", CType(sender, Control).Text)
     End Sub
 
     Private Sub Settings_MethodOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave
@@ -85,7 +85,7 @@ Public Class SettingsForm
 
     Private Sub Settings_View_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Settings_RightView.MouseClick, Settings_LeftView.MouseClick
         If e.Button = Windows.Forms.MouseButtons.Right Then
-            ClickedRightTreeView = (sender.Name = "Settings_RightView")
+            ClickedRightTreeView = (CType(sender, Control).Name = "Settings_RightView")
             If ClickedRightTreeView Then
                 Settings_RightView.SelectedNode = Settings_RightView.GetNodeAt(e.Location)
             Else
@@ -103,7 +103,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
-        Settings_BottomDescLabel.Text = sender.Tag.ToString
+        Settings_BottomDescLabel.Text = CType(sender, Control).Tag.ToString
     End Sub
 
     Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_ComputeHashOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
@@ -111,7 +111,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_LeftView.AfterExpand, Settings_RightView.AfterExpand
-        ClickedRightTreeView = (sender.Name = "Settings_RightView")
+        ClickedRightTreeView = (CType(sender, Control).Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
             Try

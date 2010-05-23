@@ -156,7 +156,7 @@ Public Class SynchronizeForm
     Private Sub SyncBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncBtn.Click
         PreviewList.Visible = False
         SyncBtn.Visible = False
-        StopBtn.Text = StopBtn.Tag.Split(";"c)(0)
+        StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(0)
 
         SecondSyncThread.Start()
     End Sub
@@ -189,7 +189,7 @@ Public Class SynchronizeForm
         If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
 
         Dim Address As String = ""
-        Select Case PreviewList.SelectedItems(0).Tag
+        Select Case PreviewList.SelectedItems(0).Tag.ToString
             Case "LR"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case "RL"

@@ -62,7 +62,7 @@ Public Class SyncingItem
         End Select
     End Function
 
-    Function FormatDirection(ByVal Side As SideOfSource)
+    Function FormatDirection(ByVal Side As SideOfSource) As String
         Select Case Side
             Case SideOfSource.Left
                 Return If(Action = TypeOfAction.Create, Translation.Translate("\LR"), Translation.Translate("\LEFT"))

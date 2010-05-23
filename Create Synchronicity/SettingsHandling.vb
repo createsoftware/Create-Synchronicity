@@ -382,7 +382,7 @@ Class ProfileHandler
         Next
     End Sub
 
-    Public Shared Function TranslatePath(ByVal Path As String)
+    Public Shared Function TranslatePath(ByVal Path As String) As String
 #If Not LINUX Then
         'TODO: Windows only
         Dim Label As String, RelativePath As String
