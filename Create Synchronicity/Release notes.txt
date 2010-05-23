@@ -5,7 +5,7 @@ Created on:		June 3, 2009
 Created by:		Clément Pit--Claudel (Create Software)
 License:		GNU GPL v3 or later (see "COPYING")
 Coded in:		Visual Basic .Net
-Translations:	Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo
+Translations:	Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo, Pedro Silva, Marco Medri
 Requires:		.Net Framework v2
 
 * Contact
@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+May. 25, 2010 - NEW: !Italian translation by Marco Medri. Mille Grazie!
 May. 18, 2010 - NEW: System credentials are now used by default when checking for updates through a proxy.
 May. 15, 2010 - UPD: Error messages now include file paths.
 May. 13, 2010 - NEW: !If you have a drive labelled "MyUsb" for example, then you can now refer to it using "MyUsb"\MyFolder\MySubFolder etc. Create Synchronicity will automatically translate this path to use the right drive letter.
