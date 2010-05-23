@@ -157,6 +157,7 @@
     <None Include="languages\francais.lng">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="languages\italian.lng" />
     <None Include="languages\portuguese.lng">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
