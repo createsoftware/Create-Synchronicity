@@ -846,13 +846,18 @@ Public Class SynchronizeForm
 
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
 #If DEBUG Then
-            Log.LogInfo("""" & Path & """ has been copied with attributes " & IO.File.GetAttributes(Dest & Path) & " , now setting attributes to Normal before setting Last Write Time")
+            Log.LogInfo("DST: """ & Dest & Path & """ has been copied with attributes " & IO.File.GetAttributes(Dest & Path) & " , now setting attributes to Normal before setting Last Write Time")
 #End If
             IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal) 'Tracker #2999436
+#If DEBUG Then
+            Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(Dest & Path) & " on """ & Path & """, now setting last write time.")
+#End If
             IO.File.SetLastWriteTimeUtc(Dest & Path, IO.File.GetLastWriteTimeUtc(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
         IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
-
+#If DEBUG Then
+        Log.LogInfo("CopyFile: Attributes set to" & IO.File.GetAttributes(Dest & Path) & " on """ & Path & """, now setting last write time.")
+#End If
         Status.CreatedFiles += 1
         Status.BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
     End Sub
