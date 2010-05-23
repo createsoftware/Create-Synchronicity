@@ -14,7 +14,7 @@ Public Class SchedulingForm
 
     Private Sub SchedulingForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Translation.TranslateControl(Me)
-        Scheduling_WeekDay.Items.AddRange(Translation.Translate("\WEEK_DAYS").Split(";"))
+        Scheduling_WeekDay.Items.AddRange(Translation.Translate("\WEEK_DAYS").Split(";"c))
         If Scheduling_WeekDay.Items.Count > 0 Then Scheduling_WeekDay.SelectedIndex() = 0
 
         LoadToForm()
