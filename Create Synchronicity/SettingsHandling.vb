@@ -34,11 +34,11 @@ Public Module ConfigOptions
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
 
-    Public Const EnqueuingSeparator As Char = "|"
+    Public Const EnqueuingSeparator As Char = "|"c
 #If LINUX Then
-    Public Const DirSep As Char = "/"
+    Public Const DirSep As Char = "/"c
 #Else
-    Public Const DirSep As Char = "\"
+    Public Const DirSep As Char = "\"c
 #End If
 
     Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
@@ -341,15 +341,11 @@ Class ProfileHandler
     End Sub
 
     Function GetSetting(ByVal SettingName As String, Optional ByRef DefaultVal As String = Nothing) As String
-        If Configuration.ContainsKey(SettingName) Then
-            Return Configuration(SettingName)
-        Else
-            Return DefaultVal
-        End If
+        Return If(Configuration.ContainsKey(SettingName), Configuration(SettingName), DefaultVal)
     End Function
 
     Sub LoadScheduler()
-        Dim Opts() As String = GetSetting(ConfigOptions.Scheduling, "").Split(";")
+        Dim Opts() As String = GetSetting(ConfigOptions.Scheduling, "").Split(";"c)
 
         Select Case Opts.GetLength(0)
             Case 0
