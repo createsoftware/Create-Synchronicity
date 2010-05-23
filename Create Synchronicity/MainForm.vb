@@ -166,7 +166,7 @@ Public Class MainForm
 
     Private Sub Main_ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Main_ActionsMenu.Opening
         Dim FileSize As Integer = If(IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)), CInt((New System.IO.FileInfo(ProgramConfig.GetLogPath(CurrentProfile))).Length / 1000), 0)
-        ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag, FileSize)
+        ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag.ToString, FileSize)
     End Sub
 
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
@@ -321,7 +321,7 @@ Public Class MainForm
 
         Select Case Profiles(Name).Scheduler.Frequency
             Case ScheduleInfo.WEEKLY
-                Dim Day As String = Translation.Translate("\WEEK_DAYS", ";;;;;;").Split(";")(Profiles(Name).Scheduler.WeekDay)
+                Dim Day As String = Translation.Translate("\WEEK_DAYS", ";;;;;;").Split(";"c)(Profiles(Name).Scheduler.WeekDay)
                 Main_Scheduling.Text &= Day
             Case ScheduleInfo.MONTHLY
                 Main_Scheduling.Text &= Profiles(Name).Scheduler.MonthDay
