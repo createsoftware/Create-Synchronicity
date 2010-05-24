@@ -148,11 +148,7 @@ Public Class ConfigHandler
     End Function
 
     Public Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
-        If (ProgramSettings.ContainsKey(Key)) Then
-            Return ProgramSettings(Key)
-        Else
-            Return DefaultVal
-        End If
+        Return If(ProgramSettings.ContainsKey(Key), ProgramSettings(Key), DefaultVal)
     End Function
 
     Public Sub SetProgramSetting(ByVal Key As String, ByVal Value As String)
