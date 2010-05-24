@@ -74,27 +74,27 @@ Public Class LanguageHandler
             For Each Item As ListViewItem In CType(Ctrl, ListView).Items
                 For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
                     SubItem.Text = Translate(SubItem.Text)
-                    SubItem.Tag = Translate(SubItem.Tag.ToString, ";")
+                    SubItem.Tag = Translate(SubItem.Tag, ";")
                 Next
             Next
 
         ElseIf TypeOf Ctrl Is ContextMenuStrip Then
             For Each Item As ToolStripItem In CType(Ctrl, ContextMenuStrip).Items
                 Item.Text = Translate(Item.Text)
-                Item.Tag = Translate(Item.Tag.ToString, ";")
+                Item.Tag = Translate(Item.Tag, ";")
             Next
 
         ElseIf TypeOf Ctrl Is Button Then
-            CType(Ctrl, Button).Tag = Translate(CType(Ctrl, Button).Tag.ToString, ";")
+            CType(Ctrl, Button).Tag = Translate(CType(Ctrl, Button).Tag, ";")
 
         ElseIf TypeOf Ctrl Is Label Then
-            CType(Ctrl, Label).Tag = Translate(CType(Ctrl, Label).Tag.ToString, ";")
+            CType(Ctrl, Label).Tag = Translate(CType(Ctrl, Label).Tag, ";")
 
         ElseIf TypeOf Ctrl Is CheckBox Then
-            CType(Ctrl, CheckBox).Tag = Translate(CType(Ctrl, CheckBox).Tag.ToString, ";")
+            CType(Ctrl, CheckBox).Tag = Translate(CType(Ctrl, CheckBox).Tag, ";")
 
         ElseIf TypeOf Ctrl Is RadioButton Then
-            CType(Ctrl, RadioButton).Tag = Translate(CType(Ctrl, RadioButton).Tag.ToString, ";")
+            CType(Ctrl, RadioButton).Tag = Translate(CType(Ctrl, RadioButton).Tag, ";")
         End If
 
         For Each ChildCtrl As Control In Ctrl.Controls

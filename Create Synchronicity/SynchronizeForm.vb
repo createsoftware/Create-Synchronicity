@@ -189,6 +189,7 @@ Public Class SynchronizeForm
         If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
 
         Dim Address As String = ""
+        If PreviewList.SelectedItems(0).Tag Is Nothing Then Exit Sub
         Select Case PreviewList.SelectedItems(0).Tag.ToString
             Case "LR"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text

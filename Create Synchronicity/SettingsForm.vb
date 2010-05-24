@@ -71,7 +71,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_MethodOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave
-        Settings_DescriptionLabel.Text = Settings_DescriptionLabel.Tag.ToString
+        Settings_DescriptionLabel.Text = Settings_DescriptionLabel.Tag
     End Sub
 
     Private Sub Settings_LRMirrorMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_LRMirrorMethodOption.CheckedChanged
@@ -103,7 +103,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
-        Settings_BottomDescLabel.Text = CType(sender, Control).Tag.ToString
+        Settings_BottomDescLabel.Text = CType(sender, Control).Tag
     End Sub
 
     Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_ComputeHashOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
