@@ -14,7 +14,7 @@ echo Packaging log for v%VER% & date /t & time /t
 
 echo.
 echo -----
-"C:\Program Files\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
+"C:\Program Files (x86)\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
 
 echo.
 echo -----
