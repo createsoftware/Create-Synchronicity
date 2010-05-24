@@ -34,9 +34,7 @@ Public Class SettingsForm
 
     Private Sub Settings_SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SaveButton.Click
         Settings_Update(False)
-        If Handler.ValidateConfigFile() Then
-            If Handler.SaveConfigFile() Then Me.Close()
-        End If
+        If Handler.ValidateConfigFile() AndAlso Handler.SaveConfigFile() Then Me.Close()
     End Sub
 
     Private Sub Settings_CancelButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_CancelButton.Click
@@ -121,6 +119,9 @@ Public Class SettingsForm
                     NewNode.ToolTipText = Node.ToolTipText
                 Next
             Catch Ex As Exception
+#If DEBUG Then
+                Interaction.ShowMsg("Exception while loading tree: " & Ex.ToString)
+#End If
             End Try
         Next
     End Sub
@@ -266,6 +267,7 @@ Public Class SettingsForm
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
+            Settings_SetRootPathDisplay(True) 'Needed for the FullPath method, see tracker #3006324
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(Path)
                     Application.DoEvents()
