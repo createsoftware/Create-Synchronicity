@@ -208,15 +208,15 @@ Class ProfileHandler
         LoadConfigFile()
 
         PredicateConfigMatchingList = New Dictionary(Of String, String)
+        PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
         PredicateConfigMatchingList.Add(ConfigOptions.Destination, ".*")
         PredicateConfigMatchingList.Add(ConfigOptions.ExcludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
         PredicateConfigMatchingList.Add(ConfigOptions.IncludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
         PredicateConfigMatchingList.Add(ConfigOptions.LeftSubFolders, ".*")
+        PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
         PredicateConfigMatchingList.Add(ConfigOptions.Method, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.Restrictions, "[012]")
         PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
-        'PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
-        'PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*") 'Useless
         'NOTE: Only vital settings should be checked for correctness, since the config will be rejected if a mismatch occurs.
     End Sub
 
@@ -359,8 +359,7 @@ Class ProfileHandler
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
         Subfolders.Clear()
-
-        Dim ConfigCheckedFoldersList As New List(Of String)(Configuration(ConfigLine).Split(";"c))
+        Dim ConfigCheckedFoldersList As New List(Of String)(If(Configuration.ContainsKey(ConfigLine), Configuration(ConfigLine), "").Split(";"c))
         ConfigCheckedFoldersList.RemoveAt(ConfigCheckedFoldersList.Count - 1) 'Removes the last, empty element
 
         For Each Dir As String In ConfigCheckedFoldersList
