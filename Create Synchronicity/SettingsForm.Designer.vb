@@ -221,7 +221,7 @@ Partial Class SettingsForm
         Me.Settings_TreeViewMenuStrip.Name = "Settings_TreeViewMenuStrip"
         Me.Settings_TreeViewMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Settings_TreeViewMenuStrip.ShowImageMargin = False
-        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(201, 104)
+        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(201, 126)
         '
         'Settings_SynchronizeFolderAndSubfoldersMenuItem
         '
@@ -337,7 +337,7 @@ Partial Class SettingsForm
         Me.Settings_StrictMirrorOption.AutoSize = True
         Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 87)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
-        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(155, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 2
         Me.Settings_StrictMirrorOption.Text = "\STRICT_MIRROR_DESC"
         Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
@@ -352,7 +352,7 @@ Partial Class SettingsForm
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
         Me.Settings_MethodLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 17)
+        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 16)
         Me.Settings_MethodLayoutPanel.Name = "Settings_MethodLayoutPanel"
         Me.Settings_MethodLayoutPanel.RowCount = 1
         Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
