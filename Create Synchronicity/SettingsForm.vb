@@ -145,9 +145,14 @@ Public Class SettingsForm
 
     Private Sub Settings_TwoWaysIncrementalMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.CheckedChanged
         Settings_RightView.CheckBoxes = Settings_TwoWaysIncrementalMethodOption.Checked
+        If Settings_RightView.CheckBoxes Then
+            Settings_RightView.ContextMenuStrip = Settings_TreeViewMenuStrip
+        Else
+            Settings_RightView.ContextMenuStrip = Nothing
+        End If
 
         'When the CheckBoxes' display is switched on, the checked property is not taken into account for the display.
-        'That is, ir Node.Checked = True but TreeView.CheckBoxes = False, then when Chekboxes = true Node
+        'That is, if Node.Checked = True but TreeView.CheckBoxes = False, then when Chekboxes = true Node
 
         'Therefore, re-check the tree (if it has already been loaded)
         If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then

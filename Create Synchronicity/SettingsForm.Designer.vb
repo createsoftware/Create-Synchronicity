@@ -53,6 +53,7 @@ Partial Class SettingsForm
         Me.Settings_ReloadButton = New System.Windows.Forms.Button()
         Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
         Me.Settings_RightViewLabel = New System.Windows.Forms.Label()
+        Me.Settings_Loading = New System.Windows.Forms.Label()
         Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox()
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox()
         Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox()
@@ -82,7 +83,6 @@ Partial Class SettingsForm
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown()
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label()
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label()
-        Me.Settings_Loading = New System.Windows.Forms.Label()
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -262,7 +262,6 @@ Partial Class SettingsForm
         Me.Settings_RightView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_RightView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
         Me.Settings_RightView.Location = New System.Drawing.Point(354, 16)
         Me.Settings_RightView.Name = "Settings_RightView"
         Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightView, 2)
@@ -295,6 +294,15 @@ Partial Class SettingsForm
         Me.Settings_RightViewLabel.Size = New System.Drawing.Size(85, 13)
         Me.Settings_RightViewLabel.TabIndex = 2
         Me.Settings_RightViewLabel.Text = "\RIGHT_SIDE"
+        '
+        'Settings_Loading
+        '
+        Me.Settings_Loading.Image = CType(resources.GetObject("Settings_Loading.Image"), System.Drawing.Image)
+        Me.Settings_Loading.Location = New System.Drawing.Point(319, 48)
+        Me.Settings_Loading.Name = "Settings_Loading"
+        Me.Settings_Loading.Size = New System.Drawing.Size(29, 29)
+        Me.Settings_Loading.TabIndex = 5
+        Me.Settings_Loading.Visible = False
         '
         'Settings_ViewsBox
         '
@@ -435,7 +443,7 @@ Partial Class SettingsForm
         Me.Settings_CopyAllFilesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_CopyAllFilesCheckBox.Location = New System.Drawing.Point(6, 20)
         Me.Settings_CopyAllFilesCheckBox.Name = "Settings_CopyAllFilesCheckBox"
-        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(90, 17)
+        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(85, 17)
         Me.Settings_CopyAllFilesCheckBox.TabIndex = 0
         Me.Settings_CopyAllFilesCheckBox.Text = "\ALL_FILES"
         Me.Settings_CopyAllFilesCheckBox.UseVisualStyleBackColor = True
@@ -506,9 +514,9 @@ Partial Class SettingsForm
         Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
         Me.Settings_ReplicateEmptyDirectoriesOption.Checked = True
         Me.Settings_ReplicateEmptyDirectoriesOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(532, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(538, 20)
         Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
-        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(139, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(133, 17)
         Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 1
         Me.Settings_ReplicateEmptyDirectoriesOption.Text = "\REPLICATE_EMPTY"
         Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -521,7 +529,7 @@ Partial Class SettingsForm
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(6, 20)
         Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
-        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(101, 17)
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(97, 17)
         Me.Settings_PropagateUpdatesOption.TabIndex = 0
         Me.Settings_PropagateUpdatesOption.Tag = "\PROPAGATE_TAG"
         Me.Settings_PropagateUpdatesOption.Text = "\PROPAGATE"
@@ -576,7 +584,7 @@ Partial Class SettingsForm
         Me.Settings_ComputeHashOption.AutoSize = True
         Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(6, 44)
         Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
-        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(126, 17)
+        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(120, 17)
         Me.Settings_ComputeHashOption.TabIndex = 1
         Me.Settings_ComputeHashOption.Tag = "\COMPUTEHASH_TAG"
         Me.Settings_ComputeHashOption.Text = "\COMPUTE_HASH"
@@ -605,9 +613,9 @@ Partial Class SettingsForm
         Me.Settings_StrictDateComparisonOption.AutoSize = True
         Me.Settings_StrictDateComparisonOption.Checked = True
         Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(506, 20)
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(520, 20)
         Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
-        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(148, 17)
         Me.Settings_StrictDateComparisonOption.TabIndex = 2
         Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
         Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
@@ -651,15 +659,6 @@ Partial Class SettingsForm
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 5
-        '
-        'Settings_Loading
-        '
-        Me.Settings_Loading.Image = CType(resources.GetObject("Settings_Loading.Image"), System.Drawing.Image)
-        Me.Settings_Loading.Location = New System.Drawing.Point(319, 48)
-        Me.Settings_Loading.Name = "Settings_Loading"
-        Me.Settings_Loading.Size = New System.Drawing.Size(29, 29)
-        Me.Settings_Loading.TabIndex = 5
-        Me.Settings_Loading.Visible = False
         '
         'SettingsForm
         '
