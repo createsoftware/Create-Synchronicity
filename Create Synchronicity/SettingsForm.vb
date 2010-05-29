@@ -133,7 +133,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_SynchronizeFilesOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeFilesOnlyMenuItem.Click
-        'TODO: Settings_CheckNodeTree(False)
+        Settings_CheckNodeTree(False)
         Settings_CheckSelectedNode(True)
     End Sub
 
