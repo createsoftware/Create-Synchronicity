@@ -126,6 +126,10 @@ Class LogHandler
                 LogWriter.WriteLine("<p>")
 #End If
 
+                LogWriter.WriteLine(String.Format("{0} v{1}", "Create Synchronicity", Application.ProductVersion))
+#If Not DEBUG Then
+                LogWriter.WriteLine("<br />")
+#End If
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\LEFT"), Left))
 #If Not DEBUG Then
                 LogWriter.WriteLine("<br />")
