@@ -8,7 +8,8 @@
 
 Public Class SettingsForm
     Dim Handler As ProfileHandler
-    Dim ProcessingNodes As Boolean = False
+    Dim ProcessingNodes As Boolean = False 'Some activity is occuring, don't record to events.
+    Dim InhibitAutocheck As Boolean = False 'Record events, but don't treat them as user input.
     Dim ClickedRightTreeView As Boolean = False
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
@@ -78,6 +79,7 @@ Public Class SettingsForm
 
     Private Sub Settings_View_AfterCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_RightView.AfterCheck, Settings_LeftView.AfterCheck
         If ProcessingNodes Then Exit Sub
+        If Not InhibitAutocheck Then Settings_CheckNodeTree(e.Node.Checked, e.Node)
         If Not (Settings_OverAllCheckStatus(e.Node) = If(e.Node.Checked, 1, 0)) And e.Node.Nodes.Count > 0 Then e.Node.FirstNode.EnsureVisible()
     End Sub
 
@@ -127,20 +129,21 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_SynchronizeAllSubfoldersMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeFolderAndSubfoldersMenuItem.Click
-        Settings_Update_CheckStatus(True)
+        Settings_CheckNodeTree(True)
     End Sub
 
     Private Sub Settings_SynchronizeFilesOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeFilesOnlyMenuItem.Click
+        'TODO: Settings_CheckNodeTree(False)
         Settings_CheckSelectedNode(True)
     End Sub
 
     Private Sub Settings_SynchronizeSubFoldersOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeSubFoldersOnlyMenuItem.CLick
-        Settings_Update_CheckStatus(True)
+        Settings_CheckNodeTree(True)
         Settings_CheckSelectedNode(False)
     End Sub
 
     Private Sub Settings_DontSynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_DontSynchronizeMenuItem.Click
-        Settings_Update_CheckStatus(False)
+        Settings_CheckNodeTree(False)
     End Sub
 
     Private Sub Settings_TwoWaysIncrementalMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.CheckedChanged
@@ -156,7 +159,7 @@ Public Class SettingsForm
 
         'Therefore, re-check the tree (if it has already been loaded)
         If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then
-            Settings_CheckTree(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & ConfigOptions.DirSep)
+            Settings_LoadCheckState(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & ConfigOptions.DirSep)
         End If
     End Sub
 
@@ -177,28 +180,30 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_CheckSelectedNode(ByVal Checked As Boolean)
+        InhibitAutocheck = True
         If ClickedRightTreeView Then
             Settings_RightView.SelectedNode.Checked = Checked
         Else
             Settings_LeftView.SelectedNode.Checked = Checked
         End If
+        InhibitAutocheck = False
     End Sub
 
-    Sub Settings_Update_CheckStatus(ByVal Checked As Boolean)
+    Sub Settings_CheckNodeTree(ByVal Checked As Boolean, Optional ByVal NodeParam As TreeNode = Nothing)
         ProcessingNodes = True
         If ClickedRightTreeView Then
-            Settings_CheckNodeAndSubNodes(Settings_RightView.SelectedNode, Checked)
+            Settings_Inner_CheckNodeTree(If(NodeParam Is Nothing, Settings_RightView.SelectedNode, NodeParam), Checked)
         Else
-            Settings_CheckNodeAndSubNodes(Settings_LeftView.SelectedNode, Checked)
+            Settings_Inner_CheckNodeTree(If(NodeParam Is Nothing, Settings_LeftView.SelectedNode, NodeParam), Checked)
         End If
         ProcessingNodes = False
     End Sub
 
-    Sub Settings_CheckNodeAndSubNodes(ByVal Root As TreeNode, ByVal Status As Boolean)
+    Sub Settings_Inner_CheckNodeTree(ByVal Root As TreeNode, ByVal Status As Boolean)
         Root.ToolTipText = "*"
         For Each SubNode As TreeNode In Root.Nodes
             SubNode.Checked = Status
-            Settings_CheckNodeAndSubNodes(SubNode, Status)
+            Settings_Inner_CheckNodeTree(SubNode, Status)
         Next
         Root.Checked = Status
     End Sub
@@ -256,11 +261,11 @@ Public Class SettingsForm
     Sub Settings_ReloadTrees()
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
         Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
-        Settings_Loading.Visible = True
+        Settings_Loading.Visible = True : InhibitAutocheck = True
         LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
         LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
         Settings_SetRootPathDisplay(True)
-        Settings_Loading.Visible = False
+        Settings_Loading.Visible = False : InhibitAutocheck = False
         Settings_ReloadButton.Enabled = True : Settings_SaveButton.Enabled = True
     End Sub
 
@@ -280,7 +285,7 @@ Public Class SettingsForm
                 Next
 
                 Tree.Nodes(0).Expand()
-                Settings_CheckTree(Tree.Name = "Settings_LeftView")
+                Settings_LoadCheckState(Tree.Name = "Settings_LeftView")
             Catch Ex As Exception
                 Tree.Nodes.Clear()
                 Tree.Enabled = False
@@ -290,7 +295,7 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub Settings_CheckTree(ByVal Left As Boolean)
+    Sub Settings_LoadCheckState(ByVal Left As Boolean)
         Select Case Left
             Case True
                 Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
@@ -311,7 +316,7 @@ Public Class SettingsForm
         If Path.Count = 0 Then
             If FullCheck Then
                 ProcessingNodes = True
-                Settings_CheckNodeAndSubNodes(BaseNode, True)
+                Settings_Inner_CheckNodeTree(BaseNode, True)
                 BaseNode.Collapse()
                 ProcessingNodes = False
             Else
