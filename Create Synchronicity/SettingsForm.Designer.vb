@@ -649,7 +649,7 @@ Partial Class SettingsForm
         'Settings_ToolTip
         '
         Me.Settings_ToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
-        Me.Settings_ToolTip.ToolTipTitle = "\TIPS"
+        Me.Settings_ToolTip.ToolTipTitle = "B"
         '
         'SettingsForm
         '
