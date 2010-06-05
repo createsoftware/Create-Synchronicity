@@ -95,11 +95,9 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_Views_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter
-        Settings_Tips.Visible = True
     End Sub
 
     Private Sub Settings_Views_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave
-        Settings_Tips.Visible = False
     End Sub
 
     Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
@@ -413,8 +411,9 @@ Public Class SettingsForm
     End Function
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Settings_Tips.BringToFront()
         Translation.TranslateControl(Me)
+        Me.Settings_ToolTip.SetToolTip(Me.Settings_LeftView, Translation.Translate("\TREEVIEW_TIPS"))
+        Me.Settings_ToolTip.SetToolTip(Me.Settings_RightView, Translation.Translate("\TREEVIEW_TIPS"))
 
         Settings_Update(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
