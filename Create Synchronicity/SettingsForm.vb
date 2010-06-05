@@ -8,7 +8,7 @@
 
 Public Class SettingsForm
     Dim Handler As ProfileHandler
-    Dim ProcessingNodes As Boolean = False 'Some activity is occuring, don't record to events.
+    Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record to events.
     Dim InhibitAutocheck As Boolean = False 'Record events, but don't treat them as user input.
     Dim ClickedRightTreeView As Boolean = False
 
