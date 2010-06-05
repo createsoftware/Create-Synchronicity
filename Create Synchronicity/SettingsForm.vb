@@ -25,6 +25,16 @@ Public Class SettingsForm
     'The 'Tag' Property is used as a flag denoting that the treenode originally had all its subnodes checked.
 
 #Region " Events "
+    Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Translation.TranslateControl(Me)
+
+        Settings_ToolTip.SetToolTip(Me.Settings_LeftView, Translation.Translate("\TREEVIEW_TIPS"))
+        Settings_ToolTip.SetToolTip(Me.Settings_RightView, Translation.Translate("\TREEVIEW_TIPS"))
+
+        Settings_Update(True)
+        Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
+    End Sub
+
     Private Sub Settings_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_CopyAllFilesCheckBox.CheckedChanged, Settings_IncludeFilesOption.CheckedChanged, Settings_ExcludeFilesOption.CheckedChanged
         Settings_Update_Form_Enabled_Components()
     End Sub
@@ -135,7 +145,7 @@ Public Class SettingsForm
         Settings_CheckSelectedNode(True)
     End Sub
 
-    Private Sub Settings_SynchronizeSubFoldersOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeSubFoldersOnlyMenuItem.CLick
+    Private Sub Settings_SynchronizeSubFoldersOnlyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SynchronizeSubFoldersOnlyMenuItem.Click
         Settings_CheckNodeTree(True)
         Settings_CheckSelectedNode(False)
     End Sub
@@ -409,15 +419,5 @@ Public Class SettingsForm
         Next
         Return ListString
     End Function
-
-    Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Translation.TranslateControl(Me)
-
-        Settings_ToolTip.SetToolTip(Me.Settings_LeftView, Translation.Translate("\TREEVIEW_TIPS"))
-        Settings_ToolTip.SetToolTip(Me.Settings_RightView, Translation.Translate("\TREEVIEW_TIPS"))
-
-        Settings_Update(True)
-        Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
-    End Sub
 #End Region
 End Class
