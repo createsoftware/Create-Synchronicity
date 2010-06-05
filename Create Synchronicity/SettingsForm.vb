@@ -73,14 +73,6 @@ Public Class SettingsForm
         Settings_ReloadTrees()
     End Sub
 
-    Private Sub Settings_MethodOption_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter
-        Settings_DescriptionLabel.Text = CType(sender, Control).Tag.ToString.Replace("%s", CType(sender, Control).Text)
-    End Sub
-
-    Private Sub Settings_MethodOption_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave
-        Settings_DescriptionLabel.Text = Settings_DescriptionLabel.Tag
-    End Sub
-
     Private Sub Settings_LRMirrorMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_LRMirrorMethodOption.CheckedChanged
         Settings_StrictMirrorOption.Visible = Settings_LRMirrorMethodOption.Checked
     End Sub
@@ -102,11 +94,11 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.Enter, Settings_ToTextBox.Enter, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter
+    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.Enter, Settings_ToTextBox.Enter, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter
         ShowTip(CType(sender, Control))
     End Sub
 
-    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.Leave, Settings_ToTextBox.Leave, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave
+    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.Leave, Settings_ToTextBox.Leave, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave
         Settings_ToolTip.Hide(CType(sender, Control))
     End Sub
 
@@ -180,8 +172,12 @@ Public Class SettingsForm
     End Sub
 
     Public Sub ShowTip(ByVal sender As Control)
-        Dim Pair As String() = sender.Tag.ToString.Split(";")
-        If Pair.GetLength(0) >= 2 Then
+        Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(";")
+
+        If Pair.GetLength(0) = 1 Then
+            Settings_ToolTip.ToolTipTitle = "".PadLeft(255) 'Disable title line
+            Settings_ToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height))
+        Else
             Settings_ToolTip.ToolTipTitle = Pair(0)
             Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height))
         End If
