@@ -150,5 +150,4 @@ NO_SYNC=Don't synchronize this folder
 RENAME=Rename
 LEFT=Left
 RIGHT=Right
-TIPS=Tips
-TREEVIEW_TIPS=Left click: Select/Deselect folder and subfolders.\nRight click: Advanced selection options.
+TREEVIEW_TIPS=Folder selection tips;Left click: Select/Deselect folder and subfolders.\nRight click: Advanced selection options.

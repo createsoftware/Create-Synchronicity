@@ -150,5 +150,4 @@ NO_SYNC=Ne pas synchroniser ce dossier
 RENAME=Renommer
 LEFT=Gauche
 RIGHT=Droite
-TIPS=Astuces
-TREEVIEW_TIPS=Clic gauche: Sélection/Déselection d'un dossier et des ses sous-dossiers\nClic droit: Options avancées de sélection
+TREEVIEW_TIPS=Astuces pour la sélection des dossiers;Clic gauche: Sélection/Déselection d'un dossier et des ses sous-dossiers\nClic droit: Options avancées de sélection
