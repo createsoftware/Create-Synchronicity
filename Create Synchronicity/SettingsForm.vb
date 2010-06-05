@@ -412,8 +412,9 @@ Public Class SettingsForm
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
-        Me.Settings_ToolTip.SetToolTip(Me.Settings_LeftView, Translation.Translate("\TREEVIEW_TIPS"))
-        Me.Settings_ToolTip.SetToolTip(Me.Settings_RightView, Translation.Translate("\TREEVIEW_TIPS"))
+
+        Settings_ToolTip.SetToolTip(Me.Settings_LeftView, Translation.Translate("\TREEVIEW_TIPS"))
+        Settings_ToolTip.SetToolTip(Me.Settings_RightView, Translation.Translate("\TREEVIEW_TIPS"))
 
         Settings_Update(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
