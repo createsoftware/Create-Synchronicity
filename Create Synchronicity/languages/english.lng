@@ -151,3 +151,4 @@ RENAME=Rename
 LEFT=Left
 RIGHT=Right
 TREEVIEW_TIPS=Folder selection tips;Left click: Select/Deselect folder and subfolders.\nRight click: Advanced selection options.
+PATH_TIPS=Supported formats;C:\My Documents\n"MY USB"\My Documents\n\\192.168.0.20\NetworkDrive\My Documents
