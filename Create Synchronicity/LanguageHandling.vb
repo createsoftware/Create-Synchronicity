@@ -95,6 +95,9 @@ Public Class LanguageHandler
 
         ElseIf TypeOf Ctrl Is RadioButton Then
             CType(Ctrl, RadioButton).Tag = Translate(CType(Ctrl, RadioButton).Tag, ";")
+
+        ElseIf TypeOf Ctrl Is TreeView Then
+            CType(Ctrl, TreeView).Tag = Translate(CType(Ctrl, TreeView).Tag, ";")
         End If
 
         For Each ChildCtrl As Control In Ctrl.Controls

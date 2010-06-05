@@ -214,6 +214,7 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftView, 2)
         Me.Settings_LeftView.Size = New System.Drawing.Size(310, 121)
         Me.Settings_LeftView.TabIndex = 1
+        Me.Settings_LeftView.Tag = "\TREEVIEW_TIPS"
         '
         'Settings_TreeViewMenuStrip
         '
@@ -267,6 +268,7 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightView, 2)
         Me.Settings_RightView.Size = New System.Drawing.Size(311, 121)
         Me.Settings_RightView.TabIndex = 3
+        Me.Settings_RightView.Tag = "\TREEVIEW_TIPS"
         '
         'Settings_ReloadButton
         '
@@ -649,7 +651,6 @@ Partial Class SettingsForm
         'Settings_ToolTip
         '
         Me.Settings_ToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
-        Me.Settings_ToolTip.ToolTipTitle = "B"
         '
         'SettingsForm
         '
