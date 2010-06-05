@@ -104,6 +104,7 @@ Partial Class SettingsForm
         Me.Settings_FromTextBox.Name = "Settings_FromTextBox"
         Me.Settings_FromTextBox.Size = New System.Drawing.Size(509, 21)
         Me.Settings_FromTextBox.TabIndex = 1
+        Me.Settings_FromTextBox.Tag = "\PATH_TIPS"
         '
         'Settings_DirectoriesBox
         '
@@ -161,6 +162,7 @@ Partial Class SettingsForm
         Me.Settings_ToTextBox.Name = "Settings_ToTextBox"
         Me.Settings_ToTextBox.Size = New System.Drawing.Size(509, 21)
         Me.Settings_ToTextBox.TabIndex = 4
+        Me.Settings_ToTextBox.Tag = "\PATH_TIPS"
         '
         'Settings_ToLabel
         '

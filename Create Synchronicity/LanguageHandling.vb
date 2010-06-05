@@ -98,6 +98,9 @@ Public Class LanguageHandler
 
         ElseIf TypeOf Ctrl Is TreeView Then
             CType(Ctrl, TreeView).Tag = Translate(CType(Ctrl, TreeView).Tag, ";")
+
+        ElseIf TypeOf Ctrl Is TextBox Then
+            CType(Ctrl, TextBox).Tag = Translate(CType(Ctrl, TextBox).Tag, ";")
         End If
 
         For Each ChildCtrl As Control In Ctrl.Controls

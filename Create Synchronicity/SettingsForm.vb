@@ -27,7 +27,6 @@ Public Class SettingsForm
 #Region " Events "
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
-        Settings_ToolTip.ToolTipTitle = Translation.Translate("\TIPS")
 
         Settings_Update(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
@@ -38,6 +37,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_From_To_TextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged, Settings_ToTextBox.TextChanged
+        ShowTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
     End Sub
 
@@ -102,11 +102,11 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Private Sub Settings_Views_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter
-        Settings_ToolTip.Show(CType(sender, Control).Tag, CType(sender, Control), New Drawing.Point(0, CType(sender, Control).Height))
+    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.Enter, Settings_ToTextBox.Enter, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter
+        ShowTip(CType(sender, Control))
     End Sub
 
-    Private Sub Settings_Views_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave
+    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.Leave, Settings_ToTextBox.Leave, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave
         Settings_ToolTip.Hide(CType(sender, Control))
     End Sub
 
@@ -177,6 +177,14 @@ Public Class SettingsForm
 
         ' Add any initialization after the InitializeComponent() call.
         Handler = New ProfileHandler(Name)
+    End Sub
+
+    Public Sub ShowTip(ByVal sender As Control)
+        Dim Pair As String() = sender.Tag.ToString.Split(";")
+        If Pair.GetLength(0) >= 2 Then
+            Settings_ToolTip.ToolTipTitle = Pair(0)
+            Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height))
+        End If
     End Sub
 #End Region
 
