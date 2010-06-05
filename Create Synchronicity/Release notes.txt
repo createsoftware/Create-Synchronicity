@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Jun.  5, 2010 - UPD: Usability improvement: Help tooltips.
 May. 25, 2010 - FIX: Small bug with root path display.
 May. 25, 2010 - NEW: !Italian translation by Marco Medri. Mille Grazie!
 May. 18, 2010 - NEW: System credentials are now used by default when checking for updates through a proxy.
