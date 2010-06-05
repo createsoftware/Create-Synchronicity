@@ -93,7 +93,6 @@ RUNNING_TASK=Create Synchronicity está ejecutándose "{0}"\nPulsa en el icono p
 SAVE=Salvar
 SETTING_UNSET="{0}" opción no establecida.
 SETTINGS=Opciones
-SETTINGS_TIPS=* Para sincronizar los contenidos de una carpeta, marca la casilla junto a su nombre.\n* Para incluir las subcarpetas de una carpeta, usa el botón de la derecha y selecciona "Sincronizar todas las subcarpetas".\nConsejos:\n* Para incluir el contenido de una carpeta, activa la marca, y desmarca sus subcarpetas.\n* Para no incluir una carpeta, pero incluir sus subcarpetas, marca todas las subcarpetas, pero no la propia carpeta.
 SOURCE=Origen:
 SPEED=Velocidad:
 STEP_1=Paso 1: Creando lista de archivos
@@ -151,4 +150,5 @@ SYNCED_OK=Create Synchronicity ha finalizado exitosamente la sincronización "{0
 ->RENAME=
 LEFT=Izquierda
 RIGHT=Derecha
-
+->TIPS=
+->TREEVIEW_TIPS=
