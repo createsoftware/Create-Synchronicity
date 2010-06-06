@@ -54,6 +54,7 @@ Partial Class SettingsForm
         Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
         Me.Settings_RightViewLabel = New System.Windows.Forms.Label()
         Me.Settings_Loading = New System.Windows.Forms.Label()
+        Me.Settings_HelpLink = New System.Windows.Forms.Label()
         Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox()
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox()
         Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox()
@@ -193,10 +194,12 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_LeftViewLabel, 0, 0)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_RightViewLabel, 2, 0)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_Loading, 1, 2)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_HelpLink, 1, 3)
         Me.Settings_ViewsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Settings_ViewsLayoutPanel.Location = New System.Drawing.Point(3, 17)
         Me.Settings_ViewsLayoutPanel.Name = "Settings_ViewsLayoutPanel"
-        Me.Settings_ViewsLayoutPanel.RowCount = 3
+        Me.Settings_ViewsLayoutPanel.RowCount = 4
+        Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
@@ -212,7 +215,7 @@ Partial Class SettingsForm
         Me.Settings_LeftView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
         Me.Settings_LeftView.Location = New System.Drawing.Point(3, 16)
         Me.Settings_LeftView.Name = "Settings_LeftView"
-        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftView, 2)
+        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftView, 3)
         Me.Settings_LeftView.Size = New System.Drawing.Size(310, 121)
         Me.Settings_LeftView.TabIndex = 1
         Me.Settings_LeftView.Tag = "\TREEVIEW_TIPS"
@@ -266,7 +269,7 @@ Partial Class SettingsForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_RightView.Location = New System.Drawing.Point(354, 16)
         Me.Settings_RightView.Name = "Settings_RightView"
-        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightView, 2)
+        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightView, 3)
         Me.Settings_RightView.Size = New System.Drawing.Size(311, 121)
         Me.Settings_RightView.TabIndex = 3
         Me.Settings_RightView.Tag = "\TREEVIEW_TIPS"
@@ -306,6 +309,15 @@ Partial Class SettingsForm
         Me.Settings_Loading.Size = New System.Drawing.Size(29, 29)
         Me.Settings_Loading.TabIndex = 5
         Me.Settings_Loading.Visible = False
+        '
+        'Settings_HelpLink
+        '
+        Me.Settings_HelpLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Settings_HelpLink.Image = CType(resources.GetObject("Settings_HelpLink.Image"), System.Drawing.Image)
+        Me.Settings_HelpLink.Location = New System.Drawing.Point(319, 112)
+        Me.Settings_HelpLink.Name = "Settings_HelpLink"
+        Me.Settings_HelpLink.Size = New System.Drawing.Size(28, 28)
+        Me.Settings_HelpLink.TabIndex = 6
         '
         'Settings_ViewsBox
         '
@@ -732,4 +744,5 @@ Partial Class SettingsForm
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents Settings_Loading As System.Windows.Forms.Label
     Friend WithEvents Settings_ToolTip As System.Windows.Forms.ToolTip
+    Friend WithEvents Settings_HelpLink As System.Windows.Forms.Label
 End Class

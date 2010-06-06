@@ -168,6 +168,33 @@
         RU5ErkJggg==
 </value>
   </data>
+  <data name="Settings_HelpLink.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+</value>
+  </data>
   <metadata name="Settings_FolderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

@@ -185,6 +185,10 @@ Public Class SettingsForm
             Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
         End If
     End Sub
+
+    Private Sub Settings_HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_HelpLink.Click
+        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+    End Sub
 #End Region
 
 #Region " Form and TreeView manipulation "
