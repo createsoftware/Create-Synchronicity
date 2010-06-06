@@ -36,7 +36,7 @@ Public Class SettingsForm
         Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Private Sub Settings_From_To_TextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged, Settings_ToTextBox.TextChanged
+    Private Sub Settings_From_To_TextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown, Settings_ToTextBox.KeyDown
         ShowTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
     End Sub
@@ -94,11 +94,11 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.Enter, Settings_ToTextBox.Enter, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter
+    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.GotFocus, Settings_ToTextBox.GotFocus, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter
         ShowTip(CType(sender, Control))
     End Sub
 
-    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.Leave, Settings_ToTextBox.Leave, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave
+    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.LostFocus, Settings_ToTextBox.LostFocus, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave
         Settings_ToolTip.Hide(CType(sender, Control))
     End Sub
 
@@ -172,14 +172,17 @@ Public Class SettingsForm
     End Sub
 
     Public Sub ShowTip(ByVal sender As Control)
+        If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
+
+        Dim Offset As Integer = If(TypeOf sender Is RadioButton, 12, 0)
         Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(";")
 
         If Pair.GetLength(0) = 1 Then
-            Settings_ToolTip.ToolTipTitle = "".PadLeft(255) 'Disable title line
-            Settings_ToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height))
+            Settings_ToolTip.ToolTipTitle = "" '.PadLeft(255) 'Disable title line
+            Settings_ToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
         Else
             Settings_ToolTip.ToolTipTitle = Pair(0)
-            Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height))
+            Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
         End If
     End Sub
 #End Region
