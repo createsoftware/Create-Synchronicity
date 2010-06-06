@@ -68,7 +68,6 @@ LR_INCREMENTAL_TAG=%s Salva i file dall' Origine alla destinazione.\nI file nuov
 LR_MIRROR=Copia Esatta (Mirroring)
 LR_MIRROR_TAG=%s Crea un clone del lato sinistro sul lato destro, copiando tutti i file dall'Origine alla Destinazione.\nI file nuovi o modificati sono copiati da Sx a Dx, I file cancellati a Sx vengono cancellati anche a Dx.
 METHOD=Metodo:
-MOUSE_OVER=Muovi il tuo Mouse sopra un'opzione per vedere una descrizione più dettagliata.
 NAME=Nome:
 NEW_PROFILE=Crea un nuovo profilo
 NEW_PROFILE_LABEL=Nuovo profilo

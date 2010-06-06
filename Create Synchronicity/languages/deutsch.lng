@@ -69,7 +69,6 @@ LR_INCREMENTAL_TAG=%s speichert Quelldateien am Zielort.\nNeue und geänderte Da
 LR_MIRROR=Von links nach rechts (spiegeln)
 LR_MIRROR_TAG=%s erzeugt rechts eine Kopie der linken Seite und kopiert alle Dateien vom Quellort an den Zielort.\nNeue und geänderte Dateien werden von links nach rechts kopiert, Löschungen auf der linken Seite werden rechts wiederholt.
 METHOD=Methode:
-MOUSE_OVER=Bewegen Sie Ihre Maus über eine Option, um eine detailliertere Beschreibung zu erhalten.
 NAME=Name:
 NEW_PROFILE=Neues Profil anlegen
 NEW_PROFILE_LABEL=Neues Profil

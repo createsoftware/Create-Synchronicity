@@ -69,7 +69,6 @@ LR_INCREMENTAL_TAG=%s salva archivos origen al destino.\nLos archivos nuevos y m
 LR_MIRROR=Izquierda a Derecha (Espejo)
 LR_MIRROR_TAG=%s crea una clonación del lado izquierdo en el derecho y copia todos los archivos del origen al destino.\nLos archivos nuevos y modificados son copiados de izquierda a derecha, los borrados en la izquierda y se repiten en la derecha.
 METHOD=Método:
-MOUSE_OVER=Mueve el ratón sobre una opción para ver una descripción más detellada
 NAME=Nombre:
 NEW_PROFILE=Crear un nuevo perfil
 NEW_PROFILE_LABEL=Nuevo perfil

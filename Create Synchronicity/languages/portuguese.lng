@@ -69,7 +69,6 @@ LR_INCREMENTAL_TAG=%s Ficheiros novos são copiados da esquerda para a direita, 
 LR_MIRROR=Esquerda para a Direita (Espelhar)
 LR_MIRROR_TAG=%s Ficheiros novos e modificados são copiados da esquerda para a direita, os apagados na esquerda também são apagados na direita.
 METHOD=Método:
-MOUSE_OVER=Mova o rato sobre uma opção para ver uma descrição detalhada
 NAME=Nome:
 NEW_PROFILE=Criar um novo perfil
 NEW_PROFILE_LABEL=Novo perfil

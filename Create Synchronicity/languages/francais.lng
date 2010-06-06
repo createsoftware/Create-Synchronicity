@@ -69,7 +69,6 @@ LR_INCREMENTAL_TAG="%s" copie les fichiers de la source vers la destination.\nLe
 LR_MIRROR=Gauche à droite (Miroir)
 LR_MIRROR_TAG="%s" crée une copie conforme du coté gauche sur le coté droit, et copie tous les fichiers de la source vers la destination.\nLes fichiers créés et modifiés sont copiés de gauche à droite.
 METHOD=Méthode :
-MOUSE_OVER=Passez votre souris sur une option pour afficher une description plus détaillée
 NAME=Nom :
 NEW_PROFILE=Crée un nouveau profil
 NEW_PROFILE_LABEL=Nouveau profil
