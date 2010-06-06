@@ -174,7 +174,7 @@ Public Class SettingsForm
     Public Sub ShowTip(ByVal sender As Control)
         If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
 
-        Dim Offset As Integer = If(TypeOf sender Is RadioButton, 12, 0)
+        Dim Offset As Integer = If(TypeOf sender Is RadioButton, 12, 1)
         Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(";")
 
         If Pair.GetLength(0) = 1 Then
