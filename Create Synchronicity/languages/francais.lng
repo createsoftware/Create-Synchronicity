@@ -150,4 +150,4 @@ RENAME=Renommer
 LEFT=Gauche
 RIGHT=Droite
 TREEVIEW_TIPS=Astuces pour la sélection des dossiers;Clic gauche: Sélection/Déselection d'un dossier et des ses sous-dossiers\nClic droit: Options avancées de sélection
-PATH_TIPS=Formats supportés;C:\Mes Documents\n"CLEF USB"\Mes Documents\n\\192.168.0.20\DisqueRéseau\Mes Documents
+PATH_TIPS=Formats supportés;C:\Documents\n"CLEF USB"\Documents\n\\192.168.0.20\DisqueRéseau\Documents
