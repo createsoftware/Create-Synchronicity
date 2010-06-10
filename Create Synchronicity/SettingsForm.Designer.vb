@@ -642,7 +642,8 @@ Partial Class SettingsForm
         '
         'Settings_BottomDescLabel
         '
-        Me.Settings_BottomDescLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Settings_BottomDescLabel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 507)
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
