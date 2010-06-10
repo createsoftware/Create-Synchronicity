@@ -94,11 +94,11 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.GotFocus, Settings_ToTextBox.GotFocus, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter
+    Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.GotFocus, Settings_ToTextBox.GotFocus, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_IncludedTypesTextBox.MouseEnter, Settings_ExcludedTypesTextBox.MouseEnter
         ShowTip(CType(sender, Control))
     End Sub
 
-    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.LostFocus, Settings_ToTextBox.LostFocus, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave
+    Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.LostFocus, Settings_ToTextBox.LostFocus, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_IncludedTypesTextBox.MouseLeave, Settings_ExcludedTypesTextBox.MouseLeave
         Settings_ToolTip.Hide(CType(sender, Control))
     End Sub
 
@@ -175,7 +175,7 @@ Public Class SettingsForm
         If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
 
         Dim Offset As Integer = If(TypeOf sender Is RadioButton, 12, 1)
-        Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(";")
+        Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(New Char() {";"c}, 2)
 
         If Pair.GetLength(0) = 1 Then
             Settings_ToolTip.ToolTipTitle = "" '.PadLeft(255) 'Disable title line

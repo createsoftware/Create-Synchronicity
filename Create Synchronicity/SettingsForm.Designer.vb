@@ -464,6 +464,7 @@ Partial Class SettingsForm
         Me.Settings_IncludedTypesTextBox.Name = "Settings_IncludedTypesTextBox"
         Me.Settings_IncludedTypesTextBox.Size = New System.Drawing.Size(328, 21)
         Me.Settings_IncludedTypesTextBox.TabIndex = 1
+        Me.Settings_IncludedTypesTextBox.Tag = "\FILEEXT_TIPS"
         '
         'Settings_ExcludedTypesTextBox
         '
@@ -473,6 +474,7 @@ Partial Class SettingsForm
         Me.Settings_ExcludedTypesTextBox.Name = "Settings_ExcludedTypesTextBox"
         Me.Settings_ExcludedTypesTextBox.Size = New System.Drawing.Size(328, 21)
         Me.Settings_ExcludedTypesTextBox.TabIndex = 3
+        Me.Settings_ExcludedTypesTextBox.Tag = "\FILEEXT_TIPS"
         '
         'Settings_IncludeFilesOption
         '
