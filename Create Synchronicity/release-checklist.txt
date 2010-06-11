@@ -8,10 +8,12 @@
 * Tested package on Guest session
 
 * Updated PAD file
-* Updated download page and other mentions to zip size
-* Uploaded release files to download server
-* Updated .htaccess redirection
 * Updated help file
 * Uncommented mentions to new version in web pages
+* Updated download page and other mentions to zip size
+
+* Updated .htaccess redirection
+* Uploaded release files to download server
+
 * Uploaded website contents and PAD file
 * Sent recap e-mail
