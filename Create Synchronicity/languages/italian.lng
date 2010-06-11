@@ -1,5 +1,5 @@
-﻿# Last update: 05.23.2010
-# Translation by Marco Medri
+# Last update: 06.11.2010
+# Translation by Marco Medri (v2)
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -23,7 +23,7 @@ CONFIRM_DELETION=Conferma cancellazione
 CONTACT_LINK=\Contatta l'autore/ (createcorpsoftware@yahoo.fr)
 CREATE=Crea
 DEBUG_MODE=Modalità DEBUG
-DEBUG_WARNING=Queta è una versione di DEBUG di Create Synchronicity. Verrano aggiunte informazioni extra al file di registro, ciò potrà rallentare il processo di Sincronizzazione. Si prega di segnalare ogni errore che venisse riportato.
+DEBUG_WARNING=Questa è una versione di DEBUG di Create Synchronicity. Verrano aggiunte informazioni extra al file di registro, questo può rallentare il processo di Sincronizzazione. Si prega di segnalare ogni errore che venisse riportato.
 DELETE=Cancella
 DELETE_PROFILE=Vuoi veramente cancellare il profilo "{0}"?
 DESTINATION=Destinazione:
@@ -54,7 +54,7 @@ INVALID_PROFILE=Nome Profilo non valido !
 INVALID_SETTING=Il valore selezionato per "{0}" non é valido.
 INVALID_SOURCE=La Directory di Origine non è valida.
 LANGUAGE=Lingua (necessita un riavvio del programma):
-LEFT_SIDE=Lato sinistro
+LEFT_SIDE=Lato sinistro:
 LEFT_UNROOTED=Questo profilo utilizza un percorso relativo alla cartella a sinistra.E' il desunto percorso assoluto, %s, esatto?
 LICENSE_TEXT=Concesso il Licenza in base a \GNU GPL/
 LIMITED_COPY=Copia limitata:
@@ -109,8 +109,8 @@ SYNC=Sincronizza
 SYNC_METHOD=Metodo di sincronizzazione
 SYNCHRONIZING=Stò sincronizzando
 THESE_ONLY=Includi solo questi file:
-TIME_OFFSET=Ritardo
-TO=a
+TIME_OFFSET=Ritardo:
+TO=a:
 TWOWAYS_INCREMENTAL=Incrementale in entrambi i sensi.
 TWOWAYS_INCREMENTAL_TAG=%s Copia tutti i file in entrambi i sensi (sinistra/destra), Senza cancellarre niente.\nI file nuovi o modificati sono copiati in entrambi i sensi, nulla viene cancellato.
 TYPE=Tipo
@@ -148,6 +148,6 @@ NO_SYNC=Non sincronizzare questa cartella
 RENAME=Rinomina
 LEFT=Sinistra
 RIGHT=Destra
-->TREEVIEW_TIPS=
-->PATH_TIPS=
-->FILEEXT_TIPS=
+TREEVIEW_TIPS=Come selezionare una cartella; Click Sinistro: Seleziona/Deseleziona cartella e sottocartelle.\nClick Destro: Menù opzioni avanzate.
+PATH_TIPS=Formati supportati;C:\Documenti\n"MY USB"\Documenti\n\\192.168.0.20\NetworkDrive\Documenti
+FILEEXT_TIPS=Formati Supportati;jpg;png;bmp\n"Documento.doc"\n/Immagine[0-9]+\.(jpg|raw|png)/
