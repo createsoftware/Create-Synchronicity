@@ -1,19 +1,23 @@
--- Release checklist --
-* Fixed remaining TODOs
-* Updated DEBUG and RELEASE versions numbers
-* Updated release notes, added a "SYN:" entry
-* Rebuilt everything from source
-* Updated version.txt in website architecture
+---- Release checklist ----
+--         Local         --
+- Code -
+* Fix remaining TODOs
+* Update DEBUG and RELEASE versions numbers
+* Update release notes, add a "SYN:" entry
+* Branch
+* Rebuild everything from branch source
 * Build installer package and zip file
-* Tested package on Guest session
+* Test package on Guest session
 
-* Updated PAD file
-* Updated help file
-* Uncommented mentions to new version in web pages
-* Updated download page and other mentions to zip size
+- Website -
+* Update version.txt
+* Update .htaccess redirection
+* Update PAD file
+* Update help file
+* Uncomment mentions to new version in web pages
+* Update download page and other mentions to zip size (home page, help page, SF)
 
-* Updated .htaccess redirection
-* Uploaded release files to download server
-
-* Uploaded website contents and PAD file
-* Sent recap e-mail
+--         Online        --
+* Upload release files to download server
+* Upload website, .htaccess, and PAD file
+* Send recap e-mail
