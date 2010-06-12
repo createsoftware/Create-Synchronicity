@@ -23,6 +23,8 @@ Public Class SettingsForm
     '       2.2 Loading: "*" are converted to booleans 
     '   2. Searching the list, were pathes never end with "*"
     'The 'Tag' Property is used as a flag denoting that the treenode originally had all its subnodes checked.
+    '
+    'Careful: When calling Settings_Update(False), the Handler.Left/RightCheckNodes object is used to hold pathes containing * chars. Therefore, trying to reload the tree from it after invoking Settings_Update(False) cannot be done.
 
 #Region " Events "
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -279,14 +281,23 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_ReloadTrees()
+        Static CurrentLeft As String = ""
+        Static CurrentRight As String = ""
+
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
         Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
         Settings_Loading.Visible = True : InhibitAutocheck = True
-        LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
-        LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
+
+        Settings_Cleanup_Paths()
+        If CurrentLeft <> Settings_FromTextBox.Text Then LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
+        If CurrentRight <> Settings_ToTextBox.Text Then LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
+
         Settings_SetRootPathDisplay(True)
         Settings_Loading.Visible = False : InhibitAutocheck = False
         Settings_ReloadButton.Enabled = True : Settings_SaveButton.Enabled = True
+
+        CurrentLeft = Settings_FromTextBox.Text
+        CurrentRight = Settings_ToTextBox.Text
     End Sub
 
     Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
@@ -358,8 +369,7 @@ Public Class SettingsForm
 
 #Region " Settings Handling "
     Sub Settings_Update(ByVal LoadToForm As Boolean)
-        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(ConfigOptions.DirSep)
-        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(ConfigOptions.DirSep)
+        Settings_Cleanup_Paths()
 
         Handler.SetSetting(ConfigOptions.Source, Settings_FromTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.Destination, Settings_ToTextBox.Text, LoadToForm)
@@ -422,6 +432,11 @@ Public Class SettingsForm
         End Select
 
         If LoadToForm Then Settings_Update_Form_Enabled_Components()
+    End Sub
+
+    Sub Settings_Cleanup_Paths() 'TODO: Careful with linux root path.
+        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(ConfigOptions.DirSep)
+        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(ConfigOptions.DirSep)
     End Sub
 
     Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
