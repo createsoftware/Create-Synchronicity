@@ -179,9 +179,9 @@ Public Class SettingsForm
         Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(New Char() {";"c}, 2)
 
         If Pair.GetLength(0) = 1 Then
-            Settings_ToolTip.ToolTipTitle = "" '.PadLeft(255) 'Disable title line
+            Settings_ToolTip.ToolTipTitle = ""
             Settings_ToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
-        Else
+        ElseIf Pair.GetLength(0) > 1 Then
             Settings_ToolTip.ToolTipTitle = Pair(0)
             Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
         End If
