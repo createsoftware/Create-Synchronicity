@@ -1,6 +1,6 @@
 ﻿# Create Synchronicity Spanish Language file
 # Last update: 04.20.2010
-# Translation by Teo Rojo
+# Translation by Teo Rojo, Jaime Roquero
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -142,13 +142,13 @@ SCH_LABEL=Planificación:
 SCH_WAITING=Próxima ejecución: "{0}", {1}.
 SYNCED_W_ERRORS=Create Synchronicity ha finalizado la sincronización "{0}". Sin embargo, se han producido algunos errores: por favor, consulta el archivo de log para más información.
 SYNCED_OK=Create Synchronicity ha finalizado exitosamente la sincronización "{0}".
-->FOLDER_AND_SUBFOLDERS=
-->FILES_ONLY=
-->SUBFOLDERS_ONLY=
-->NO_SYNC=
-->RENAME=
+FOLDER_AND_SUBFOLDERS=Sincroniza carpetas y subcarpetas
+FILES_ONLY=Sólo sincroniza carpetas
+SUBFOLDERS_ONLY=Sólo sincroniza subcarpetas
+NO_SYNC=No sincroniza esta carpeta
+RENAME=Cambiar nombre
 LEFT=Izquierda
 RIGHT=Derecha
-->TREEVIEW_TIPS=
-->PATH_TIPS=
-->FILEEXT_TIPS=
+TREEVIEW_TIPS=Consejos para la selección de carpetas; Click izquierdo: seleccionar / deseleccionar carpetas y subcarpetas // click derecho: opciones avanzadas de seleccion
+PATH_TIPS=Formatos admitidos;C:\Documents\n"MY USB"\Documents\n\\192.168.0.20\NetworkDrive\Documents
+FILEEXT_TIPS=Formatos admitidos;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jpg|raw|png)/

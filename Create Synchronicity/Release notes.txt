@@ -17,7 +17,8 @@ Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 -- Version 4.0 --
-Jun. 12, 2010 - SYN: Create Synchronicity 4.0 brings huge usability and feature improvements, along with 1 new translation (to Italian). It supports new paths formats, displays built-in help tips, and implements proxy support, better logging, and a nicer interface.
+Jun. 14, 2010 - SYN: Create Synchronicity 4.0 brings huge usability and feature improvements, along with 1 new translation (to Italian). It supports new paths formats, displays built-in help tips, and implements proxy support, better logging, and a nicer interface.
+Jun. 13, 2010 - NEW: Welcome Jaime Roquero among translators :)
 Jun.  5, 2010 - NEW: Built-in help link.
 Jun.  5, 2010 - UPD: Usability improvement: Help tooltips.
 May. 25, 2010 - FIX: Small bug with root path display.

@@ -3,4 +3,4 @@ english:0
 francais:0
 italian:0
 portuguese:3
-spanish:8
+spanish:0
