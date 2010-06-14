@@ -20,5 +20,5 @@
 
 --         Online        --
 * Upload release files to download server
-* Upload website, .htaccess, and PAD file
-* Send recap e-mail
+* Upload website, version.txt, .htaccess, and PAD file
+* Send recap e-mail, post news on SF
