@@ -10,25 +10,28 @@
 @echo Web site:		http://synchronicity.sourceforge.net.
 
 @set VER=%1
+@set LOG="build\buildlog-v%VER%.txt"
 mkdir build
 
-(
-echo Packaging log for v%VER% & date /t & time /t
+(echo Packaging log for v%VER% & date /t & time /t & echo.) > %LOG%
 
+"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Release /Out %LOG%
+
+(
 echo.
 echo -----
 "C:\Program Files (x86)\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
 
 echo.
 echo -----
-move Create_Synchronicity_Setup.exe "Create_Synchronicity-%VER%_Setup.exe"
+move Create_Synchronicity_Setup.exe "build\Create_Synchronicity-%VER%_Setup.exe"
 
 cd "Create Synchronicity\bin\Release"
 echo.
 echo -----
-"C:\Program Files\7-Zip\7z.exe" a "..\..\..\Create_Synchronicity-%VER%.zip" "Create Synchronicity.exe" "COPYING" "Release notes.txt" "languages\*"
+"C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-%VER%.zip" "Create Synchronicity.exe" "COPYING" "Release notes.txt" "languages\*"
 cd ..\..\..
-) > "build\buildlog-v%VER%.txt"
+) >> %LOG%
 @goto end
 
 :help
