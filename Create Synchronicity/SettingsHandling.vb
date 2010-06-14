@@ -375,11 +375,10 @@ Class ProfileHandler
 
     Public Shared Function TranslatePath(ByVal Path As String) As String
 #If Not LINUX Then
-        'TODO: Windows only
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
             Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
-            If ClosingPos = 0 Then Return "" 'TODO: Missing closing operator.
+            If ClosingPos = 0 Then Return "" 'TODO: Currently returns "" if no closing op is found.
 
             Label = Path.Substring(1, ClosingPos - 1)
             RelativePath = Path.Substring(ClosingPos + 1)

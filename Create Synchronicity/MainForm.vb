@@ -254,7 +254,7 @@ Public Class MainForm
         If ProgramConfig.CanGoOn = False Then Exit Sub
         If ProfilesQueue.Count = 0 Then
             Interaction.StatusIcon.Visible = False
-            Application.Exit() 'TODO: Exit app? -> YUP
+            Application.Exit()
             Exit Sub
         End If
 
@@ -377,7 +377,7 @@ Public Class MainForm
 
         Try
             If Not NeedToRunAtBootTime Then
-                If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal) 'TODO: ???
+                If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
             End If
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UNREG_ERROR"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)

@@ -196,7 +196,7 @@ Public Class SynchronizeForm
             Case "RL"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case Else
-                'TODO: Errors list
+                'TODO: We're in errors list
                 Exit Sub
         End Select
 
@@ -333,7 +333,7 @@ Public Class SynchronizeForm
                     PreviewList.Columns.Add(Translation.Translate("\ERROR"))
                     PreviewList.Columns.Add(Translation.Translate("\PATH"))
                     Dim ErrorColumn As ColumnHeader = PreviewList.Columns.Add(Translation.Translate("\ERROR_DETAIL"))
-                    ColumnSorter.SortColumn = ErrorColumn.Index 'TODO: needs checking.
+                    ColumnSorter.SortColumn = ErrorColumn.Index
 
                     Dim ErrorsList As New List(Of ErrorItem)(Log.Errors)
                     For Each Err As ErrorItem In ErrorsList
