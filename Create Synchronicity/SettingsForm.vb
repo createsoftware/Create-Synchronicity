@@ -281,8 +281,8 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_ReloadTrees()
-        Static CurrentLeft As String = ""
-        Static CurrentRight As String = ""
+        Static CurrentLeft As String = "-1" 'Initiate to an invalid path value to froce reloading.
+        Static CurrentRight As String = "-1"
 
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
         Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
