@@ -151,3 +151,4 @@ RIGHT=Destra
 TREEVIEW_TIPS=Come selezionare una cartella; Click Sinistro: Seleziona/Deseleziona cartella e sottocartelle.\nClick Destro: Menù opzioni avanzate.
 PATH_TIPS=Formati supportati;C:\Documenti\n"MY USB"\Documenti\n\\192.168.0.20\NetworkDrive\Documenti
 FILEEXT_TIPS=Formati Supportati;jpg;png;bmp\n"Documento.doc"\n/Immagine[0-9]+\.(jpg|raw|png)/
+->TOGGLE=

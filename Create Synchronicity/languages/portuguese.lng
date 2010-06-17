@@ -1,4 +1,4 @@
-# Create Synchronicity Portuguese Language file
+﻿# Create Synchronicity Portuguese Language file
 # Last update: 06.16.2010
 # Translation by André Modesto, Pedro Silva
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
@@ -152,3 +152,4 @@ RIGHT=Direita
 TREEVIEW_TIPS=Sugestões para selecção de pastas;Click esquerdo rato: Seleccionar/Desmarcar pastas e subpastas.\nClick direito rato: Selecção opções avançadas.
 PATH_TIPS=Formatos suportados;C:\Documentos\n"My USB"\Documentos\n\\192.168.0.20\NetworkDrive\Documentos
 FILEEXT_TIPS=Extensões suportadas;jpg;png;bmp\n"Documento.doc"\n/Imagem[0-9]+\.(jpg|raw|png)
+->TOGGLE=
