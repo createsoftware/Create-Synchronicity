@@ -10,6 +10,7 @@ Public Class SettingsForm
     Dim Handler As ProfileHandler
     Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record to events.
     Dim InhibitAutocheck As Boolean = False 'Record events, but don't treat them as user input.
+    Dim AdvancedSelection As Boolean = False 'Controls recursive selection.
     Dim ClickedRightTreeView As Boolean = False
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
@@ -149,6 +150,10 @@ Public Class SettingsForm
         Settings_CheckNodeTree(False)
     End Sub
 
+    Private Sub Settings_ToggleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToggleMenuItem.Click
+        Settings_CheckSelectedNode(Not If(ClickedRightTreeView, Settings_RightView.SelectedNode.Checked, Settings_LeftView.SelectedNode.Checked))
+    End Sub
+
     Private Sub Settings_TwoWaysIncrementalMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_TwoWaysIncrementalMethodOption.CheckedChanged
         Settings_RightView.CheckBoxes = Settings_TwoWaysIncrementalMethodOption.Checked
         If Settings_RightView.CheckBoxes Then
@@ -281,16 +286,26 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_ReloadTrees()
-        Static CurrentLeft As String = "-1" 'Initiate to an invalid path value to froce reloading.
+        Static CurrentLeft As String = "-1" 'Initiate to an invalid path value to force reloading.
         Static CurrentRight As String = "-1"
 
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
         Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
         Settings_Loading.Visible = True : InhibitAutocheck = True
 
+        'No changes: reload all trees
+        'Otherwise: Reload trees where paths have changed.
+        'Check for changes *before* normalizing the paths.
+        Dim FullReload As Boolean = (CurrentLeft = Settings_FromTextBox.Text And CurrentRight = Settings_ToTextBox.Text)
+
         Settings_Cleanup_Paths()
-        If CurrentLeft <> Settings_FromTextBox.Text Then LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
-        If CurrentRight <> Settings_ToTextBox.Text Then LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
+        If FullReload Or CurrentLeft <> Settings_FromTextBox.Text Then
+            LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text & ConfigOptions.DirSep))
+        End If
+        If FullReload Or CurrentRight <> Settings_ToTextBox.Text Then
+            LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
+        End If
+
 
         Settings_SetRootPathDisplay(True)
         Settings_Loading.Visible = False : InhibitAutocheck = False
@@ -435,8 +450,8 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_Cleanup_Paths() 'TODO: Careful with linux root path.
-        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(ConfigOptions.DirSep)
-        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(ConfigOptions.DirSep)
+        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
     End Sub
 
     Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String

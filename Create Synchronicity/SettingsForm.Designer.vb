@@ -49,6 +49,8 @@ Partial Class SettingsForm
         Me.Settings_SynchronizeSubFoldersOnlyMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.Settings_DontSynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.Settings_ToggleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Settings_RightView = New System.Windows.Forms.TreeView()
         Me.Settings_ReloadButton = New System.Windows.Forms.Button()
         Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
@@ -222,11 +224,11 @@ Partial Class SettingsForm
         '
         'Settings_TreeViewMenuStrip
         '
-        Me.Settings_TreeViewMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Settings_SynchronizeFolderAndSubfoldersMenuItem, Me.ToolStripSeparator1, Me.Settings_SynchronizeFilesOnlyMenuItem, Me.Settings_SynchronizeSubFoldersOnlyMenuItem, Me.ToolStripSeparator2, Me.Settings_DontSynchronizeMenuItem})
+        Me.Settings_TreeViewMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Settings_SynchronizeFolderAndSubfoldersMenuItem, Me.ToolStripSeparator1, Me.Settings_SynchronizeFilesOnlyMenuItem, Me.Settings_SynchronizeSubFoldersOnlyMenuItem, Me.ToolStripSeparator2, Me.Settings_DontSynchronizeMenuItem, Me.ToolStripSeparator3, Me.Settings_ToggleMenuItem})
         Me.Settings_TreeViewMenuStrip.Name = "Settings_TreeViewMenuStrip"
         Me.Settings_TreeViewMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.Settings_TreeViewMenuStrip.ShowImageMargin = False
-        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(201, 104)
+        Me.Settings_TreeViewMenuStrip.Size = New System.Drawing.Size(201, 154)
         '
         'Settings_SynchronizeFolderAndSubfoldersMenuItem
         '
@@ -261,6 +263,18 @@ Partial Class SettingsForm
         Me.Settings_DontSynchronizeMenuItem.Name = "Settings_DontSynchronizeMenuItem"
         Me.Settings_DontSynchronizeMenuItem.Size = New System.Drawing.Size(200, 22)
         Me.Settings_DontSynchronizeMenuItem.Text = "\NO_SYNC"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(197, 6)
+        '
+        'Settings_ToggleMenuItem
+        '
+        Me.Settings_ToggleMenuItem.Name = "Settings_ToggleMenuItem"
+        Me.Settings_ToggleMenuItem.Size = New System.Drawing.Size(200, 22)
+        Me.Settings_ToggleMenuItem.Tag = ""
+        Me.Settings_ToggleMenuItem.Text = "\TOGGLE"
         '
         'Settings_RightView
         '
@@ -748,4 +762,6 @@ Partial Class SettingsForm
     Friend WithEvents Settings_Loading As System.Windows.Forms.Label
     Friend WithEvents Settings_ToolTip As System.Windows.Forms.ToolTip
     Friend WithEvents Settings_HelpLink As System.Windows.Forms.Label
+    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents Settings_ToggleMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
