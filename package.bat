@@ -37,5 +37,4 @@ cd ..\..\..
 :help
 @echo This script is designed to be called by a SVN hook script.
 @echo If used from the command line, it should be passed the revision number as its first parameter.
-
 :end
