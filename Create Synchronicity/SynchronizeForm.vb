@@ -629,7 +629,7 @@ Public Class SynchronizeForm
         Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
 
         Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
-        Dim EmptyDirectories As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
+        Dim EmptyDirectories As Boolean = (Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True")
 
         Dim InitialCount As Integer
         Dim IsSingularity As Boolean
@@ -711,7 +711,7 @@ Public Class SynchronizeForm
         Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
 
         'Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
-        'Dim EmptyDirectories As Boolean = Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
+        'Dim EmptyDirectories As Boolean = (Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
 
         Try
             For Each File As String In IO.Directory.GetFiles(Src_FilePath)
@@ -842,25 +842,27 @@ Public Class SynchronizeForm
     End Function
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
-        If IO.File.Exists(Dest & Path) Then IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal)
-        IO.File.Copy(Source & Path, Dest & Path, True)
+        Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path
+
+        If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
+        IO.File.Copy(SourceFile, DestFile, True)
 
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
 #If DEBUG Then
-            Log.LogInfo("DST: """ & Dest & Path & """ has been copied with attributes " & IO.File.GetAttributes(Dest & Path) & " , now setting attributes to Normal before setting Last Write Time")
+            Log.LogInfo("DST: """ & DestFile & """ has been copied with attributes " & IO.File.GetAttributes(DestFile) & " , now setting attributes to Normal before setting Last Write Time")
 #End If
-            IO.File.SetAttributes(Dest & Path, IO.FileAttributes.Normal) 'Tracker #2999436
+            IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal) 'Tracker #2999436
 #If DEBUG Then
-            Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(Dest & Path) & " on """ & Path & """, now setting last write time.")
+            Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
 #End If
-            IO.File.SetLastWriteTimeUtc(Dest & Path, IO.File.GetLastWriteTimeUtc(Dest & Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
+            IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
-        IO.File.SetAttributes(Dest & Path, IO.File.GetAttributes(Source & Path))
+        IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
 #If DEBUG Then
-        Log.LogInfo("CopyFile: Attributes set to" & IO.File.GetAttributes(Dest & Path) & " on """ & Path & """, now setting last write time.")
+        Log.LogInfo("CopyFile: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
 #End If
         Status.CreatedFiles += 1
-        Status.BytesCopied += (New System.IO.FileInfo(Source & Path)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+        Status.BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
     End Sub
 #End Region
 
