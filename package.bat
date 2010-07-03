@@ -9,7 +9,7 @@
 @echo Created by:	Clément Pit--Claudel.
 @echo Web site:     http://synchronicity.sourceforge.net.
 
-@set REV=%4
+@set REV=%1
 @set LOG="build\buildlog-r%REV%.txt"
 mkdir build
 
@@ -35,7 +35,7 @@ cd ..\..\..
 @goto end
 
 :help
-@echo This script is designed to be called as a SVN hook script.
-@echo If used from the command line, it should be passed the revision number as its fourth parameter.
+@echo This script is designed to be called by a SVN hook script.
+@echo If used from the command line, it should be passed the revision number as its first parameter.
 
 :end
