@@ -53,7 +53,7 @@ Public Class SynchronizeForm
     Delegate Sub UpdateListCallBack()
     Delegate Sub LaunchTimerCallBack()
     Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
-    Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
+    Delegate Sub LabelCallBack(ByVal Id As Integer, ByRef Text As String)
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
     Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
@@ -235,7 +235,7 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Processes interaction "
-    Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
+    Sub UpdateLabel(ByVal Id As Integer, ByRef Text As String)
         Dim StatusText As String = Text
         If Text.Length > 30 Then
             StatusText = "..." & Text.Substring(Text.Length - 30, 30)
@@ -525,7 +525,7 @@ Public Class SynchronizeForm
         Me.Invoke(TaskDoneDelegate, 3)
     End Sub
 
-    Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
+    Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByRef Source As String, ByRef Destination As String, ByVal CurrentStep As Integer)
         Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
@@ -597,15 +597,15 @@ Public Class SynchronizeForm
         If Entry.Action <> TypeOfAction.Delete Then AddValidFile(Entry.Path)
     End Sub
 
-    Sub AddValidFile(ByVal File As String)
+    Sub AddValidFile(ByRef File As String)
         If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower, Nothing)
     End Sub
 
-    Sub RemoveValidFile(ByVal File As String)
+    Sub RemoveValidFile(ByRef File As String)
         If IsValidFile(File) Then ValidFiles.Remove(File.ToLower)
     End Sub
 
-    Function IsValidFile(ByVal File As String) As Boolean
+    Function IsValidFile(ByRef File As String) As Boolean
         Return ValidFiles.ContainsKey(File.ToLower)
     End Function
 
@@ -615,13 +615,13 @@ Public Class SynchronizeForm
         SyncPreviewList(Side, -1)
     End Sub
 
-    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String
+    Function CombinePathes(ByRef Dir As String, ByRef File As String) As String 'TODO: TBO
         Return If(Dir.EndsWith(IO.Path.DirectorySeparatorChar), Dir, Dir & IO.Path.DirectorySeparatorChar) & If(File.StartsWith(IO.Path.DirectorySeparatorChar), File.Substring(1), File)
     End Function
 
     ' This procedure searches for changes in the source directory, in regards
     ' to the status of the destination directory.
-    Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+    Sub SearchForChanges(ByRef Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
@@ -702,7 +702,7 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Sub SearchForCrap(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+    Sub SearchForCrap(ByRef Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         'Here, Source is set to be the right folder, and dest to be the left folder
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
@@ -823,7 +823,7 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Function HasAcceptedFilename(ByVal Path As String) As Boolean
+    Function HasAcceptedFilename(ByRef Path As String) As Boolean
         Try
             Select Case Handler.GetSetting(ConfigOptions.Restrictions)
                 'TODO: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
@@ -841,7 +841,7 @@ Public Class SynchronizeForm
         Return True
     End Function
 
-    Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
+    Sub CopyFile(ByRef Path As String, ByRef Source As String, ByRef Dest As String)
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
@@ -867,15 +867,15 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Functions "
-    Function GetFileOrFolderName(ByVal Path As String) As String
+    Function GetFileOrFolderName(ByRef Path As String) As String
         Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1)
     End Function
 
-    Function GetExtension(ByVal Path As String) As String
+    Function GetExtension(ByRef Path As String) As String
         Return Path.Substring(Path.LastIndexOf(".") + 1)
     End Function
 
-    Function MatchesPattern(ByVal Path As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
+    Function MatchesPattern(ByRef Path As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
         Dim FileName As String = GetFileOrFolderName(Path)
         Dim Extension As String = GetExtension(FileName)
 
@@ -893,12 +893,12 @@ Public Class SynchronizeForm
         Return False
     End Function
 
-    Function ComputeFileHash(ByVal Path As String) As String
+    Function ComputeFileHash(ByRef Path As String) As String
         Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
         Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
     End Function
 
-    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
+    Function SourceIsMoreRecent(ByRef Source As String, ByRef Destination As String) As Boolean
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
