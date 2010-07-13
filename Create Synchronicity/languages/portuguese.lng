@@ -153,4 +153,4 @@ TREEVIEW_TIPS=Sugestões para selecção de pastas;Click esquerdo rato: Seleccio
 PATH_TIPS=Formatos suportados;C:\Documentos\n"My USB"\Documentos\n\\192.168.0.20\NetworkDrive\Documentos
 FILEEXT_TIPS=Extensões suportadas;jpg;png;bmp\n"Documento.doc"\n/Imagem[0-9]+\.(jpg|raw|png)
 ->TOGGLE=
-->RELOAD_TREES=
+->CHOOSE_FOLDERS=
