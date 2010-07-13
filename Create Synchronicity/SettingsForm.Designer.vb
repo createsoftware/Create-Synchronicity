@@ -357,7 +357,7 @@ Partial Class SettingsForm
         Me.Settings_RightReloadButton.Name = "Settings_RightReloadButton"
         Me.Settings_RightReloadButton.Size = New System.Drawing.Size(100, 66)
         Me.Settings_RightReloadButton.TabIndex = 8
-        Me.Settings_RightReloadButton.Text = "\CHOOSE_FOLDERS"
+        Me.Settings_RightReloadButton.Text = "\RELOAD_TREES"
         Me.Settings_RightReloadButton.UseVisualStyleBackColor = True
         '
         'Settings_LeftReloadButton
@@ -367,7 +367,7 @@ Partial Class SettingsForm
         Me.Settings_LeftReloadButton.Name = "Settings_LeftReloadButton"
         Me.Settings_LeftReloadButton.Size = New System.Drawing.Size(100, 66)
         Me.Settings_LeftReloadButton.TabIndex = 7
-        Me.Settings_LeftReloadButton.Text = "\CHOOSE_FOLDERS"
+        Me.Settings_LeftReloadButton.Text = "\RELOAD_TREES"
         Me.Settings_LeftReloadButton.UseVisualStyleBackColor = True
         '
         'Settings_SynchronizationMethodBox
