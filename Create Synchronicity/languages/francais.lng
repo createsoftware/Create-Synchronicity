@@ -153,4 +153,4 @@ RIGHT=Droite
 TREEVIEW_TIPS=Astuces pour la sélection des dossiers;Clic gauche: Sélection/Déselection d'un dossier et de ses sous-dossiers\nClic droit: Options avancées de sélection
 PATH_TIPS=Formats supportés;C:\Documents\n"CLEF USB"\Documents\n\\192.168.0.20\DisqueRéseau\Documents
 FILEEXT_TIPS=Formats supportés;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jpg|raw|png)/
-CHOOSE_FOLDERS=Choisir les dossiers à synchroniser
+RELOAD_TREES=Afficher l'arborescence
