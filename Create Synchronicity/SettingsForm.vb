@@ -40,9 +40,16 @@ Public Class SettingsForm
         Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Private Sub Settings_From_To_TextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown, Settings_ToTextBox.KeyDown
+    Private Sub Settings_FromTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown
         ShowTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
+        Settings_LeftReloadButton.Visible = True
+    End Sub
+
+    Private Sub Settings_ToTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_ToTextBox.KeyDown
+        ShowTip(CType(sender, Control))
+        Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
+        Settings_RightReloadButton.Visible = True
     End Sub
 
     Private Sub Settings_SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SaveButton.Click
@@ -74,7 +81,11 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_ReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ReloadButton.Click
-        Settings_ReloadTrees()
+        Settings_ReloadTrees(True)
+    End Sub
+
+    Private Sub Settings_LeftRightReloadButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_LeftReloadButton.Click, Settings_RightReloadButton.Click
+        Settings_ReloadTrees(False)
     End Sub
 
     Private Sub Settings_LRMirrorMethodOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_LRMirrorMethodOption.CheckedChanged
@@ -285,7 +296,7 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub Settings_ReloadTrees()
+    Sub Settings_ReloadTrees(Optional ByVal AllowFullReload As Boolean = False)
         Static CurrentLeft As String = "-1" 'Initiate to an invalid path value to force reloading.
         Static CurrentRight As String = "-1"
 
@@ -293,10 +304,10 @@ Public Class SettingsForm
         Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
         Settings_Loading.Visible = True : InhibitAutocheck = True
 
-        'No changes: reload all trees
+        'No changes: reload all trees if AllowFullReload is true (middle button clicked)
         'Otherwise: Reload trees where paths have changed.
         'Check for changes *before* normalizing the paths.
-        Dim FullReload As Boolean = (CurrentLeft = Settings_FromTextBox.Text And CurrentRight = Settings_ToTextBox.Text)
+        Dim FullReload As Boolean = (AllowFullReload And CurrentLeft = Settings_FromTextBox.Text And CurrentRight = Settings_ToTextBox.Text)
 
         Settings_Cleanup_Paths()
         If FullReload Or CurrentLeft <> Settings_FromTextBox.Text Then
@@ -306,6 +317,8 @@ Public Class SettingsForm
             LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text & ConfigOptions.DirSep))
         End If
 
+        If Settings_LeftView.Enabled Then Settings_LeftReloadButton.Visible = False
+        If Settings_RightView.Enabled Then Settings_RightReloadButton.Visible = False
 
         Settings_SetRootPathDisplay(True)
         Settings_Loading.Visible = False : InhibitAutocheck = False
