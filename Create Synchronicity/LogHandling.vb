@@ -100,7 +100,7 @@ Class LogHandler
     Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
         LogW.WriteLine("	</body>")
         LogW.WriteLine("</html>")
-      End Sub
+    End Sub
 
     Sub PutLine(ByVal Title As String, ByVal Contents As String, ByRef LogW As IO.StreamWriter)
 #If DEBUG Then
