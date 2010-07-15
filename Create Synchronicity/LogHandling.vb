@@ -102,11 +102,16 @@ Class LogHandler
         LogW.WriteLine("</html>")
     End Sub
 
-    Sub PutLine(ByVal Title As String, ByVal Contents As String, ByRef LogW As IO.StreamWriter)
+    Sub PutLine(ByVal Title As String, ByRef Contents As String(), ByRef LogW As IO.StreamWriter)
 #If DEBUG Then
-        LogW.WriteLine(Title & "	" & Contents.Replace(" -> ", "	"))
+        LogW.WriteLine(Title & "	" & String.Join("	", Contents))
 #Else
-        LogW.WriteLine("<tr><td>" & Title & "</td><td>" & Contents & "</td></tr>")
+        LogW.WriteLine("<tr>")
+        LogW.WriteLine("	<td>" & Title & "</td>")
+        For Each Cell As String In Contents
+            LogW.WriteLine("	<td>" & Cell & "</td>")
+        Next
+        LogW.WriteLine("</tr>")
 #End If
     End Sub
 
@@ -116,8 +121,26 @@ Class LogHandler
 
         Try
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
-            'TODO: </body> and </html> tags
-            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
+            Dim LogStream As New IO.FileStream(ProgramConfig.GetLogPath(LogName), IO.FileMode.OpenOrCreate, IO.FileAccess.ReadWrite)
+
+            Dim LogWriter As New IO.StreamWriter(LogStream)
+#If Not DEBUG Then
+            Dim LogReader As New IO.StreamReader(LogStream)
+            Try
+                Dim Offset As Integer = 0
+                Dim FileEnding As String = ""
+                Dim Length As String = LogStream.Length
+                While Offset < Length And Not FileEnding.StartsWith("</body>")
+                    Offset += 1
+                    LogStream.Seek(-Offset, IO.SeekOrigin.End)
+                    FileEnding = LogReader.ReadToEnd()
+                End While
+
+                LogStream.Seek(-Offset, IO.SeekOrigin.End)
+            Catch
+                LogStream.Seek(0, IO.SeekOrigin.End)
+            End Try
+#End If
 
             Try
 #If Not DEBUG Then
@@ -138,24 +161,30 @@ Class LogHandler
 
 #If Not DEBUG Then
                 LogWriter.WriteLine("</p>")
-                LogWriter.WriteLine("<table>") '<tr><th>Type</th><th>Contents</th></tr>
 #End If
 
 #If DEBUG Then
                 For Each Info As String In DebugInfo
-                    PutLine("Info", Info, LogWriter)
+                    PutLine("Info", New String() {Info}, LogWriter)
                 Next
 #End If
-                For Each Record As LogItem In Log
-                    PutLine(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), String.Join(" -> ", New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}), LogWriter)
-                Next
-                For Each Err As ErrorItem In Errors
-                    PutLine(Translation.Translate("\ERROR"), String.Join(" -> ", New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}), LogWriter)
-                Next
 
 #If Not DEBUG Then
+                LogWriter.WriteLine("<table>")
+#End If
+                For Each Record As LogItem In Log
+                    PutLine(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}, LogWriter)
+                Next
+#If Not DEBUG Then
                 LogWriter.WriteLine("</table>")
-                If NewLog Then CloseHTMLHeaders(LogWriter)
+                LogWriter.WriteLine("<table>")
+#End If
+                For Each Err As ErrorItem In Errors
+                    PutLine(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
+                Next
+#If Not DEBUG Then
+                LogWriter.WriteLine("</table>")
+                CloseHTMLHeaders(LogWriter)
 #End If
             Catch Ex As Exception
                 Warning(Translation.Translate("\LOGFILE_WRITE_ERROR"), Ex)
@@ -163,6 +192,9 @@ Class LogHandler
             Finally
                 LogWriter.Flush()
                 LogWriter.Close()
+#If Not DEBUG Then
+                LogReader.Dispose()
+#End If
                 LogWriter.Dispose()
             End Try
         Catch Ex As Exception
