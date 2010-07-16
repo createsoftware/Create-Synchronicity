@@ -1,5 +1,5 @@
-﻿# Create Synchronicity Portuguese Language file
-# Translation by André Modesto, Pedro Silva
+# Create Synchronicity Portuguese Language file
+# Translation by André Modesto (careca777), Pedro Silva
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -116,7 +116,7 @@ TWOWAYS_INCREMENTAL_TAG=%s: Ficheiros novos e modificados são copiados nas duas
 TYPE=Tipo
 UPDATE_ERROR=Não consegue aceder a "http://synchronicity.sourceforge.net". Pode desligar as actualizações automáticas em "Acerca".
 UPDATE_ERROR_TITLE=Erro de rede!
-->UPDATE_MSG=Uma nova versão do programa está disponível!\nVersão instalada: {0}\nVersão actual: {1}\nVisitar website?
+UPDATE_MSG=Uma nova versão do programa está disponível!\nVersão instalada: {0}\nVersão actual: {1}\nVisitar website?
 UPDATE_TITLE=Nova versão disponível!
 UPDATES=Procurar actualizações no arranque (requer uma ligação internet)
 VERSION_TEXT=Version %version% (\Procurar actualizações/)
@@ -151,5 +151,5 @@ RIGHT=Direita
 TREEVIEW_TIPS=Sugestões para selecção de pastas;Click esquerdo rato: Seleccionar/Desmarcar pastas e subpastas.\nClick direito rato: Selecção opções avançadas.
 PATH_TIPS=Formatos suportados;C:\Documentos\n"My USB"\Documentos\n\\192.168.0.20\NetworkDrive\Documentos
 FILEEXT_TIPS=Extensões suportadas;jpg;png;bmp\n"Documento.doc"\n/Imagem[0-9]+\.(jpg|raw|png)
-->TOGGLE=
-->RELOAD_TREES=
+TOGGLE=Avançadas: Marcar/Desmarcar esta pasta
+RELOAD_TREES=Carregar a árvore de pastas
