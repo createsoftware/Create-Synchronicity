@@ -2,5 +2,5 @@ deutsch:1
 english:0
 francais:0
 italian:3
-portuguese:3
+portuguese:0
 spanish:3
