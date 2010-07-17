@@ -1,4 +1,4 @@
-deutsch:2
+deutsch:1
 english:0
 francais:0
 italian:1
