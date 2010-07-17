@@ -53,7 +53,7 @@ Function ${UN}.onInit
 	Beginning:
 		FindProcDLL::FindProc "Create Synchronicity.exe"
 		IntCmp $R0 0 OkCase
-			MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION "Create Synchronicity is running. Please close it before continuing with the update." IDABORT AbortCase IDRETRY RetryCase
+			MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION "Create Synchronicity is running. Please close it before continuing." IDABORT AbortCase IDRETRY RetryCase
 				Goto OkCase
 		
 	AbortCase:
