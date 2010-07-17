@@ -48,6 +48,27 @@ Var StartMenuFolder
 
 !insertmacro MUI_LANGUAGE "English"
 
+!macro ExitIfRunning UN
+Function ${UN}.onInit
+	Beginning:
+		FindProcDLL::FindProc "Create Synchronicity.exe"
+		IntCmp $R0 0 OkCase
+			MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION "Create Synchronicity is running. Please close it before continuing with the update." IDABORT AbortCase IDRETRY RetryCase
+				Goto OkCase
+		
+	AbortCase:
+		Abort
+	
+	RetryCase:
+		Goto Beginning
+	
+	OkCase:
+FunctionEnd
+!macroend
+
+!insertmacro ExitIfRunning ""
+!insertmacro ExitIfRunning "un"
+
 Section "Installer Section" InstallSection
 	SetOutPath $INSTDIR
 
