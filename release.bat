@@ -36,6 +36,6 @@ cd ..\..\..
 
 :help
 @echo This script is designed to be called when packaging for a release.
-@echo Usage: release.bat <vernum>
+@echo Usage: release.bat vernum
 
 :end
