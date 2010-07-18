@@ -16,10 +16,13 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+-- Version 4.1 --
+Jul. 18, 2010 - SYN: Various usability/interface improvements, installer fixes, and heavy optimization of vital backup routines to achieve a largely noticeable speedup (~10/15%).
 Jul. 17, 2010 - UPD: More user-friendly installer: detect when the program is running and thus cannot be updated.
 Jul. 15, 2010 - UPD: Improve log formatting for better readability (use actual tables).
 Jul. 15, 2010 - NEW: Generate XHTML-compliant logs.
 Jul. 13, 2010 - UPD: !Add two reload buttons to reload directory structures.
+Jul.  3, 2010 - UPD: !First step towards heavy optimization of synchronization/backup routines.
 
 -- Version 4.0 --
 Jun. 14, 2010 - SYN: Create Synchronicity 4.0 brings huge usability and feature improvements, along with 1 new translation (to Italian). It supports new paths formats, displays built-in help tips, and implements proxy support, better logging, and a nicer interface.
