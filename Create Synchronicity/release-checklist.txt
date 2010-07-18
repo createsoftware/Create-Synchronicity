@@ -2,16 +2,16 @@
 --         Local         --
 - Code -
 * Fix remaining TODOs
+* Update version.txt (!Needed by installer!)
 * Update DEBUG and RELEASE versions numbers
 * Update release notes, add a "SYN:" entry
 * Test program on guest session
 * Branch
-* Rebuild everything from branch source
+* (Outdated) Rebuild everything from branch source
 * Build installer package and zip file
 * Test package on Guest session
 
 - Website -
-* Update version.txt
 * Update .htaccess redirection
 * Update PAD file
 * Update help file
