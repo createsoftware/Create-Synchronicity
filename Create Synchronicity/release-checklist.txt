@@ -8,7 +8,7 @@
 * Test program on guest session
 * Branch
 * (Outdated) Rebuild everything from branch source
-* Build installer package and zip file
+* Build installer package and zip file (!from trunk, otherwise version.txt path is wrong!)
 * Test package on Guest session
 
 - Website -
@@ -20,5 +20,6 @@
 
 --         Online        --
 * Upload release files to download server
+* Change default file to new Setup.exe (Create Synchronicity, v?.? - Powerful backup solution)
 * Upload website, version.txt, .htaccess, and PAD file
 * Send recap e-mail, post news on SF
