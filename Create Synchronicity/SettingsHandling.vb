@@ -21,6 +21,7 @@ Public Module ConfigOptions
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
+    Public Const LastRun As String = "Last run"
 
     Public Const Scheduling As String = "Scheduling"
     Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute
@@ -419,6 +420,11 @@ Class ProfileHandler
 
         Return Path
     End Function
+
+    Public Sub SaveLastRun()
+        SetSetting(ConfigOptions.LastRun, Date.Now.ToString)
+        SaveConfigFile()
+    End Sub
 
     Private Shared Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
         Dim ReturnStr As String = ""
