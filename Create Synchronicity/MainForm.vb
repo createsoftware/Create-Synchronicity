@@ -223,23 +223,27 @@ Public Class MainForm
         Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
         If ProfilesQueue Is Nothing Then
             ProgramConfig.CanGoOn = False
-            ApplicationTimer.Interval = 20000 'First tick was forced by the very low interval.
+            ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
             ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
             If RunAsScheduler Then
                 Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
 
                 For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
                     If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                        'TODO: Test catchup.
+                        'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
                         Dim NextRun As Date = Profile.Value.Scheduler.NextRun()
-                        If NextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then NextRun = ScheduleInfo.DATE_CATCHUP
+                        If NextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                            NextRun = ScheduleInfo.DATE_CATCHUP
+                        End If
                         ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
                     End If
                 Next
 
                 'Tracker #3000728
                 ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Value.CompareTo(Second.Value))
-                For Each P As KeyValuePair(Of Date, String) In ProfilesToRun : ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key)) : Next
+                For Each P As KeyValuePair(Of Date, String) In ProfilesToRun
+                    ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key))
+                Next
             Else
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
@@ -263,6 +267,7 @@ Public Class MainForm
             Exit Sub
         End If
 
+        'TODO: Fix displayed date when catching up.
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, ProfilesQueue.Peek().Value.ToString())
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
