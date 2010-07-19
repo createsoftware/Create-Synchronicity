@@ -331,6 +331,7 @@ Class ProfileHandler
     End Sub
 
     Sub SetSetting(ByVal SettingName As String, ByRef SettingField As String, ByVal LoadSetting As Boolean)
+        'Passes the current value as default answer.
         If LoadSetting Then
             SettingField = GetSetting(SettingName, SettingField)
         Else
