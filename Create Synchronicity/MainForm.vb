@@ -231,11 +231,11 @@ Public Class MainForm
                 For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
                     If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                         'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
-                        Dim NextRun As Date = Profile.Value.Scheduler.NextRun()
-                        If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And NextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
-                            NextRun = ScheduleInfo.DATE_CATCHUP
+                        Dim TimeOfNextRun As Date = Profile.Value.Scheduler.NextRun()
+                        If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                            TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
                         End If
-                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
+                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(TimeOfNextRun, Profile.Key))
                     End If
                 Next
 
