@@ -16,7 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Jul. 19, 2010 - NEW: When a scheduled backup has been repeatedly missed, force execution to catch up. 
+Jul. 19, 2010 - FIX: "Mirror empty directories" setting wasn't always remembered.
+Jul. 19, 2010 - NEW: Add a setting to catch up missed backups (when a scheduled backup has been repeatedly missed, forces its immediate execution). 
 
 -- Version 4.1 --
 Jul. 18, 2010 - SYN: Various usability/interface improvements, installer fixes, and heavy optimization of vital backup routines to achieve a largely noticeable speedup (~10/15%).
