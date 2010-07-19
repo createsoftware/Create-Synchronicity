@@ -1,4 +1,4 @@
-﻿# Create Synchronicity Portuguese Language file
+# Create Synchronicity Portuguese Language file
 # Translation by André Modesto (careca777), Pedro Silva
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -116,7 +116,7 @@ TWOWAYS_INCREMENTAL_TAG=%s: Ficheiros novos e modificados são copiados nas duas
 TYPE=Tipo
 UPDATE_ERROR=Não consegue aceder a "http://synchronicity.sourceforge.net". Pode desligar as actualizações automáticas em "Acerca".
 UPDATE_ERROR_TITLE=Erro de rede!
-->UPDATE_MSG=Uma nova versão do programa está disponível!\nVersão instalada: {0}\nVersão actual: {1}\nVisitar website?
+UPDATE_MSG=Uma nova versão do programa está disponível!\nVersão instalada: {0}\nVersão actual: {1}\nEncerrar programa e visitar website?
 UPDATE_TITLE=Nova versão disponível!
 UPDATES=Procurar actualizações no arranque (requer uma ligação internet)
 VERSION_TEXT=Version %version% (\Procurar actualizações/)
