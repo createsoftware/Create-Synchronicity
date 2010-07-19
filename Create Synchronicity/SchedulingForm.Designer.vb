@@ -298,7 +298,7 @@ Partial Class SchedulingForm
         Me.Scheduling_Catchup.Name = "Scheduling_Catchup"
         Me.Scheduling_Catchup.Size = New System.Drawing.Size(156, 17)
         Me.Scheduling_Catchup.TabIndex = 2
-        Me.Scheduling_Catchup.Text = "\SCHEDULE_CATCHUP"
+        Me.Scheduling_Catchup.Text = "\CATCHUP_MISSED_BACKUPS"
         Me.Scheduling_Catchup.UseVisualStyleBackColor = True
         '
         'SchedulingForm

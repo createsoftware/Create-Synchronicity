@@ -153,4 +153,4 @@ PATH_TIPS=Formatos admitidos;C:\Documents\n"MY USB"\Documents\n\\192.168.0.20\Ne
 FILEEXT_TIPS=Formatos admitidos;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jpg|raw|png)/
 TOGGLE=Avanzado: Marcar/desmarcar esta carpeta
 RELOAD_TREES=Cargar el árbol de carpetas
-->SCHEDULE_CATCHUP=
+->CATCHUP_MISSED_BACKUPS=

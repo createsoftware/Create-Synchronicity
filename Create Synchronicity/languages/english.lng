@@ -153,4 +153,4 @@ PATH_TIPS=Supported formats;C:\Documents\n"MY USB"\Documents\n\\192.168.0.20\Net
 FILEEXT_TIPS=Supported formats;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jpg|raw|png)/
 TOGGLE=Advanced: Check/Uncheck this folder
 RELOAD_TREES=Load folder tree
-SCHEDULE_CATCHUP=Catch up missed backups
+CATCHUP_MISSED_BACKUPS=Catch up missed backups

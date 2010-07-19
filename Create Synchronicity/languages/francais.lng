@@ -153,4 +153,4 @@ TREEVIEW_TIPS=Astuces pour la sélection des dossiers;Clic gauche: Sélection/D�
 PATH_TIPS=Formats supportés;C:\Documents\n"CLEF USB"\Documents\n\\192.168.0.20\DisqueRéseau\Documents
 FILEEXT_TIPS=Formats supportés;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jpg|raw|png)/
 RELOAD_TREES=Afficher l'arborescence
-SCHEDULE_CATCHUP=Rattraper les sauvegardes non réalisées
+CATCHUP_MISSED_BACKUPS=Rattraper les sauvegardes non réalisées
