@@ -27,13 +27,13 @@ Partial Class SchedulingForm
         Me.Scheduling_Save = New System.Windows.Forms.Button()
         Me.Scheduling_WarningLabel = New System.Windows.Forms.Label()
         Me.Scheduling_Enable = New System.Windows.Forms.CheckBox()
-        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.DailyLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.Scheduling_EveryDay = New System.Windows.Forms.RadioButton()
         Me.Scheduling_Panel = New System.Windows.Forms.Panel()
-        Me.FlowLayoutPanel3 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.MonthlyLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.Scheduling_EveryMonth = New System.Windows.Forms.RadioButton()
         Me.Scheduling_MonthDay = New System.Windows.Forms.NumericUpDown()
-        Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.WeeklyLayoutPanel = New System.Windows.Forms.FlowLayoutPanel()
         Me.Scheduling_EveryWeek = New System.Windows.Forms.RadioButton()
         Me.Scheduling_WeekDay = New System.Windows.Forms.ComboBox()
         Me.Scheduling_AtLabel = New System.Windows.Forms.Label()
@@ -41,15 +41,18 @@ Partial Class SchedulingForm
         Me.Scheduling_Hour = New System.Windows.Forms.NumericUpDown()
         Me.Scheduling_HMSepLabel = New System.Windows.Forms.Label()
         Me.Scheduling_Minute = New System.Windows.Forms.NumericUpDown()
+        Me.Scheduling_OptionsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Scheduling_Catchup = New System.Windows.Forms.CheckBox()
         Me.Settings_ActionsPanel.SuspendLayout()
-        Me.FlowLayoutPanel1.SuspendLayout()
+        Me.DailyLayoutPanel.SuspendLayout()
         Me.Scheduling_Panel.SuspendLayout()
-        Me.FlowLayoutPanel3.SuspendLayout()
+        Me.MonthlyLayoutPanel.SuspendLayout()
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.FlowLayoutPanel2.SuspendLayout()
+        Me.WeeklyLayoutPanel.SuspendLayout()
         Me.Scheduling_TimeSelectionPanel.SuspendLayout()
         CType(Me.Scheduling_Hour, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Scheduling_Minute, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Scheduling_OptionsLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'Settings_ActionsPanel
@@ -105,23 +108,24 @@ Partial Class SchedulingForm
         '
         'Scheduling_Enable
         '
+        Me.Scheduling_Enable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_Enable.AutoSize = True
-        Me.Scheduling_Enable.Location = New System.Drawing.Point(12, 63)
+        Me.Scheduling_Enable.Location = New System.Drawing.Point(3, 6)
         Me.Scheduling_Enable.Name = "Scheduling_Enable"
         Me.Scheduling_Enable.Size = New System.Drawing.Size(144, 17)
         Me.Scheduling_Enable.TabIndex = 1
         Me.Scheduling_Enable.Text = "\SCHEDULE_ENABLE"
         Me.Scheduling_Enable.UseVisualStyleBackColor = True
         '
-        'FlowLayoutPanel1
+        'DailyLayoutPanel
         '
-        Me.FlowLayoutPanel1.AutoSize = True
-        Me.FlowLayoutPanel1.Controls.Add(Me.Scheduling_EveryDay)
-        Me.FlowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
-        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(550, 23)
-        Me.FlowLayoutPanel1.TabIndex = 0
+        Me.DailyLayoutPanel.AutoSize = True
+        Me.DailyLayoutPanel.Controls.Add(Me.Scheduling_EveryDay)
+        Me.DailyLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
+        Me.DailyLayoutPanel.Location = New System.Drawing.Point(0, 0)
+        Me.DailyLayoutPanel.Name = "DailyLayoutPanel"
+        Me.DailyLayoutPanel.Size = New System.Drawing.Size(550, 23)
+        Me.DailyLayoutPanel.TabIndex = 0
         '
         'Scheduling_EveryDay
         '
@@ -138,25 +142,25 @@ Partial Class SchedulingForm
         '
         'Scheduling_Panel
         '
-        Me.Scheduling_Panel.Controls.Add(Me.FlowLayoutPanel3)
-        Me.Scheduling_Panel.Controls.Add(Me.FlowLayoutPanel2)
-        Me.Scheduling_Panel.Controls.Add(Me.FlowLayoutPanel1)
+        Me.Scheduling_Panel.Controls.Add(Me.MonthlyLayoutPanel)
+        Me.Scheduling_Panel.Controls.Add(Me.WeeklyLayoutPanel)
+        Me.Scheduling_Panel.Controls.Add(Me.DailyLayoutPanel)
         Me.Scheduling_Panel.Enabled = False
         Me.Scheduling_Panel.Location = New System.Drawing.Point(12, 86)
         Me.Scheduling_Panel.Name = "Scheduling_Panel"
         Me.Scheduling_Panel.Size = New System.Drawing.Size(550, 77)
         Me.Scheduling_Panel.TabIndex = 2
         '
-        'FlowLayoutPanel3
+        'MonthlyLayoutPanel
         '
-        Me.FlowLayoutPanel3.AutoSize = True
-        Me.FlowLayoutPanel3.Controls.Add(Me.Scheduling_EveryMonth)
-        Me.FlowLayoutPanel3.Controls.Add(Me.Scheduling_MonthDay)
-        Me.FlowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top
-        Me.FlowLayoutPanel3.Location = New System.Drawing.Point(0, 50)
-        Me.FlowLayoutPanel3.Name = "FlowLayoutPanel3"
-        Me.FlowLayoutPanel3.Size = New System.Drawing.Size(550, 27)
-        Me.FlowLayoutPanel3.TabIndex = 2
+        Me.MonthlyLayoutPanel.AutoSize = True
+        Me.MonthlyLayoutPanel.Controls.Add(Me.Scheduling_EveryMonth)
+        Me.MonthlyLayoutPanel.Controls.Add(Me.Scheduling_MonthDay)
+        Me.MonthlyLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
+        Me.MonthlyLayoutPanel.Location = New System.Drawing.Point(0, 50)
+        Me.MonthlyLayoutPanel.Name = "MonthlyLayoutPanel"
+        Me.MonthlyLayoutPanel.Size = New System.Drawing.Size(550, 27)
+        Me.MonthlyLayoutPanel.TabIndex = 2
         '
         'Scheduling_EveryMonth
         '
@@ -182,17 +186,17 @@ Partial Class SchedulingForm
         Me.Scheduling_MonthDay.TabIndex = 4
         Me.Scheduling_MonthDay.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'FlowLayoutPanel2
+        'WeeklyLayoutPanel
         '
-        Me.FlowLayoutPanel2.AutoSize = True
-        Me.FlowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.FlowLayoutPanel2.Controls.Add(Me.Scheduling_EveryWeek)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Scheduling_WeekDay)
-        Me.FlowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.FlowLayoutPanel2.Location = New System.Drawing.Point(0, 23)
-        Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
-        Me.FlowLayoutPanel2.Size = New System.Drawing.Size(550, 27)
-        Me.FlowLayoutPanel2.TabIndex = 1
+        Me.WeeklyLayoutPanel.AutoSize = True
+        Me.WeeklyLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.WeeklyLayoutPanel.Controls.Add(Me.Scheduling_EveryWeek)
+        Me.WeeklyLayoutPanel.Controls.Add(Me.Scheduling_WeekDay)
+        Me.WeeklyLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
+        Me.WeeklyLayoutPanel.Location = New System.Drawing.Point(0, 23)
+        Me.WeeklyLayoutPanel.Name = "WeeklyLayoutPanel"
+        Me.WeeklyLayoutPanel.Size = New System.Drawing.Size(550, 27)
+        Me.WeeklyLayoutPanel.TabIndex = 1
         '
         'Scheduling_EveryWeek
         '
@@ -269,6 +273,34 @@ Partial Class SchedulingForm
         Me.Scheduling_Minute.Size = New System.Drawing.Size(37, 21)
         Me.Scheduling_Minute.TabIndex = 3
         '
+        'Scheduling_OptionsLayoutPanel
+        '
+        Me.Scheduling_OptionsLayoutPanel.ColumnCount = 2
+        Me.Scheduling_OptionsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Scheduling_OptionsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Scheduling_OptionsLayoutPanel.Controls.Add(Me.Scheduling_Catchup, 1, 0)
+        Me.Scheduling_OptionsLayoutPanel.Controls.Add(Me.Scheduling_Enable, 0, 0)
+        Me.Scheduling_OptionsLayoutPanel.Location = New System.Drawing.Point(12, 54)
+        Me.Scheduling_OptionsLayoutPanel.Name = "Scheduling_OptionsLayoutPanel"
+        Me.Scheduling_OptionsLayoutPanel.RowCount = 1
+        Me.Scheduling_OptionsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Scheduling_OptionsLayoutPanel.Size = New System.Drawing.Size(550, 26)
+        Me.Scheduling_OptionsLayoutPanel.TabIndex = 5
+        '
+        'Scheduling_Catchup
+        '
+        Me.Scheduling_Catchup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Scheduling_Catchup.AutoSize = True
+        Me.Scheduling_Catchup.Checked = True
+        Me.Scheduling_Catchup.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.Scheduling_Catchup.Enabled = False
+        Me.Scheduling_Catchup.Location = New System.Drawing.Point(391, 6)
+        Me.Scheduling_Catchup.Name = "Scheduling_Catchup"
+        Me.Scheduling_Catchup.Size = New System.Drawing.Size(156, 17)
+        Me.Scheduling_Catchup.TabIndex = 2
+        Me.Scheduling_Catchup.Text = "\SCHEDULE_CATCHUP"
+        Me.Scheduling_Catchup.UseVisualStyleBackColor = True
+        '
         'SchedulingForm
         '
         Me.AcceptButton = Me.Scheduling_Save
@@ -276,9 +308,9 @@ Partial Class SchedulingForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Scheduling_Cancel
         Me.ClientSize = New System.Drawing.Size(574, 212)
+        Me.Controls.Add(Me.Scheduling_OptionsLayoutPanel)
         Me.Controls.Add(Me.Scheduling_TimeSelectionPanel)
         Me.Controls.Add(Me.Scheduling_Panel)
-        Me.Controls.Add(Me.Scheduling_Enable)
         Me.Controls.Add(Me.Scheduling_WarningLabel)
         Me.Controls.Add(Me.Settings_ActionsPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -289,21 +321,22 @@ Partial Class SchedulingForm
         Me.ShowInTaskbar = False
         Me.Text = "\SCHEDULING"
         Me.Settings_ActionsPanel.ResumeLayout(False)
-        Me.FlowLayoutPanel1.ResumeLayout(False)
-        Me.FlowLayoutPanel1.PerformLayout()
+        Me.DailyLayoutPanel.ResumeLayout(False)
+        Me.DailyLayoutPanel.PerformLayout()
         Me.Scheduling_Panel.ResumeLayout(False)
         Me.Scheduling_Panel.PerformLayout()
-        Me.FlowLayoutPanel3.ResumeLayout(False)
-        Me.FlowLayoutPanel3.PerformLayout()
+        Me.MonthlyLayoutPanel.ResumeLayout(False)
+        Me.MonthlyLayoutPanel.PerformLayout()
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.FlowLayoutPanel2.ResumeLayout(False)
-        Me.FlowLayoutPanel2.PerformLayout()
+        Me.WeeklyLayoutPanel.ResumeLayout(False)
+        Me.WeeklyLayoutPanel.PerformLayout()
         Me.Scheduling_TimeSelectionPanel.ResumeLayout(False)
         Me.Scheduling_TimeSelectionPanel.PerformLayout()
         CType(Me.Scheduling_Hour, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Scheduling_Minute, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Scheduling_OptionsLayoutPanel.ResumeLayout(False)
+        Me.Scheduling_OptionsLayoutPanel.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents Scheduling_Cancel As System.Windows.Forms.Button
@@ -311,11 +344,11 @@ Partial Class SchedulingForm
     Friend WithEvents Settings_ActionsPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Scheduling_WarningLabel As System.Windows.Forms.Label
     Friend WithEvents Scheduling_Enable As System.Windows.Forms.CheckBox
-    Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
+    Friend WithEvents DailyLayoutPanel As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents Scheduling_Panel As System.Windows.Forms.Panel
-    Friend WithEvents FlowLayoutPanel3 As System.Windows.Forms.FlowLayoutPanel
+    Friend WithEvents MonthlyLayoutPanel As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents Scheduling_EveryMonth As System.Windows.Forms.RadioButton
-    Friend WithEvents FlowLayoutPanel2 As System.Windows.Forms.FlowLayoutPanel
+    Friend WithEvents WeeklyLayoutPanel As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents Scheduling_EveryWeek As System.Windows.Forms.RadioButton
     Friend WithEvents Scheduling_MonthDay As System.Windows.Forms.NumericUpDown
     Friend WithEvents Scheduling_EveryDay As System.Windows.Forms.RadioButton
@@ -325,5 +358,7 @@ Partial Class SchedulingForm
     Friend WithEvents Scheduling_Hour As System.Windows.Forms.NumericUpDown
     Friend WithEvents Scheduling_HMSepLabel As System.Windows.Forms.Label
     Friend WithEvents Scheduling_Minute As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Scheduling_OptionsLayoutPanel As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Scheduling_Catchup As System.Windows.Forms.CheckBox
 
 End Class

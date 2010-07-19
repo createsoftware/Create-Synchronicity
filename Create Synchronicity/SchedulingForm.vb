@@ -36,6 +36,7 @@ Public Class SchedulingForm
 
     Private Sub Scheduling_Enable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Enable.CheckedChanged
         Scheduling_Panel.Enabled = Scheduling_Enable.Checked
+        Scheduling_Catchup.Enabled = Scheduling_Enable.Checked
         Scheduling_TimeSelectionPanel.Enabled = Scheduling_Enable.Checked
     End Sub
 
@@ -57,8 +58,10 @@ Public Class SchedulingForm
                     Case ScheduleInfo.MONTHLY
                         Scheduling_EveryMonth.Checked = True
                         Scheduling_MonthDay.Value = Handler.Scheduler.MonthDay
-                End Select 'Discard wrong values
+                End Select 'Discard wrong values (TODO?)
         End Select
+
+        Handler.SetSetting(ConfigOptions.CatchUpSync, Scheduling_Catchup.Checked, True)
     End Sub
 
     Sub SaveFromForm()
@@ -77,6 +80,8 @@ Public Class SchedulingForm
                 Handler.Scheduler.MonthDay = Scheduling_MonthDay.Value
                 Handler.Scheduler.Frequency = If(Scheduling_EveryDay.Checked, ScheduleInfo.DAILY, If(Scheduling_EveryWeek.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))
             End If
+
+            Handler.SetSetting(ConfigOptions.CatchUpSync, Scheduling_Catchup.Checked)
 
             Handler.SaveScheduler()
             Handler.SaveConfigFile()
