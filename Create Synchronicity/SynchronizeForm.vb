@@ -63,7 +63,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal WillShowModal As Boolean, ByVal _Quiet As Boolean)
+    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal CalledShowModal As Boolean, ByVal _Quiet As Boolean)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -104,6 +104,7 @@ Public Class SynchronizeForm
         SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
+        Handler.SetLastRun()
         ProgramConfig.CanGoOn = False
 
         Quiet = _Quiet
@@ -118,7 +119,7 @@ Public Class SynchronizeForm
 
             Interaction.StatusIcon.Visible = True
             Interaction.ShowBallonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
-        ElseIf Not WillShowModal Then
+        ElseIf Not CalledShowModal Then
             Me.Visible = True
         End If
 
@@ -352,7 +353,6 @@ Public Class SynchronizeForm
                     If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName))
                 End If
 
-                Handler.SetLastRun()
                 Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
                 SyncingTimeCounter.Stop()
                 If Quiet And Not Me.Visible Then

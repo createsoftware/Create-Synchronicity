@@ -232,7 +232,7 @@ Public Class MainForm
                     If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                         'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
                         Dim NextRun As Date = Profile.Value.Scheduler.NextRun()
-                        If NextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                        If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And NextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
                             NextRun = ScheduleInfo.DATE_CATCHUP
                         End If
                         ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
@@ -268,7 +268,8 @@ Public Class MainForm
         End If
 
         'TODO: Fix displayed date when catching up.
-        Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, ProfilesQueue.Peek().Value.ToString())
+        Dim NextRun As Date = ProfilesQueue.Peek().Value
+        Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, If(NextRun = ScheduleInfo.DATE_CATCHUP, Date.Now.ToString, NextRun.ToString))
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
         If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then

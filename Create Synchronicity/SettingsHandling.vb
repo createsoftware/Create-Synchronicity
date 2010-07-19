@@ -22,6 +22,7 @@ Public Module ConfigOptions
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
     Public Const LastRun As String = "Last run"
+    Public Const CatchUpSync As String = "Catch up if missed"
 
     Public Const Scheduling As String = "Scheduling"
     Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute
@@ -423,7 +424,7 @@ Class ProfileHandler
 
     Public Function GetLastRun() As Date
         Try
-            Return CDate(GetSetting(ConfigOptions.LastRun))
+            Return CDate(GetSetting(ConfigOptions.LastRun, ScheduleInfo.DATE_NEVER.ToString))
         Catch
             Return ScheduleInfo.DATE_NEVER
         End Try
@@ -508,7 +509,7 @@ Structure ScheduleInfo
                 Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not MaxValue)
         End Select
 
-        '">=" prevents double-syncing.
+        '">=" prevents double-syncing. Using ">" could cause the scheduler to queue Date.Now as next run time.
         While Now >= RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day)
         Return RunAt
     End Function
