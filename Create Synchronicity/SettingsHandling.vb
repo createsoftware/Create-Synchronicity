@@ -421,7 +421,15 @@ Class ProfileHandler
         Return Path
     End Function
 
-    Public Sub SaveLastRun()
+    Public Function GetLastRun() As Date
+        Try
+            Return CDate(GetSetting(ConfigOptions.LastRun))
+        Catch
+            Return ScheduleInfo.DATE_NEVER
+        End Try
+    End Function
+
+    Public Sub SetLastRun()
         SetSetting(ConfigOptions.LastRun, Date.Now.ToString)
         SaveConfigFile()
     End Sub
@@ -448,6 +456,9 @@ Structure ScheduleInfo
     Public Const WEEKLY = "weekly"
     Public Const MONTHLY = "monthly"
 
+    Public Shared ReadOnly DATE_NEVER As Date = Date.MaxValue
+    Public Shared ReadOnly DATE_CATCHUP As Date = Date.MinValue
+
     Sub New(ByVal _Frequency As String)
         Frequency = _Frequency
     End Sub
@@ -461,29 +472,44 @@ Structure ScheduleInfo
         MonthDay = _MonthDay
     End Sub
 
+    Function GetInterval(Optional ByVal Multiplicator As Integer = 1) As TimeSpan
+        Dim Interval As TimeSpan
+        Dim Today As Date = Date.Today
+
+        Select Case Frequency
+            Case DAILY
+                Interval = New TimeSpan(Multiplicator * 1, 0, 0, 0)
+            Case WEEKLY
+                Interval = New TimeSpan(Multiplicator * 7, 0, 0, 0)
+            Case MONTHLY
+                Interval = Today.AddMonths(Multiplicator * 1) - Today
+            Case Else
+                Interval = New TimeSpan(0)
+        End Select
+
+        Return Interval
+    End Function
+
     Function NextRun() As Date
         Dim Now As Date = Date.Now
         Dim Today As Date = Date.Today
 
         Dim RunAt As Date
-        Dim Interval As TimeSpan
+        Dim Interval As TimeSpan = GetInterval()
 
         Select Case Frequency
             Case DAILY
-                Interval = New TimeSpan(1, 0, 0, 0)
                 RunAt = Today.AddHours(Hour).AddMinutes(Minute)
             Case WEEKLY
-                Interval = New TimeSpan(7, 0, 0, 0)
                 RunAt = Today.AddDays(WeekDay - Today.DayOfWeek).AddHours(Hour).AddMinutes(Minute)
             Case MONTHLY
-                Interval = Today.AddMonths(1) - Today
-                RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute) 'Cint works, because Interval represents a whole number of days
+                RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute)
             Case Else
-                Return Date.MinValue 'aka never
+                Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not MaxValue)
         End Select
 
         '">=" prevents double-syncing.
-        While Now >= RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day
+        While Now >= RunAt : RunAt += Interval : End While 'Loop needed (eg when today = jan 1 and schedule = every 1st month day)
         Return RunAt
     End Function
 End Structure

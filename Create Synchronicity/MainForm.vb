@@ -229,7 +229,12 @@ Public Class MainForm
                 Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
 
                 For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-                    If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profile.Value.Scheduler.NextRun(), Profile.Key))
+                    If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
+                        'TODO: Test catchup.
+                        Dim NextRun As Date = Profile.Value.Scheduler.NextRun()
+                        If NextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then NextRun = ScheduleInfo.DATE_CATCHUP
+                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
+                    End If
                 Next
 
                 'Tracker #3000728
