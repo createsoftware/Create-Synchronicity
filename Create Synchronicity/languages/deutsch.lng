@@ -153,3 +153,4 @@ TREEVIEW_TIPS=Tipps zur Ordnerauswahl;Linksklick: Ordner und Unterordner wählen
 PATH_TIPS=Unterstützte Formate;C:\Dokumente\n"Mein USB-Laufwerk"\Dokumente\n\\192.168.0.20\Netzlaufwerk\Dokumente
 FILEEXT_TIPS=Unterstützte Formate;jpg;png;bmp\n"Dokument.doc"\n/Bild[0-9]+\.(jpg|raw|png)/
 RELOAD_TREES=Ordnerstruktur auslesen
+->SCHEDULE_CATCHUP=
