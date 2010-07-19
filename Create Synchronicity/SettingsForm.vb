@@ -399,6 +399,7 @@ Public Class SettingsForm
     Sub Settings_Update(ByVal LoadToForm As Boolean)
         Settings_Cleanup_Paths()
 
+        'Careful: Using .ToString here would break the ByRef passing of the second argument.
         Handler.SetSetting(ConfigOptions.Source, Settings_FromTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.Destination, Settings_ToTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.IncludedTypes, Settings_IncludedTypesTextBox.Text, LoadToForm)
