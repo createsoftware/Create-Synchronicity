@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Jul. 19, 2010 - NEW: When a scheduled backup has been repeatedly missed, force execution to catch up. 
+
 -- Version 4.1 --
 Jul. 18, 2010 - SYN: Various usability/interface improvements, installer fixes, and heavy optimization of vital backup routines to achieve a largely noticeable speedup (~10/15%).
 Jul. 17, 2010 - UPD: More user-friendly installer: detect when the program is running and thus cannot be updated.
