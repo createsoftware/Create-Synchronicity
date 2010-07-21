@@ -154,4 +154,4 @@ FILEEXT_TIPS=Supported formats;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jpg
 TOGGLE=Advanced: Check/Uncheck this folder
 RELOAD_TREES=Load folder tree
 CATCHUP_MISSED_BACKUPS=Catch up missed backups
-CATCHUP_MISSED_BACKUPS_TAG=Indicates what to do if the computer was off at the scheduled time;Checked, catch up and sync a soon as possible; Unchecked, wait for next scheduled sync.
+CATCHUP_MISSED_BACKUPS_TAG=Indicates what to do if the computer was off at the scheduled time;Checked, catch up and sync as soon as possible; Unchecked, wait for next scheduled sync.
