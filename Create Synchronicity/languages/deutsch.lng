@@ -154,3 +154,4 @@ PATH_TIPS=Unterstützte Formate;C:\Dokumente\n"Mein USB-Laufwerk"\Dokumente\n\\1
 FILEEXT_TIPS=Unterstützte Formate;jpg;png;bmp\n"Dokument.doc"\n/Bild[0-9]+\.(jpg|raw|png)/
 RELOAD_TREES=Ordnerstruktur auslesen
 ->CATCHUP_MISSED_BACKUPS=
+->CATCHUP_MISSED_BACKUPS_TAG=

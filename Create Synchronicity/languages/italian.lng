@@ -154,3 +154,4 @@ FILEEXT_TIPS=Formati Supportati;jpg;png;bmp\n"Documento.doc"\n/Immagine[0-9]+\.(
 TOGGLE=Avanzato: Seleziona/Deseleziona questa cartella
 RELOAD_TREES=Caricare l'albero delle cartelle
 ->CATCHUP_MISSED_BACKUPS=
+->CATCHUP_MISSED_BACKUPS_TAG=

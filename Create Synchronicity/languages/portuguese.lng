@@ -154,3 +154,4 @@ FILEEXT_TIPS=Extensões suportadas;jpg;png;bmp\n"Documento.doc"\n/Imagem[0-9]+\.
 TOGGLE=Avançadas: Marcar/Desmarcar esta pasta
 RELOAD_TREES=Carregar a árvore de pastas
 ->CATCHUP_MISSED_BACKUPS=
+->CATCHUP_MISSED_BACKUPS_TAG=

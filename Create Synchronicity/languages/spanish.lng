@@ -154,3 +154,4 @@ FILEEXT_TIPS=Formatos admitidos;jpg;png;bmp\n"Document.doc"\n/Picture[0-9]+\.(jp
 TOGGLE=Avanzado: Marcar/desmarcar esta carpeta
 RELOAD_TREES=Cargar el árbol de carpetas
 ->CATCHUP_MISSED_BACKUPS=
+->CATCHUP_MISSED_BACKUPS_TAG=
