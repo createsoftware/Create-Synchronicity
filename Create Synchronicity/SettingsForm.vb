@@ -41,13 +41,13 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_FromTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown
-        ShowTip(CType(sender, Control))
+        Interaction.ShowTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
         Settings_LeftReloadButton.Visible = True
     End Sub
 
     Private Sub Settings_ToTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_ToTextBox.KeyDown
-        ShowTip(CType(sender, Control))
+        Interaction.ShowTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
         Settings_RightReloadButton.Visible = True
     End Sub
@@ -110,11 +110,11 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.GotFocus, Settings_ToTextBox.GotFocus, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_IncludedTypesTextBox.MouseEnter, Settings_ExcludedTypesTextBox.MouseEnter
-        ShowTip(CType(sender, Control))
+        Interaction.ShowTip(CType(sender, Control))
     End Sub
 
     Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.LostFocus, Settings_ToTextBox.LostFocus, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_IncludedTypesTextBox.MouseLeave, Settings_ExcludedTypesTextBox.MouseLeave
-        Settings_ToolTip.Hide(CType(sender, Control))
+        Interaction.HideTip(CType(sender, Control))
     End Sub
 
     Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
@@ -188,21 +188,6 @@ Public Class SettingsForm
 
         ' Add any initialization after the InitializeComponent() call.
         Handler = New ProfileHandler(Name)
-    End Sub
-
-    Public Sub ShowTip(ByVal sender As Control)
-        If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
-
-        Dim Offset As Integer = If(TypeOf sender Is RadioButton, 12, 1)
-        Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(New Char() {";"c}, 2)
-
-        If Pair.GetLength(0) = 1 Then
-            Settings_ToolTip.ToolTipTitle = ""
-            Settings_ToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
-        ElseIf Pair.GetLength(0) > 1 Then
-            Settings_ToolTip.ToolTipTitle = Pair(0)
-            Settings_ToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
-        End If
     End Sub
 
     Private Sub Settings_HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_HelpLink.Click

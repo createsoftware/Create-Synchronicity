@@ -86,7 +86,6 @@ Partial Class SettingsForm
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown()
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label()
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label()
-        Me.Settings_ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -689,12 +688,6 @@ Partial Class SettingsForm
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
         Me.Settings_BottomDescLabel.TabIndex = 5
         '
-        'Settings_ToolTip
-        '
-        Me.Settings_ToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
-        Me.Settings_ToolTip.UseAnimation = False
-        Me.Settings_ToolTip.UseFading = False
-        '
         'SettingsForm
         '
         Me.AcceptButton = Me.Settings_SaveButton
@@ -784,7 +777,6 @@ Partial Class SettingsForm
     Friend WithEvents Settings_SynchronizeSubFoldersOnlyMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents Settings_Loading As System.Windows.Forms.Label
-    Friend WithEvents Settings_ToolTip As System.Windows.Forms.ToolTip
     Friend WithEvents Settings_HelpLink As System.Windows.Forms.Label
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents Settings_ToggleMenuItem As System.Windows.Forms.ToolStripMenuItem
