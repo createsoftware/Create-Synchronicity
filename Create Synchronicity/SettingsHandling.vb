@@ -548,7 +548,8 @@ End Module
 
 Public Module Interaction
     Public AsAService As Boolean = False
-    Public StatusIcon As NotifyIcon = New NotifyIcon()
+    Public StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
+    Public SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
     Public Sub LoadStatusIcon()
         Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
@@ -558,10 +559,27 @@ Public Module Interaction
     Public Sub ShowBallonTip(ByVal Msg As String)
         If Not StatusIcon.Visible Then Exit Sub
 
-        StatusIcon.BalloonTipTitle = "Create Synchronicity"
-        StatusIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
         StatusIcon.BalloonTipText = Msg
         StatusIcon.ShowBalloonTip(2000)
+    End Sub
+
+    Public Sub ShowTip(ByVal sender As Control)
+        If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
+
+        Dim Offset As Integer = If(TypeOf sender Is RadioButton Or TypeOf sender Is CheckBox, 12, 1)
+        Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(New Char() {";"c}, 2)
+
+        If Pair.GetLength(0) = 1 Then
+            SharedToolTip.ToolTipTitle = ""
+            SharedToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
+        ElseIf Pair.GetLength(0) > 1 Then
+            SharedToolTip.ToolTipTitle = Pair(0)
+            SharedToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
+        End If
+    End Sub
+
+    Public Sub HideTip(ByVal sender As Control)
+        SharedToolTip.Hide(sender)
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
