@@ -1,6 +1,6 @@
-deutsch:1
+deutsch:2
 english:0
 francais:0
-italian:2
+italian:3
 portuguese:1
-spanish:2
+spanish:3
