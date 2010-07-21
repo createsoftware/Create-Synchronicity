@@ -95,4 +95,12 @@ Public Class SchedulingForm
     Private Sub Scheduling_Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Cancel.Click
         Me.Close()
     End Sub
+
+    Private Sub Scheduling_Catchup_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Catchup.MouseEnter
+        Interaction.ShowTip(CType(sender, Control))
+    End Sub
+
+    Private Sub Scheduling_Catchup_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Catchup.MouseLeave
+        Interaction.HideTip(CType(sender, Control))
+    End Sub
 End Class
