@@ -41,13 +41,13 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_FromTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown
-        Interaction.ShowTip(CType(sender, Control))
+        Interaction.ShowToolTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
         Settings_LeftReloadButton.Visible = True
     End Sub
 
     Private Sub Settings_ToTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_ToTextBox.KeyDown
-        Interaction.ShowTip(CType(sender, Control))
+        Interaction.ShowToolTip(CType(sender, Control))
         Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
         Settings_RightReloadButton.Visible = True
     End Sub
@@ -110,11 +110,11 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_CouldShowTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseEnter, Settings_LeftView.MouseEnter, Settings_FromTextBox.GotFocus, Settings_ToTextBox.GotFocus, Settings_FromTextBox.MouseEnter, Settings_ToTextBox.MouseEnter, Settings_LRMirrorMethodOption.MouseEnter, Settings_LRIncrementalMethodOption.MouseEnter, Settings_TwoWaysIncrementalMethodOption.MouseEnter, Settings_IncludedTypesTextBox.MouseEnter, Settings_ExcludedTypesTextBox.MouseEnter
-        Interaction.ShowTip(CType(sender, Control))
+        Interaction.ShowToolTip(CType(sender, Control))
     End Sub
 
     Private Sub Settings_ShouldHideTip(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_RightView.MouseLeave, Settings_LeftView.MouseLeave, Settings_FromTextBox.LostFocus, Settings_ToTextBox.LostFocus, Settings_FromTextBox.MouseLeave, Settings_ToTextBox.MouseLeave, Settings_LRMirrorMethodOption.MouseLeave, Settings_LRIncrementalMethodOption.MouseLeave, Settings_TwoWaysIncrementalMethodOption.MouseLeave, Settings_IncludedTypesTextBox.MouseLeave, Settings_ExcludedTypesTextBox.MouseLeave
-        Interaction.HideTip(CType(sender, Control))
+        Interaction.HideToolTip(CType(sender, Control))
     End Sub
 
     Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter

@@ -569,7 +569,7 @@ Public Module Interaction
         StatusIcon.ShowBalloonTip(2000)
     End Sub
 
-    Public Sub ShowTip(ByVal sender As Control)
+    Public Sub ShowToolTip(ByVal sender As Control)
         If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
 
         Dim Offset As Integer = If(TypeOf sender Is RadioButton Or TypeOf sender Is CheckBox, 12, 1)
@@ -584,7 +584,7 @@ Public Module Interaction
         End If
     End Sub
 
-    Public Sub HideTip(ByVal sender As Control)
+    Public Sub HideToolTip(ByVal sender As Control)
         SharedToolTip.Hide(sender)
     End Sub
 
