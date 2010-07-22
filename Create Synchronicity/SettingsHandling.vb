@@ -35,6 +35,7 @@ Public Module ConfigOptions
     Public Const ConfigFolderName As String = "config"
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
+    Public Const AppLogName As String = "app.log"
 
     Public Const EnqueuingSeparator As Char = "|"c
 #If LINUX Then
@@ -54,20 +55,24 @@ Public Class ConfigHandler
     Public ConfigRootDir As String
     Public LogRootDir As String
     Public MainConfigFile As String
-    Public DirSep As Char
 
     Public LanguageRootDir As String = Application.StartupPath & "\languages"
-
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode, or when queuing multiple profiles).
 
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
+#If DEBUG Then
+    Public AppLog As IO.StreamWriter
+#End If
+
     Protected Sub New()
-        DirSep = IO.Path.DirectorySeparatorChar
-        ConfigRootDir = GetUserFilesRootDir() & ConfigFolderName
-        LogRootDir = GetUserFilesRootDir() & LogFolderName
-        MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & SettingsFileName
+#If DEBUG Then
+        AppLog = New IO.StreamWriter(GetUserFilesRootDir() & ConfigOptions.AppLogName)
+#End If
+        ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
+        LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
+        MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
     End Sub
 
     Public Shared Function GetSingleton() As ConfigHandler
@@ -191,6 +196,12 @@ Public Class ConfigHandler
     Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
         Return ProgramSettings.ContainsKey(Setting)
     End Function
+
+#If DEBUG Then
+    Public Sub LogAppEvent(ByVal EventData As String)
+        AppLog.WriteLine(EventData)
+    End Sub
+#End If
 End Class
 
 Class ProfileHandler
