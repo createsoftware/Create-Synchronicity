@@ -232,20 +232,7 @@ Public Class MainForm
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
             If RunAsScheduler Then
-                For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-                    If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                        ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key)
-
-                        Dim TimeOfNextRun As Date = Profile.Value.Scheduler.NextRun()
-                        'TODO: Enable again
-                        '<catchup code> - Disable this section to disable catching up - TODO: Test catchup, and show a ballon to say which profiles will be catched up.
-                        'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
-                        'TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
-                        'End If
-                        '</catchup code>
-                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(TimeOfNextRun, Profile.Key))
-                    End If
-                Next
+                ReloadProfilesScheduler(ProfilesToRun)
             Else 'A list of profiles has been provided.
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
@@ -292,6 +279,32 @@ Public Class MainForm
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Value, ShowPreview, False, Quiet)
             End If
         End If
+    End Sub
+
+    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String)))
+        For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
+            If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
+                ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key)
+
+                Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
+                'TODO: Enable again
+                '<catchup code> - Disable this section to disable catching up - TODO: Test catchup, and show a ballon to say which profiles will be catched up.
+                'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                'TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
+                'End If
+                '</catchup code>
+                Dim ProfileName As String = Profile.Value.ProfileName
+                Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of KeyValuePair(Of Date, String))(Function(Item As KeyValuePair(Of Date, String)) Item.Value = ProfileName))
+                If ProfileIndex <> -1 Then
+                    If DateOfNextRun < ProfilesToRun(ProfileIndex).Key Then
+                        ProfilesToRun.RemoveAt(ProfileIndex)
+                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
+                    End If
+                Else
+                    ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
+                End If
+            End If
+        Next
     End Sub
 #End Region
 
