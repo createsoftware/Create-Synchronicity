@@ -273,7 +273,7 @@ Public Class MainForm
         End If
 
         'Tracker #3000728
-        'TODO: Check this comparison function (ordering and first item)
+        'TODO: Check this comparison function (ordering and first item) -- Done ; it's cool.
         ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
 
         Dim NextRun As Date = ProfilesToRun(0).Key
@@ -281,7 +281,7 @@ Public Class MainForm
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
         If Date.Compare(ProfilesToRun(0).Key, Date.Now) <= 0 Then
-            Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value)
+            Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value) 'Copy. TODO: Could be removed.
             ProgramConfig.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
             ProfilesToRun.RemoveAt(0)
 
