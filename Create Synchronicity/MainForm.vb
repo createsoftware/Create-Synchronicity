@@ -225,12 +225,15 @@ Public Class MainForm
             ProgramConfig.CanGoOn = False
             ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
             ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
+
+            ProgramConfig.LogAppEvent("Scheduler started")
             If RunAsScheduler Then
                 Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
 
                 For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
                     If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                         'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
+                        ProgramConfig.LogAppEvent("Scheduler: Registered profile for delayed run: " & Profile.Key)
                         Dim TimeOfNextRun As Date = Profile.Value.Scheduler.NextRun()
                         If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
                             TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
@@ -248,6 +251,7 @@ Public Class MainForm
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
                         If Profiles(Profile).ValidateConfigFile() Then
+                            ProgramConfig.LogAppEvent("Scheduler: Registered profile for immediate run: " & Profile)
                             ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(Profile, Date.Now.AddDays(-1))) 'Make sure it runs immediately
                         Else
                             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
@@ -263,6 +267,7 @@ Public Class MainForm
         If ProgramConfig.CanGoOn = False Then Exit Sub
         If ProfilesQueue.Count = 0 Then
             Interaction.StatusIcon.Visible = False
+            ProgramConfig.LogAppEvent("Scheduler: No profiles left to sync.")
             Application.Exit()
             Exit Sub
         End If
