@@ -16,6 +16,7 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Jul. 19, 2010 - UPD: Rewrite part of the logging engine.
 Jul. 19, 2010 - FIX: "Mirror empty directories" setting wasn't always remembered.
 Jul. 19, 2010 - NEW: Add a setting to catch up missed backups (when a scheduled backup has been repeatedly missed, forces its immediate execution). 
 
