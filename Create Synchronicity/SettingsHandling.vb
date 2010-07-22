@@ -62,14 +62,7 @@ Public Class ConfigHandler
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
-#If DEBUG Then
-    Public AppLog As IO.StreamWriter
-#End If
-
     Protected Sub New()
-#If DEBUG Then
-        AppLog = New IO.StreamWriter(GetUserFilesRootDir() & ConfigOptions.AppLogName)
-#End If
         ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
         LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
         MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
@@ -197,11 +190,13 @@ Public Class ConfigHandler
         Return ProgramSettings.ContainsKey(Setting)
     End Function
 
+    Public Sub LogAppEvent(ByRef EventData As String)
 #If DEBUG Then
-    Public Sub LogAppEvent(ByVal EventData As String)
-        AppLog.WriteLine(EventData)
-    End Sub
+        Dim AppLog As New IO.StreamWriter(GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
+        AppLog.WriteLine(String.Format("[{0}] {1}", Date.Now.ToString(), EventData))
+        AppLog.Close()
 #End If
+    End Sub
 End Class
 
 Class ProfileHandler
