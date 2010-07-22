@@ -282,6 +282,16 @@ Public Class MainForm
     End Sub
 
     Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String)))
+        ' Note:
+        ' This sub will update profiles scheduling settings
+        ' However, for the sake of simplicity, a change that would postpone a backup will not be detected.
+        ' This is a limitation due to the fact that we allow for catching up missed syncs.
+        ' It is therefore impossible - in the current state of things - to say if the backup was posponed:
+        '   1. due to its being rescheduled
+        '   2. due to its having been marked as needing to be caught up.
+        ' It would be possible though to force updates of scheduling settings for profiles which are not 'catching-up' enabled.
+        ' Yet this would rather introduce a lack of coherence, unsuitable above all.
+
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key)
