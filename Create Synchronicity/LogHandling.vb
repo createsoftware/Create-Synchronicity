@@ -98,6 +98,7 @@ Class LogHandler
     End Sub
 
     Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
+        LogW.WriteLine() : LogW.WriteLine() : LogW.WriteLine()
         LogW.WriteLine("	</body>")
         LogW.WriteLine("</html>")
     End Sub
@@ -121,11 +122,27 @@ Class LogHandler
 
         Try
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
-            Dim LogStream As New IO.FileStream(ProgramConfig.GetLogPath(LogName), IO.FileMode.OpenOrCreate, IO.FileAccess.ReadWrite)
 
-            Dim LogWriter As New IO.StreamWriter(LogStream)
 #If Not DEBUG Then
-            Dim LogReader As New IO.StreamReader(LogStream)
+            Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
+            Dim LogText As New Text.StringBuilder()
+
+            While Not LogReader.EndOfStream
+                Dim Line As String = LogReader.ReadLine()
+                If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then LogText.AppendLine(Line)
+            End While
+            LogReader.Close() : LogReader.Dispose()
+
+            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False)
+
+            LogWriter.WriteLine(LogText.ToString)
+            LogText = New Text.StringBuilder() 'Kill the stringBuilder to release memory
+#Else
+            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
+#End If
+
+#If 0 Then
+#If Not DEBUG Then
             Try
                 Dim Offset As Integer = 0
                 Dim FileEnding As String = ""
@@ -140,6 +157,7 @@ Class LogHandler
             Catch
                 LogStream.Seek(0, IO.SeekOrigin.End)
             End Try
+#End If
 #End If
 
             Try
@@ -193,7 +211,9 @@ Class LogHandler
                 LogWriter.Flush()
                 LogWriter.Close()
 #If Not DEBUG Then
+#If 0 Then
                 LogReader.Dispose()
+#End If
 #End If
                 LogWriter.Dispose()
             End Try
