@@ -136,19 +136,21 @@ Class LogHandler
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
 #If Not DEBUG Then
-            Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
+            'Load the contents of the previous log, excluding the closing thags
             Dim LogText As New Text.StringBuilder()
 
+            Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
             While Not LogReader.EndOfStream
                 Dim Line As String = LogReader.ReadLine()
                 If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then LogText.AppendLine(Line)
             End While
-            LogReader.Close() : LogReader.Dispose()
+            LogReader.Close()
+            LogReader.Dispose()
 
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False)
 
             PutHTML(LogWriter, LogText.ToString)
-            LogText = New Text.StringBuilder() 'Kill the stringBuilder to release memory
+            'LogText = Nothing  'No need to kill the stringBuilder to release memory
 #Else
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
 #End If
