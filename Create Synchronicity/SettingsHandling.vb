@@ -507,7 +507,7 @@ Structure ScheduleInfo
             Case MONTHLY
                 RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute)
             Case Else
-                Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not MaxValue)
+                Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not Date.MaxValue)
         End Select
 
         '">=" prevents double-syncing. Using ">" could cause the scheduler to queue Date.Now as next run time.
@@ -547,7 +547,7 @@ Public Module Updates
 End Module
 
 Public Module Interaction
-    Public AsAService As Boolean = False
+    Public AsAService As Boolean = False 'TODO: Remove
     Public StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
     Public SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
