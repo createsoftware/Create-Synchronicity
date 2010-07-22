@@ -20,6 +20,7 @@ Public Class MainForm
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
+        ProgramConfig.LogAppEvent("Program started")
 
         IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
         IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
@@ -87,6 +88,7 @@ Public Class MainForm
 
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         StatusIcon.Visible = False
+        ProgramConfig.LogAppEvent("Program exited")
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
@@ -220,39 +222,36 @@ Public Class MainForm
     End Sub
 
     Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplicationTimer.Tick
-        Static ProfilesQueue As Queue(Of KeyValuePair(Of String, Date))
-        If ProfilesQueue Is Nothing Then
-            ProgramConfig.CanGoOn = False
+        Static ProfilesToRun As List(Of KeyValuePair(Of Date, String))
+
+        If ProfilesToRun Is Nothing Then
+            ProgramConfig.CanGoOn = False 'Stop tick events from happening
+            ProgramConfig.LogAppEvent("Worker thread started")
             ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
-            ProfilesQueue = New Queue(Of KeyValuePair(Of String, Date))
 
-            ProgramConfig.LogAppEvent("Scheduler started")
+            ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
+
             If RunAsScheduler Then
-                Dim ProfilesToRun As New List(Of KeyValuePair(Of Date, String))
-
                 For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
                     If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                        'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
-                        ProgramConfig.LogAppEvent("Scheduler: Registered profile for delayed run: " & Profile.Key)
+                        ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key)
+
                         Dim TimeOfNextRun As Date = Profile.Value.Scheduler.NextRun()
-                        If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
-                            TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
-                        End If
+                        'TODO: Enable again
+                        '<catchup code> - Disable this section to disable catching up - TODO: Test catchup, and show a ballon to say which profiles will be catched up.
+                        'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                        'TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
+                        'End If
+                        '</catchup code>
                         ProfilesToRun.Add(New KeyValuePair(Of Date, String)(TimeOfNextRun, Profile.Key))
                     End If
                 Next
-
-                'Tracker #3000728
-                ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Value.CompareTo(Second.Value))
-                For Each P As KeyValuePair(Of Date, String) In ProfilesToRun
-                    ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(P.Value, P.Key))
-                Next
-            Else
+            Else 'A list of profiles has been provided.
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
                         If Profiles(Profile).ValidateConfigFile() Then
-                            ProgramConfig.LogAppEvent("Scheduler: Registered profile for immediate run: " & Profile)
-                            ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(Profile, Date.Now.AddDays(-1))) 'Make sure it runs immediately
+                            ProgramConfig.LogAppEvent("Worker thread: Registered profile for immediate run: " & Profile)
+                            ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Date.Now.AddDays(-1), Profile)) 'Make sure it runs immediately
                         Else
                             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
                         End If
@@ -261,29 +260,36 @@ Public Class MainForm
                     End If
                 Next
             End If
+
             ProgramConfig.CanGoOn = True
         End If
 
-        If ProgramConfig.CanGoOn = False Then Exit Sub
-        If ProfilesQueue.Count = 0 Then
+        If ProgramConfig.CanGoOn = False Then Exit Sub 'Don't start next sync yet.
+        If ProfilesToRun.Count = 0 Then
             Interaction.StatusIcon.Visible = False
-            ProgramConfig.LogAppEvent("Scheduler: No profiles left to sync.")
+            ProgramConfig.LogAppEvent("Worker thread: Synced all profiles.")
             Application.Exit()
             Exit Sub
         End If
 
-        'TODO: Fix displayed date when catching up.
-        Dim NextRun As Date = ProfilesQueue.Peek().Value
-        Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesQueue.Peek().Key, If(NextRun = ScheduleInfo.DATE_CATCHUP, Date.Now.ToString, NextRun.ToString))
+        'Tracker #3000728
+        'TODO: Check this comparison function (ordering and first item)
+        ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
+
+        Dim NextRun As Date = ProfilesToRun(0).Key
+        Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesToRun(0).Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
-        If Date.Compare(ProfilesQueue.Peek().Value, Date.Now) <= 0 Then
-            Dim NextProfile As KeyValuePair(Of String, Date) = ProfilesQueue.Dequeue()
+        If Date.Compare(ProfilesToRun(0).Key, Date.Now) <= 0 Then
+            Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value)
+            ProgramConfig.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
+            ProfilesToRun.RemoveAt(0)
+
             If RunAsScheduler Then
-                Dim SyncForm As New SynchronizeForm(NextProfile.Key, False, False, True)
-                ProfilesQueue.Enqueue(New KeyValuePair(Of String, Date)(NextProfile.Key, Profiles(NextProfile.Key).Scheduler.NextRun()))
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, False, True)
+                ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
             Else
-                Dim SyncForm As New SynchronizeForm(NextProfile.Key, ShowPreview, False, Quiet)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, ShowPreview, False, Quiet)
             End If
         End If
     End Sub
