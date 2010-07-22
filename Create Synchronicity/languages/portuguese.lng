@@ -1,4 +1,4 @@
-﻿# Create Synchronicity Portuguese Language file
+# Create Synchronicity Portuguese Language file
 # Translation by André Modesto (careca777), Pedro Silva
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -154,4 +154,4 @@ FILEEXT_TIPS=Extensões suportadas;jpg;png;bmp\n"Documento.doc"\n/Imagem[0-9]+\.
 TOGGLE=Avançadas: Marcar/Desmarcar esta pasta
 RELOAD_TREES=Carregar a árvore de pastas
 CATCHUP_MISSED_BACKUPS=Executar o backup agendado assim que possível
-->CATCHUP_MISSED_BACKUPS_TAG=
+CATCHUP_MISSED_BACKUPS_TAG=Indica o que fazer quando o computador não tiver feito o backup agendado, (desligado ou a hibernar por ex.);Se estiver marcado, sincronizar assim que possível; Desmarcado, esperar até ao próximo agendamento.
