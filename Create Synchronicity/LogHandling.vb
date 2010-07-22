@@ -67,7 +67,10 @@ Class LogHandler
     End Sub
 #End If
 
-    Sub OpenHTMLHeaders(ByRef LogW As IO.StreamWriter)
+    Private Sub OpenHTMLHeaders(ByRef LogW As IO.StreamWriter)
+#If DEBUG Then
+        Exit Sub
+#End If
         LogW.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">")
         LogW.WriteLine("<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" encoding=""utf-8"">")
         LogW.WriteLine("	<head>")
@@ -97,13 +100,16 @@ Class LogHandler
         LogW.WriteLine(String.Format(Translation.Translate("\LOG_TITLE"), LogName))
     End Sub
 
-    Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
+    Private Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
+#If DEBUG Then
+        Exit Sub
+#End If
         LogW.WriteLine() : LogW.WriteLine() : LogW.WriteLine()
         LogW.WriteLine("	</body>")
         LogW.WriteLine("</html>")
     End Sub
 
-    Sub PutLine(ByVal Title As String, ByRef Contents As String(), ByRef LogW As IO.StreamWriter)
+    Private Sub PutFormatted(ByVal Title As String, ByRef Contents As String(), ByRef LogW As IO.StreamWriter)
 #If DEBUG Then
         LogW.WriteLine(Title & "	" & String.Join("	", Contents))
 #Else
@@ -113,6 +119,12 @@ Class LogHandler
             LogW.WriteLine("	<td>" & Cell & "</td>")
         Next
         LogW.WriteLine("</tr>")
+#End If
+    End Sub
+
+    Private Sub PutHTML(ByRef LogW As IO.StreamWriter, ByVal Line As String)
+#If Not DEBUG Then
+        LogW.WriteLine(Line)
 #End If
     End Sub
 
@@ -135,94 +147,54 @@ Class LogHandler
 
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False)
 
-            LogWriter.WriteLine(LogText.ToString)
+            PutHTML(LogWriter, LogText.ToString)
             LogText = New Text.StringBuilder() 'Kill the stringBuilder to release memory
 #Else
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
 #End If
 
-#If 0 Then
-#If Not DEBUG Then
             Try
-                Dim Offset As Integer = 0
-                Dim FileEnding As String = ""
-                Dim Length As String = LogStream.Length
-                While Offset < Length And Not FileEnding.StartsWith("</body>")
-                    Offset += 1
-                    LogStream.Seek(-Offset, IO.SeekOrigin.End)
-                    FileEnding = LogReader.ReadToEnd()
-                End While
-
-                LogStream.Seek(-Offset, IO.SeekOrigin.End)
-            Catch
-                LogStream.Seek(0, IO.SeekOrigin.End)
-            End Try
-#End If
-#End If
-
-            Try
-#If Not DEBUG Then
                 If NewLog Then OpenHTMLHeaders(LogWriter)
-                LogWriter.WriteLine("<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
-                LogWriter.WriteLine("<p>")
-#End If
+
+                PutHTML(LogWriter, "<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
+                PutHTML(LogWriter, "<p>")
 
                 LogWriter.WriteLine(String.Format("{0} v{1}", "Create Synchronicity", Application.ProductVersion))
-#If Not DEBUG Then
-                LogWriter.WriteLine("<br />")
-#End If
+                PutHTML(LogWriter, "<br />")
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\LEFT"), Left))
-#If Not DEBUG Then
-                LogWriter.WriteLine("<br />")
-#End If
+                PutHTML(LogWriter, "<br />")
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\RIGHT"), Right))
-
-#If Not DEBUG Then
-                LogWriter.WriteLine("</p>")
-#End If
+                PutHTML(LogWriter, "</p>")
 
 #If DEBUG Then
                 For Each Info As String In DebugInfo
-                    PutLine("Info", New String() {Info}, LogWriter)
+                    PutFormatted("Info", New String() {Info}, LogWriter)
                 Next
 #End If
 
-#If Not DEBUG Then
-                LogWriter.WriteLine("<table>")
-#End If
+                PutHTML(LogWriter, "<table>")
                 For Each Record As LogItem In Log
-                    PutLine(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}, LogWriter)
+                    PutFormatted(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}, LogWriter)
                 Next
-#If Not DEBUG Then
-                LogWriter.WriteLine("</table>")
-                LogWriter.WriteLine("<table>")
-#End If
+                PutHTML(LogWriter, "</table>")
+                PutHTML(LogWriter, "<table>")
+
                 For Each Err As ErrorItem In Errors
-                    PutLine(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
+                    PutFormatted(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
                 Next
-#If Not DEBUG Then
-                LogWriter.WriteLine("</table>")
+                PutHTML(LogWriter, "</table>")
+
                 CloseHTMLHeaders(LogWriter)
-#End If
             Catch Ex As Exception
-                Warning(Translation.Translate("\LOGFILE_WRITE_ERROR"), Ex)
+                Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message)
 
             Finally
                 LogWriter.Flush()
                 LogWriter.Close()
-#If Not DEBUG Then
-#If 0 Then
-                LogReader.Dispose()
-#End If
-#End If
                 LogWriter.Dispose()
             End Try
         Catch Ex As Exception
-            Warning(Translation.Translate("\LOGFILE_OPEN_ERROR"), Ex)
+            Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message)
         End Try
-    End Sub
-
-    Sub Warning(ByVal Message As String, Optional ByVal Ex As Exception = Nothing)
-        Interaction.ShowMsg(Message & Microsoft.VisualBasic.vbNewLine & If(Ex Is Nothing, "", Ex.Message))
     End Sub
 End Class
