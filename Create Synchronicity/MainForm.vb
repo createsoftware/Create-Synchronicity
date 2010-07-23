@@ -279,7 +279,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String))) 'TODONOW: Add first run log vals
+    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String)))
         ' Note:
         ' This sub will update profiles scheduling settings
         ' However, for the sake of simplicity, a change that would postpone a backup will not be detected.
@@ -292,8 +292,6 @@ Public Class MainForm
 
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key) 'TODONOW: Test
-
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
                 'TODO: Enable again
                 '<catchup code> - Disable this section to disable catching up - TODO: Test catchup, and show a ballon to say which profiles will be catched up.
@@ -311,6 +309,7 @@ Public Class MainForm
                     End If
                 Else
                     ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
+                    ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                 End If
             End If
         Next
