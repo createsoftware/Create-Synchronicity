@@ -397,7 +397,8 @@ Class ProfileHandler
                 For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
                     If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep))
                 Next
-#If 0 Then 'TODO: USBIDs
+#If 0 Then
+            'TODO: USBIDs
             ElseIf Path.StartsWith(":") Then
 
                 Dim USBClass As New System.Management.ManagementClass("Win32_USBHub")
@@ -514,7 +515,7 @@ Structure ScheduleInfo
             Case MONTHLY
                 RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute)
             Case Else
-                Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not Date.MaxValue)
+                Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not Date.MaxValue) -- Sounds good.
         End Select
 
         '">=" prevents double-syncing. Using ">" could cause the scheduler to queue Date.Now as next run time.
@@ -530,7 +531,7 @@ Public Module Updates
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
         Try
             Dim UpdateClient As New Net.WebClient
-            UpdateClient.UseDefaultCredentials = True 'TODO: Needed?
+            UpdateClient.UseDefaultCredentials = True 'Needed? -- Does no harm
             UpdateClient.Proxy = System.Net.HttpWebRequest.DefaultWebProxy 'Tracker #2976549
             UpdateClient.Proxy.Credentials = Net.CredentialCache.DefaultCredentials
             Dim CurrentVersion As String = UpdateClient.DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
@@ -554,7 +555,6 @@ Public Module Updates
 End Module
 
 Public Module Interaction
-    Public AsAService As Boolean = False 'TODO: Remove
     Public StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
     Public SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
@@ -590,11 +590,11 @@ Public Module Interaction
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
-        If AsAService Then
-            Return MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
-        Else
-            Return MessageBox.Show(Text, Caption, Buttons, Icon)
-        End If
+        'If AsAService Then
+        '    Return MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
+        'Else
+        Return MessageBox.Show(Text, Caption, Buttons, Icon)
+        'End If
     End Function
 End Module
 

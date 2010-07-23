@@ -77,7 +77,8 @@ Public Class MainForm
         ElseIf ArgsList.Contains("/scheduler") Then
             Main_HideForm()
 
-#If 0 Then 'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
+#If 0 Then
+            'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
             'This code is not functional
             Dim Blocker As New Threading.Mutex(False, Application.ExecutablePath.Replace("\"c, "_"c))
             If Not Blocker.WaitOne(0, False) Then
@@ -302,7 +303,7 @@ Public Class MainForm
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
-                'TODO: Enable again
+                'TODO: Enable again in 4.3+
                 '<catchup code> - Disable this section to disable catching up - TODO: Test catchup, and show a ballon to say which profiles will be catched up.
                 'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
                 'TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
@@ -324,7 +325,7 @@ Public Class MainForm
         Next
 
         'Tracker #3000728
-        'TODO: Check this comparison function (ordering and first item) -- Done ; it's cool.
+        'Check this comparison function (ordering and first item) -- Done ; it's cool.
         ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
     End Sub
 #End Region
