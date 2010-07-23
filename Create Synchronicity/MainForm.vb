@@ -20,7 +20,7 @@ Public Class MainForm
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
-        ProgramConfig.LogAppEvent("Program started")
+        ConfigHandler.LogAppEvent("Program started")
 
         IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
         IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
@@ -88,7 +88,7 @@ Public Class MainForm
 
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         StatusIcon.Visible = False
-        ProgramConfig.LogAppEvent("Program exited")
+        ConfigHandler.LogAppEvent("Program exited")
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
@@ -226,7 +226,7 @@ Public Class MainForm
 
         If ProfilesToRun Is Nothing Then
             ProgramConfig.CanGoOn = False 'Stop tick events from happening
-            ProgramConfig.LogAppEvent("Worker thread started")
+            ConfigHandler.LogAppEvent("Worker thread started")
             ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
 
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
@@ -237,7 +237,7 @@ Public Class MainForm
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
                         If Profiles(Profile).ValidateConfigFile() Then
-                            ProgramConfig.LogAppEvent("Worker thread: Registered profile for immediate run: " & Profile)
+                            ConfigHandler.LogAppEvent("Worker thread: Registered profile for immediate run: " & Profile)
                             ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Date.Now.AddDays(-1), Profile)) 'Make sure it runs immediately
                         Else
                             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
@@ -254,7 +254,7 @@ Public Class MainForm
         If ProgramConfig.CanGoOn = False Then Exit Sub 'Don't start next sync yet.
         If ProfilesToRun.Count = 0 Then
             Interaction.StatusIcon.Visible = False
-            ProgramConfig.LogAppEvent("Worker thread: Synced all profiles.")
+            ConfigHandler.LogAppEvent("Worker thread: Synced all profiles.")
             Application.Exit()
             Exit Sub
         End If
@@ -267,7 +267,7 @@ Public Class MainForm
 
         If Date.Compare(ProfilesToRun(0).Key, Date.Now) <= 0 Then
             Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value) 'Copy. TODO: Could be removed.
-            ProgramConfig.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
+            ConfigHandler.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
             ProfilesToRun.RemoveAt(0)
 
             If RunAsScheduler Then
@@ -305,11 +305,11 @@ Public Class MainForm
                     If DateOfNextRun < ProfilesToRun(ProfileIndex).Key Then 'The schedules may be brought forward, never postponed.
                         ProfilesToRun.RemoveAt(ProfileIndex)
                         ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
-                        ProgramConfig.LogAppEvent("Worker thread: Re-registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
+                        ConfigHandler.LogAppEvent("Worker thread: Re-registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                     End If
                 Else
                     ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
-                    ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
+                    ConfigHandler.LogAppEvent("Worker thread: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                 End If
             End If
         Next
@@ -424,7 +424,10 @@ Public Class MainForm
 
         Try
             If Not NeedToRunAtBootTime Then
-                If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
+                If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
+                    ConfigHandler.LogAppEvent("Unregistering program from startup list")
+                    My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
+                End If
             End If
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UNREG_ERROR"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)
