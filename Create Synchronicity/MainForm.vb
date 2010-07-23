@@ -259,9 +259,7 @@ Public Class MainForm
             Exit Sub
         End If
 
-        'Tracker #3000728
-        'TODO: Check this comparison function (ordering and first item) -- Done ; it's cool.
-        ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
+        ReloadProfilesScheduler(ProfilesToRun)
 
         Dim NextRun As Date = ProfilesToRun(0).Key
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesToRun(0).Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
@@ -281,7 +279,7 @@ Public Class MainForm
         End If
     End Sub
 
-    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String)))
+    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String))) 'TODONOW: Add first run log vals
         ' Note:
         ' This sub will update profiles scheduling settings
         ' However, for the sake of simplicity, a change that would postpone a backup will not be detected.
@@ -294,7 +292,7 @@ Public Class MainForm
 
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key)
+                ProgramConfig.LogAppEvent("Worker thread: Registered profile for delayed run: " & Profile.Key) 'TODONOW: Test
 
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
                 'TODO: Enable again
@@ -306,15 +304,20 @@ Public Class MainForm
                 Dim ProfileName As String = Profile.Value.ProfileName
                 Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of KeyValuePair(Of Date, String))(Function(Item As KeyValuePair(Of Date, String)) Item.Value = ProfileName))
                 If ProfileIndex <> -1 Then
-                    If DateOfNextRun < ProfilesToRun(ProfileIndex).Key Then
+                    If DateOfNextRun < ProfilesToRun(ProfileIndex).Key Then 'The schedules may be brought forward, never postponed.
                         ProfilesToRun.RemoveAt(ProfileIndex)
                         ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
+                        ProgramConfig.LogAppEvent("Worker thread: Re-registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                     End If
                 Else
                     ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
                 End If
             End If
         Next
+
+        'Tracker #3000728
+        'TODO: Check this comparison function (ordering and first item) -- Done ; it's cool.
+        ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
     End Sub
 #End Region
 
