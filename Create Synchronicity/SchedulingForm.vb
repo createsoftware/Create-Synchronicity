@@ -20,19 +20,21 @@ Public Class SchedulingForm
         LoadToForm()
     End Sub
 
-    Private Sub Scheduling_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_EveryDay.CheckedChanged, Scheduling_EveryWeek.CheckedChanged, Scheduling_EveryMonth.CheckedChanged
-        Static Refreshing As Boolean = False
-
-        If Refreshing Then Exit Sub
-        Dim Checked As Boolean = CType(sender, RadioButton).Checked
-
-        Refreshing = True
-        Scheduling_EveryDay.Checked = False
-        Scheduling_EveryWeek.Checked = False
-        Scheduling_EveryMonth.Checked = False
-        CType(sender, RadioButton).Checked = Checked
-        Refreshing = False
+#If 0 Then
+    Sub CheckBtn(ByVal Btn As RadioButton)
+        'Something really fishy was going on here: the EveryWeek-triggered event was /late/, and occurs after eveything had finished checking... So the everyweek item would always end up checked.
+        'RemoveHandler DailyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
+        RemoveHandler WeeklyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
+        RemoveHandler MonthlyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
+        DailyBtn.Checked = False
+        WeeklyBtn.Checked = False
+        MonthlyBtn.Checked = False
+        Btn.Checked = True
+        'AddHandler DailyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
+        AddHandler WeeklyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
+        AddHandler MonthlyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
     End Sub
+#End If
 
     Private Sub Scheduling_Enable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Enable.CheckedChanged
         Scheduling_Panel.Enabled = Scheduling_Enable.Checked
@@ -51,20 +53,17 @@ Public Class SchedulingForm
 
                 Select Case Handler.Scheduler.Frequency
                     Case ScheduleInfo.DAILY
-                        Scheduling_EveryDay.Checked = True
+                        DailyBtn.Checked = True
                     Case ScheduleInfo.WEEKLY
-                        Scheduling_EveryWeek.Checked = True
+                        WeeklyBtn.Checked = True
                         Scheduling_WeekDay.SelectedIndex = Handler.Scheduler.WeekDay
                     Case ScheduleInfo.MONTHLY
-                        Scheduling_EveryMonth.Checked = True
+                        MonthlyBtn.Checked = True
                         Scheduling_MonthDay.Value = Handler.Scheduler.MonthDay
                 End Select 'Discard wrong values (TODO?)
         End Select
 
         Handler.SetSetting(ConfigOptions.CatchUpSync, Scheduling_Catchup.Checked, True)
-    End Sub
-
-    Sub SaveFromForm()
     End Sub
 
     Private Sub Scheduling_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Save.Click
@@ -78,7 +77,7 @@ Public Class SchedulingForm
                 Handler.Scheduler.Minute = Scheduling_Minute.Value
                 Handler.Scheduler.WeekDay = Scheduling_WeekDay.SelectedIndex
                 Handler.Scheduler.MonthDay = Scheduling_MonthDay.Value
-                Handler.Scheduler.Frequency = If(Scheduling_EveryDay.Checked, ScheduleInfo.DAILY, If(Scheduling_EveryWeek.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))
+                Handler.Scheduler.Frequency = If(DailyBtn.Checked, ScheduleInfo.DAILY, If(WeeklyBtn.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))
             End If
 
             Handler.SetSetting(ConfigOptions.CatchUpSync, Scheduling_Catchup.Checked)
