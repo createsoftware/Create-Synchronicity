@@ -77,6 +77,15 @@ Public Class MainForm
         ElseIf ArgsList.Contains("/scheduler") Then
             Main_HideForm()
 
+#If 0 Then 'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
+            'This code is not functional
+            Dim Blocker As New Threading.Mutex(False, Application.ExecutablePath.Replace("\"c, "_"c))
+            If Not Blocker.WaitOne(0, False) Then
+                ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
+                Application.Exit()
+                Exit Sub
+            End If
+#End If
             Interaction.LoadStatusIcon()
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.StatusIcon.Visible = True
