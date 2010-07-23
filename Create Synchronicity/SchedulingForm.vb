@@ -20,22 +20,6 @@ Public Class SchedulingForm
         LoadToForm()
     End Sub
 
-#If 0 Then
-    Sub CheckBtn(ByVal Btn As RadioButton)
-        'Something really fishy was going on here: the EveryWeek-triggered event was /late/, and occurs after eveything had finished checking... So the everyweek item would always end up checked.
-        'RemoveHandler DailyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
-        RemoveHandler WeeklyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
-        RemoveHandler MonthlyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
-        DailyBtn.Checked = False
-        WeeklyBtn.Checked = False
-        MonthlyBtn.Checked = False
-        Btn.Checked = True
-        'AddHandler DailyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
-        AddHandler WeeklyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
-        AddHandler MonthlyBtn.CheckedChanged, AddressOf Btns_CheckedChanged
-    End Sub
-#End If
-
     Private Sub Scheduling_Enable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Enable.CheckedChanged
         Scheduling_Panel.Enabled = Scheduling_Enable.Checked
         Scheduling_Catchup.Enabled = Scheduling_Enable.Checked
