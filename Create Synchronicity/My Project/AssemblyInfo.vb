@@ -41,11 +41,11 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("4.1.*")> 
+<Assembly: AssemblyVersion("4.2.*")> 
 #If DEBUG Then
-<Assembly: AssemblyFileVersion("4.2010.7.23")> 
+<Assembly: AssemblyFileVersion("4.2010.7.24")> 
 #Else
-<Assembly: AssemblyFileVersion("4.1.0.0")> 
+<Assembly: AssemblyFileVersion("4.2.0.0")> 
 #End If
 
 <Assembly: NeutralResourcesLanguageAttribute("")> 
