@@ -16,7 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Jul. 19, 2010 - NEW: (Postponed) Add a setting to catch up missed backups (when a scheduled backup has been repeatedly missed, forces its immediate execution). 
+Jul. 24, 2010 - FIX: Changes in scheduling settings would sometimes fail to be updated.
+Jul. 24, 2010 - NEW: Add a setting to catch up missed backups (when a scheduled backup has been repeatedly missed, forces its immediate execution). 
 
 -- Version 4.2 --
 Jul. 24, 2010 - SYN: Create Synchronicity 4.2 can tell the scheduler about your configuration changes immediately, without waiting for a reboot. Except for this, this release is mostly a bugfix release, including a large rewriting of non-vital parts of the code.
@@ -25,6 +26,7 @@ Jul. 23, 2010 - UPD: Rewrite a large part of the scheduling engine, factor out s
 Jul. 23, 2010 - FIX: Small display glitch in the scheduling settings screen.
 Jul. 22, 2010 - FIX: Queing mistakes when more than 3 profiles were scheduled.
 Jul. 22, 2010 - UPD: Rewrite part of the logging engine.
+Jul. 22, 2010 - FIX: Fix a possible freeze when writing log files.
 Jul. 19, 2010 - FIX: "Mirror empty directories" setting wasn't always remembered.
 
 -- Version 4.1 --
