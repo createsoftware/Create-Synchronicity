@@ -300,15 +300,15 @@ Public Class MainForm
         ' It would be possible though to force updates of scheduling settings for profiles which are not 'catching-up' enabled.
         ' Yet this would rather introduce a lack of coherence, unsuitable above all.
 
+        Main_ReloadConfigs() 'Needed! This allows to detect config changes.
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
-                'TODO: Enable again in 4.3+
-                '<catchup code> - Disable this section to disable catching up - TODO: Test catchup, and show a ballon to say which profiles will be catched up.
-                'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And TimeOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
-                'TimeOfNextRun = ScheduleInfo.DATE_CATCHUP
-                'End If
-                '</catchup code>
+                'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
+                If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And DateOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                    DateOfNextRun = ScheduleInfo.DATE_CATCHUP
+                End If
+
                 Dim ProfileName As String = Profile.Value.ProfileName
                 Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of KeyValuePair(Of Date, String))(Function(Item As KeyValuePair(Of Date, String)) Item.Value = ProfileName))
                 If ProfileIndex <> -1 Then
@@ -321,6 +321,13 @@ Public Class MainForm
                     ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
                     ConfigHandler.LogAppEvent("Worker thread: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                 End If
+            End If
+        Next
+
+        'Remove deleted or disabled profiles
+        For ProfileIndex As Integer = ProfilesToRun.Count - 1 To 0 Step -1
+            If Not Profiles.ContainsKey(ProfilesToRun(ProfileIndex).Value) OrElse Profiles(ProfilesToRun(ProfileIndex).Value).Scheduler.Frequency = ScheduleInfo.NEVER Then
+                ProfilesToRun.RemoveAt(ProfileIndex)
             End If
         Next
 
