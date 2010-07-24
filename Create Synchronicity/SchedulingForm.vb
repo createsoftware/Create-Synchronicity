@@ -44,7 +44,7 @@ Public Class SchedulingForm
                     Case ScheduleInfo.MONTHLY
                         MonthlyBtn.Checked = True
                         Scheduling_MonthDay.Value = Handler.Scheduler.MonthDay
-                End Select 'Discards wrong values as of now (TODO?)
+                End Select
         End Select
 
         Handler.SetSetting(ConfigOptions.CatchUpSync, Scheduling_Catchup.Checked, True)

@@ -515,7 +515,7 @@ Structure ScheduleInfo
             Case MONTHLY
                 RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute)
             Case Else
-                Return DATE_NEVER 'TODO: Check if Date.MaxValue is a working value for DATE_NEVER (was Date.MinValue, not Date.MaxValue) -- Sounds good.
+                Return DATE_NEVER
         End Select
 
         '">=" prevents double-syncing. Using ">" could cause the scheduler to queue Date.Now as next run time.

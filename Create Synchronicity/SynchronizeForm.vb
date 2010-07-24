@@ -197,7 +197,7 @@ Public Class SynchronizeForm
             Case "RL"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case Else
-                'TODO: We're in errors list
+                'We're in errors list
                 Exit Sub
         End Select
 
@@ -348,7 +348,7 @@ Public Class SynchronizeForm
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
 
-                    If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName)) 'TODO: Display Report
+                    If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName)) 'TODO: Display Report somehow
                 Else
                     If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName))
                 End If

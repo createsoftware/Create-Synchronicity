@@ -7,7 +7,6 @@
 * Update release notes, add a "SYN:" entry
 * Test program on guest session
 * Branch
-* (Outdated) Rebuild everything from branch source
 * Build installer package and zip file (!from trunk, otherwise version.txt path is wrong!)
 * Test package on Guest session
 
