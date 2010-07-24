@@ -190,7 +190,7 @@ Public Class ConfigHandler
         Return ProgramSettings.ContainsKey(Setting)
     End Function
 
-    Public Shared Sub LogAppEvent(ByRef EventData As String)
+    Public Shared Sub LogAppEvent(ByVal EventData As String)
 #If DEBUG Then
         Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
         Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)

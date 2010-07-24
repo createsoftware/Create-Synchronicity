@@ -109,7 +109,7 @@ Class LogHandler
         LogW.WriteLine("</html>")
     End Sub
 
-    Private Sub PutFormatted(ByVal Title As String, ByRef Contents As String(), ByRef LogW As IO.StreamWriter)
+    Private Sub PutFormatted(ByVal Title As String, ByVal Contents As String(), ByRef LogW As IO.StreamWriter)
 #If DEBUG Then
         LogW.WriteLine(Title & "	" & String.Join("	", Contents))
 #Else
