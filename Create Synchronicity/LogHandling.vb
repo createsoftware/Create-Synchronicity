@@ -135,24 +135,27 @@ Class LogHandler
         Try
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
-#If Not DEBUG Then
+#If DEBUG Then
+            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
+#Else
             'Load the contents of the previous log, excluding the closing tags
             Dim LogText As New Text.StringBuilder()
 
-            Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
-            While Not LogReader.EndOfStream
-                Dim Line As String = LogReader.ReadLine()
-                If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then LogText.AppendLine(Line)
-            End While
-            LogReader.Close()
-            LogReader.Dispose()
+            If Not NewLog Then
+                Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
+                While Not LogReader.EndOfStream
+                    Dim Line As String = LogReader.ReadLine()
+                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then LogText.AppendLine(Line)
+                End While
+                LogReader.Close()
+                LogReader.Dispose()
+            End If
 
+            'This initialization erases log contents, and should come after loading those.
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False)
 
             PutHTML(LogWriter, LogText.ToString)
             'LogText = Nothing  'No need to kill the stringBuilder to release memory
-#Else
-            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
 #End If
 
             Try
