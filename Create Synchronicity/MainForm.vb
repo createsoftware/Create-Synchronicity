@@ -398,7 +398,7 @@ Public Class MainForm
         If Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
             Main_Scheduling.Text = ""
         Else
-            Main_Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute
+            Main_Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour.ToString.PadLeft(2, "0"c) & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute.ToString.PadLeft(2, "0"c)
         End If
 
         Main_TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
