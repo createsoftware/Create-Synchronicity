@@ -72,12 +72,12 @@ Partial Class MainForm
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Main_Donate = New System.Windows.Forms.PictureBox()
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
         Me.StatusIconMenu.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Main_Donate, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Main_Actions
@@ -444,23 +444,23 @@ Partial Class MainForm
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(99, 22)
         Me.ExitToolStripMenuItem.Text = "\CANCEL"
         '
-        'PictureBox1
+        'Main_Donate
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.White
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(314, 22)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(34, 34)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.PictureBox1.TabIndex = 3
-        Me.PictureBox1.TabStop = False
+        Me.Main_Donate.BackColor = System.Drawing.Color.White
+        Me.Main_Donate.Image = CType(resources.GetObject("Main_Donate.Image"), System.Drawing.Image)
+        Me.Main_Donate.Location = New System.Drawing.Point(314, 22)
+        Me.Main_Donate.Name = "Main_Donate"
+        Me.Main_Donate.Size = New System.Drawing.Size(34, 34)
+        Me.Main_Donate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.Main_Donate.TabIndex = 3
+        Me.Main_Donate.TabStop = False
         '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(355, 422)
-        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.Main_Donate)
         Me.Controls.Add(Me.Main_AboutLinkLabel)
         Me.Controls.Add(Me.Main_Actions)
         Me.Controls.Add(Me.Main_InfoPanel)
@@ -473,7 +473,7 @@ Partial Class MainForm
         Me.Main_InfoLayout.PerformLayout()
         Me.Main_ActionsMenu.ResumeLayout(False)
         Me.StatusIconMenu.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Main_Donate, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -514,5 +514,5 @@ Partial Class MainForm
     Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RenameMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents Main_Donate As System.Windows.Forms.PictureBox
 End Class

@@ -464,15 +464,15 @@ Public Class MainForm
     End Function
 #End Region
 
-    Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.Click
+    Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.Click
         Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
     End Sub
 
-    Private Sub Main_Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.MouseEnter
-        PictureBox1.BackColor = Drawing.Color.LightGray
+    Private Sub Main_Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter
+        Main_Donate.BackColor = Drawing.Color.LightGray
     End Sub
 
-    Private Sub Main_Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.MouseLeave
-        PictureBox1.BackColor = Drawing.Color.White
+    Private Sub Main_Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave
+        Main_Donate.BackColor = Drawing.Color.White
     End Sub
 End Class
