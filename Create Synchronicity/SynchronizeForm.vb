@@ -354,8 +354,9 @@ Public Class SynchronizeForm
                     If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName))
                 End If
 
-                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
                 SyncingTimeCounter.Stop()
+                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
+
                 If Quiet And Not Me.Visible Then
                     Me.Close()
                 Else
