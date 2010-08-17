@@ -22,7 +22,7 @@ Partial Class SchedulingForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Settings_ActionsPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Scheduling_ActionsPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Scheduling_Cancel = New System.Windows.Forms.Button()
         Me.Scheduling_Save = New System.Windows.Forms.Button()
         Me.Scheduling_WarningLabel = New System.Windows.Forms.Label()
@@ -41,7 +41,7 @@ Partial Class SchedulingForm
         Me.Scheduling_Minute = New System.Windows.Forms.NumericUpDown()
         Me.Scheduling_OptionsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Scheduling_Catchup = New System.Windows.Forms.CheckBox()
-        Me.Settings_ActionsPanel.SuspendLayout()
+        Me.Scheduling_ActionsPanel.SuspendLayout()
         Me.OptionsLayoutPanel.SuspendLayout()
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Scheduling_Panel.SuspendLayout()
@@ -51,20 +51,20 @@ Partial Class SchedulingForm
         Me.Scheduling_OptionsLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
         '
-        'Settings_ActionsPanel
+        'Scheduling_ActionsPanel
         '
-        Me.Settings_ActionsPanel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_ActionsPanel.ColumnCount = 2
-        Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.Settings_ActionsPanel.Controls.Add(Me.Scheduling_Cancel, 1, 0)
-        Me.Settings_ActionsPanel.Controls.Add(Me.Scheduling_Save, 0, 0)
-        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(362, 169)
-        Me.Settings_ActionsPanel.Name = "Settings_ActionsPanel"
-        Me.Settings_ActionsPanel.RowCount = 1
-        Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.Settings_ActionsPanel.Size = New System.Drawing.Size(200, 31)
-        Me.Settings_ActionsPanel.TabIndex = 4
+        Me.Scheduling_ActionsPanel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Scheduling_ActionsPanel.ColumnCount = 2
+        Me.Scheduling_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Scheduling_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Scheduling_ActionsPanel.Controls.Add(Me.Scheduling_Cancel, 1, 0)
+        Me.Scheduling_ActionsPanel.Controls.Add(Me.Scheduling_Save, 0, 0)
+        Me.Scheduling_ActionsPanel.Location = New System.Drawing.Point(362, 169)
+        Me.Scheduling_ActionsPanel.Name = "Scheduling_ActionsPanel"
+        Me.Scheduling_ActionsPanel.RowCount = 1
+        Me.Scheduling_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.Scheduling_ActionsPanel.Size = New System.Drawing.Size(200, 31)
+        Me.Scheduling_ActionsPanel.TabIndex = 4
         '
         'Scheduling_Cancel
         '
@@ -296,7 +296,7 @@ Partial Class SchedulingForm
         Me.Controls.Add(Me.Scheduling_TimeSelectionPanel)
         Me.Controls.Add(Me.Scheduling_Panel)
         Me.Controls.Add(Me.Scheduling_WarningLabel)
-        Me.Controls.Add(Me.Settings_ActionsPanel)
+        Me.Controls.Add(Me.Scheduling_ActionsPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
@@ -304,7 +304,7 @@ Partial Class SchedulingForm
         Me.Name = "SchedulingForm"
         Me.ShowInTaskbar = False
         Me.Text = "\SCHEDULING"
-        Me.Settings_ActionsPanel.ResumeLayout(False)
+        Me.Scheduling_ActionsPanel.ResumeLayout(False)
         Me.OptionsLayoutPanel.ResumeLayout(False)
         Me.OptionsLayoutPanel.PerformLayout()
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).EndInit()
@@ -321,7 +321,7 @@ Partial Class SchedulingForm
     End Sub
     Friend WithEvents Scheduling_Cancel As System.Windows.Forms.Button
     Friend WithEvents Scheduling_Save As System.Windows.Forms.Button
-    Friend WithEvents Settings_ActionsPanel As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents Scheduling_ActionsPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Scheduling_WarningLabel As System.Windows.Forms.Label
     Friend WithEvents Scheduling_Enable As System.Windows.Forms.CheckBox
     Friend WithEvents OptionsLayoutPanel As System.Windows.Forms.FlowLayoutPanel
