@@ -104,11 +104,12 @@ Partial Class SchedulingForm
         '
         'Scheduling_Enable
         '
-        Me.Scheduling_Enable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Scheduling_Enable.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_Enable.AutoSize = True
-        Me.Scheduling_Enable.Location = New System.Drawing.Point(3, 6)
+        Me.Scheduling_Enable.Location = New System.Drawing.Point(3, 3)
         Me.Scheduling_Enable.Name = "Scheduling_Enable"
-        Me.Scheduling_Enable.Size = New System.Drawing.Size(144, 17)
+        Me.Scheduling_Enable.Size = New System.Drawing.Size(144, 20)
         Me.Scheduling_Enable.TabIndex = 1
         Me.Scheduling_Enable.Text = "\SCHEDULE_ENABLE"
         Me.Scheduling_Enable.UseVisualStyleBackColor = True
@@ -269,14 +270,15 @@ Partial Class SchedulingForm
         '
         'Scheduling_Catchup
         '
-        Me.Scheduling_Catchup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Scheduling_Catchup.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_Catchup.AutoSize = True
         Me.Scheduling_Catchup.Checked = True
         Me.Scheduling_Catchup.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Scheduling_Catchup.Enabled = False
-        Me.Scheduling_Catchup.Location = New System.Drawing.Point(344, 6)
+        Me.Scheduling_Catchup.Location = New System.Drawing.Point(344, 3)
         Me.Scheduling_Catchup.Name = "Scheduling_Catchup"
-        Me.Scheduling_Catchup.Size = New System.Drawing.Size(203, 17)
+        Me.Scheduling_Catchup.Size = New System.Drawing.Size(203, 20)
         Me.Scheduling_Catchup.TabIndex = 2
         Me.Scheduling_Catchup.Tag = "\CATCHUP_MISSED_BACKUPS_TAG"
         Me.Scheduling_Catchup.Text = "\CATCHUP_MISSED_BACKUPS"
