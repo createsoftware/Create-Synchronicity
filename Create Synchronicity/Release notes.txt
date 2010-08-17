@@ -5,7 +5,7 @@ Created on:		June 3, 2009
 Created by:		Clément Pit--Claudel (Create Software)
 License:		GNU GPL v3 or later (see "COPYING")
 Coded in:		Visual Basic .Net
-Translations:	Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo, Pedro Silva, Marco Medri, Jaime Roquero
+Translations:	Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo, Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson, John Van Amstel
 Requires:		.Net Framework v2
 
 * Contact
@@ -16,8 +16,11 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+
 Aug. 17, 2010 - UPD: Postpone catching up to next major release.
 Aug. 17, 2010 - FIX: Error when opening the log file for writing (bug id: #3037574).
+Aug.  8, 2010 - NEW: !Dutch translation by John Van Amstel. Bedankt!
+Jul. 31, 2010 - NEW: !Swedish translation by Hampus Bengtsson. Tack!
 Jul. 24, 2010 - FIX: Changes in scheduling settings would sometimes fail to be updated.
 Jul. 24, 2010 - NEW: Add a setting to catch up missed backups (when a scheduled backup has been repeatedly missed, forces its immediate execution). 
 
