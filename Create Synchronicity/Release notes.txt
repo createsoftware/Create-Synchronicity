@@ -17,6 +17,8 @@ Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 
+-- Version 4.3 --
+Aug. 17, 2010 - SYN: A few bug fixes, bringing more stability and more performance, along with two new languages, Swedish and Dutch. 
 Aug. 17, 2010 - UPD: Prettier display of About/Settings link.
 Aug. 17, 2010 - NEW: Donation button.
 Aug. 17, 2010 - NEW: Show profile name in title bar when synchronizing.
