@@ -155,7 +155,6 @@ Class LogHandler
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False)
 
             PutHTML(LogWriter, LogText.ToString)
-            'LogText = Nothing  'No need to kill the stringBuilder to release memory
 #End If
 
             Try
