@@ -188,7 +188,7 @@ Class LogHandler
 
                 CloseHTMLHeaders(LogWriter)
             Catch Ex As Exception
-                Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message)
+                Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
 
             Finally
                 LogWriter.Flush()
