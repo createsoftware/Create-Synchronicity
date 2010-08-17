@@ -196,7 +196,7 @@ Class LogHandler
                 LogWriter.Dispose()
             End Try
         Catch Ex As Exception
-            Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message)
+            Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
         End Try
     End Sub
 End Class
