@@ -296,7 +296,7 @@ Public Class MainForm
         ' This is a limitation due to the fact that we allow for catching up missed syncs.
         ' It is therefore impossible - in the current state of things - to say if the backup was posponed:
         '   1. due to its being rescheduled
-        '   2. due to its having been marked as needing to be caught up.
+        '   2. due to its having been marked as needing to be caught up. 'TODO: Catching up is currently disabled (4.3)
         ' It would be possible though to force updates of scheduling settings for profiles which are not 'catching-up' enabled.
         ' Yet this would rather introduce a lack of coherence, unsuitable above all.
 
@@ -304,11 +304,14 @@ Public Class MainForm
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
+                'TODO: Catching up is currently disabled (4.3)
                 'TODO: Catchup problem - any newly scheduled profile is immediately caught up.
                 'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
-                If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And DateOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
-                    DateOfNextRun = ScheduleInfo.DATE_CATCHUP
-                End If
+                '<catchup>
+                'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And DateOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
+                '    DateOfNextRun = ScheduleInfo.DATE_CATCHUP
+                'End If
+                '</catchup>
 
                 Dim ProfileName As String = Profile.Value.ProfileName
                 Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of KeyValuePair(Of Date, String))(Function(Item As KeyValuePair(Of Date, String)) Item.Value = ProfileName))
