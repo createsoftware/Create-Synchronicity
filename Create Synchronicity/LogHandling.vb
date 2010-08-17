@@ -152,7 +152,7 @@ Class LogHandler
             End If
 
             'This initialization erases log contents, and should come after loading those.
-            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False)
+            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
 
             PutHTML(LogWriter, LogText.ToString)
 #End If
@@ -161,8 +161,8 @@ Class LogHandler
                 If NewLog Then OpenHTMLHeaders(LogWriter)
 
                 PutHTML(LogWriter, "<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
-                PutHTML(LogWriter, "<p>")
 
+                PutHTML(LogWriter, "<p>")
                 LogWriter.WriteLine(String.Format("{0} v{1}", "Create Synchronicity", Application.ProductVersion))
                 PutHTML(LogWriter, "<br />")
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\LEFT"), Left))
