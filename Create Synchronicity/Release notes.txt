@@ -16,6 +16,8 @@ SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Aug. 17, 2010 - UPD: Postpone catching up to next major release.
+Aug. 17, 2010 - FIX: Error when opening the log file for writing (bug id: #3037574).
 Jul. 24, 2010 - FIX: Changes in scheduling settings would sometimes fail to be updated.
 Jul. 24, 2010 - NEW: Add a setting to catch up missed backups (when a scheduled backup has been repeatedly missed, forces its immediate execution). 
 
