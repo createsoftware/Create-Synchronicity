@@ -1,7 +1,6 @@
-﻿# Create Synchronicity Italian Language file
+# Create Synchronicity Italian Language file
 # Translation by Marco Medri
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
-#
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
 #
 ABOUT=Informazioni
@@ -153,5 +152,5 @@ PATH_TIPS=Formati supportati;C:\Documenti\n"MY USB"\Documenti\n\\192.168.0.20\Ne
 FILEEXT_TIPS=Formati Supportati;jpg;png;bmp\n"Documento.doc"\n/Immagine[0-9]+\.(jpg|raw|png)/
 TOGGLE=Avanzato: Seleziona/Deseleziona questa cartella
 RELOAD_TREES=Caricare l'albero delle cartelle
-->CATCHUP_MISSED_BACKUPS=
-->CATCHUP_MISSED_BACKUPS_TAG=
+CATCHUP_MISSED_BACKUPS=Recuperare i Backup mancanti
+CATCHUP_MISSED_BACKUPS_TAG=Indica che cosa fare se il computer è spento durante il tempo pianificato;Controllato, recuperato, e sincronizzato appena possibile;Non controllato, attendere la prossima sincronizzazione pianificata.
