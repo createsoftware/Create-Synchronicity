@@ -134,6 +134,7 @@ Public Class SynchronizeForm
     Private Sub SynchronizeForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Translation.TranslateControl(Me)
         Me.Icon = ProgramConfig.GetIcon()
+        Me.Text = Me.Text.Replace("%s", Handler.ProfileName) 'Feature request #3037548
     End Sub
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
