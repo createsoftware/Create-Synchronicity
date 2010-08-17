@@ -136,7 +136,7 @@ Class LogHandler
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
 #If Not DEBUG Then
-            'Load the contents of the previous log, excluding the closing thags
+            'Load the contents of the previous log, excluding the closing tags
             Dim LogText As New Text.StringBuilder()
 
             Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
