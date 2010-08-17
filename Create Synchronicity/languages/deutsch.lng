@@ -1,4 +1,4 @@
-﻿# Create Synchronicity German Language file
+# Create Synchronicity German Language file
 # Translation by Florian Haag, with few additions by Jeanne Tourette
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -145,13 +145,13 @@ FOLDER_AND_SUBFOLDERS=Dateien und Unterverzeichnisse synchronisieren
 FILES_ONLY=Nur Dateien synchronisieren
 SUBFOLDERS_ONLY=Nur Unterverzeichnisse synchronisieren
 NO_SYNC=Diesen Ordner nicht synchronisieren
-TOGGLE=Fortgeschritten: Markierung dieses Ordners hinzufügen/entfernen
 RENAME=Umbenennen
 LEFT=Links
 RIGHT=Rechts
 TREEVIEW_TIPS=Tipps zur Ordnerauswahl;Linksklick: Ordner und Unterordner wählen/abwählen.\nRechtsklick: Erweiterte Auswahloptionen
 PATH_TIPS=Unterstützte Formate;C:\Dokumente\n"Mein USB-Laufwerk"\Dokumente\n\\192.168.0.20\Netzlaufwerk\Dokumente
 FILEEXT_TIPS=Unterstützte Formate;jpg;png;bmp\n"Dokument.doc"\n/Bild[0-9]+\.(jpg|raw|png)/
+TOGGLE=Fortgeschritten: Markierung dieses Ordners hinzufügen/entfernen
 RELOAD_TREES=Ordnerstruktur auslesen
-->CATCHUP_MISSED_BACKUPS=
-->CATCHUP_MISSED_BACKUPS_TAG=
+CATCHUP_MISSED_BACKUPS=Verpasste Sicherungen nachholen
+CATCHUP_MISSED_BACKUPS_TAG=Gibt an, was passieren soll, wenn der Computer zum geplanten Sicherungszeitpunkt
