@@ -56,6 +56,10 @@ Public Class MainForm
         Translation.TranslateControl(Me.Main_ActionsMenu)
         Translation.TranslateControl(Me.StatusIconMenu)
 
+        Dim PreviousWidth As Integer = Main_AboutLinkLabel.Width
+        Main_AboutLinkLabel.AutoSize = True
+        Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
+
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
 
@@ -459,4 +463,16 @@ Public Class MainForm
         Return Main_Actions.SelectedItems(0).Text
     End Function
 #End Region
+
+    Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.Click
+        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
+    End Sub
+
+    Private Sub Main_Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.MouseEnter
+        PictureBox1.BackColor = Drawing.Color.LightGray
+    End Sub
+
+    Private Sub Main_Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.MouseLeave
+        PictureBox1.BackColor = Drawing.Color.White
+    End Sub
 End Class

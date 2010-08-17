@@ -72,10 +72,12 @@ Partial Class MainForm
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
         Me.StatusIconMenu.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Main_Actions
@@ -339,7 +341,7 @@ Partial Class MainForm
         '
         Me.Main_ActionsMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PreviewMenuItem, Me.SynchronizeMenuItem, Me.ChangeSettingsMenuItem, Me.ActionsMenuToolStripSeparator, Me.DeleteToolStripMenuItem, Me.RenameMenuItem, Me.ViewLogMenuItem, Me.ClearLogMenuItem, Me.ActionsMenuToolStripSeparator2, Me.ScheduleMenuItem})
         Me.Main_ActionsMenu.Name = "Main_ActionsMenu"
-        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 214)
+        Me.Main_ActionsMenu.Size = New System.Drawing.Size(185, 192)
         '
         'PreviewMenuItem
         '
@@ -416,7 +418,7 @@ Partial Class MainForm
         '
         Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Main_AboutLinkLabel.BackColor = System.Drawing.Color.White
-        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(193, 3)
+        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(191, 6)
         Me.Main_AboutLinkLabel.Name = "Main_AboutLinkLabel"
         Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(161, 13)
         Me.Main_AboutLinkLabel.TabIndex = 1
@@ -442,11 +444,23 @@ Partial Class MainForm
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(99, 22)
         Me.ExitToolStripMenuItem.Text = "\CANCEL"
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackColor = System.Drawing.Color.White
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(314, 22)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(34, 34)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.PictureBox1.TabIndex = 3
+        Me.PictureBox1.TabStop = False
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(355, 422)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Main_AboutLinkLabel)
         Me.Controls.Add(Me.Main_Actions)
         Me.Controls.Add(Me.Main_InfoPanel)
@@ -459,6 +473,7 @@ Partial Class MainForm
         Me.Main_InfoLayout.PerformLayout()
         Me.Main_ActionsMenu.ResumeLayout(False)
         Me.StatusIconMenu.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -499,4 +514,5 @@ Partial Class MainForm
     Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RenameMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 End Class
