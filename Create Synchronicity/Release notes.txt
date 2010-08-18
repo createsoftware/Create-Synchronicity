@@ -1,12 +1,12 @@
 -- Create Synchronicity --
 * Information
-Language:		English
-Created on:		June 3, 2009
-Created by:		Clément Pit--Claudel (Create Software)
-License:		GNU GPL v3 or later (see "COPYING")
-Coded in:		Visual Basic .Net
-Translations:	Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo, Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson, John Van Amstel
-Requires:		.Net Framework v2
+Languages:			English, French, German, Italian, Spanish, Swedish, Dutch
+Created on:			June 3, 2009
+Created by:			Clément Pit--Claudel (Create Software)
+License:			GNU GPL v3 or later (see "COPYING")
+Coded in:			Visual Basic .Net
+Requires:			.Net Framework v2
+Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo, Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson, John Van Amstel
 
 * Contact
 Website:		http://synchronicity.sourceforge.net
