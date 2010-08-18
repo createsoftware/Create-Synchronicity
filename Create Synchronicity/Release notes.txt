@@ -13,9 +13,9 @@ Coded in:			Visual Basic .Net
 Requires:			.Net Framework v2
 
 * Contact
-Website:		http://synchronicity.sourceforge.net
-Contact:		createsoftware@users.sourceforge.net
-SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
+Website:			http://synchronicity.sourceforge.net
+Contact:			createsoftware@users.sourceforge.net
+SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
