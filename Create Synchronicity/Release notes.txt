@@ -3,10 +3,14 @@
 Languages:			English, French, German, Italian, Spanish, Swedish, Dutch
 Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
+Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
+					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
+					John Van Amstel
+
+* Technical information
 License:			GNU GPL v3 or later (see "COPYING")
 Coded in:			Visual Basic .Net
 Requires:			.Net Framework v2
-Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo, Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson, John Van Amstel
 
 * Contact
 Website:		http://synchronicity.sourceforge.net
@@ -155,4 +159,4 @@ Jun. 11, 2009 - FIX: Invoke was called before window handle was created, resulti
 -- Version 0.1 --
 Jun. 10, 2009 - SYN: First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
 
-Many thanks to mohican and Fabien Delpierre for tireless bug reports, suggestions and testing, and thanks to Florian Haag and André Modesto for impressive reactiveness and efficiency in completing translations.
+Many thanks to mohican, Fabien Delpierre for tireless bug reports, suggestions and testing, and thanks to Florian Haag and André Modesto for impressive reactiveness and efficiency in completing translations.
