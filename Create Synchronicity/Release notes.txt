@@ -17,7 +17,7 @@ Website:		http://synchronicity.sourceforge.net
 Contact:		createsoftware@users.sourceforge.net
 SVN Server:		https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
-Change Log
+* Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 
