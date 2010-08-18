@@ -4,6 +4,7 @@ Languages:			English, French, German, Portuguese, Italian, Spanish,
 					Swedish, Dutch
 Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
+Special thanks:		Mauricio Leyzaola
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
 					John Van Amstel
@@ -160,4 +161,4 @@ Jun. 11, 2009 - FIX: Invoke was called before window handle was created, resulti
 -- Version 0.1 --
 Jun. 10, 2009 - SYN: First release of Create Synchronicity. Functionality and design are done and working. Lots of testing are still needed.
 
-Many thanks to mohican, Fabien Delpierre for tireless bug reports, suggestions and testing, and thanks to Florian Haag and André Modesto for impressive reactiveness and efficiency in completing translations.
+Many thanks to mohican, Fabien Delpierre, and Mauricio Leyzaola for tireless bug reports, suggestions and testing, and thanks to Florian Haag and André Modesto for impressive reactiveness and efficiency in completing translations.
