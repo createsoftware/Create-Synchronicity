@@ -5,7 +5,7 @@ End Class
 
 Public Class FtpFS
     Inherits GenericFS
-    Implements IOOperator
+    Implements FileSystem
 End Class
 
 Public Interface FileSystem
