@@ -14,23 +14,32 @@ mkdir build
 
 (echo Packaging log for r%REV% & date /t & time /t & echo.) > %LOG%
 
+echo (1/4) Building program
+(
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Release /Out %LOG%
+) >> %LOG%
 
+echo (2/4) Building installer
 (
 echo.
 echo -----
 "C:\Program Files (x86)\NSIS\makensis.exe" "Create Synchronicity\setup_script.nsi"
-
 echo.
 echo -----
 move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe"
+) >> %LOG%
 
+echo (3/4) Building zip file
+(
 echo.
 echo -----
 cd "Create Synchronicity\bin\Release"
 "C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%.zip" "Create Synchronicity.exe" "Release notes.txt" "COPYING" "languages\*"
 cd ..\..\..
+) >> %LOG%
 
+echo (4/4) Uploading build to frs.sourceforge.net
+(
 echo.
 echo -----
 echo Uploading files via SCP.
