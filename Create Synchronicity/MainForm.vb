@@ -246,8 +246,10 @@ Public Class MainForm
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
             If RunAsScheduler Then
+                ConfigHandler.LogAppEvent("Worker thread: Running as scheduler")
                 ReloadProfilesScheduler(ProfilesToRun)
             Else 'A list of profiles has been provided.
+                ConfigHandler.LogAppEvent("Worker thread: Running as batch sync engine")
                 For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
                         If Profiles(Profile).ValidateConfigFile() Then
@@ -273,7 +275,7 @@ Public Class MainForm
             Exit Sub
         End If
 
-        ReloadProfilesScheduler(ProfilesToRun)
+        If RunAsScheduler Then ReloadProfilesScheduler(ProfilesToRun)
 
         Dim NextRun As Date = ProfilesToRun(0).Key
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesToRun(0).Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
