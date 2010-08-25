@@ -25,15 +25,21 @@ echo.
 echo -----
 move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe"
 
-cd "Create Synchronicity\bin\Release"
 echo.
 echo -----
+cd "Create Synchronicity\bin\Release"
 "C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%.zip" "Create Synchronicity.exe" "Release notes.txt" "COPYING" "languages\*"
 cd ..\..\..
+
+echo.
+echo -----
+"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
 ) >> %LOG%
 @goto end
 
 :help
 @echo This script is designed to be called by a SVN hook script.
 @echo If used from the command line, it should be passed the revision number as its first parameter.
+@echo Requires 7-zip installed in "C:\Program Files\7-Zip\7z.exe" and Putty installed in "C:\Program Files (x86)\PuTTY\pscp.exe".
+@echo Pageant (putty key handler) should be told about the private key to connect to the scp server.
 :end
