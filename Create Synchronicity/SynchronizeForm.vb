@@ -439,6 +439,9 @@ Public Class SynchronizeForm
         Dim Context As New SyncingAction
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
 
+        'Pass 1: Create actions L->R for files/folder copy, and mark dest files that should be kept
+        'Pass 2: Create actions R->L for files/folder copy/deletion, based on what was marked as ValidFile, aka based on what should be kept.
+
         SyncingList.Clear()
         SyncingList.Add(SideOfSource.Left, New List(Of SyncingItem))
         SyncingList.Add(SideOfSource.Right, New List(Of SyncingItem))
@@ -542,7 +545,6 @@ Public Class SynchronizeForm
                             Case TypeOfAction.Create
                                 CopyFile(Entry.Path, Source, Destination)
                             Case TypeOfAction.Delete
-
                                 IO.File.SetAttributes(Source & Entry.Path, IO.FileAttributes.Normal)
                                 IO.File.Delete(Source & Entry.Path)
                                 Status.DeletedFiles += 1
@@ -640,8 +642,14 @@ Public Class SynchronizeForm
 
         If IsSingularity Then
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+#If DEBUG Then
+            Log.LogInfo("""" & Folder & """ [Folder] added to the list, will be copied.")
+#End If
         Else
             AddValidFile(Folder)
+#If DEBUG Then
+            Log.LogInfo("""" & Folder & """ [Folder] added to the list, will not be deleted.")
+#End If
         End If
 
         InitialCount = ValidFiles.Count
@@ -699,7 +707,9 @@ Public Class SynchronizeForm
 
         If InitialCount = ValidFiles.Count Then
             If Not EmptyDirectories Then
+                'IsSingularity => Don't copy this folder over (not present yet)
                 If IsSingularity Then RemoveFromSyncingList(Context.Source)
+                '(Should be Else =>) Delete it (already present). TODO: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
                 RemoveValidFile(Folder)
             End If
         End If
@@ -722,9 +732,9 @@ Public Class SynchronizeForm
                 If Not IsValidFile(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
 #If DEBUG Then
-                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) does not belong to the list, so will be deleted.")
+                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) does NOT belong to the list, so will be deleted.")
                 Else
-                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) has been scanned, and won't be deleted.")
+                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) belongs to the list, so won't be deleted.")
 #End If
                 End If
 
@@ -750,6 +760,7 @@ Public Class SynchronizeForm
         End If
 
         If Folder <> "" AndAlso Not IsValidFile(Folder) Then
+            Log.LogInfo("""" & Folder & """ [Folder] does NOT belong to the list, so will be deleted.")
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
         End If
     End Sub
