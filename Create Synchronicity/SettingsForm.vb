@@ -130,7 +130,7 @@ Public Class SettingsForm
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
             Try
-                For Each Dir As String In IO.Directory.GetDirectories(Node.FullPath)
+                For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath))
                     Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
