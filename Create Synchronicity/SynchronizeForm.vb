@@ -760,7 +760,9 @@ Public Class SynchronizeForm
         End If
 
         If Folder <> "" AndAlso Not IsValidFile(Folder) Then
+#If DEBUG Then
             Log.LogInfo("""" & Folder & """ [Folder] does NOT belong to the list, so will be deleted.")
+#End If
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
         End If
     End Sub

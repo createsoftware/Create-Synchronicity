@@ -8,6 +8,7 @@
 @echo You should have received a copy of the GNU General Public License along with Create Synchronicity.  If not, see http://www.gnu.org/licenses/.
 @echo Created by:   Clément Pit--Claudel.
 @echo Web site:     http://synchronicity.sourceforge.net.
+@echo.
 
 @set REV=%1
 @set LOG="build\buildlog-r%REV%.txt"
@@ -16,14 +17,10 @@ mkdir build
 (echo Packaging log for r%REV% & date /t & time /t & echo.) > %LOG%
 
 echo (1/6) Building program (release)
-(
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Release /Out %LOG%
-) >> %LOG%
 
 echo (2/6) Building program (debug)
-(
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Debug /Out %LOG%
-) >> %LOG%
 
 echo (3/6) Building installer
 (
@@ -52,14 +49,15 @@ echo (5/6) Creating latest.txt
 (
 echo.
 echo -----
-	(
-	echo Last build r%REV% & date /t & time /t
-	echo.
-	echo https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%.zip/download
-	echo https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity_Setup-r%REV%.exe/download 
-	echo https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%-DEBUG.zip/download 
-	) > build\latest.txt
 ) >> %LOG%
+
+(
+echo Last build r%REV% & date /t & time /t
+echo.
+echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%.zip/download"
+echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity_Setup-r%REV%.exe/download"
+echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%-DEBUG.zip/download"
+) > build\latest.txt
 
 echo (6/6) Uploading build to frs.sourceforge.net
 (
