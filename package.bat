@@ -52,7 +52,7 @@ echo -----
 ) >> %LOG%
 
 (
-echo Last build r%REV% & date /t & time /t
+echo Current build: r%REV% & date /t & time /t
 echo.
 echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%.zip/download"
 echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity_Setup-r%REV%.exe/download"
