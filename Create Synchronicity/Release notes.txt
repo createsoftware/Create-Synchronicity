@@ -7,7 +7,7 @@ Created by:			Clément Pit--Claudel (Create Software)
 Special thanks:		Mauricio Leyzaola
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
-					John Van Amstel
+					John Van Amstel, Mauricio Leyzaola
 
 * Technical information
 License:			GNU GPL v3 or later (see "COPYING")
