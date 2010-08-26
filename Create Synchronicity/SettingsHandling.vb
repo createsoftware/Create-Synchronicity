@@ -384,6 +384,12 @@ Class ProfileHandler
     End Sub
 
     Public Shared Function TranslatePath(ByVal Path As String) As String
+        Return TranslatePath_Unsafe(Path).TrimEnd(ConfigOptions.DirSep)
+        'This part is just for the extra safety, since a fix is also included in TranslatePath_Unsafe.
+        'Prevents a very annoying bug, where the presence of a slash at the end of the base directory would confuse the engine (#3052979)
+    End Function
+
+    Private Shared Function TranslatePath_Unsafe(ByVal Path As String) As String
 #If Not LINUX Then
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
@@ -395,7 +401,8 @@ Class ProfileHandler
 
             If Path.StartsWith("""") And Not Label = "" Then
                 For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
-                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep))
+                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep)).TrimEnd(ConfigOptions.DirSep) 'Bug #3052979
+                    'This is the line why this function is called unsafe, but it's been made safe anyway: dirty code that get fixed later on crosses me. The point is that a source/destination path should *never* end with a DirSep, otherwise the system gets confused as to what is a relative path and what is the base path.
                 Next
 #If 0 Then
             'TODO: USBIDs
@@ -423,8 +430,6 @@ Class ProfileHandler
                 Next
 #End If
             End If
-
-            Return Path
         End If
 #End If
 
