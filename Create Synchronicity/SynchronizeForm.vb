@@ -621,6 +621,7 @@ Public Class SynchronizeForm
     End Sub
 
     Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: TBO
+        'TODO: Wait, if there are multiple "\"s, we're bogus. !IMPORTANT
         Return If(Dir.EndsWith(IO.Path.DirectorySeparatorChar), Dir, Dir & IO.Path.DirectorySeparatorChar) & If(File.StartsWith(IO.Path.DirectorySeparatorChar), File.Substring(1), File)
     End Function
 
@@ -643,12 +644,12 @@ Public Class SynchronizeForm
         If IsSingularity Then
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
 #If DEBUG Then
-            Log.LogInfo("""" & Folder & """ [Folder] added to the list, will be copied.")
+            Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will be copied.", Dest_FilePath, Folder))
 #End If
         Else
             AddValidFile(Folder)
 #If DEBUG Then
-            Log.LogInfo("""" & Folder & """ [Folder] added to the list, will not be deleted.")
+            Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will not be deleted.", Dest_FilePath, Folder))
 #End If
         End If
 
@@ -668,18 +669,18 @@ Public Class SynchronizeForm
                     If Not IO.File.Exists(DestinationFile) OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
                         AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
 #If DEBUG Then
-                        Log.LogInfo("""" & SourceFile & """ (""" & SourceFile.Substring(Context.SourcePath.Length) & """) added to the list, will be copied.")
+                        Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will be copied.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
                         AddValidFile(SourceFile.Substring(Context.SourcePath.Length))
 #If DEBUG Then
-                        Log.LogInfo("""" & SourceFile & """ (""" & SourceFile.Substring(Context.SourcePath.Length) & """) added to the list, will not be deleted.")
+                        Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will not be deleted.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
                     End If
 #If DEBUG Then
                 Else
-                    Log.LogInfo("""" & SourceFile & """ (""" & SourceFile.Substring(Context.SourcePath.Length) & """) NOT added to the list, will be deleted, since its extension is not valid.")
+                    Log.LogInfo(String.Format("""{0}"" ({1}) NOT added to the list, will be deleted, since its extension is not valid.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
                 End If
 
@@ -732,9 +733,9 @@ Public Class SynchronizeForm
                 If Not IsValidFile(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
 #If DEBUG Then
-                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) does NOT belong to the list, so will be deleted.")
+                    Log.LogInfo(String.Format("""{0}"" ({1}) does NOT belong to the list, so will be deleted.", File, RelativeFName))
                 Else
-                    Log.LogInfo("""" & File & """ (""" & RelativeFName & """) belongs to the list, so won't be deleted.")
+                    Log.LogInfo(String.Format("""{0}"" ({1}) belongs to the list, so won't be deleted.", File, RelativeFName))
 #End If
                 End If
 
@@ -761,7 +762,7 @@ Public Class SynchronizeForm
 
         If Folder <> "" AndAlso Not IsValidFile(Folder) Then
 #If DEBUG Then
-            Log.LogInfo("""" & Folder & """ [Folder] does NOT belong to the list, so will be deleted.")
+            Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] does NOT belong to the list, so will be deleted.", Dest_FilePath, Folder))
 #End If
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
         End If
