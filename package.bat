@@ -1,3 +1,4 @@
+@echo OFF
 @if "%1" == "/?" goto help
 
 :start
@@ -14,17 +15,17 @@ mkdir build
 
 (echo Packaging log for r%REV% & date /t & time /t & echo.) > %LOG%
 
-echo (1/5) Building program (release)
+echo (1/6) Building program (release)
 (
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Release /Out %LOG%
 ) >> %LOG%
 
-echo (2/5) Building program (debug)
+echo (2/6) Building program (debug)
 (
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Debug /Out %LOG%
 ) >> %LOG%
 
-echo (3/5) Building installer
+echo (3/6) Building installer
 (
 echo.
 echo -----
@@ -34,7 +35,7 @@ echo -----
 move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe"
 ) >> %LOG%
 
-echo (4/5) Building zip files
+echo (4/6) Building zip files
 (
 echo.
 echo -----
@@ -47,12 +48,25 @@ cd "Create Synchronicity\bin\Debug"
 cd ..\..\..
 ) >> %LOG%
 
-echo (5/5) Uploading build to frs.sourceforge.net
+echo (5/6) Creating latest.txt
+(
+echo.
+echo -----
+	(
+	echo Last build r%REV% & date /t & time /t
+	echo.
+	echo https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%.zip/download
+	echo https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity_Setup-r%REV%.exe/download 
+	echo https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%-DEBUG.zip/download 
+	) > build\latest.txt
+) >> %LOG%
+
+echo (6/6) Uploading build to frs.sourceforge.net
 (
 echo.
 echo -----
 echo Uploading files via SCP.
-"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity-r%REV%-DEBUG.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
+"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity-r%REV%-DEBUG.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "build\latest.txt" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
 ) >> %LOG%
 @goto end
 
