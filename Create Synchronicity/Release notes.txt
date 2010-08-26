@@ -23,6 +23,10 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 
+Aug. 26, 2010 - FIX: Path translation bug occuring in edge cases. (#3052979)
+Aug. 26, 2010 - FIX: Selection bug when using paths in the form "MyDrive"\MyFolder
+Aug. 25, 2010 - FIX: Mishandled command-line argument (#
+
 -- Version 4.3 --
 Aug. 17, 2010 - SYN: A few bug fixes, bringing more stability and more performance, along with two new languages, Swedish and Dutch. 
 Aug. 17, 2010 - UPD: Prettier display of About/Settings link.
