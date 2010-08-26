@@ -586,7 +586,10 @@ Public Class SynchronizeForm
 
     Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
-            If IO.Directory.Exists(Context.SourcePath & Folder) Then
+#If DEBUG Then
+            Log.LogInfo(String.Format("=> Scanning top-level folders from side {0}: Folder ""{1}""", Context.SourcePath, Folder))
+#End If
+            If IO.Directory.Exists(Context.SourcePath & Folder) Then 'TODO: Use CombinePath
                 If Context.Action = TypeOfAction.Create Then
                     SearchForChanges(Folder, FoldersList(Folder), Context)
                 ElseIf Context.Action = TypeOfAction.Delete Then
@@ -727,6 +730,9 @@ Public Class SynchronizeForm
         'Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
         'Dim EmptyDirectories As Boolean = (Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
 
+#If DEBUG Then
+        Log.LogInfo(String.Format("=> Scanning folder ""{0}"" for files to delete.", Folder))
+#End If
         Try
             For Each File As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
