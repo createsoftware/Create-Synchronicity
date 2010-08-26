@@ -860,10 +860,12 @@ Public Class SynchronizeForm
 #End If
             IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
-        IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
+
 #If DEBUG Then
         Log.LogInfo("CopyFile: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
 #End If
+        IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
+
         Status.CreatedFiles += 1
         Status.BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
     End Sub
