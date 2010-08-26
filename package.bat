@@ -14,12 +14,17 @@ mkdir build
 
 (echo Packaging log for r%REV% & date /t & time /t & echo.) > %LOG%
 
-echo (1/4) Building program
+echo (1/5) Building program (release)
 (
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Release /Out %LOG%
 ) >> %LOG%
 
-echo (2/4) Building installer
+echo (2/5) Building program (debug)
+(
+"C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Debug /Out %LOG%
+) >> %LOG%
+
+echo (3/5) Building installer
 (
 echo.
 echo -----
@@ -29,21 +34,25 @@ echo -----
 move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe"
 ) >> %LOG%
 
-echo (3/4) Building zip file
+echo (4/5) Building zip files
 (
 echo.
 echo -----
 cd "Create Synchronicity\bin\Release"
 "C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%.zip" "Create Synchronicity.exe" "Release notes.txt" "COPYING" "languages\*"
 cd ..\..\..
+
+cd "Create Synchronicity\bin\Debug"
+"C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%-DEBUG.zip" "Create Synchronicity.exe" "Release notes.txt" "COPYING" "languages\*"
+cd ..\..\..
 ) >> %LOG%
 
-echo (4/4) Uploading build to frs.sourceforge.net
+echo (5/5) Uploading build to frs.sourceforge.net
 (
 echo.
 echo -----
 echo Uploading files via SCP.
-"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
+"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity-r%REV%-DEBUG.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
 ) >> %LOG%
 @goto end
 
