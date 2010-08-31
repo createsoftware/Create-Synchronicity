@@ -4,5 +4,6 @@ english:0
 francais:0
 italian:1
 portuguese:0
-spanish:3
+russian:0
+spanish:0
 swedish:0
