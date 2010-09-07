@@ -7,7 +7,7 @@ Created by:			Clément Pit--Claudel (Create Software)
 Special thanks:		Mauricio Leyzaola
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
-					John Van Amstel, Mauricio Leyzaola
+					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík
 
 * Technical information
 License:			GNU GPL v3 or later (see "COPYING")
@@ -22,6 +22,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Sep. 07, 2010 - NEW: !Czech translation, by Jiří Stuchlík. Díky moc!
 Aug. 30, 2010 - NEW: !Russian translation, by an anonymous blog author. Thanks!
 Aug. 26, 2010 - UPD: Better support for implicit paths.
 Aug. 26, 2010 - FIX: !Path translation bug occuring in edge cases. (#3052979).
