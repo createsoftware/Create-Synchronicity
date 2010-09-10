@@ -4,7 +4,7 @@ Languages:			English, French, German, Portuguese, Italian, Spanish,
 					Swedish, Dutch
 Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
-Special thanks:		Mauricio Leyzaola
+Special thanks:		Mauricio Leyzaola, Christian Eibler
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
 					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík
