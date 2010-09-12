@@ -620,7 +620,7 @@ Public Class SynchronizeForm
         Log.LogInfo(String.Format("Folder ""{0}"" is a top level folder, adding it's ancestors.", Folder))
 #End If
         Dim CurrentAncestor As New System.Text.StringBuilder
-        Dim Ancestors As New List(Of String)(Folder.Split(New String() {ConfigOptions.DirSep.ToString}, StringSplitOptions.RemoveEmptyEntries))
+        Dim Ancestors As New List(Of String)(Folder.Split(New Char() {ConfigOptions.DirSep}, StringSplitOptions.RemoveEmptyEntries))
 
         For Depth As Integer = 0 To (Ancestors.Count - 1) - 1 'The last ancestor is the folder itself, and will be added in SearchForChanges.
             CurrentAncestor.Append(ConfigOptions.DirSep).Append(Ancestors(Depth))
@@ -734,7 +734,11 @@ Public Class SynchronizeForm
         If InitialCount = ValidFiles.Count Then
             If Not EmptyDirectories Then
                 'IsSingularity => Don't copy this folder over (not present yet)
-                If IsSingularity Then RemoveFromSyncingList(Context.Source)
+                If IsSingularity Then
+                    Status.FoldersToCreate -= 1
+                    Status.TotalActionsCount -= 1
+                    RemoveFromSyncingList(Context.Source)
+                End If
                 '(Should be Else =>) Delete it (already present). TODO: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
                 RemoveValidFile(Folder)
                 'Problem: What if ancestors of a folder have been marked valid, and the folder is empty?
