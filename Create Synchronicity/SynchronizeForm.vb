@@ -651,6 +651,10 @@ Public Class SynchronizeForm
 #End If
         Else
             AddValidFile(Folder)
+            'BUG: Every ancestor of this folder should be added too.
+            'Careful with this, for it's a performance issue. Ancestors should only be added /once/.
+            'How to do that? Well, if ancestors of a folder have not been scanned, it means that this folder wasn't reached by a recursive call, but by a initial call.
+            'Therefore, only the folders in the sync config file should be added.
 #If DEBUG Then
             Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will not be deleted.", Dest_FilePath, Folder))
 #End If
@@ -715,6 +719,9 @@ Public Class SynchronizeForm
                 If IsSingularity Then RemoveFromSyncingList(Context.Source)
                 '(Should be Else =>) Delete it (already present). TODO: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
                 RemoveValidFile(Folder)
+                'Problem: What if ancestors of a folder have been marked valid, and the folder is empty?
+                'If the folder didn't exist, it's ancestors won't be created, since only the folder itself is added.
+                'Yet if ancestors exist, should they be removed? Let's say NO for now.
             End If
         End If
     End Sub
