@@ -591,6 +591,12 @@ Public Class SynchronizeForm
 #End If
             If IO.Directory.Exists(Context.SourcePath & Folder) Then 'TODO: Use CombinePath
                 If Context.Action = TypeOfAction.Create Then
+                    'TODO: Test this
+                    'BUG: Every ancestor of this folder should be added too.
+                    'Careful with this, for it's a performance issue. Ancestors should only be added /once/.
+                    'How to do that? Well, if ancestors of a folder have not been scanned, it means that this folder wasn't reached by a recursive call, but by a initial call.
+                    'Therefore, only the folders in the sync config file should be added.
+                    AddValidAncestors(Folder)
                     SearchForChanges(Folder, FoldersList(Folder), Context)
                 ElseIf Context.Action = TypeOfAction.Delete Then
                     SearchForCrap(Folder, FoldersList(Folder), Context)
@@ -607,6 +613,22 @@ Public Class SynchronizeForm
 
     Sub AddValidFile(ByVal File As String)
         If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower, Nothing)
+    End Sub
+
+    Sub AddValidAncestors(ByVal Folder As String)
+#If DEBUG Then
+        Log.LogInfo(String.Format("Folder ""{0}"" is a top level folder, adding it's ancestors.", Folder))
+#End If
+        Dim CurrentAncestor As New System.Text.StringBuilder
+        Dim Ancestors As New List(Of String)(Folder.Split(New String() {ConfigOptions.DirSep.ToString}, StringSplitOptions.RemoveEmptyEntries))
+
+        For Depth As Integer = 0 To (Ancestors.Count - 1) - 1 'The last ancestor is the folder itself, and will be added in SearchForChanges.
+            CurrentAncestor.Append(ConfigOptions.DirSep).Append(Ancestors(Depth))
+            AddValidFile(CurrentAncestor.ToString)
+#If DEBUG Then
+            Log.LogInfo(String.Format("Folder ""{0}"" is an ancestor of a top level folder, has been marked valid, and will not be deleted.", CurrentAncestor.ToString))
+#End If
+        Next
     End Sub
 
     Sub RemoveValidFile(ByVal File As String)
@@ -651,10 +673,6 @@ Public Class SynchronizeForm
 #End If
         Else
             AddValidFile(Folder)
-            'BUG: Every ancestor of this folder should be added too.
-            'Careful with this, for it's a performance issue. Ancestors should only be added /once/.
-            'How to do that? Well, if ancestors of a folder have not been scanned, it means that this folder wasn't reached by a recursive call, but by a initial call.
-            'Therefore, only the folders in the sync config file should be added.
 #If DEBUG Then
             Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will not be deleted.", Dest_FilePath, Folder))
 #End If
