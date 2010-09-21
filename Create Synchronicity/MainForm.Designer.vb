@@ -467,6 +467,7 @@ Partial Class MainForm
         Me.Controls.Add(Me.Main_InfoPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+        Me.KeyPreview = True
         Me.Name = "MainForm"
         Me.Text = "Create Synchronicity"
         Me.Main_InfoPanel.ResumeLayout(False)

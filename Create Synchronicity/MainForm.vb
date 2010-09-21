@@ -18,6 +18,11 @@ Public Class MainForm
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
 #Region " Events "
+    Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        'Requires PreviewKeys to be set to true. 
+        If e.KeyCode = Keys.F1 Then Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+    End Sub
+
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
         ConfigHandler.LogAppEvent("Program started")
