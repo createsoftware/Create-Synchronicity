@@ -198,6 +198,13 @@ Public Class ConfigHandler
         AppLog.Close()
 #End If
     End Sub
+
+    Public Shared Sub RegisterBoot()
+        If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) Is Nothing Then
+            ConfigHandler.LogAppEvent("Registering program in startup list")
+            My.Computer.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
+        End If
+    End Sub
 End Class
 
 Class ProfileHandler

@@ -452,10 +452,13 @@ Public Class MainForm
         Dim NeedToRunAtBootTime As Boolean = False
         For Each Profile As ProfileHandler In Profiles.Values
             NeedToRunAtBootTime = NeedToRunAtBootTime Or (Profile.Scheduler.Frequency <> ScheduleInfo.NEVER)
+            ConfigHandler.LogAppEvent(String.Format("Profile {0} requires the scheduler to run.", Profile.ProfileName))
         Next
 
         Try
-            If Not NeedToRunAtBootTime Then
+            If NeedToRunAtBootTime Then
+                ConfigHandler.RegisterBoot()
+            Else
                 If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")
                     My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)

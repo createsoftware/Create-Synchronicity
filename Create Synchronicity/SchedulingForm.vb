@@ -52,10 +52,7 @@ Public Class SchedulingForm
 
     Private Sub Scheduling_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Scheduling_Save.Click
         Try
-            If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) Is Nothing Then
-                ConfigHandler.LogAppEvent("Unregistering program from startup list")
-                My.Computer.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
-            End If
+            ConfigHandler.RegisterBoot()
 
             If Not Scheduling_Enable.Checked Then
                 Handler.Scheduler.Frequency = ScheduleInfo.NEVER
