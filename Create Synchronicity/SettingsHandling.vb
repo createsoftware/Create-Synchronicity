@@ -588,13 +588,17 @@ Public Module Interaction
         Dim Offset As Integer = If(TypeOf sender Is RadioButton Or TypeOf sender Is CheckBox, 12, 1)
         Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(New Char() {";"c}, 2)
 
-        If Pair.GetLength(0) = 1 Then
-            SharedToolTip.ToolTipTitle = ""
-            SharedToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
-        ElseIf Pair.GetLength(0) > 1 Then
-            SharedToolTip.ToolTipTitle = Pair(0)
-            SharedToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
-        End If
+        Try
+            If Pair.GetLength(0) = 1 Then
+                SharedToolTip.ToolTipTitle = ""
+                SharedToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
+            ElseIf Pair.GetLength(0) > 1 Then
+                SharedToolTip.ToolTipTitle = Pair(0)
+                SharedToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
+            End If
+        Catch ex As Exception
+            'See bug #3076129
+        End Try
     End Sub
 
     Public Sub HideToolTip(ByVal sender As Control)
