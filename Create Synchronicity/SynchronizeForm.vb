@@ -894,10 +894,15 @@ Public Class SynchronizeForm
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
         Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Destination))
 
+        If Handler.GetSetting(ConfigOptions.FuzzyDstCompensation, "False") = "True" Then
+            Dim HoursDiff As Integer = CInt((SourceFATTime - DestFATTime).TotalHours)
+            If Math.Abs(HoursDiff) = 1 Then DestFATTime = DestFATTime.AddHours(HoursDiff)
+        End If
+
         If Handler.GetSetting(ConfigOptions.StrictDateComparison, "True") = "True" Then
             If SourceFATTime = DestFATTime Then Return False
         Else
-            If (SourceFATTime - DestFATTime).TotalSeconds < 4 Then Return False
+            If Math.Abs((SourceFATTime - DestFATTime).TotalSeconds) <= 4 Then Return False 'Note: NTFSToFATTime introduces additional fuzzyness (justifies the <= ('=')).
         End If
 
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
