@@ -8,7 +8,7 @@ Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
 					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík,
-					Sergio Chiapperini
+					Sergio Chiapperini, Gush Katif Laad
 
 * Technical information
 License:			GNU GPL v3 or later (see "COPYING")
@@ -23,6 +23,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 05, 2010 - NEW: !Hebrew translation, by Gush Katif Laad. תודה!
 Oct. 05, 2010 - FIX: Minor display glitch in settings screen.
 Sep. 21, 2010 - NEW: Pressing F1 opens the manual.
 Sep. 12, 2010 - FIX: Invalid preview list when syncing a complex folder architecture, in some special cases.
