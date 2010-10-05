@@ -296,10 +296,10 @@ Public Class SettingsForm
 
         Settings_Cleanup_Paths()
         If FullReload Or CurrentLeft <> Settings_FromTextBox.Text Then
-            LoadTree(Settings_LeftView, If(Settings_FromTextBox.Text = "", "", Settings_FromTextBox.Text))
+            LoadTree(Settings_LeftView, Settings_FromTextBox.Text)
         End If
         If FullReload Or CurrentRight <> Settings_ToTextBox.Text Then
-            LoadTree(Settings_RightView, If(Settings_ToTextBox.Text = "", "", Settings_ToTextBox.Text))
+            LoadTree(Settings_RightView, Settings_ToTextBox.Text)
         End If
 
         If Settings_LeftView.Enabled Then Settings_LeftReloadButton.Visible = False
@@ -313,11 +313,11 @@ Public Class SettingsForm
         CurrentRight = Settings_ToTextBox.Text
     End Sub
 
-    Sub LoadTree(ByVal Tree As TreeView, ByVal Path As String)
+    Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String)
         Tree.Nodes.Clear()
 
-        Path = ProfileHandler.TranslatePath(Path) & ConfigOptions.DirSep
-        Tree.Enabled = Path <> "" AndAlso IO.Directory.Exists(Path)
+        Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
+        Tree.Enabled = OriginalPath <> "" AndAlso IO.Directory.Exists(Path)
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
