@@ -23,6 +23,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 05, 2010 - FIX: Minor display glitch in settings screen.
 Sep. 21, 2010 - NEW: Pressing F1 opens the manual.
 Sep. 12, 2010 - FIX: Invalid preview list when syncing a complex folder architecture, in some special cases.
 Sep. 12, 2010 - UPD: Reworked italian translation, by Sergio Chiapperini. Grazie mille ;)
