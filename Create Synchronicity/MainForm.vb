@@ -19,8 +19,18 @@ Public Class MainForm
 
 #Region " Events "
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-        'Requires PreviewKeys to be set to true. 
-        If e.KeyCode = Keys.F1 Then Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+        'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
+        If e.KeyCode = Keys.F1 Then
+            Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+        ElseIf e.Control Then
+            Select Case e.KeyCode
+                Case Keys.N
+                    Main_Actions.LabelEdit = True
+                    Main_Actions.Items(0).BeginEdit()
+                Case Keys.O
+                    Diagnostics.Process.Start(ProgramConfig.ConfigRootDir)
+            End Select
+        End If
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -116,12 +126,6 @@ Public Class MainForm
     End Sub
 
     Private Sub Main_Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Main_Actions.KeyDown
-        If e.KeyCode = Keys.N And e.Control Then
-            Main_Actions.LabelEdit = True
-            Main_Actions.Items(0).BeginEdit()
-            Exit Sub
-        End If
-
         If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
         If e.KeyCode = Keys.Enter Then
             If Main_Actions.SelectedIndices(0) = 0 Then
@@ -366,6 +370,8 @@ Public Class MainForm
         Main_Actions.Items.Clear()
         Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
 
+        Dim Groups As New List(Of String)
+
         For Each ConfigFile As String In IO.Directory.GetFiles(ProgramConfig.ConfigRootDir, "*.sync")
             Dim Name As String = ConfigFile.Substring(ConfigFile.LastIndexOf(ConfigOptions.DirSep) + 1)
             Name = Name.Substring(0, Name.LastIndexOf("."))
@@ -376,6 +382,16 @@ Public Class MainForm
             NewItem.Group = Main_Actions.Groups(1)
             NewItem.ImageIndex = CInt(Profiles(Name).GetSetting(ConfigOptions.Method))
             NewItem.SubItems.Add(GetMethodName(Name)).ForeColor = Drawing.Color.DarkGray
+
+            Dim GroupName As String = Profiles(Name).GetSetting(ConfigOptions.Group)
+            If GroupName IsNot Nothing AndAlso GroupName <> "" Then
+                If Not Groups.Contains(GroupName) Then
+                    Groups.Add(GroupName)
+                    Main_Actions.Groups.Add(New ListViewGroup(GroupName, GroupName))
+                End If
+
+                NewItem.Group = Main_Actions.Groups.Item(GroupName)
+            End If
         Next
     End Sub
 

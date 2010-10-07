@@ -18,12 +18,13 @@ Public Module ConfigOptions
     Public Const RightSubFolders As String = "Destination folders to be synchronized"
     Public Const ComputeHash As String = "Compute Hash"
     Public Const StrictDateComparison As String = "Strict date comparison"
-    Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
+    Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation" 'TODO
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
     Public Const LastRun As String = "Last run"
     Public Const CatchUpSync As String = "Catch up if missed" 'TODO
+    Public Const Group As String = "Group" 'TODO
 
     Public Const Scheduling As String = "Scheduling"
     Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute
