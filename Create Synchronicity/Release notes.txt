@@ -24,6 +24,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 07, 2010 - NEW: !Localized installer, in most of the supported languages.
 Oct. 05, 2010 - NEW: !Hebrew translation, by Gush Katif Laad. תודה!
 Oct. 05, 2010 - FIX: Minor display glitch in settings screen.
 Sep. 21, 2010 - NEW: Pressing F1 opens the manual.
