@@ -46,10 +46,19 @@ Var StartMenuFolder
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_UNPAGE_FINISH
 
+!insertmacro MUI_LANGUAGE "Czech"
+!insertmacro MUI_LANGUAGE "Dutch"
 !insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "Hebrew"
+!insertmacro MUI_LANGUAGE "Indonesian"
+!insertmacro MUI_LANGUAGE "Italian"
+!insertmacro MUI_LANGUAGE "Portuguese"
+!insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "Swedish"
 
-!macro ExitIfRunning UN
-Function ${UN}.onInit
+!macro ExitIfRunning
 	Beginning:
 		FindProcDLL::FindProc "Create Synchronicity.exe"
 		IntCmp $R0 0 OkCase
@@ -63,11 +72,17 @@ Function ${UN}.onInit
 		Goto Beginning
 	
 	OkCase:
-FunctionEnd
 !macroend
 
-!insertmacro ExitIfRunning ""
-!insertmacro ExitIfRunning "un"
+Function .onInit
+	!insertmacro MUI_LANGDLL_DISPLAY
+	!insertmacro ExitIfRunning
+FunctionEnd
+
+Function un.onInit
+	!insertmacro MUI_UNGETLANGUAGE
+	!insertmacro ExitIfRunning
+FunctionEnd
 
 Section "Installer Section" InstallSection
 	SetOutPath $INSTDIR
@@ -94,6 +109,7 @@ Section "Uninstall"
 	Delete "$INSTDIR\Release notes.txt"
 	Delete "$INSTDIR\COPYING"
 	Delete "$INSTDIR\Uninstall.exe"
+	Delete "$INSTDIR\app.log"
 
 	!insertmacro MUI_STARTMENU_GETFOLDER AppStartMenu $StartMenuFolder
 
