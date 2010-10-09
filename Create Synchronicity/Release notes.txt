@@ -25,7 +25,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 Oct. 09, 2010 - NEW: Pop-up list to suggest path in settings dialog.
-Oct. 09, 2010 - NEW: Preserve the "name"\path\ format when using the "browse" dialog. (#3081522)
+Oct. 09, 2010 - UPD: Preserve the "name"\path\ format when using the "browse" dialog. (#3081522)
 Oct. 07, 2010 - NEW: !Localized installer, in most of the supported languages.
 Oct. 05, 2010 - NEW: !Hebrew translation, by Gush Katif Laad. תודה!
 Oct. 05, 2010 - FIX: Minor display glitch in settings screen.
