@@ -31,7 +31,7 @@ Public Class SettingsForm
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
 
-        'TODO: Me.Show() could be useful here to avoid delays.
+        'TODO: Me.Show() could be useful here to avoid delays -> Looks bad
         Settings_Update(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
@@ -63,12 +63,24 @@ Public Class SettingsForm
 
     Private Sub Settings_BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseLButton.Click
         Settings_FolderBrowser.Description = Translation.Translate("\CHOOSE_SOURCE")
-        If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_FromTextBox.Text = Settings_FolderBrowser.SelectedPath
+        If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If Settings_FromTextBox.Text.StartsWith("""") Then
+                Settings_FromTextBox.Text = ProfileHandler.TranslatePath_Inverse(Settings_FolderBrowser.SelectedPath)
+            Else
+                Settings_FromTextBox.Text = Settings_FolderBrowser.SelectedPath
+            End If
+        End If
     End Sub
 
     Private Sub Settings_BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseRButton.Click
         Settings_FolderBrowser.Description = Translation.Translate("\CHOOSE_DEST")
-        If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
+        If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If Settings_ToTextBox.Text.StartsWith("""") Then
+                Settings_ToTextBox.Text = ProfileHandler.TranslatePath_Inverse(Settings_FolderBrowser.SelectedPath)
+            Else
+                Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
+            End If
+        End If
     End Sub
 
     Private Sub Settings_SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SwapButton.Click

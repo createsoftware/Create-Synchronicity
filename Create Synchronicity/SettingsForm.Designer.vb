@@ -103,6 +103,8 @@ Partial Class SettingsForm
         '
         Me.Settings_FromTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_FromTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.Settings_FromTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories
         Me.Settings_FromTextBox.Location = New System.Drawing.Point(62, 19)
         Me.Settings_FromTextBox.Name = "Settings_FromTextBox"
         Me.Settings_FromTextBox.Size = New System.Drawing.Size(509, 21)
@@ -161,6 +163,8 @@ Partial Class SettingsForm
         '
         Me.Settings_ToTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Settings_ToTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest
+        Me.Settings_ToTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories
         Me.Settings_ToTextBox.Location = New System.Drawing.Point(62, 45)
         Me.Settings_ToTextBox.Name = "Settings_ToTextBox"
         Me.Settings_ToTextBox.Size = New System.Drawing.Size(509, 21)

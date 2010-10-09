@@ -393,9 +393,23 @@ Class ProfileHandler
     End Sub
 
     Public Shared Function TranslatePath(ByVal Path As String) As String
-        Return TranslatePath_Unsafe(Path).TrimEnd(ConfigOptions.DirSep)
+        Return TranslatePath_Unsafe(Path).TrimEnd(ConfigOptions.DirSep) 'Careful with Linux root
         'This part is just for the extra safety, since a fix is also included in TranslatePath_Unsafe.
         'Prevents a very annoying bug, where the presence of a slash at the end of the base directory would confuse the engine (#3052979)
+    End Function
+
+    Public Shared Function TranslatePath_Inverse(ByVal Path As String) As String
+#If Not LINUX Then
+        If Text.RegularExpressions.Regex.IsMatch(Path, "^(?<driveletter>[A-Z]\:)(\\(?<relativepath>.+))?$") Then
+            Dim Label As String = ""
+            For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
+                If Drive.Name(0) = Path(0) Then Label = Drive.VolumeLabel
+            Next
+            If Label <> "" Then Return String.Format("""{0}""\{1}", Label, Path.Substring(2).Trim(ConfigOptions.DirSep)).TrimEnd(ConfigOptions.DirSep)
+        End If
+#End If
+
+        Return Path
     End Function
 
     Private Shared Function TranslatePath_Unsafe(ByVal Path As String) As String
@@ -410,8 +424,9 @@ Class ProfileHandler
 
             If Path.StartsWith("""") And Not Label = "" Then
                 For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
-                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep)).TrimEnd(ConfigOptions.DirSep) 'Bug #3052979
+                    'The drive's name ends with a "\". If RelativePath = "", then TrimEnd on the RelativePath won't do anything.
                     'This is the line why this function is called unsafe, but it's been made safe anyway: dirty code that get fixed later on crosses me. The point is that a source/destination path should *never* end with a DirSep, otherwise the system gets confused as to what is a relative path and what is the base path.
+                    If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then Return (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep)).TrimEnd(ConfigOptions.DirSep) 'Bug #3052979
                 Next
 #If 0 Then
             'TODO: USBIDs
