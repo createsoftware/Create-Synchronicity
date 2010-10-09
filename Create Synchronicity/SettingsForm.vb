@@ -62,23 +62,23 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseLButton.Click
-        Settings_FolderBrowser.Description = Translation.Translate("\CHOOSE_SOURCE")
-        If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then
-            If Settings_FromTextBox.Text.StartsWith("""") Then
-                Settings_FromTextBox.Text = ProfileHandler.TranslatePath_Inverse(Settings_FolderBrowser.SelectedPath)
-            Else
-                Settings_FromTextBox.Text = Settings_FolderBrowser.SelectedPath
-            End If
-        End If
+        BrowseTo(Translation.Translate("\CHOOSE_SOURCE"), Settings_FromTextBox)
     End Sub
 
     Private Sub Settings_BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseRButton.Click
-        Settings_FolderBrowser.Description = Translation.Translate("\CHOOSE_DEST")
+        BrowseTo(Translation.Translate("\CHOOSE_DEST"), Settings_ToTextBox)
+    End Sub
+
+    Private Sub BrowseTo(ByVal DialogMessage As String, ByRef TextboxField As TextBox)
+        Settings_FolderBrowser.Description = DialogMessage
+        If Not TextboxField.Text = "" AndAlso IO.Directory.Exists(ProfileHandler.TranslatePath(TextboxField.Text)) Then
+            Settings_FolderBrowser.SelectedPath = ProfileHandler.TranslatePath(TextboxField.Text)
+        End If
         If Settings_FolderBrowser.ShowDialog = Windows.Forms.DialogResult.OK Then
-            If Settings_ToTextBox.Text.StartsWith("""") Then
-                Settings_ToTextBox.Text = ProfileHandler.TranslatePath_Inverse(Settings_FolderBrowser.SelectedPath)
+            If TextboxField.Text.StartsWith("""") Then
+                TextboxField.Text = ProfileHandler.TranslatePath_Inverse(Settings_FolderBrowser.SelectedPath)
             Else
-                Settings_ToTextBox.Text = Settings_FolderBrowser.SelectedPath
+                TextboxField.Text = Settings_FolderBrowser.SelectedPath
             End If
         End If
     End Sub
