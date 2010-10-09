@@ -400,7 +400,7 @@ Class ProfileHandler
 
     Public Shared Function TranslatePath_Inverse(ByVal Path As String) As String
 #If Not LINUX Then
-        If Text.RegularExpressions.Regex.IsMatch(Path, "^(?<driveletter>[A-Z]\:)(\\(?<relativepath>.+))?$") Then
+        If Text.RegularExpressions.Regex.IsMatch(Path, "^(?<driveletter>[A-Z]\:)(\\(?<relativepath>.*))?$") Then
             Dim Label As String = ""
             For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
                 If Drive.Name(0) = Path(0) Then Label = Drive.VolumeLabel
