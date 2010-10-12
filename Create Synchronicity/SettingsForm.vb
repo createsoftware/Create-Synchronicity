@@ -52,6 +52,18 @@ Public Class SettingsForm
         Settings_RightReloadButton.Visible = True
     End Sub
 
+    Private Sub Settings_From_To_TextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged, Settings_ToTextBox.TextChanged
+        BlinkIfInvalidPath(CType(sender, TextBox))
+    End Sub
+
+    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox)
+        If PathBox.Text = "" Or IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
+            PathBox.BackColor = Drawing.Color.White
+        Else
+            PathBox.BackColor = Drawing.Color.LightPink
+        End If
+    End Sub
+
     Private Sub Settings_SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SaveButton.Click
         Settings_Update(False)
         If Handler.ValidateConfigFile() AndAlso Handler.SaveConfigFile() Then Me.Close()
@@ -468,11 +480,12 @@ Public Class SettingsForm
     End Sub
 
     Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
-        Dim ListString As String = ""
+        Dim ListString As New System.Text.StringBuilder
         For Each Node As String In Table.Keys
-            ListString &= Node & ";"
+            ListString.Append(Node).Append(";")
         Next
-        Return ListString
+        Return ListString.ToString
     End Function
 #End Region
+
 End Class
