@@ -433,31 +433,6 @@ Class ProfileHandler
                         Exit For
                     End If
                 Next
-#If 0 Then
-            'TODO: USBIDs
-            ElseIf Path.StartsWith(":") Then
-
-                Dim USBClass As New System.Management.ManagementClass("Win32_USBHub")
-
-                For Each USB As System.Management.ManagementObject In USBClass.GetInstances()
-                    Dim A As String
-                    A = ("Description = " & USB.Properties("Name").ToString())
-                    A = ("Device ID = " & USB.Properties("deviceid").ToString())
-                Next USB
-
-                For Each Drive As System.Management.ManagementObject In New System.Management.ManagementObjectSearcher("select * from Win32_DiskDrive").Get()
-                    For Each Partition As System.Management.ManagementObject In (New System.Management.ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskDrive.DeviceID='" & Drive("DeviceID").ToString & "'} WHERE AssocClass = Win32_DiskDriveToDiskPartition")).Get()
-                        ShowMsg("Partition=" & Partition("Name").ToString)
-                        For Each Disk As System.Management.ManagementObject In (New System.Management.ManagementObjectSearcher("ASSOCIATORS OF {Win32_DiskPartition.DeviceID='" & Partition("DeviceID").ToString & "'} WHERE AssocClass = Win32_LogicalDiskToPartition")).Get()
-                            ShowMsg("Disk=" & Disk("Name").ToString)
-                        Next
-                    Next
-
-                    For Each Prop In (New System.Management.ManagementObject("Win32_PhysicalMedia.Tag='" & Drive("DeviceID").ToString & "'")).Properties
-                        ShowMsg(Prop.Name & " : " & Prop.Value)
-                    Next
-                Next
-#End If
             End If
         End If
 #End If
