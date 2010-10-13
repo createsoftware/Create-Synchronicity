@@ -480,12 +480,11 @@ Public Class SettingsForm
     End Sub
 
     Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
-        Dim ListString As New System.Text.StringBuilder
+        Dim ListString As New System.Text.StringBuilder 'TODO: Check (String was replaced by StringBuilder)
         For Each Node As String In Table.Keys
             ListString.Append(Node).Append(";")
         Next
         Return ListString.ToString
     End Function
 #End Region
-
 End Class

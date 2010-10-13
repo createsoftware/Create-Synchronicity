@@ -193,7 +193,7 @@ Public Class ConfigHandler
     End Function
 
     Public Shared Sub LogAppEvent(ByVal EventData As String)
-#If DEBUG Then
+#If DEBUG Or SERVER Then
         Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
         Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
         AppLog.WriteLine(String.Format("[{0}] {1}", Date.Now.ToString(), EventData))
@@ -564,6 +564,10 @@ Public Module Updates
 End Module
 
 Public Module Interaction
+#If SERVER Then
+    Public ForceQuiet As Boolean = False
+#End If
+
     Public StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
     Public SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
@@ -572,8 +576,19 @@ Public Module Interaction
         StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("Create_Synchronicity.create-synchronicity-icon-16x16.ico"))
     End Sub
 
+    Private Function RemoveNewLines(ByVal Msg As String) As String
+        Return Msg.Replace(Environment.NewLine, " // ")
+    End Function
+
     Public Sub ShowBallonTip(ByVal Msg As String)
         If Not StatusIcon.Visible Then Exit Sub
+
+#If SERVER Then
+        If ForceQuiet Then
+            ConfigHandler.LogAppEvent(String.Format("Server build: Balloon tip discarded. The message was ""{0}"".", RemoveNewLines(Msg)))
+            Exit Sub
+        End If
+#End If
 
         StatusIcon.BalloonTipText = Msg
         StatusIcon.ShowBalloonTip(2000)
@@ -603,11 +618,14 @@ Public Module Interaction
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
-        'If AsAService Then
-        '    Return MessageBox.Show(Text, Caption, Buttons, Icon, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification)
-        'Else
+#If SERVER Then
+        If ForceQuiet Then
+            ConfigHandler.LogAppEvent(String.Format("Server build: Message Box discarded with default answer. The message was ""{0}"", and the caption was ""{1}"".", RemoveNewLines(Text), RemoveNewLines(Caption)))
+            Return DialogResult.OK
+        End If
+#End If
+
         Return MessageBox.Show(Text, Caption, Buttons, Icon)
-        'End If
     End Function
 End Module
 

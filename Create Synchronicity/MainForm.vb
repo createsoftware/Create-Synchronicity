@@ -7,12 +7,12 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class MainForm
-    Dim Quiet As Boolean = False
-    Dim TasksToRun As String = ""
-    Dim ShowPreview As Boolean = False
-    Dim RunAsScheduler As Boolean = False 'TODO: Enum for RunAs: Scheduler, Enqueuing, Normal
+    Private Quiet As Boolean = False
+    Private TasksToRun As String = ""
+    Private ShowPreview As Boolean = False
+    Private RunAsScheduler As Boolean = False 'TODO: Enum for RunAs: Scheduler, Enqueuing, Normal
 
-    Dim Profiles As Dictionary(Of String, ProfileHandler)
+    Private Profiles As Dictionary(Of String, ProfileHandler)
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
@@ -89,6 +89,10 @@ Public Class MainForm
                 TasksToRun = ArgsList(RunArgIndex + 1)
             End If
         End If
+
+#If SERVER Then
+        Interaction.ForceQuiet = Quiet
+#End If
 
         If TasksToRun <> "" Then
             Main_HideForm()
