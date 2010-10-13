@@ -24,6 +24,8 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 10, 2010 - NEW: "/help" command-line switch.
+Oct. 10, 2010 - NEW: Special server builds.
 Oct. 09, 2010 - NEW: Pop-up list to suggest path in settings dialog.
 Oct. 09, 2010 - UPD: Preserve the "name"\path\ format when using the "browse" dialog. (#3081522)
 Oct. 07, 2010 - NEW: !Localized installer, in most of the supported languages.
