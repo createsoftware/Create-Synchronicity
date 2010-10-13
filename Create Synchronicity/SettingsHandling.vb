@@ -585,7 +585,7 @@ Public Module Interaction
 
 #If SERVER Then
         If ForceQuiet Then
-            ConfigHandler.LogAppEvent(String.Format("Server build: Balloon tip discarded. The message was ""{0}"".", RemoveNewLines(Msg)))
+            ConfigHandler.LogAppEvent(String.Format("Interaction: Balloon tip discarded. The message was ""{0}"".", RemoveNewLines(Msg)))
             Exit Sub
         End If
 #End If
@@ -620,7 +620,7 @@ Public Module Interaction
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
 #If SERVER Then
         If ForceQuiet Then
-            ConfigHandler.LogAppEvent(String.Format("Server build: Message Box discarded with default answer. The message was ""{0}"", and the caption was ""{1}"".", RemoveNewLines(Text), RemoveNewLines(Caption)))
+            ConfigHandler.LogAppEvent(String.Format("Interaction: Message Box discarded with default answer. The message was ""{0}"", and the caption was ""{1}"".", RemoveNewLines(Text), RemoveNewLines(Caption)))
             Return DialogResult.OK
         End If
 #End If
