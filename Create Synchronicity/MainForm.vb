@@ -18,32 +18,20 @@ Public Class MainForm
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
 #Region " Events "
-    Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-        'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
-        If e.KeyCode = Keys.F1 Then
-            Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
-        ElseIf e.Control Then
-            Select Case e.KeyCode
-                Case Keys.N
-                    Main_Actions.LabelEdit = True
-                    Main_Actions.Items(0).BeginEdit()
-                Case Keys.O
-                    Diagnostics.Process.Start(ProgramConfig.ConfigRootDir)
-            End Select
-        End If
-    End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
         ConfigHandler.LogAppEvent("Program started")
-
-        IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
-        IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
-        IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
-
 #If DEBUG Then
         Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
+
+        ''''''''''''''''''''''''''''''''''''''
+        ' First-run checks & initialisations '
+        ''''''''''''''''''''''''''''''''''''''
+        IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
 
         ProgramConfig.LoadProgramSettings()
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
@@ -62,22 +50,9 @@ Public Class MainForm
             ProgramConfig.SaveProgramSettings()
         End If
 
-        If ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
-            Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
-            UpdateThread.Start(True)
-        End If
-
-        Translation.TranslateControl(Me)
-        Translation.TranslateControl(Me.Main_ActionsMenu)
-        Translation.TranslateControl(Me.StatusIconMenu)
-
-        Dim PreviousWidth As Integer = Main_AboutLinkLabel.Width
-        Main_AboutLinkLabel.AutoSize = True
-        Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
-
-        Main_ReloadConfigs()
-        Main_TryUnregStartAtBoot()
-
+        ''''''''''''''''''''''''''''''''
+        ' Read command line parameters '
+        ''''''''''''''''''''''''''''''''
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
         If ArgsList.Count > 1 Then
@@ -91,8 +66,35 @@ Public Class MainForm
         End If
 
 #If SERVER Then
+        ' Tell the interaction module to keep quiet.
         Interaction.ForceQuiet = Quiet
 #End If
+
+        ''''''''''''''''''''
+        ' Look for updates '
+        ''''''''''''''''''''
+        If ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
+            Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
+            UpdateThread.Start(True)
+        End If
+
+        '''''''''''''''''''''
+        ' Load translations '
+        '''''''''''''''''''''
+        Translation.TranslateControl(Me)
+        Translation.TranslateControl(Me.Main_ActionsMenu)
+        Translation.TranslateControl(Me.StatusIconMenu)
+
+        'Position the "About" label correctly
+        Dim PreviousWidth As Integer = Main_AboutLinkLabel.Width
+        Main_AboutLinkLabel.AutoSize = True
+        Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
+
+        '''''''''''''''''''''''''''''''''''
+        ' Load profiles and start working '
+        '''''''''''''''''''''''''''''''''''
+        Main_ReloadConfigs()
+        Main_TryUnregStartAtBoot()
 
         If TasksToRun <> "" Then
             Main_HideForm()
@@ -122,6 +124,21 @@ Public Class MainForm
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         StatusIcon.Visible = False
         ConfigHandler.LogAppEvent("Program exited")
+    End Sub
+
+    Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
+        If e.KeyCode = Keys.F1 Then
+            Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+        ElseIf e.Control Then
+            Select Case e.KeyCode
+                Case Keys.N
+                    Main_Actions.LabelEdit = True
+                    Main_Actions.Items(0).BeginEdit()
+                Case Keys.O
+                    Diagnostics.Process.Start(ProgramConfig.ConfigRootDir)
+            End Select
+        End If
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
@@ -358,6 +375,18 @@ Public Class MainForm
         'Check this comparison function (ordering and first item) -- Done ; it's cool.
         ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
     End Sub
+
+    Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.Click
+        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
+    End Sub
+
+    Private Sub Main_Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter
+        Main_Donate.BackColor = Drawing.Color.LightGray
+    End Sub
+
+    Private Sub Main_Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave
+        Main_Donate.BackColor = Drawing.Color.White
+    End Sub
 #End Region
 
 #Region " Functions and Routines "
@@ -495,15 +524,4 @@ Public Class MainForm
     End Function
 #End Region
 
-    Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.Click
-        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
-    End Sub
-
-    Private Sub Main_Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter
-        Main_Donate.BackColor = Drawing.Color.LightGray
-    End Sub
-
-    Private Sub Main_Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave
-        Main_Donate.BackColor = Drawing.Color.White
-    End Sub
 End Class
