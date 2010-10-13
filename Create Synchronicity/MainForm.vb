@@ -7,11 +7,6 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class MainForm
-    Private Quiet As Boolean = False
-    Private TasksToRun As String = ""
-    Private ShowPreview As Boolean = False
-    Private RunAsScheduler As Boolean = False 'TODO: Enum for RunAs: Scheduler, Enqueuing, Normal
-
     Private Profiles As Dictionary(Of String, ProfileHandler)
 
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
@@ -56,19 +51,14 @@ Public Class MainForm
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
         If ArgsList.Count > 1 Then
-            Quiet = ArgsList.Contains("/quiet")
-            ShowPreview = ArgsList.Contains("/preview")
+            CommandLine.Quiet = ArgsList.Contains("/quiet")
+            CommandLine.ShowPreview = ArgsList.Contains("/preview")
 
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
-                TasksToRun = ArgsList(RunArgIndex + 1)
+                CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
             End If
         End If
-
-#If SERVER Then
-        ' Tell the interaction module to keep quiet.
-        Interaction.ForceQuiet = Quiet
-#End If
 
         ''''''''''''''''''''
         ' Look for updates '
@@ -96,7 +86,7 @@ Public Class MainForm
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
 
-        If TasksToRun <> "" Then
+        If CommandLine.TasksToRun <> "" Then
             Main_HideForm()
             ApplicationTimer.Start()
         ElseIf ArgsList.Contains("/scheduler") Then
@@ -116,7 +106,7 @@ Public Class MainForm
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.StatusIcon.Visible = True
 
-            RunAsScheduler = True
+            CommandLine.RunAsScheduler = True
             ApplicationTimer.Start()
         End If
     End Sub
@@ -275,12 +265,12 @@ Public Class MainForm
 
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
-            If RunAsScheduler Then
+            If CommandLine.RunAsScheduler Then
                 ConfigHandler.LogAppEvent("Worker thread: Running as scheduler")
                 ReloadProfilesScheduler(ProfilesToRun)
             Else 'A list of profiles has been provided.
                 ConfigHandler.LogAppEvent("Worker thread: Running as batch sync engine")
-                For Each Profile As String In TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
+                For Each Profile As String In CommandLine.TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
                         If Profiles(Profile).ValidateConfigFile() Then
                             ConfigHandler.LogAppEvent("Worker thread: Registered profile for immediate run: " & Profile)
@@ -305,7 +295,7 @@ Public Class MainForm
             Exit Sub
         End If
 
-        If RunAsScheduler Then ReloadProfilesScheduler(ProfilesToRun)
+        If CommandLine.RunAsScheduler Then ReloadProfilesScheduler(ProfilesToRun)
 
         Dim NextRun As Date = ProfilesToRun(0).Key
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesToRun(0).Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
@@ -316,11 +306,11 @@ Public Class MainForm
             ConfigHandler.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
             ProfilesToRun.RemoveAt(0)
 
-            If RunAsScheduler Then
+            If CommandLine.RunAsScheduler Then
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, False, True)
                 ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
             Else
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, ShowPreview, False, Quiet)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, CommandLine.ShowPreview, False, CommandLine.Quiet)
             End If
         End If
     End Sub

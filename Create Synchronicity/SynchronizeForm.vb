@@ -18,7 +18,7 @@ Public Class SynchronizeForm
     Dim IncludedPatterns As New List(Of FileNamePattern)
     Dim ExcludedPatterns As New List(Of FileNamePattern)
 
-    Dim Quiet As Boolean
+    Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim SingleTask As Boolean
     Dim [STOP] As Boolean
 
