@@ -17,6 +17,7 @@ Public Class MainForm
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
         ConfigHandler.LogAppEvent("Program started")
+        ConfigHandler.LogAppEvent(String.Format("Profiles will be loaded from {0}.", ProgramConfig.ConfigRootDir))
 #If DEBUG Then
         Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
@@ -51,6 +52,7 @@ Public Class MainForm
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
 
         If ArgsList.Count > 1 Then
+            CommandLine.Help = ArgsList.Contains("/help")
             CommandLine.Quiet = ArgsList.Contains("/quiet")
             CommandLine.ShowPreview = ArgsList.Contains("/preview")
 
@@ -58,6 +60,15 @@ Public Class MainForm
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
                 CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
             End If
+        End If
+
+        ''''''''''''''''''''''''''
+        ' Display help if needed '
+        ''''''''''''''''''''''''''
+        If CommandLine.Help Then
+            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}Profiles are loaded from ""{2}"".{0}License information: See ""Release notes.txt"".{0}Help: See http://synchronicity.sourceforge.net/help.html.{0}You can help this software! See http://synchronicity.sourceforge.net/contribute.html.{0}Happy syncing!", Environment.NewLine & Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir), "Help!")
+            Application.Exit()
+            Exit Sub
         End If
 
         ''''''''''''''''''''

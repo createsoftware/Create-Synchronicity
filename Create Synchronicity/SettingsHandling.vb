@@ -564,6 +564,7 @@ Public Module Updates
 End Module
 
 Structure CommandLine
+    Shared Help As Boolean = False
     Shared Quiet As Boolean = False
     Shared TasksToRun As String = ""
     Shared ShowPreview As Boolean = False
