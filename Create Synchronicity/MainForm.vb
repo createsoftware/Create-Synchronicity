@@ -13,7 +13,6 @@ Public Class MainForm
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
 #Region " Events "
-
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
         ConfigHandler.LogAppEvent("Program started")
