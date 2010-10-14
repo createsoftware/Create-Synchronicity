@@ -54,6 +54,8 @@ Public Class MainForm
             CommandLine.Help = ArgsList.Contains("/help")
             CommandLine.Quiet = ArgsList.Contains("/quiet")
             CommandLine.ShowPreview = ArgsList.Contains("/preview")
+            CommandLine.Silent = ArgsList.Contains("/silent")
+            CommandLine.Log = ArgsList.Contains("/log")
 
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
@@ -114,7 +116,7 @@ Public Class MainForm
 #End If
             Interaction.LoadStatusIcon()
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
-            Interaction.StatusIcon.Visible = True
+            Interaction.ShowStatusIcon()
 
             CommandLine.RunAsScheduler = True
             ApplicationTimer.Start()
@@ -122,7 +124,7 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        StatusIcon.Visible = False
+        Interaction.HideStatusIcon()
         ConfigHandler.LogAppEvent("Program exited")
     End Sub
 
@@ -299,7 +301,7 @@ Public Class MainForm
 
         If ProgramConfig.CanGoOn = False Then Exit Sub 'Don't start next sync yet.
         If ProfilesToRun.Count = 0 Then
-            Interaction.StatusIcon.Visible = False
+            Interaction.HideStatusIcon()
             ConfigHandler.LogAppEvent("Worker thread: Synced all profiles.")
             Application.Exit()
             Exit Sub

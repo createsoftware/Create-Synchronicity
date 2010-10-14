@@ -117,7 +117,7 @@ Public Class SynchronizeForm
             Interaction.LoadStatusIcon()
             Interaction.StatusIcon.Text = "\RUNNING"
 
-            Interaction.StatusIcon.Visible = True
+            Interaction.ShowStatusIcon()
             Interaction.ShowBallonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
         ElseIf Not CalledShowModal Then
             Me.Visible = True
@@ -246,13 +246,13 @@ Public Class SynchronizeForm
         Select Case Id
             Case 1
                 Step1StatusLabel.Text = Text
-                StatusIcon.Text = String.Format(Translation.Translate("\STEP_1_STATUS"), StatusText)
+                Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_1_STATUS"), StatusText)
             Case 2
                 Step2StatusLabel.Text = Text
-                StatusIcon.Text = String.Format(Translation.Translate("\STEP_2_STATUS"), Step2ProgressBar.Value, Step2ProgressBar.Maximum, StatusText)
+                Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_2_STATUS"), Step2ProgressBar.Value, Step2ProgressBar.Maximum, StatusText)
             Case 3
                 Step3StatusLabel.Text = Text
-                StatusIcon.Text = String.Format(Translation.Translate("\STEP_3_STATUS"), Step3ProgressBar.Value, Step3ProgressBar.Maximum, StatusText)
+                Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_3_STATUS"), Step3ProgressBar.Value, Step3ProgressBar.Maximum, StatusText)
         End Select
     End Sub
 

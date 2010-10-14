@@ -61,6 +61,11 @@ Public Class ConfigHandler
     Public LanguageRootDir As String = Application.StartupPath & "\languages"
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode, or when queuing multiple profiles).
 
+#If DEBUG Then
+    Const Debug As Boolean = True
+#Else
+    Const Debug As Boolean = False
+#End If
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
@@ -193,12 +198,12 @@ Public Class ConfigHandler
     End Function
 
     Public Shared Sub LogAppEvent(ByVal EventData As String)
-#If DEBUG Or SERVER Then
-        Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
-        Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
-        AppLog.WriteLine(String.Format("[{0}] {1}", Date.Now.ToString(), EventData))
-        AppLog.Close()
-#End If
+        If Debug Or CommandLine.Silent Or CommandLine.Log Then
+            Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
+            Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
+            AppLog.WriteLine(String.Format("[{0}] {1}", Date.Now.ToString(), EventData))
+            AppLog.Close()
+        End If
     End Sub
 
     Public Shared Sub RegisterBoot()
@@ -569,11 +574,13 @@ Structure CommandLine
     Shared TasksToRun As String = ""
     Shared ShowPreview As Boolean = False
     Shared RunAsScheduler As Boolean = False 'TODO: Enum for RunAs: Scheduler, Enqueuing, Normal
+    Shared Silent As Boolean = False
+    Shared Log As Boolean = False
 End Structure
 
 Public Module Interaction
     Public StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
-    Public SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
+    Private SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
     Public Sub LoadStatusIcon()
         Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
@@ -584,15 +591,19 @@ Public Module Interaction
         Return Msg.Replace(Environment.NewLine, " // ")
     End Function
 
-    Public Sub ShowBallonTip(ByVal Msg As String)
-        If Not StatusIcon.Visible Then Exit Sub
+    Public Sub ShowStatusIcon()
+        StatusIcon.Visible = Not CommandLine.Silent
+    End Sub
 
-#If SERVER Then
-        If CommandLine.Quiet Then
+    Public Sub HideStatusIcon()
+        StatusIcon.Visible = False
+    End Sub
+
+    Public Sub ShowBallonTip(ByVal Msg As String)
+        If CommandLine.Silent Or Not StatusIcon.Visible Then
             ConfigHandler.LogAppEvent(String.Format("Interaction: Balloon tip discarded. The message was ""{0}"".", RemoveNewLines(Msg)))
             Exit Sub
         End If
-#End If
 
         StatusIcon.BalloonTipText = Msg
         StatusIcon.ShowBalloonTip(2000)
@@ -622,12 +633,10 @@ Public Module Interaction
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
-#If SERVER Then
-        If CommandLine.Quiet Then
+        If CommandLine.Silent Then
             ConfigHandler.LogAppEvent(String.Format("Interaction: Message Box discarded with default answer. The message was ""{0}"", and the caption was ""{1}"".", RemoveNewLines(Text), RemoveNewLines(Caption)))
             Return DialogResult.OK
         End If
-#End If
 
         Return MessageBox.Show(Text, Caption, Buttons, Icon)
     End Function
