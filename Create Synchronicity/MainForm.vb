@@ -57,6 +57,8 @@ Public Class MainForm
             CommandLine.Silent = ArgsList.Contains("/silent")
             CommandLine.Log = ArgsList.Contains("/log")
 
+            CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
+
             Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
             If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
                 CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
