@@ -112,7 +112,7 @@ Mar.  6, 2010 - NEW: !Full scheduling support, including fully customizable sche
 Mar.  5, 2010 - NEW: !Initial, command-line only support for task scheduling.
 Mar.  3, 2010 - FIX: When running from a write-protected directory, display a warning if configuration files were found. Fixes a privileges-related bug on Windows Vista.
 Mar.  1, 2010 - NEW: !Native support for relative paths, such as "..\..\Documents"
-Feb. 28, 2010 - NEW: !Native support for UCN paths (paths to network drives such as "\\dlink-6A4EA4\Documents").
+Feb. 28, 2010 - NEW: !Native support for UNC paths (paths to network drives such as "\\dlink-6A4EA4\Documents").
 Feb. 26, 2010 - NEW: !German translation by Florian Haag. Thanks!
 Feb. 26, 2010 - NEW: !When running from a write-protected directory, store settings in the ApplicationData folder.
 Feb. 26, 2010 - NEW: New "swap" button, to swap left and right folders.
