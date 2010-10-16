@@ -149,7 +149,7 @@ RENAME=Byt namn
 LEFT=Vänster
 RIGHT=Höger
 TREEVIEW_TIPS=Tips för att markera mappar: Vänsterklick = markera/avmarkera mapp och undermappar. Högerklick = avancerade valmöjligheter
-PATH_TIPS=Stödda format;C:\Dokument\n"MIN USB"\Dokument\n\\192.168.0.20\Nätverksdisk\Documents\n..\..\Dokument\n%UserProfile%\Dokument
+PATH_TIPS=Stödda format;C:\Dokument\n"MIN USB"\Dokument\n..\..\Dokument\n%UserProfile%\Dokument\n\\192.168.0.20\Nätverksdisk\Documents
 FILEEXT_TIPS=Stödda format;jpg;png;bmp\n"Dokument.doc"\n/Picture[0-9]+\.(jpg|raw|png)/
 TOGGLE=Avancerat: Markera/avmakera den här mappen
 RELOAD_TREES=Ladda filstruktur
