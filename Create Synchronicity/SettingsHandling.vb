@@ -314,11 +314,11 @@ Class ProfileHandler
         Else
             If WarnUnrootedPaths Then
                 If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(ConfigOptions.Source))) Then
-                    If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED"), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                    If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
 
                 If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(ConfigOptions.Destination))) Then
-                    If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED"), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                    If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
             End If
 
