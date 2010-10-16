@@ -284,7 +284,7 @@ Class ProfileHandler
         End Try
     End Function
 
-    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False) As Boolean
+    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False, Optional ByRef ReturnString As String = Nothing) As Boolean
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
@@ -309,7 +309,12 @@ Class ProfileHandler
         Next
 
         If Not IsValid Then
-            Interaction.ShowMsg(ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0)), Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Dim ErrorsList As String = ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0))
+            If ReturnString Is Nothing Then
+                Interaction.ShowMsg(ErrorsList, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Else
+                ReturnString = Translation.Translate("\INVALID_CONFIG") & Environment.NewLine & ErrorsList
+            End If
             Return False
         Else
             If WarnUnrootedPaths Then

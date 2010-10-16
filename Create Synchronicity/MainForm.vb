@@ -316,7 +316,7 @@ Public Class MainForm
         Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
         If Date.Compare(ProfilesToRun(0).Key, Date.Now) <= 0 Then
-            Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value) 'Copy. TODO: Could be removed.
+            Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value) 'Copy. TODO: Could be removed. -> Why?
             ConfigHandler.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
             ProfilesToRun.RemoveAt(0)
 

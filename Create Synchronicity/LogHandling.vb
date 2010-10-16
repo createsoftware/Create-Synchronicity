@@ -128,7 +128,7 @@ Class LogHandler
 #End If
     End Sub
 
-    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String)
+    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, Optional ByVal SpecialMsg As String = Nothing)
         If Disposed Then Exit Sub
         Disposed = True
 
@@ -168,6 +168,10 @@ Class LogHandler
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\LEFT"), Left))
                 PutHTML(LogWriter, "<br />")
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\RIGHT"), Right))
+                If SpecialMsg IsNot Nothing Then
+                    PutHTML(LogWriter, "<br />")
+                    LogWriter.WriteLine(SpecialMsg)
+                End If
                 PutHTML(LogWriter, "</p>")
 
 #If DEBUG Then

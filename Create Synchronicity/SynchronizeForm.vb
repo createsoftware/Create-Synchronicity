@@ -21,6 +21,7 @@ Public Class SynchronizeForm
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim SingleTask As Boolean
     Dim [STOP] As Boolean
+    Dim Failed As Boolean : Dim FailureMsg As String
 
     Structure Status
         Dim Junk As Boolean
@@ -69,6 +70,7 @@ Public Class SynchronizeForm
 
         ' Add any initialization after the InitializeComponent() call.
         [STOP] = False
+        Failed = False
 
         DisplayPreview = _DisplayPreview
         PreviewFinished = Not DisplayPreview
@@ -115,7 +117,7 @@ Public Class SynchronizeForm
             AddHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
             Interaction.LoadStatusIcon()
-            Interaction.StatusIcon.Text = "\RUNNING"
+            Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
             Interaction.ShowStatusIcon()
             Interaction.ShowBallonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
@@ -123,11 +125,18 @@ Public Class SynchronizeForm
             Me.Visible = True
         End If
 
-        If DisplayPreview Then
-            PreviewList.Items.Clear()
-            FirstSyncThread.Start()
+        FailureMsg = ""
+        If Handler.ValidateConfigFile(False, FailureMsg) Then
+            If DisplayPreview Then
+                PreviewList.Items.Clear()
+                FirstSyncThread.Start()
+            Else
+                FullSyncThread.Start()
+            End If
         Else
-            FullSyncThread.Start()
+            Failed = True
+            Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), FailureMsg)
+            Me.Close()
         End If
     End Sub
 
@@ -328,7 +337,7 @@ Public Class SynchronizeForm
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
                 UpdateStatuses()
-                If Log.Errors.Count > 0 Then
+                If Log.Errors.Count > 0 Or Failed Then
                     PreviewList.Visible = True
                     PreviewList.Items.Clear()
                     PreviewList.Columns.Clear()
@@ -349,7 +358,13 @@ Public Class SynchronizeForm
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
 
-                    If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName)) 'TODO: Display Report somehow
+                    If Quiet Then
+                        If Failed Then
+                            Interaction.ShowBallonTip(Handler.ProfileName & ": " & FailureMsg) 'TODO: Translate
+                        Else
+                            Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName)) 'TODO: Display Report somehow
+                        End If
+                    End If
                 Else
                     If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName))
                 End If
