@@ -311,9 +311,10 @@ Class ProfileHandler
 
         If Not IsValid Then
             Dim ErrorsList As String = ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0))
-            Interaction.ShowMsg(ProfileName & ": " & ErrorsList, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            If Not ReturnString Is Nothing Then ReturnString = String.Format("{0} - {1}{2}{3}", ProfileName, Translation.Translate("\INVALID_CONFIG"), Environment.NewLine, ErrorsList)
+            Dim ErrMsg As String = String.Format("{0} - {1}{2}{3}", ProfileName, Translation.Translate("\INVALID_CONFIG"), Environment.NewLine, ErrorsList)
 
+            If Not ReturnString Is Nothing Then ReturnString = ErrMsg
+            Interaction.ShowMsg(ErrMsg, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Return False
         Else
             If WarnUnrootedPaths Then
