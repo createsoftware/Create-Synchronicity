@@ -91,6 +91,7 @@ Public Class SynchronizeForm
         Status.FoldersToDelete = 0
         Status.TotalActionsCount = 0
         Status.CurrentStep = 1
+        Status.StartTime = Date.Now ' TODO: This call should be useless; it however seems that when the messgaebox.show method is called when a profile is not found, the syncingtimecounter starts ticking. This is not suitable, but until the cause is found there this call remains, for display consistency.
 
         Log = New LogHandler(ConfigName)
         Handler = New ProfileHandler(ConfigName)
@@ -360,7 +361,7 @@ Public Class SynchronizeForm
 
                     If Quiet Then
                         If Failed Then
-                            Interaction.ShowBallonTip(Handler.ProfileName & ": " & FailureMsg) 'TODO: Translate
+                            Interaction.ShowBallonTip(FailureMsg)
                         Else
                             Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName)) 'TODO: Display Report somehow
                         End If
