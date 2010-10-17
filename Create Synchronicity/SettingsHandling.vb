@@ -284,6 +284,7 @@ Class ProfileHandler
         End Try
     End Function
 
+    ' `ReturnString` is used to pass locally generated error messages to caller.
     Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False, Optional ByRef ReturnString As String = Nothing) As Boolean
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
@@ -310,11 +311,9 @@ Class ProfileHandler
 
         If Not IsValid Then
             Dim ErrorsList As String = ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0))
-            If ReturnString Is Nothing Then
-                Interaction.ShowMsg(ErrorsList, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Else
-                ReturnString = Translation.Translate("\INVALID_CONFIG") & Environment.NewLine & ErrorsList
-            End If
+            Interaction.ShowMsg(ProfileName & ": " & ErrorsList, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            If Not ReturnString Is Nothing Then ReturnString = String.Format("{0} - {1}{2}{3}", ProfileName, Translation.Translate("\INVALID_CONFIG"), Environment.NewLine, ErrorsList)
+
             Return False
         Else
             If WarnUnrootedPaths Then
