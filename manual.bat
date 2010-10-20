@@ -8,7 +8,7 @@
 @echo Created by:   Clément Pit--Claudel.
 @echo Web site:     http://synchronicity.sourceforge.net.
 
-Xhtml2Latex.exe "..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\pages\help.php" "..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\pages\help.tex" "http://synchronicity.sourceforge.net/" "..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\\" /addroot
+Xhtml2Latex.exe "..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\pages\help.php" "build\Create Synchronicity User Manual.tex" "http://synchronicity.sourceforge.net/" "..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\\" /addroot
 @goto end
 
 :help
