@@ -9,11 +9,13 @@
 @echo Web site:     http://synchronicity.sourceforge.net.
 
 @set WEBROOT=..\..\..\..\..\Sites Web\Sourceforge\Synchronicity
-@set WEBFOLDER=%WEBROOT%\pages
+@set WEBPAGES=%WEBROOT%\pages
 
-Xhtml2Latex.exe "%WEBFOLDER%\help.php" "%WEBFOLDER%\help.tex" "http://synchronicity.sourceforge.net/" "%WEBROOT%\\" /addroot
-copy "%WEBFOLDER%\help.tex" "build\Create Synchronicity User Manual.tex"
-copy "%WEBFOLDER%\help.pdf" "build\Create Synchronicity User Manual.pdf"
+Xhtml2Latex.exe "%WEBPAGES%\help.php" "%WEBPAGES%\help.tex" "http://synchronicity.sourceforge.net/" "%WEBROOT%\\" /addroot
+
+copy "%WEBPAGES%\help.tex" "build\Create Synchronicity User Manual.tex"
+copy "%WEBPAGES%\help.pdf" "build\Create Synchronicity User Manual.pdf"
+"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create Synchronicity User Manual.pdf" "build\Create Synchronicity User Manual.tex" "createsoftware,synchronicity@web.sourceforge.net:/home/groups/s/sy/synchronicity/htdocs/pages"
 
 @goto end
 
