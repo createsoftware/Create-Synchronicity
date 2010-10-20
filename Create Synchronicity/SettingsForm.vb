@@ -31,7 +31,7 @@ Public Class SettingsForm
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
 
-        'TODO: Me.Show() could be useful here to avoid delays -> Looks bad
+        'TODO: Find a way to avoid delays. Trees should be loaded in background (there is already a waiting indicator).
         Settings_Update(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
@@ -310,7 +310,7 @@ Public Class SettingsForm
         Static CurrentRight As String = "-1"
 
         Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
-        Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False 'Todo: DOEvents
+        Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False
         Settings_Loading.Visible = True : InhibitAutocheck = True
 
         'No changes: reload all trees if AllowFullReload is true (middle button clicked)
@@ -419,7 +419,7 @@ Public Class SettingsForm
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.TimeOffset, Settings_TimeOffset.Value, LoadToForm)
-        'TODO: Add fuzzy DST setting (?)
+        'Fuzzy DST setting is among the hidden settings, thus not added here
 
         'Note: Behaves correctly when no radio button is checked, although CopyAllFiles is unchecked.
         Dim Restrictions As String = (If(Settings_CopyAllFilesCheckBox.Checked, 0, 1) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
@@ -480,7 +480,7 @@ Public Class SettingsForm
     End Sub
 
     Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
-        Dim ListString As New System.Text.StringBuilder 'TODO: Check (String was replaced by StringBuilder)
+        Dim ListString As New System.Text.StringBuilder
         For Each Node As String In Table.Keys
             ListString.Append(Node).Append(";")
         Next

@@ -83,7 +83,8 @@ Public Class AboutForm
         Try
             Diagnostics.Process.Start(Address)
         Catch
-            'TODO: Add message
+            'Useless
+            'Interaction.ShowMsg(Translation.Translate("\FAILED_RUN"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 End Class

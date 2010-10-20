@@ -28,6 +28,7 @@ Public Class MainForm
         IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
         IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
 
+        Interaction.LoadStatusIcon()
         ProgramConfig.LoadProgramSettings()
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
             If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
@@ -101,11 +102,10 @@ Public Class MainForm
         Main_TryUnregStartAtBoot()
 
         If CommandLine.TasksToRun <> "" Then
-            Main_HideForm()
-            ApplicationTimer.Start()
-        ElseIf ArgsList.Contains("/scheduler") Then
-            Main_HideForm()
+            CommandLine.RunAs = CommandLine.RunMode.Queue 'Mostly explicative
 
+        ElseIf ArgsList.Contains("/scheduler") Then
+            CommandLine.RunAs = CommandLine.RunMode.Scheduler
 #If 0 Then
             'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
             'This code is not functional
@@ -116,11 +116,12 @@ Public Class MainForm
                 Exit Sub
             End If
 #End If
-            Interaction.LoadStatusIcon()
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.ShowStatusIcon()
+        End If
 
-            CommandLine.RunAsScheduler = True
+        If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+            Main_HideForm()
             ApplicationTimer.Start()
         End If
     End Sub
@@ -279,10 +280,10 @@ Public Class MainForm
 
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
-            If CommandLine.RunAsScheduler Then
+            If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                 ConfigHandler.LogAppEvent("Worker thread: Running as scheduler")
                 ReloadProfilesScheduler(ProfilesToRun)
-            Else 'A list of profiles has been provided.
+            Else '(CommandLine.RunAs = CommandLine.RunMode.Queue): A list of profiles has been provided.
                 ConfigHandler.LogAppEvent("Worker thread: Running as batch sync engine")
                 For Each Profile As String In CommandLine.TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                     If Profiles.ContainsKey(Profile) Then
@@ -309,7 +310,7 @@ Public Class MainForm
             Exit Sub
         End If
 
-        If CommandLine.RunAsScheduler Then ReloadProfilesScheduler(ProfilesToRun)
+        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then ReloadProfilesScheduler(ProfilesToRun)
 
         Dim NextRun As Date = ProfilesToRun(0).Key
         Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesToRun(0).Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
@@ -320,7 +321,7 @@ Public Class MainForm
             ConfigHandler.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
             ProfilesToRun.RemoveAt(0)
 
-            If CommandLine.RunAsScheduler Then
+            If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, False, True)
                 ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
             Else
@@ -345,8 +346,8 @@ Public Class MainForm
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
                 'TODO: Catching up is currently disabled (4.3)
-                'TODO: Catchup problem - any newly scheduled profile is immediately caught up.
-                'TODO: Test catchup, and show a ballon to say which profiles will be catched up.
+                'Catchup problem: any newly scheduled profile is immediately caught up.
+                'Test catchup, and show a ballon to say which profiles will be catched up.
                 '<catchup>
                 'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And DateOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
                 '    DateOfNextRun = ScheduleInfo.DATE_CATCHUP

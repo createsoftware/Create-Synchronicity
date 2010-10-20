@@ -91,7 +91,7 @@ Public Class SynchronizeForm
         Status.FoldersToDelete = 0
         Status.TotalActionsCount = 0
         Status.CurrentStep = 1
-        Status.StartTime = Date.Now ' TODO: This call should be useless; it however seems that when the messgaebox.show method is called when a profile is not found, the syncingtimecounter starts ticking. This is not suitable, but until the cause is found there this call remains, for display consistency.
+        Status.StartTime = Date.Now ' NOTE: This call should be useless; it however seems that when the messagebox.show method is called when a profile is not found, the syncingtimecounter starts ticking. This is not suitable, but until the cause is found there this call remains, for display consistency.
 
         Log = New LogHandler(ConfigName)
         Handler = New ProfileHandler(ConfigName)
@@ -605,10 +605,9 @@ Public Class SynchronizeForm
 #If DEBUG Then
             Log.LogInfo(String.Format("=> Scanning top-level folders from side {0}: Folder ""{1}""", Context.SourcePath, Folder))
 #End If
-            If IO.Directory.Exists(Context.SourcePath & Folder) Then 'TODO: Use CombinePath
+            If IO.Directory.Exists(CombinePathes(Context.SourcePath, Folder)) Then
                 If Context.Action = TypeOfAction.Create Then
-                    'TODO: Test this
-                    'BUG: Every ancestor of this folder should be added too.
+                    'FIXED-BUG: Every ancestor of this folder should be added too.
                     'Careful with this, for it's a performance issue. Ancestors should only be added /once/.
                     'How to do that? Well, if ancestors of a folder have not been scanned, it means that this folder wasn't reached by a recursive call, but by a initial call.
                     'Therefore, only the folders in the sync config file should be added.
@@ -661,7 +660,7 @@ Public Class SynchronizeForm
         SyncPreviewList(Side, -1)
     End Sub
 
-    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: TBO
+    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: TBOptimized
         'TODO: Wait, if there are multiple "\"s, we're bogus. !IMPORTANT
         Return If(Dir.EndsWith(IO.Path.DirectorySeparatorChar), Dir, Dir & IO.Path.DirectorySeparatorChar) & If(File.StartsWith(IO.Path.DirectorySeparatorChar), File.Substring(1), File)
     End Function
