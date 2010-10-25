@@ -363,11 +363,11 @@ Public Class SynchronizeForm
                         If Failed Then
                             Interaction.ShowBalloonTip(FailureMsg)
                         Else
-                            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetConfigPath(Handler.ProfileName))
+                            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                         End If
                     End If
                 Else
-                    If Quiet Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetConfigPath(Handler.ProfileName))
+                    If Quiet Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                 End If
 
                 SyncingTimeCounter.Stop()
