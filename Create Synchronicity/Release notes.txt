@@ -24,12 +24,13 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 25, 2010 - UPD: Open log when clicking related balloon messages.
 Oct. 17, 2010 - UPD: Cleaner failure on "destination not found" when synchronizing a scheduled profile.
-Oct. 14, 2010 - UPD: Replace server builds with a "/silent" switch. Implies "/quiet" and "/log".
+Oct. 14, 2010 - UPD: !Replace server builds with a "/silent" switch. Implies "/quiet" and "/log".
 Oct. 14, 2010 - NEW: "/log" command-line switch: forces the creation of an application log.
 Oct. 13, 2010 - NEW: "/help" command-line switch.
 Oct. 10, 2010 - NEW: Special server builds.
-Oct. 09, 2010 - NEW: Pop-up list to suggest path in settings dialog.
+Oct. 09, 2010 - NEW: !Pop-up list to suggest path in settings dialog.
 Oct. 09, 2010 - UPD: Preserve the "name"\path\ format when using the "browse" dialog. (#3081522)
 Oct. 07, 2010 - NEW: !Localized installer, in most of the supported languages.
 Oct. 05, 2010 - NEW: !Hebrew translation, by Gush Katif Laad. תודה!
