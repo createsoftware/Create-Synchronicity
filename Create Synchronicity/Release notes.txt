@@ -25,6 +25,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 Oct. 25, 2010 - UPD: Open log when clicking related balloon messages.
+Oct. 19, 2010 - NEW: !Full PDF manual.
 Oct. 17, 2010 - UPD: Cleaner failure on "destination not found" when synchronizing a scheduled profile.
 Oct. 14, 2010 - UPD: !Replace server builds with a "/silent" switch. Implies "/quiet" and "/log".
 Oct. 14, 2010 - NEW: "/log" command-line switch: forces the creation of an application log.
