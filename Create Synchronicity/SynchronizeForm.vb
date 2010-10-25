@@ -663,7 +663,6 @@ Public Class SynchronizeForm
     Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: TBOptimized
         ' TODO: Test this new function
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
-        'Return If(Dir.EndsWith(IO.Path.DirectorySeparatorChar), Dir, Dir & IO.Path.DirectorySeparatorChar) & If(File.StartsWith(IO.Path.DirectorySeparatorChar), File.Substring(1), File)
     End Function
 
     ' This procedure searches for changes in the source directory, in regards
