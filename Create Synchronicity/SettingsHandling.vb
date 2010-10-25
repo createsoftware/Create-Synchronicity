@@ -597,9 +597,9 @@ Public Module Interaction
     Private SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
     Public Sub LoadStatusIcon()
+        AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.StartProcess
         Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
         StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("Create_Synchronicity.create-synchronicity-icon-16x16.ico"))
-        AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.StartProcess
     End Sub
 
     Private Function RemoveNewLines(ByVal Msg As String) As String
