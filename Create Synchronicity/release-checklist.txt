@@ -22,3 +22,4 @@
 * Change default file to new Setup.exe (Create Synchronicity, v?.? - Powerful backup solution)
 * Upload website, version.txt, .htaccess, and PAD file
 * Send recap e-mail, post news on SF
+* Post twitter news
