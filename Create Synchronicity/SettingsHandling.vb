@@ -25,6 +25,7 @@ Public Module ConfigOptions
 
     'TODO: NOTE: These settings are hidden settings, not automatically appended to config files.
     Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
+    ' TODO: Automatically add when enabled.
     Public Const CatchUpSync As String = "Catch up if missed" '-> Not enabled yet.
     Public Const Group As String = "Group"
 
@@ -598,6 +599,7 @@ Public Module Interaction
     Public Sub LoadStatusIcon()
         Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
         StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("Create_Synchronicity.create-synchronicity-icon-16x16.ico"))
+        AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.StartProcess
     End Sub
 
     Private Function RemoveNewLines(ByVal Msg As String) As String
@@ -612,12 +614,13 @@ Public Module Interaction
         StatusIcon.Visible = False
     End Sub
 
-    Public Sub ShowBallonTip(ByVal Msg As String)
+    Public Sub ShowBalloonTip(ByVal Msg As String, Optional ByVal File As String = "")
         If CommandLine.Silent Or Not StatusIcon.Visible Then
             ConfigHandler.LogAppEvent(String.Format("Interaction: Balloon tip discarded. The message was ""{0}"".", RemoveNewLines(Msg)))
             Exit Sub
         End If
 
+        CurrentFileToOpen = File
         StatusIcon.BalloonTipText = Msg
         StatusIcon.ShowBalloonTip(2000)
     End Sub
@@ -653,6 +656,14 @@ Public Module Interaction
 
         Return MessageBox.Show(Text, Caption, Buttons, Icon)
     End Function
+
+    Private CurrentFileToOpen As String = ""
+    Private Sub StartProcess(ByVal sender As Object, ByVal e As System.EventArgs)
+        Try
+            If Not CurrentFileToOpen = "" Then Diagnostics.Process.Start(CurrentFileToOpen)
+        Catch ex As Exception
+        End Try
+    End Sub
 End Module
 
 Public Class ListViewColumnSorter

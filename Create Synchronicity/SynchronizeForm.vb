@@ -121,7 +121,7 @@ Public Class SynchronizeForm
             Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
             Interaction.ShowStatusIcon()
-            Interaction.ShowBallonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
+            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
         ElseIf Not CalledShowModal Then
             Me.Visible = True
         End If
@@ -361,13 +361,13 @@ Public Class SynchronizeForm
 
                     If Quiet Then
                         If Failed Then
-                            Interaction.ShowBallonTip(FailureMsg)
+                            Interaction.ShowBalloonTip(FailureMsg)
                         Else
-                            Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName)) 'TODO: Display Report somehow
+                            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetConfigPath(Handler.ProfileName))
                         End If
                     End If
                 Else
-                    If Quiet Then Interaction.ShowBallonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName))
+                    If Quiet Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetConfigPath(Handler.ProfileName))
                 End If
 
                 SyncingTimeCounter.Stop()

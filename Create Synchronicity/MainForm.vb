@@ -345,7 +345,7 @@ Public Class MainForm
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
-                'TODO: Catching up is currently disabled (4.3)
+                'TODO: Catching up is currently disabled (5.0)
                 'Catchup problem: any newly scheduled profile is immediately caught up.
                 'Test catchup, and show a ballon to say which profiles will be catched up.
                 '<catchup>
