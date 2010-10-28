@@ -1,7 +1,7 @@
 -- Create Synchronicity --
 * Information
 Languages:			English, French, German, Portuguese, Italian, Spanish, 
-					Swedish, Dutch, Czech, Indonesian, Hebrew
+					Swedish, Dutch, Czech, Indonesian, Hebrew, Danish
 Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
 Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
@@ -9,7 +9,7 @@ Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
 					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík,
-					Sergio Chiapperini, Gush Katif Laad
+					Sergio Chiapperini, Gush Katif Laad, Bjørn Karlstrøm
 
 * Technical information
 License:			GNU GPL v3 or later (see "COPYING")
@@ -24,6 +24,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 29, 2010 - NEW: !Danish translation, by Bjørn Karlstrøm. Tak!
 
 -- Version 5.0 --
 Oct. 25, 2010 - SYN: Create Synchronicity 5.0 brings various bug fixes, 3 new languages, easier folder selection, new command line options, and implements many feature requests.
