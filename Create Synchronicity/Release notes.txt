@@ -24,6 +24,8 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+
+-- Version 5.0 --
 Oct. 25, 2010 - SYN: Create Synchronicity 5.0 brings various bug fixes, 3 new languages, easier folder selection, new command line options, and implements many feature requests.
 Oct. 25, 2010 - UPD: Open log when clicking related balloon messages.
 Oct. 19, 2010 - NEW: !Full PDF manual.
