@@ -43,8 +43,8 @@ Public Class LanguageHandler
         End If
     End Sub
 
-    Public Shared Function GetSingleton() As LanguageHandler
-        If Instance Is Nothing Then Instance = New LanguageHandler()
+    Public Shared Function GetSingleton(Optional ByVal Reload As Boolean = False) As LanguageHandler
+        If Reload Or (Instance Is Nothing) Then Instance = New LanguageHandler()
         Return Instance
     End Function
 

@@ -31,16 +31,18 @@ Public Class MainForm
         Interaction.LoadStatusIcon()
         ProgramConfig.LoadProgramSettings()
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+            If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+                Dim LngForm As New LanguageForm
+                LngForm.ShowDialog()
+                Translation = LanguageHandler.GetSingleton(True)
+            End If
+
             If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
                 If Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
                 Else
                     ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
                 End If
-            End If
-
-            If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
-                ProgramConfig.SetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage)
             End If
 
             ProgramConfig.SaveProgramSettings()
