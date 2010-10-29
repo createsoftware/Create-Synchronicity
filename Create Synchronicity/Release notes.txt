@@ -24,6 +24,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Oct. 29, 2010 - NEW: !Language selection screen at first launch.
 Oct. 29, 2010 - NEW: !Danish translation, by Bjørn Karlstrøm. Tak!
 
 -- Version 5.0 --
