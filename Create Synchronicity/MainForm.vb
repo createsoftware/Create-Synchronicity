@@ -14,6 +14,29 @@ Public Class MainForm
 
 #Region " Events "
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        ''''''''''''''''''''''''''''''''
+        ' Read command line parameters '
+        ''''''''''''''''''''''''''''''''
+        Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
+
+        If ArgsList.Count > 1 Then
+            CommandLine.Help = ArgsList.Contains("/help")
+            CommandLine.Quiet = ArgsList.Contains("/quiet")
+            CommandLine.ShowPreview = ArgsList.Contains("/preview")
+            CommandLine.Silent = ArgsList.Contains("/silent")
+            CommandLine.Log = ArgsList.Contains("/log")
+
+            CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
+
+            Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
+            If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
+                CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
+            End If
+        End If
+
+        ''''''''''''''''''''''''''''''''''''''
+        ' Prepare MainForm and start logging '
+        ''''''''''''''''''''''''''''''''''''''
         Me.Icon = ProgramConfig.GetIcon()
         ConfigHandler.LogAppEvent("Program started")
         ConfigHandler.LogAppEvent(String.Format("Profiles will be loaded from {0}.", ProgramConfig.ConfigRootDir))
@@ -47,26 +70,6 @@ Public Class MainForm
             End If
 
             ProgramConfig.SaveProgramSettings()
-        End If
-
-        ''''''''''''''''''''''''''''''''
-        ' Read command line parameters '
-        ''''''''''''''''''''''''''''''''
-        Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
-
-        If ArgsList.Count > 1 Then
-            CommandLine.Help = ArgsList.Contains("/help")
-            CommandLine.Quiet = ArgsList.Contains("/quiet")
-            CommandLine.ShowPreview = ArgsList.Contains("/preview")
-            CommandLine.Silent = ArgsList.Contains("/silent")
-            CommandLine.Log = ArgsList.Contains("/log")
-
-            CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
-
-            Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
-            If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
-                CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
-            End If
         End If
 
         ''''''''''''''''''''''''''

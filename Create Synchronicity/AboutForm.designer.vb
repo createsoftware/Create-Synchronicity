@@ -71,7 +71,7 @@ Partial Class AboutForm
         Me.About_FlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown
         Me.About_FlowLayoutPanel.Location = New System.Drawing.Point(146, 12)
         Me.About_FlowLayoutPanel.Name = "About_FlowLayoutPanel"
-        Me.About_FlowLayoutPanel.Size = New System.Drawing.Size(344, 129)
+        Me.About_FlowLayoutPanel.Size = New System.Drawing.Size(368, 129)
         Me.About_FlowLayoutPanel.TabIndex = 0
         Me.About_FlowLayoutPanel.WrapContents = False
         '
@@ -152,7 +152,7 @@ Partial Class AboutForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.About_Updates.Location = New System.Drawing.Point(12, 147)
         Me.About_Updates.Name = "About_Updates"
-        Me.About_Updates.Size = New System.Drawing.Size(478, 34)
+        Me.About_Updates.Size = New System.Drawing.Size(502, 34)
         Me.About_Updates.TabIndex = 1
         Me.About_Updates.Text = "\UPDATES"
         Me.About_Updates.UseVisualStyleBackColor = False
@@ -173,16 +173,16 @@ Partial Class AboutForm
         Me.About_LanguagesList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.About_LanguagesList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.About_LanguagesList.Location = New System.Drawing.Point(353, 187)
+        Me.About_LanguagesList.Location = New System.Drawing.Point(288, 187)
         Me.About_LanguagesList.Name = "About_LanguagesList"
-        Me.About_LanguagesList.Size = New System.Drawing.Size(137, 21)
+        Me.About_LanguagesList.Size = New System.Drawing.Size(226, 21)
         Me.About_LanguagesList.TabIndex = 3
         '
         'AboutForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(502, 220)
+        Me.ClientSize = New System.Drawing.Size(526, 220)
         Me.Controls.Add(Me.About_LanguageLabel)
         Me.Controls.Add(Me.About_LanguagesList)
         Me.Controls.Add(Me.About_Updates)
