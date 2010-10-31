@@ -28,6 +28,7 @@ Public Module ConfigOptions
     ' TODO: Automatically add when enabled.
     Public Const CatchUpSync As String = "Catch up if missed" '-> Not enabled yet.
     Public Const Group As String = "Group"
+    Public Const ExcludedFolders As String = "Excluded folder patterns"
 
     Public Const Scheduling As String = "Scheduling"
     Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute

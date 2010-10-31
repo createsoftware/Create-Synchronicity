@@ -17,6 +17,7 @@ Public Class SynchronizeForm
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
     Dim IncludedPatterns As New List(Of FileNamePattern)
     Dim ExcludedPatterns As New List(Of FileNamePattern)
+    Dim ExcludedDirPatterns As New List(Of FileNamePattern)
 
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim SingleTask As Boolean
@@ -99,8 +100,9 @@ Public Class SynchronizeForm
         ColumnSorter = New ListViewColumnSorter(3)
         PreviewList.ListViewItemSorter = ColumnSorter
 
-        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes).Split(";"c))
-        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes).Split(";"c))
+        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
+        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
+        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
 
         FullSyncThread = New Threading.Thread(AddressOf Synchronize)
         FirstSyncThread = New Threading.Thread(AddressOf Do_FirstStep)
@@ -668,6 +670,8 @@ Public Class SynchronizeForm
     ' This procedure searches for changes in the source directory, in regards
     ' to the status of the destination directory.
     Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+        If Not HasAcceptedDirname(Folder) Then Exit Sub
+
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
@@ -764,6 +768,8 @@ Public Class SynchronizeForm
     End Sub
 
     Sub SearchForCrap(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+        If Not HasAcceptedDirname(Folder) Then Exit Sub
+
         'Here, Source is set to be the right folder, and dest to be the left folder
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
@@ -844,6 +850,10 @@ Public Class SynchronizeForm
         Return True
     End Function
 
+    Function HasAcceptedDirname(ByVal Path As String) As Boolean
+        Return Not MatchesPattern(Path, ExcludedDirPatterns)
+    End Function
+
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path
 
@@ -873,7 +883,7 @@ Public Class SynchronizeForm
 
 #Region " Functions "
     Function GetFileOrFolderName(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1)
+        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
     End Function
 
     Function GetExtension(ByVal Path As String) As String
