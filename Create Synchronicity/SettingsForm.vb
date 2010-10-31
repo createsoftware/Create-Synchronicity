@@ -33,6 +33,7 @@ Public Class SettingsForm
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there is already a waiting indicator).
         Settings_Update(True)
+        Settings_RightView.Sorted = True : Settings_LeftView.Sorted = True
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
 
