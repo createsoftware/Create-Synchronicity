@@ -48,6 +48,7 @@ Var StartMenuFolder
 
 !insertmacro MUI_LANGUAGE "Czech"
 !insertmacro MUI_LANGUAGE "Dutch"
+!insertmacro MUI_LANGUAGE "Danish"
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "German"
@@ -93,6 +94,7 @@ Section "Installer Section" InstallSection
 
 	SetOutPath "$INSTDIR\languages"
 	File "bin\Release\languages\*.lng"
+	File "bin\Release\languages\local-names.txt"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN AppStartMenu
 	CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
