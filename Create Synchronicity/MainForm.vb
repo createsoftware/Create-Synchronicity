@@ -30,6 +30,7 @@ Public Class MainForm
 
         Interaction.LoadStatusIcon()
         ProgramConfig.LoadProgramSettings()
+        Updates.SetParent(Me)
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
             If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
                 Dim LngForm As New LanguageForm
@@ -123,7 +124,7 @@ Public Class MainForm
         End If
 
         If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-            Main_HideForm()
+            Main_ConcealForm()
             ApplicationTimer.Start()
         End If
     End Sub
@@ -190,7 +191,7 @@ Public Class MainForm
         If e.Item = 0 Then
             e.CancelEdit = True
             Dim SettingsForm As New SettingsForm(e.Label)
-            ProgramConfig.MainFormAlone = False : SettingsForm.ShowDialog() : ProgramConfig.MainFormAlone = True
+            SettingsForm.ShowDialog()
         Else
             If Not Profiles(Main_Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
         End If
@@ -226,7 +227,7 @@ Public Class MainForm
         If Not CheckValidity() Then Exit Sub
 
         Dim SyncForm As New SynchronizeForm(CurrentProfile, True, True, False)
-        Me.Visible = False : ProgramConfig.MainFormAlone = False : SyncForm.ShowDialog() : ProgramConfig.MainFormAlone = True : Me.Visible = True
+        Main_SetVisible(False) : SyncForm.ShowDialog() : Main_SetVisible(True)
         SyncForm.Dispose()
     End Sub
 
@@ -234,13 +235,13 @@ Public Class MainForm
         If Not CheckValidity() Then Exit Sub
 
         Dim SyncForm As New SynchronizeForm(CurrentProfile, False, True, False)
-        Me.Visible = False : ProgramConfig.MainFormAlone = False : SyncForm.ShowDialog() : ProgramConfig.MainFormAlone = True : Me.Visible = True
+        Main_SetVisible(False) : SyncForm.ShowDialog() : Main_SetVisible(True)
         SyncForm.Dispose()
     End Sub
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
         Dim SettingsForm As New SettingsForm(CurrentProfile)
-        Me.Visible = False : ProgramConfig.MainFormAlone = False : SettingsForm.ShowDialog() : ProgramConfig.MainFormAlone = True : Me.Visible = True
+        Main_SetVisible(False) : SettingsForm.ShowDialog() : Main_SetVisible(True)
         Main_ReloadConfigs()
     End Sub
 
@@ -268,7 +269,7 @@ Public Class MainForm
 
     Private Sub Main_ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScheduleMenuItem.Click
         Dim SchedForm As New SchedulingForm(CurrentProfile)
-        ProgramConfig.MainFormAlone = False : SchedForm.ShowDialog() : ProgramConfig.MainFormAlone = True
+        SchedForm.ShowDialog()
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
     End Sub
@@ -398,13 +399,20 @@ Public Class MainForm
 #End Region
 
 #Region " Functions and Routines "
-    Sub Main_HideForm()
+    Sub Main_ConcealForm()
         Me.Opacity = 0
         Me.WindowState = FormWindowState.Minimized
         Me.ShowInTaskbar = False
     End Sub
 
+    Sub Main_SetVisible(ByVal _Visible As Boolean)
+        If Me.IsDisposed Then Exit Sub
+        Me.Visible = _Visible
+    End Sub
+
     Sub Main_ReloadConfigs()
+        If Me.IsDisposed Then Exit Sub
+
         Profiles = New Dictionary(Of String, ProfileHandler)
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
 
@@ -530,6 +538,12 @@ Public Class MainForm
     Function CurrentProfile() As String
         Return Main_Actions.SelectedItems(0).Text
     End Function
+
+    Public Delegate Sub ExitAppCallBack()
+    Public Sub ExitApp()
+        Me.Close()
+        Application.Exit()
+    End Sub
 #End Region
 
 End Class

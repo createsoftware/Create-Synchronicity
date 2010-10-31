@@ -64,7 +64,6 @@ Public Class ConfigHandler
     Public LanguageRootDir As String = Application.StartupPath & "\languages" 'TODO: Linux
     Public LocalNamesFile As String = LanguageRootDir & "\local-names.txt"
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode, or when queuing multiple profiles).
-    Public MainFormAlone As Boolean = True 'True is no other window is open.
 
 #If DEBUG Then
     Const Debug As Boolean = True
@@ -552,8 +551,19 @@ Public Module Updates
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
+    Dim Parent As MainForm = Nothing 'Used for Application.Exit call.
+
+    Public Sub SetParent(ByVal ParentForm As MainForm)
+        Parent = ParentForm
+    End Sub
+
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
-        ' TODO: Application.Exit calls OnFormClosed from the update thread, resulting in invalid cross-thread calls.
+        If Parent Is Nothing Then
+#If DEBUG Then
+            Interaction.ShowMsg("No parent specified for update thread.")
+#End If
+            Exit Sub
+        End If
 
         Try
             Dim UpdateClient As New Net.WebClient
@@ -566,7 +576,7 @@ Public Module Updates
             If (CurrentVersion <> Application.ProductVersion) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
-                    If ProgramConfig.CanGoOn And ProgramConfig.MainFormAlone Then Application.Exit()
+                    If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
                 End If
             Else
                 If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)

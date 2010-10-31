@@ -63,8 +63,6 @@ Public Class AboutForm
     End Sub
 
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If Me.InvokeRequired Then Exit Sub 'Used to force immediate exit, when Application.Exit is called from a secondary thread.
-
         If About_LanguagesList.SelectedIndex <> -1 Then
             Dim SelectedLanguage As String = About_LanguagesList.SelectedItem.ToString.Split("-")(0).Trim
             Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> SelectedLanguage
