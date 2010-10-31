@@ -837,9 +837,9 @@ Public Class SynchronizeForm
             Select Case Handler.GetSetting(ConfigOptions.Restrictions)
                 'TODO: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
                 Case "1"
-                    Return MatchesPattern(Path, IncludedPatterns)
+                    Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
                 Case "2"
-                    Return Not MatchesPattern(Path, ExcludedPatterns)
+                    Return Not MatchesPattern(GetFileOrFolderName(Path), ExcludedPatterns)
             End Select
         Catch Ex As Exception
 #If DEBUG Then
@@ -887,21 +887,20 @@ Public Class SynchronizeForm
     End Function
 
     Function GetExtension(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(".") + 1)
+        Return Path.Substring(Path.LastIndexOf(".") + 1) 'TODO: Returns full path if no extension is found.
     End Function
 
-    Function MatchesPattern(ByVal Path As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
-        Dim FileName As String = GetFileOrFolderName(Path)
-        Dim Extension As String = GetExtension(FileName)
+    Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
+        Dim Extension As String = GetExtension(PathOrFileName)
 
-        For Each Pattern As FileNamePattern In Patterns
+        For Each Pattern As FileNamePattern In Patterns 'TODO: IgnoreCase and Linux
             Select Case Pattern.Type
                 Case FileNamePattern.PatternType.FileExt
                     If String.Compare(Extension, Pattern.Pattern, True) = 0 Then Return True
                 Case FileNamePattern.PatternType.FileName
-                    If String.Compare(FileName, Pattern.Pattern, True) = 0 Then Return True
+                    If String.Compare(PathOrFileName, Pattern.Pattern, True) = 0 Then Return True
                 Case FileNamePattern.PatternType.Regex
-                    If System.Text.RegularExpressions.Regex.IsMatch(FileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
+                    If System.Text.RegularExpressions.Regex.IsMatch(PathOrFileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
             End Select
         Next
 
