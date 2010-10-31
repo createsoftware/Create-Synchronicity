@@ -10,6 +10,11 @@ Public Class LanguageHandler
     Private Shared Instance As LanguageHandler
     Dim Configuration As ConfigHandler = ConfigHandler.GetSingleton
 
+    Structure LanguageInfo
+        Dim LocalName As String
+        Dim IsoLanguageName As String
+    End Structure
+
     Protected Sub New()
         Configuration.LoadProgramSettings()
         IO.Directory.CreateDirectory(Configuration.LanguageRootDir)
@@ -23,7 +28,7 @@ Public Class LanguageHandler
         Else
             Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
 
-            While Reader.Peek() > -1
+            While Not Reader.EndOfStream()
                 Dim Line As String = Reader.ReadLine
 
                 If Line.StartsWith("#") Then Continue While
@@ -106,5 +111,59 @@ Public Class LanguageHandler
         For Each ChildCtrl As Control In Ctrl.Controls
             TranslateControl(ChildCtrl)
         Next
+    End Sub
+
+    Public Sub FillLanguageListBox(ByVal LanguagesComboBox As ComboBox)
+        Dim LanguageProps As New Dictionary(Of String, LanguageHandler.LanguageInfo)
+
+        If IO.File.Exists(Configuration.LocalNamesFile) Then
+            Dim PropsReader As New IO.StreamReader(Configuration.LocalNamesFile)
+
+            While Not PropsReader.EndOfStream
+                Dim CurLanguage() As String = PropsReader.ReadLine.Split(";".ToCharArray)
+                Try
+                    LanguageProps.Add(CurLanguage(0), New LanguageHandler.LanguageInfo With {.LocalName = CurLanguage(1), .IsoLanguageName = CurLanguage(2)})
+                Catch
+                    Interaction.ShowMsg("Invalid local-names file.")
+                End Try
+            End While
+
+            PropsReader.Close()
+        End If
+
+        Dim SystemLanguageIndex As Integer = -1
+        Dim ProgramLanguageIndex As Integer = -1
+        Dim DefaultLanguageIndex As Integer = -1
+        Dim CurProgramLanguage As String = Configuration.GetProgramSetting(ConfigOptions.Language, "")
+        Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
+
+        'TODO: Duplicate code.
+        LanguagesComboBox.Items.Clear()
+        Dim LanguageFiles As New List(Of String)
+        For Each File As String In IO.Directory.GetFiles(Configuration.LanguageRootDir, "*.lng")
+            Dim EnglishLanguageName As String = IO.Path.GetFileNameWithoutExtension(File)
+
+            If EnglishLanguageName = CurProgramLanguage Then ProgramLanguageIndex = LanguagesComboBox.Items.Count
+            If EnglishLanguageName = ConfigOptions.DefaultLanguage Then DefaultLanguageIndex = LanguagesComboBox.Items.Count
+
+            If LanguageProps.ContainsKey(EnglishLanguageName) Then
+                Dim LangInfo As LanguageHandler.LanguageInfo = LanguageProps(EnglishLanguageName)
+                If LangInfo.IsoLanguageName = LanguageCode Then SystemLanguageIndex = LanguagesComboBox.Items.Count
+                LanguagesComboBox.Items.Add(String.Format("{0} - {1} ({2})", EnglishLanguageName, LangInfo.LocalName, LangInfo.IsoLanguageName))
+            Else
+                LanguagesComboBox.Items.Add(EnglishLanguageName)
+            End If
+        Next
+
+        Configuration.LoadProgramSettings()
+        If ProgramLanguageIndex <> -1 Then
+            LanguagesComboBox.SelectedIndex = ProgramLanguageIndex
+        ElseIf SystemLanguageIndex <> -1 Then
+            LanguagesComboBox.SelectedIndex = SystemLanguageIndex
+        ElseIf DefaultLanguageIndex <> -1 Then
+            LanguagesComboBox.SelectedIndex = DefaultLanguageIndex
+        ElseIf LanguagesComboBox.Items.Count > 0 Then
+            LanguagesComboBox.SelectedIndex = 0
+        End If
     End Sub
 End Class

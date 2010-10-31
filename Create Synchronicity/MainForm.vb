@@ -190,7 +190,7 @@ Public Class MainForm
         If e.Item = 0 Then
             e.CancelEdit = True
             Dim SettingsForm As New SettingsForm(e.Label)
-            SettingsForm.ShowDialog()
+            ProgramConfig.MainFormAlone = False : SettingsForm.ShowDialog() : ProgramConfig.MainFormAlone = True
         Else
             If Not Profiles(Main_Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
         End If
@@ -224,8 +224,9 @@ Public Class MainForm
 
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         If Not CheckValidity() Then Exit Sub
+
         Dim SyncForm As New SynchronizeForm(CurrentProfile, True, True, False)
-        Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
+        Me.Visible = False : ProgramConfig.MainFormAlone = False : SyncForm.ShowDialog() : ProgramConfig.MainFormAlone = True : Me.Visible = True
         SyncForm.Dispose()
     End Sub
 
@@ -233,13 +234,13 @@ Public Class MainForm
         If Not CheckValidity() Then Exit Sub
 
         Dim SyncForm As New SynchronizeForm(CurrentProfile, False, True, False)
-        Me.Visible = False : SyncForm.ShowDialog() : Me.Visible = True
+        Me.Visible = False : ProgramConfig.MainFormAlone = False : SyncForm.ShowDialog() : ProgramConfig.MainFormAlone = True : Me.Visible = True
         SyncForm.Dispose()
     End Sub
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
         Dim SettingsForm As New SettingsForm(CurrentProfile)
-        SettingsForm.ShowDialog()
+        Me.Visible = False : ProgramConfig.MainFormAlone = False : SettingsForm.ShowDialog() : ProgramConfig.MainFormAlone = True : Me.Visible = True
         Main_ReloadConfigs()
     End Sub
 
@@ -267,7 +268,7 @@ Public Class MainForm
 
     Private Sub Main_ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScheduleMenuItem.Click
         Dim SchedForm As New SchedulingForm(CurrentProfile)
-        SchedForm.ShowDialog()
+        ProgramConfig.MainFormAlone = False : SchedForm.ShowDialog() : ProgramConfig.MainFormAlone = True
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
     End Sub

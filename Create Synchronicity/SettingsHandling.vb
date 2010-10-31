@@ -61,8 +61,10 @@ Public Class ConfigHandler
     Public LogRootDir As String
     Public MainConfigFile As String
 
-    Public LanguageRootDir As String = Application.StartupPath & "\languages"
+    Public LanguageRootDir As String = Application.StartupPath & "\languages" 'TODO: Linux
+    Public LocalNamesFile As String = LanguageRootDir & "\local-names.txt"
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode, or when queuing multiple profiles).
+    Public MainFormAlone As Boolean = True 'True is no other window is open.
 
 #If DEBUG Then
     Const Debug As Boolean = True
@@ -551,6 +553,8 @@ Public Module Updates
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+        ' TODO: Application.Exit calls OnFormClosed from the update thread, resulting in invalid cross-thread calls.
+
         Try
             Dim UpdateClient As New Net.WebClient
             UpdateClient.UseDefaultCredentials = True 'Needed? -- Does no harm
@@ -562,11 +566,13 @@ Public Module Updates
             If (CurrentVersion <> Application.ProductVersion) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
-                    Application.Exit()
+                    If ProgramConfig.CanGoOn And ProgramConfig.MainFormAlone Then Application.Exit()
                 End If
             Else
                 If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
             End If
+        Catch Ex As InvalidOperationException
+            'Some form couldn't close properly because of thread accesses
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
 #If DEBUG Then
