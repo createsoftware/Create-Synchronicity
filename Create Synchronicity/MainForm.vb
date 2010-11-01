@@ -105,11 +105,11 @@ Public Class MainForm
                 Exit Sub
             End If
 #End If
-            Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
-            Interaction.ShowStatusIcon()
         End If
 
         If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+            Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
+            Interaction.ShowStatusIcon()
             Main_ConcealForm()
             ApplicationTimer.Start()
         End If
