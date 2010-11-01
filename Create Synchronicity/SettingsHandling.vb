@@ -607,6 +607,29 @@ Structure CommandLine
     Shared RunAs As RunMode = RunMode.Normal
     Shared Silent As Boolean = False
     Shared Log As Boolean = False
+
+    Shared Sub ReadArgs(ByVal ArgsList As List(Of String))
+        If ArgsList.Count > 1 Then
+            CommandLine.Help = ArgsList.Contains("/help")
+            CommandLine.Quiet = ArgsList.Contains("/quiet")
+            CommandLine.ShowPreview = ArgsList.Contains("/preview")
+            CommandLine.Silent = ArgsList.Contains("/silent")
+            CommandLine.Log = ArgsList.Contains("/log")
+
+            CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
+
+            Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
+            If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
+                CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
+            End If
+        End If
+
+        If CommandLine.TasksToRun <> "" Then
+            CommandLine.RunAs = CommandLine.RunMode.Queue 'Mostly explicative
+        ElseIf ArgsList.Contains("/scheduler") Then
+            CommandLine.RunAs = CommandLine.RunMode.Scheduler
+        End If
+    End Sub
 End Structure
 
 Public Module Interaction

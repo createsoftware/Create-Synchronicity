@@ -18,21 +18,7 @@ Public Class MainForm
         ' Read command line parameters '
         ''''''''''''''''''''''''''''''''
         Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
-
-        If ArgsList.Count > 1 Then
-            CommandLine.Help = ArgsList.Contains("/help")
-            CommandLine.Quiet = ArgsList.Contains("/quiet")
-            CommandLine.ShowPreview = ArgsList.Contains("/preview")
-            CommandLine.Silent = ArgsList.Contains("/silent")
-            CommandLine.Log = ArgsList.Contains("/log")
-
-            CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
-
-            Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
-            If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
-                CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
-            End If
-        End If
+        CommandLine.ReadArgs(ArgsList)
 
         ''''''''''''''''''''''''''''''''''''''
         ' Prepare MainForm and start logging '
@@ -75,8 +61,9 @@ Public Class MainForm
         ''''''''''''''''''''''''''
         ' Display help if needed '
         ''''''''''''''''''''''''''
+        ' Must comme after program settings are loaded.
         If CommandLine.Help Then
-            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}Profiles are loaded from ""{2}"".{0}License information: See ""Release notes.txt"".{0}Help: See http://synchronicity.sourceforge.net/help.html.{0}You can help this software! See http://synchronicity.sourceforge.net/contribute.html.{0}Happy syncing!", Environment.NewLine & Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir), "Help!")
+            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}Profiles are loaded from ""{2}"".{0}Available commands: /help, /scheduler, /log, [/preview] [/quiet|/silent] /run ""ProfileName1|ProfileName2|ProfileName3[|...]"".{0}License information: See ""Release notes.txt"".{0}Help: See http://synchronicity.sourceforge.net/help.html.{0}You can help this software! See http://synchronicity.sourceforge.net/contribute.html.{0}Happy syncing!", Environment.NewLine & Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir), "Help!")
             Application.Exit()
             Exit Sub
         End If
@@ -107,11 +94,7 @@ Public Class MainForm
         Main_ReloadConfigs()
         Main_TryUnregStartAtBoot()
 
-        If CommandLine.TasksToRun <> "" Then
-            CommandLine.RunAs = CommandLine.RunMode.Queue 'Mostly explicative
-
-        ElseIf ArgsList.Contains("/scheduler") Then
-            CommandLine.RunAs = CommandLine.RunMode.Scheduler
+        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
 #If 0 Then
             'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
             'This code is not functional
