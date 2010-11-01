@@ -86,6 +86,8 @@ Partial Class SettingsForm
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown()
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label()
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label()
+        Me.Settings_LeftViewPanel = New System.Windows.Forms.Panel()
+        Me.Settings_RightViewPanel = New System.Windows.Forms.Panel()
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
@@ -97,6 +99,8 @@ Partial Class SettingsForm
         Me.Settings_ActionsPanel.SuspendLayout()
         Me.Settings_AdvancedBox.SuspendLayout()
         CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Settings_LeftViewPanel.SuspendLayout()
+        Me.Settings_RightViewPanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'Settings_FromTextBox
@@ -107,7 +111,7 @@ Partial Class SettingsForm
         Me.Settings_FromTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories
         Me.Settings_FromTextBox.Location = New System.Drawing.Point(62, 19)
         Me.Settings_FromTextBox.Name = "Settings_FromTextBox"
-        Me.Settings_FromTextBox.Size = New System.Drawing.Size(509, 21)
+        Me.Settings_FromTextBox.Size = New System.Drawing.Size(535, 21)
         Me.Settings_FromTextBox.TabIndex = 1
         Me.Settings_FromTextBox.Tag = "\PATH_TIPS"
         '
@@ -124,7 +128,7 @@ Partial Class SettingsForm
         Me.Settings_DirectoriesBox.Controls.Add(Me.Settings_FromLabel)
         Me.Settings_DirectoriesBox.Location = New System.Drawing.Point(12, 12)
         Me.Settings_DirectoriesBox.Name = "Settings_DirectoriesBox"
-        Me.Settings_DirectoriesBox.Size = New System.Drawing.Size(674, 71)
+        Me.Settings_DirectoriesBox.Size = New System.Drawing.Size(700, 71)
         Me.Settings_DirectoriesBox.TabIndex = 0
         Me.Settings_DirectoriesBox.TabStop = False
         Me.Settings_DirectoriesBox.Text = "\DIRECTORIES"
@@ -132,7 +136,7 @@ Partial Class SettingsForm
         'Settings_SwapButton
         '
         Me.Settings_SwapButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_SwapButton.Location = New System.Drawing.Point(612, 19)
+        Me.Settings_SwapButton.Location = New System.Drawing.Point(638, 19)
         Me.Settings_SwapButton.Name = "Settings_SwapButton"
         Me.Settings_SwapButton.Size = New System.Drawing.Size(56, 49)
         Me.Settings_SwapButton.TabIndex = 6
@@ -142,7 +146,7 @@ Partial Class SettingsForm
         'Settings_BrowseRButton
         '
         Me.Settings_BrowseRButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BrowseRButton.Location = New System.Drawing.Point(577, 44)
+        Me.Settings_BrowseRButton.Location = New System.Drawing.Point(603, 44)
         Me.Settings_BrowseRButton.Name = "Settings_BrowseRButton"
         Me.Settings_BrowseRButton.Size = New System.Drawing.Size(29, 24)
         Me.Settings_BrowseRButton.TabIndex = 5
@@ -152,7 +156,7 @@ Partial Class SettingsForm
         'Settings_BrowseLButton
         '
         Me.Settings_BrowseLButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_BrowseLButton.Location = New System.Drawing.Point(577, 18)
+        Me.Settings_BrowseLButton.Location = New System.Drawing.Point(603, 18)
         Me.Settings_BrowseLButton.Name = "Settings_BrowseLButton"
         Me.Settings_BrowseLButton.Size = New System.Drawing.Size(29, 24)
         Me.Settings_BrowseLButton.TabIndex = 2
@@ -167,7 +171,7 @@ Partial Class SettingsForm
         Me.Settings_ToTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories
         Me.Settings_ToTextBox.Location = New System.Drawing.Point(62, 45)
         Me.Settings_ToTextBox.Name = "Settings_ToTextBox"
-        Me.Settings_ToTextBox.Size = New System.Drawing.Size(509, 21)
+        Me.Settings_ToTextBox.Size = New System.Drawing.Size(535, 21)
         Me.Settings_ToTextBox.TabIndex = 4
         Me.Settings_ToTextBox.Tag = "\PATH_TIPS"
         '
@@ -195,13 +199,13 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_ViewsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 35.0!))
         Me.Settings_ViewsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_LeftView, 0, 1)
-        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_RightView, 2, 1)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_ReloadButton, 1, 1)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_LeftViewLabel, 0, 0)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_RightViewLabel, 2, 0)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_Loading, 1, 2)
         Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_HelpLink, 1, 3)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_LeftViewPanel, 0, 1)
+        Me.Settings_ViewsLayoutPanel.Controls.Add(Me.Settings_RightViewPanel, 2, 1)
         Me.Settings_ViewsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Settings_ViewsLayoutPanel.Location = New System.Drawing.Point(3, 17)
         Me.Settings_ViewsLayoutPanel.Name = "Settings_ViewsLayoutPanel"
@@ -210,20 +214,17 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_ViewsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(668, 140)
+        Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(694, 140)
         Me.Settings_ViewsLayoutPanel.TabIndex = 0
         '
         'Settings_LeftView
         '
-        Me.Settings_LeftView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_LeftView.CheckBoxes = True
         Me.Settings_LeftView.ContextMenuStrip = Me.Settings_TreeViewMenuStrip
-        Me.Settings_LeftView.Location = New System.Drawing.Point(3, 16)
+        Me.Settings_LeftView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_LeftView.Location = New System.Drawing.Point(0, 0)
         Me.Settings_LeftView.Name = "Settings_LeftView"
-        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftView, 3)
-        Me.Settings_LeftView.Size = New System.Drawing.Size(310, 121)
+        Me.Settings_LeftView.Size = New System.Drawing.Size(323, 121)
         Me.Settings_LeftView.TabIndex = 1
         Me.Settings_LeftView.Tag = "\TREEVIEW_TIPS"
         '
@@ -283,20 +284,17 @@ Partial Class SettingsForm
         '
         'Settings_RightView
         '
-        Me.Settings_RightView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_RightView.Location = New System.Drawing.Point(354, 16)
+        Me.Settings_RightView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_RightView.Location = New System.Drawing.Point(0, 0)
         Me.Settings_RightView.Name = "Settings_RightView"
-        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightView, 3)
-        Me.Settings_RightView.Size = New System.Drawing.Size(311, 121)
+        Me.Settings_RightView.Size = New System.Drawing.Size(324, 121)
         Me.Settings_RightView.TabIndex = 3
         Me.Settings_RightView.Tag = "\TREEVIEW_TIPS"
         '
         'Settings_ReloadButton
         '
         Me.Settings_ReloadButton.Image = CType(resources.GetObject("Settings_ReloadButton.Image"), System.Drawing.Image)
-        Me.Settings_ReloadButton.Location = New System.Drawing.Point(319, 16)
+        Me.Settings_ReloadButton.Location = New System.Drawing.Point(332, 16)
         Me.Settings_ReloadButton.Name = "Settings_ReloadButton"
         Me.Settings_ReloadButton.Size = New System.Drawing.Size(29, 29)
         Me.Settings_ReloadButton.TabIndex = 4
@@ -314,7 +312,7 @@ Partial Class SettingsForm
         'Settings_RightViewLabel
         '
         Me.Settings_RightViewLabel.AutoSize = True
-        Me.Settings_RightViewLabel.Location = New System.Drawing.Point(354, 0)
+        Me.Settings_RightViewLabel.Location = New System.Drawing.Point(367, 0)
         Me.Settings_RightViewLabel.Name = "Settings_RightViewLabel"
         Me.Settings_RightViewLabel.Size = New System.Drawing.Size(85, 13)
         Me.Settings_RightViewLabel.TabIndex = 2
@@ -323,7 +321,7 @@ Partial Class SettingsForm
         'Settings_Loading
         '
         Me.Settings_Loading.Image = CType(resources.GetObject("Settings_Loading.Image"), System.Drawing.Image)
-        Me.Settings_Loading.Location = New System.Drawing.Point(319, 48)
+        Me.Settings_Loading.Location = New System.Drawing.Point(332, 48)
         Me.Settings_Loading.Name = "Settings_Loading"
         Me.Settings_Loading.Size = New System.Drawing.Size(29, 29)
         Me.Settings_Loading.TabIndex = 5
@@ -333,7 +331,7 @@ Partial Class SettingsForm
         '
         Me.Settings_HelpLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Settings_HelpLink.Image = CType(resources.GetObject("Settings_HelpLink.Image"), System.Drawing.Image)
-        Me.Settings_HelpLink.Location = New System.Drawing.Point(319, 112)
+        Me.Settings_HelpLink.Location = New System.Drawing.Point(332, 112)
         Me.Settings_HelpLink.Name = "Settings_HelpLink"
         Me.Settings_HelpLink.Size = New System.Drawing.Size(28, 28)
         Me.Settings_HelpLink.TabIndex = 6
@@ -343,12 +341,10 @@ Partial Class SettingsForm
         Me.Settings_ViewsBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_ViewsBox.Controls.Add(Me.Settings_RightReloadButton)
-        Me.Settings_ViewsBox.Controls.Add(Me.Settings_LeftReloadButton)
         Me.Settings_ViewsBox.Controls.Add(Me.Settings_ViewsLayoutPanel)
         Me.Settings_ViewsBox.Location = New System.Drawing.Point(12, 89)
         Me.Settings_ViewsBox.Name = "Settings_ViewsBox"
-        Me.Settings_ViewsBox.Size = New System.Drawing.Size(674, 160)
+        Me.Settings_ViewsBox.Size = New System.Drawing.Size(700, 160)
         Me.Settings_ViewsBox.TabIndex = 1
         Me.Settings_ViewsBox.TabStop = False
         Me.Settings_ViewsBox.Text = "\SUBDIRECTORIES"
@@ -356,7 +352,7 @@ Partial Class SettingsForm
         'Settings_RightReloadButton
         '
         Me.Settings_RightReloadButton.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Settings_RightReloadButton.Location = New System.Drawing.Point(459, 60)
+        Me.Settings_RightReloadButton.Location = New System.Drawing.Point(112, 27)
         Me.Settings_RightReloadButton.Name = "Settings_RightReloadButton"
         Me.Settings_RightReloadButton.Size = New System.Drawing.Size(100, 66)
         Me.Settings_RightReloadButton.TabIndex = 8
@@ -366,7 +362,7 @@ Partial Class SettingsForm
         'Settings_LeftReloadButton
         '
         Me.Settings_LeftReloadButton.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Settings_LeftReloadButton.Location = New System.Drawing.Point(108, 60)
+        Me.Settings_LeftReloadButton.Location = New System.Drawing.Point(111, 27)
         Me.Settings_LeftReloadButton.Name = "Settings_LeftReloadButton"
         Me.Settings_LeftReloadButton.Size = New System.Drawing.Size(100, 66)
         Me.Settings_LeftReloadButton.TabIndex = 7
@@ -381,7 +377,7 @@ Partial Class SettingsForm
         Me.Settings_SynchronizationMethodBox.Controls.Add(Me.Settings_MethodLayoutPanel)
         Me.Settings_SynchronizationMethodBox.Location = New System.Drawing.Point(12, 255)
         Me.Settings_SynchronizationMethodBox.Name = "Settings_SynchronizationMethodBox"
-        Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(674, 69)
+        Me.Settings_SynchronizationMethodBox.Size = New System.Drawing.Size(700, 69)
         Me.Settings_SynchronizationMethodBox.TabIndex = 2
         Me.Settings_SynchronizationMethodBox.TabStop = False
         Me.Settings_SynchronizationMethodBox.Text = "\SYNC_METHOD"
@@ -391,7 +387,7 @@ Partial Class SettingsForm
         Me.Settings_StrictMirrorOption.AutoSize = True
         Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 46)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
-        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(155, 17)
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 2
         Me.Settings_StrictMirrorOption.Text = "\STRICT_MIRROR_DESC"
         Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
@@ -406,18 +402,18 @@ Partial Class SettingsForm
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
         Me.Settings_MethodLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 16)
+        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 17)
         Me.Settings_MethodLayoutPanel.Name = "Settings_MethodLayoutPanel"
         Me.Settings_MethodLayoutPanel.RowCount = 1
         Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.Settings_MethodLayoutPanel.Size = New System.Drawing.Size(668, 23)
+        Me.Settings_MethodLayoutPanel.Size = New System.Drawing.Size(694, 23)
         Me.Settings_MethodLayoutPanel.TabIndex = 0
         '
         'Settings_TwoWaysIncrementalMethodOption
         '
         Me.Settings_TwoWaysIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_TwoWaysIncrementalMethodOption.AutoSize = True
-        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(466, 3)
+        Me.Settings_TwoWaysIncrementalMethodOption.Location = New System.Drawing.Point(488, 3)
         Me.Settings_TwoWaysIncrementalMethodOption.Name = "Settings_TwoWaysIncrementalMethodOption"
         Me.Settings_TwoWaysIncrementalMethodOption.Size = New System.Drawing.Size(180, 17)
         Me.Settings_TwoWaysIncrementalMethodOption.TabIndex = 2
@@ -429,7 +425,7 @@ Partial Class SettingsForm
         '
         Me.Settings_LRIncrementalMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_LRIncrementalMethodOption.AutoSize = True
-        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(266, 3)
+        Me.Settings_LRIncrementalMethodOption.Location = New System.Drawing.Point(280, 3)
         Me.Settings_LRIncrementalMethodOption.Name = "Settings_LRIncrementalMethodOption"
         Me.Settings_LRIncrementalMethodOption.Size = New System.Drawing.Size(133, 17)
         Me.Settings_LRIncrementalMethodOption.TabIndex = 1
@@ -442,7 +438,7 @@ Partial Class SettingsForm
         Me.Settings_LRMirrorMethodOption.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Settings_LRMirrorMethodOption.AutoSize = True
         Me.Settings_LRMirrorMethodOption.Checked = True
-        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(62, 3)
+        Me.Settings_LRMirrorMethodOption.Location = New System.Drawing.Point(66, 3)
         Me.Settings_LRMirrorMethodOption.Name = "Settings_LRMirrorMethodOption"
         Me.Settings_LRMirrorMethodOption.Size = New System.Drawing.Size(98, 17)
         Me.Settings_LRMirrorMethodOption.TabIndex = 0
@@ -460,7 +456,7 @@ Partial Class SettingsForm
         Me.Settings_IncludeExcludeBox.Controls.Add(Me.Settings_ReplicateEmptyDirectoriesOption)
         Me.Settings_IncludeExcludeBox.Location = New System.Drawing.Point(12, 330)
         Me.Settings_IncludeExcludeBox.Name = "Settings_IncludeExcludeBox"
-        Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(674, 97)
+        Me.Settings_IncludeExcludeBox.Size = New System.Drawing.Size(700, 97)
         Me.Settings_IncludeExcludeBox.TabIndex = 3
         Me.Settings_IncludeExcludeBox.TabStop = False
         Me.Settings_IncludeExcludeBox.Text = "\INCLUDE_EXCLUDE"
@@ -472,7 +468,7 @@ Partial Class SettingsForm
         Me.Settings_CopyAllFilesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_CopyAllFilesCheckBox.Location = New System.Drawing.Point(6, 20)
         Me.Settings_CopyAllFilesCheckBox.Name = "Settings_CopyAllFilesCheckBox"
-        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(85, 17)
+        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(90, 17)
         Me.Settings_CopyAllFilesCheckBox.TabIndex = 0
         Me.Settings_CopyAllFilesCheckBox.Text = "\ALL_FILES"
         Me.Settings_CopyAllFilesCheckBox.UseVisualStyleBackColor = True
@@ -494,7 +490,7 @@ Partial Class SettingsForm
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.Settings_IncludeExcludeLayoutPanel.Size = New System.Drawing.Size(668, 51)
+        Me.Settings_IncludeExcludeLayoutPanel.Size = New System.Drawing.Size(694, 51)
         Me.Settings_IncludeExcludeLayoutPanel.TabIndex = 2
         '
         'Settings_IncludedTypesTextBox
@@ -503,7 +499,7 @@ Partial Class SettingsForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_IncludedTypesTextBox.Location = New System.Drawing.Point(3, 26)
         Me.Settings_IncludedTypesTextBox.Name = "Settings_IncludedTypesTextBox"
-        Me.Settings_IncludedTypesTextBox.Size = New System.Drawing.Size(328, 21)
+        Me.Settings_IncludedTypesTextBox.Size = New System.Drawing.Size(341, 21)
         Me.Settings_IncludedTypesTextBox.TabIndex = 1
         Me.Settings_IncludedTypesTextBox.Tag = "\FILEEXT_TIPS"
         '
@@ -511,9 +507,9 @@ Partial Class SettingsForm
         '
         Me.Settings_ExcludedTypesTextBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_ExcludedTypesTextBox.Location = New System.Drawing.Point(337, 26)
+        Me.Settings_ExcludedTypesTextBox.Location = New System.Drawing.Point(350, 26)
         Me.Settings_ExcludedTypesTextBox.Name = "Settings_ExcludedTypesTextBox"
-        Me.Settings_ExcludedTypesTextBox.Size = New System.Drawing.Size(328, 21)
+        Me.Settings_ExcludedTypesTextBox.Size = New System.Drawing.Size(341, 21)
         Me.Settings_ExcludedTypesTextBox.TabIndex = 3
         Me.Settings_ExcludedTypesTextBox.Tag = "\FILEEXT_TIPS"
         '
@@ -531,7 +527,7 @@ Partial Class SettingsForm
         'Settings_ExcludeFilesOption
         '
         Me.Settings_ExcludeFilesOption.AutoSize = True
-        Me.Settings_ExcludeFilesOption.Location = New System.Drawing.Point(337, 3)
+        Me.Settings_ExcludeFilesOption.Location = New System.Drawing.Point(350, 3)
         Me.Settings_ExcludeFilesOption.Name = "Settings_ExcludeFilesOption"
         Me.Settings_ExcludeFilesOption.Size = New System.Drawing.Size(128, 17)
         Me.Settings_ExcludeFilesOption.TabIndex = 2
@@ -545,9 +541,9 @@ Partial Class SettingsForm
         Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
         Me.Settings_ReplicateEmptyDirectoriesOption.Checked = True
         Me.Settings_ReplicateEmptyDirectoriesOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(538, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(558, 20)
         Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
-        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(133, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(139, 17)
         Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 1
         Me.Settings_ReplicateEmptyDirectoriesOption.Text = "\REPLICATE_EMPTY"
         Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -560,7 +556,7 @@ Partial Class SettingsForm
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(6, 20)
         Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
-        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(97, 17)
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(101, 17)
         Me.Settings_PropagateUpdatesOption.TabIndex = 0
         Me.Settings_PropagateUpdatesOption.Tag = "\PROPAGATE_TAG"
         Me.Settings_PropagateUpdatesOption.Text = "\PROPAGATE"
@@ -574,7 +570,7 @@ Partial Class SettingsForm
         Me.Settings_ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.Settings_ActionsPanel.Controls.Add(Me.Settings_CancelButton, 1, 0)
         Me.Settings_ActionsPanel.Controls.Add(Me.Settings_SaveButton, 0, 0)
-        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(486, 507)
+        Me.Settings_ActionsPanel.Location = New System.Drawing.Point(512, 507)
         Me.Settings_ActionsPanel.Name = "Settings_ActionsPanel"
         Me.Settings_ActionsPanel.RowCount = 1
         Me.Settings_ActionsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -615,7 +611,7 @@ Partial Class SettingsForm
         Me.Settings_ComputeHashOption.AutoSize = True
         Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(6, 44)
         Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
-        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(120, 17)
+        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(126, 17)
         Me.Settings_ComputeHashOption.TabIndex = 1
         Me.Settings_ComputeHashOption.Tag = "\COMPUTEHASH_TAG"
         Me.Settings_ComputeHashOption.Text = "\COMPUTE_HASH"
@@ -633,7 +629,7 @@ Partial Class SettingsForm
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
         Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 433)
         Me.Settings_AdvancedBox.Name = "Settings_AdvancedBox"
-        Me.Settings_AdvancedBox.Size = New System.Drawing.Size(674, 68)
+        Me.Settings_AdvancedBox.Size = New System.Drawing.Size(700, 68)
         Me.Settings_AdvancedBox.TabIndex = 4
         Me.Settings_AdvancedBox.TabStop = False
         Me.Settings_AdvancedBox.Text = "\ADVANCED_OPTS"
@@ -644,9 +640,9 @@ Partial Class SettingsForm
         Me.Settings_StrictDateComparisonOption.AutoSize = True
         Me.Settings_StrictDateComparisonOption.Checked = True
         Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(520, 20)
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(532, 20)
         Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
-        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(148, 17)
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
         Me.Settings_StrictDateComparisonOption.TabIndex = 2
         Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
         Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
@@ -656,7 +652,7 @@ Partial Class SettingsForm
         'Settings_TimeOffsetLabel
         '
         Me.Settings_TimeOffsetLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(425, 45)
+        Me.Settings_TimeOffsetLabel.Location = New System.Drawing.Point(451, 45)
         Me.Settings_TimeOffsetLabel.Name = "Settings_TimeOffsetLabel"
         Me.Settings_TimeOffsetLabel.Size = New System.Drawing.Size(143, 13)
         Me.Settings_TimeOffsetLabel.TabIndex = 3
@@ -666,7 +662,7 @@ Partial Class SettingsForm
         'Settings_TimeOffset
         '
         Me.Settings_TimeOffset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Settings_TimeOffset.Location = New System.Drawing.Point(574, 43)
+        Me.Settings_TimeOffset.Location = New System.Drawing.Point(600, 43)
         Me.Settings_TimeOffset.Maximum = New Decimal(New Integer() {2, 0, 0, 0})
         Me.Settings_TimeOffset.Minimum = New Decimal(New Integer() {2, 0, 0, -2147483648})
         Me.Settings_TimeOffset.Name = "Settings_TimeOffset"
@@ -677,7 +673,7 @@ Partial Class SettingsForm
         '
         Me.Settings_TimeOffsetHoursLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_TimeOffsetHoursLabel.AutoSize = True
-        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(615, 45)
+        Me.Settings_TimeOffsetHoursLabel.Location = New System.Drawing.Point(641, 45)
         Me.Settings_TimeOffsetHoursLabel.Name = "Settings_TimeOffsetHoursLabel"
         Me.Settings_TimeOffsetHoursLabel.Size = New System.Drawing.Size(53, 13)
         Me.Settings_TimeOffsetHoursLabel.TabIndex = 5
@@ -689,8 +685,30 @@ Partial Class SettingsForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_BottomDescLabel.Location = New System.Drawing.Point(12, 507)
         Me.Settings_BottomDescLabel.Name = "Settings_BottomDescLabel"
-        Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(471, 31)
+        Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(497, 31)
         Me.Settings_BottomDescLabel.TabIndex = 5
+        '
+        'Settings_LeftViewPanel
+        '
+        Me.Settings_LeftViewPanel.Controls.Add(Me.Settings_LeftReloadButton)
+        Me.Settings_LeftViewPanel.Controls.Add(Me.Settings_LeftView)
+        Me.Settings_LeftViewPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_LeftViewPanel.Location = New System.Drawing.Point(3, 16)
+        Me.Settings_LeftViewPanel.Name = "Settings_LeftViewPanel"
+        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftViewPanel, 3)
+        Me.Settings_LeftViewPanel.Size = New System.Drawing.Size(323, 121)
+        Me.Settings_LeftViewPanel.TabIndex = 7
+        '
+        'Settings_RightViewPanel
+        '
+        Me.Settings_RightViewPanel.Controls.Add(Me.Settings_RightReloadButton)
+        Me.Settings_RightViewPanel.Controls.Add(Me.Settings_RightView)
+        Me.Settings_RightViewPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_RightViewPanel.Location = New System.Drawing.Point(367, 16)
+        Me.Settings_RightViewPanel.Name = "Settings_RightViewPanel"
+        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightViewPanel, 3)
+        Me.Settings_RightViewPanel.Size = New System.Drawing.Size(324, 121)
+        Me.Settings_RightViewPanel.TabIndex = 8
         '
         'SettingsForm
         '
@@ -698,7 +716,7 @@ Partial Class SettingsForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Settings_CancelButton
-        Me.ClientSize = New System.Drawing.Size(698, 550)
+        Me.ClientSize = New System.Drawing.Size(724, 550)
         Me.Controls.Add(Me.Settings_BottomDescLabel)
         Me.Controls.Add(Me.Settings_ActionsPanel)
         Me.Controls.Add(Me.Settings_AdvancedBox)
@@ -729,6 +747,8 @@ Partial Class SettingsForm
         Me.Settings_AdvancedBox.ResumeLayout(False)
         Me.Settings_AdvancedBox.PerformLayout()
         CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Settings_LeftViewPanel.ResumeLayout(False)
+        Me.Settings_RightViewPanel.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -786,4 +806,6 @@ Partial Class SettingsForm
     Friend WithEvents Settings_ToggleMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_RightReloadButton As System.Windows.Forms.Button
     Friend WithEvents Settings_LeftReloadButton As System.Windows.Forms.Button
+    Friend WithEvents Settings_LeftViewPanel As System.Windows.Forms.Panel
+    Friend WithEvents Settings_RightViewPanel As System.Windows.Forms.Panel
 End Class
