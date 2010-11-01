@@ -1,7 +1,8 @@
 -- Create Synchronicity --
 * Information
 Languages:			English, French, German, Portuguese, Italian, Spanish, 
-					Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Estonian
+					Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
+					Estonian
 Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
 Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
