@@ -1,15 +1,15 @@
 -- Create Synchronicity --
 * Information
 Languages:			English, French, German, Portuguese, Italian, Spanish, 
-					Swedish, Dutch, Czech, Indonesian, Hebrew, Danish
+					Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Estonian
 Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
 Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
 					Dr. Beau Webber - Lab-Tools Ltd
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
-					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík,
-					Sergio Chiapperini, Gush Katif Laad, Bjørn Karlstrøm
+					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
+					Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule
 
 * Technical information
 License:			GNU GPL v3 or later (see "COPYING")
@@ -24,6 +24,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Nov. 01, 2010 - NEW: !Estonian translation, by Andres Aule. Aitäh!
 Oct. 29, 2010 - NEW: !Language selection screen at first launch.
 Oct. 29, 2010 - NEW: !Danish translation, by Bjørn Karlstrøm. Tak!
 
