@@ -3,6 +3,7 @@ danish;dansk;da
 deutsch;german;de
 dutch;nederlands;nt
 english;english;en
+estonian;eesti;et
 francais;french;fr
 hebrew;עִבְרִית;he
 indonesian;bahasa indonesia;id
