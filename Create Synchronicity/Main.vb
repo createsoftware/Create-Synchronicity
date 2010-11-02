@@ -143,6 +143,7 @@
             ConfigHandler.LogAppEvent("Worker thread started")
             MainFormInstance.ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
 
+            ReloadProfiles()
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
             If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
