@@ -539,7 +539,7 @@ Public Class MainForm
     End Function
 
     Function Main_SchedulerAlreadyRunning() As Boolean
-        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace("\"c, "|"c).ToLower
+        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace("\"c, "!"c).ToLower
 #If DEBUG Then
         ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
 #End If
@@ -547,7 +547,9 @@ Public Class MainForm
         Try
             Blocker = New Threading.Mutex(False, MutexName)
         Catch Ex As Threading.AbandonedMutexException
+#If DEBUG Then
             Interaction.ShowMsg("Abandoned mutex")
+#End If
             Return False
         End Try
 
