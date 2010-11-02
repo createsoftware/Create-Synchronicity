@@ -7,9 +7,6 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class AboutForm
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-
     Private Sub SetLinkArea(ByVal Link As LinkLabel)
         If Link.Text.IndexOf("\") = -1 Or Link.Text.IndexOf("/") = -1 Then Exit Sub
 

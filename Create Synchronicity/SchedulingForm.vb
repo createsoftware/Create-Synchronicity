@@ -2,7 +2,6 @@
 
 Public Class SchedulingForm
     Dim Handler As ProfileHandler
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
 
     Sub New(ByVal Name As String)
         ' This call is required by the Windows Form Designer.

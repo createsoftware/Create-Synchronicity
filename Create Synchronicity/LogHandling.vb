@@ -34,9 +34,6 @@ Class LogHandler
     Public DebugInfo As List(Of String)
 #End If
 
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-
     Private Disposed As Boolean
 
     Sub New(ByVal _LogName As String)

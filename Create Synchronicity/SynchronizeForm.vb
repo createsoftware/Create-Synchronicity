@@ -10,9 +10,6 @@ Public Class SynchronizeForm
     Dim Log As LogHandler
     Dim Handler As ProfileHandler
 
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-
     Dim ValidFiles As New Dictionary(Of String, Boolean)
     Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
     Dim IncludedPatterns As New List(Of FileNamePattern)

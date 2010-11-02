@@ -9,23 +9,15 @@
 Public Class MainForm
     Private Profiles As Dictionary(Of String, ProfileHandler)
 
-    Dim Blocker As Threading.Mutex = Nothing
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-
 #Region " Events "
-    Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        ''''''''''''''''''''''''''''''''
-        ' Read command line parameters '
-        ''''''''''''''''''''''''''''''''
-        Dim ArgsList As New List(Of String)(Environment.GetCommandLineArgs())
-        CommandLine.ReadArgs(ArgsList)
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
 
-        ''''''''''''''''''''''''''''''''''''''
-        ' Prepare MainForm and start logging '
-        ''''''''''''''''''''''''''''''''''''''
+        '''''''''''''''''''''
+        ' Prepare MainForm  '
+        '''''''''''''''''''''
         Me.Icon = ProgramConfig.GetIcon()
-        ConfigHandler.LogAppEvent("Program started")
         ConfigHandler.LogAppEvent(String.Format("Profiles will be loaded from {0}.", ProgramConfig.ConfigRootDir))
 #If DEBUG Then
         Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -58,36 +50,13 @@ Public Class MainForm
 
             ProgramConfig.SaveProgramSettings()
         End If
+    End Sub
 
-        ''''''''''''''''''''''''''
-        ' Display help if needed '
-        ''''''''''''''''''''''''''
-        ' Must comme after program settings are loaded.
-        If CommandLine.Help Then
-            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles are loaded from ""{2}"".{0}{0}Available commands:{0}    /help,{0}    /scheduler,{0}    /log,{0}    [/preview] [/quiet|/silent] /run ""ProfileName1|ProfileName2|ProfileName3[|...]""{0}{0}License information: See ""Release notes.txt"".{0}{0}Help: See http://synchronicity.sourceforge.net/help.html.{0}{0}You can help this software! See http://synchronicity.sourceforge.net/contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir), "Help!")
-            Application.Exit()
-            Exit Sub
-        End If
-
-        ''''''''''''''''''
-        ' Hide main form '
-        ''''''''''''''''''
+    Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.ShowStatusIcon()
             Main_ConcealForm()
-        End If
-
-        ''''''''''''''''''''''''''''
-        ' Check if single-instance '
-        ''''''''''''''''''''''''''''
-        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-            If Main_SchedulerAlreadyRunning() Then
-                ApplicationTimer.Stop()
-                ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
-                ExitApp()
-                Exit Sub
-            End If
         End If
 
         ''''''''''''''''''''
@@ -123,12 +92,6 @@ Public Class MainForm
 
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         Interaction.HideStatusIcon()
-        ConfigHandler.LogAppEvent("Program exited")
-
-        'Unlike ReleaseMutex(), Close() will only release the mutex if it Blocker holds it.
-        'Calling ReleaseMutex() would only work if the application was not already running, ie. that this instance did create the Mutex.
-        'Otherwise it ould raise and ApplicationException.
-        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -538,23 +501,6 @@ Public Class MainForm
         Return Main_Actions.SelectedItems(0).Text
     End Function
 
-    Function Main_SchedulerAlreadyRunning() As Boolean
-        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace("\"c, "!"c).ToLower
-#If DEBUG Then
-        ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
-#End If
-        
-        Try
-            Blocker = New Threading.Mutex(False, MutexName)
-        Catch Ex As Threading.AbandonedMutexException
-#If DEBUG Then
-            Interaction.ShowMsg("Abandoned mutex")
-#End If
-            Return False
-        End Try
-
-        Return (Not Blocker.WaitOne(0, False))
-    End Function
 
     Public Delegate Sub ExitAppCallBack()
     Public Sub ExitApp()

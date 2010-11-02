@@ -34,8 +34,6 @@ Public Class SyncingItem
     Public Type As TypeOfItem
     Public Action As TypeOfAction
 
-    Private Translation As LanguageHandler = LanguageHandler.GetSingleton
-
     Sub New(ByVal _Path As String, ByVal _Type As TypeOfItem, ByVal _Action As TypeOfAction)
         Path = _Path
         Type = _Type

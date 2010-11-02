@@ -1,7 +1,4 @@
 ﻿Public Class LanguageForm
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-
     Private Sub LanguageForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Icon = ProgramConfig.GetIcon()
 

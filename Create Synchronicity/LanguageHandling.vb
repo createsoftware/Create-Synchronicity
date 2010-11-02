@@ -7,8 +7,7 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class LanguageHandler
-    Private Shared Instance As LanguageHandler
-    Dim Configuration As ConfigHandler = ConfigHandler.GetSingleton
+    Private Shared Singleton As LanguageHandler
 
     Structure LanguageInfo
         Dim LocalName As String
@@ -16,13 +15,13 @@ Public Class LanguageHandler
     End Structure
 
     Protected Sub New()
-        Configuration.LoadProgramSettings()
-        IO.Directory.CreateDirectory(Configuration.LanguageRootDir)
+        ProgramConfig.LoadProgramSettings()
+        IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
 
         Strings = New Dictionary(Of String, String)
-        Dim DictFile As String = Configuration.LanguageRootDir & ConfigOptions.DirSep & Configuration.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
+        Dim DictFile As String = ProgramConfig.LanguageRootDir & ConfigOptions.DirSep & ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
 
-        If Not IO.File.Exists(DictFile) Then DictFile = Configuration.LanguageRootDir & ConfigOptions.DirSep & ConfigOptions.DefaultLanguage & ".lng"
+        If Not IO.File.Exists(DictFile) Then DictFile = ProgramConfig.LanguageRootDir & ConfigOptions.DirSep & ConfigOptions.DefaultLanguage & ".lng"
         If Not IO.File.Exists(DictFile) Then
             Interaction.ShowMsg("No language file found!")
         Else
@@ -49,8 +48,8 @@ Public Class LanguageHandler
     End Sub
 
     Public Shared Function GetSingleton(Optional ByVal Reload As Boolean = False) As LanguageHandler
-        If Reload Or (Instance Is Nothing) Then Instance = New LanguageHandler()
-        Return Instance
+        If Reload Or (Singleton Is Nothing) Then Singleton = New LanguageHandler()
+        Return Singleton
     End Function
 
     Dim Strings As Dictionary(Of String, String)
@@ -116,8 +115,8 @@ Public Class LanguageHandler
     Public Sub FillLanguageListBox(ByVal LanguagesComboBox As ComboBox)
         Dim LanguageProps As New Dictionary(Of String, LanguageHandler.LanguageInfo)
 
-        If IO.File.Exists(Configuration.LocalNamesFile) Then
-            Dim PropsReader As New IO.StreamReader(Configuration.LocalNamesFile)
+        If IO.File.Exists(ProgramConfig.LocalNamesFile) Then
+            Dim PropsReader As New IO.StreamReader(ProgramConfig.LocalNamesFile)
 
             While Not PropsReader.EndOfStream
                 Dim CurLanguage() As String = PropsReader.ReadLine.Split(";".ToCharArray)
@@ -134,13 +133,13 @@ Public Class LanguageHandler
         Dim SystemLanguageIndex As Integer = -1
         Dim ProgramLanguageIndex As Integer = -1
         Dim DefaultLanguageIndex As Integer = -1
-        Dim CurProgramLanguage As String = Configuration.GetProgramSetting(ConfigOptions.Language, "")
+        Dim CurProgramLanguage As String = ProgramConfig.GetProgramSetting(ConfigOptions.Language, "")
         Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
 
         'TODO: Duplicate code.
         LanguagesComboBox.Items.Clear()
         Dim LanguageFiles As New List(Of String)
-        For Each File As String In IO.Directory.GetFiles(Configuration.LanguageRootDir, "*.lng")
+        For Each File As String In IO.Directory.GetFiles(ProgramConfig.LanguageRootDir, "*.lng")
             Dim EnglishLanguageName As String = IO.Path.GetFileNameWithoutExtension(File)
 
             If EnglishLanguageName = CurProgramLanguage Then ProgramLanguageIndex = LanguagesComboBox.Items.Count
@@ -155,7 +154,7 @@ Public Class LanguageHandler
             End If
         Next
 
-        Configuration.LoadProgramSettings()
+        ProgramConfig.LoadProgramSettings()
         If ProgramLanguageIndex <> -1 Then
             LanguagesComboBox.SelectedIndex = ProgramLanguageIndex
         ElseIf SystemLanguageIndex <> -1 Then

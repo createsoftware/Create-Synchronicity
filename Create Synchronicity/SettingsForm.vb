@@ -13,8 +13,6 @@ Public Class SettingsForm
     Dim AdvancedSelection As Boolean = False 'Controls recursive selection.
     Dim ClickedRightTreeView As Boolean = False
 
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
     'Note:
     'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
     'The boolean value is stored as a * appended at the end of the file name.

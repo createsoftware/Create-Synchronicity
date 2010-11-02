@@ -56,7 +56,7 @@ Public Module ConfigOptions
 End Module
 
 Public Class ConfigHandler
-    Private Shared Instance As ConfigHandler
+    Private Shared Singleton As ConfigHandler
 
     Public ConfigRootDir As String
     Public LogRootDir As String
@@ -81,8 +81,8 @@ Public Class ConfigHandler
     End Sub
 
     Public Shared Function GetSingleton() As ConfigHandler
-        If Instance Is Nothing Then Instance = New ConfigHandler()
-        Return Instance
+        If Singleton Is Nothing Then Singleton = New ConfigHandler()
+        Return Singleton
     End Function
 
     Public Function GetConfigPath(ByVal Name As String) As String
@@ -206,8 +206,7 @@ Public Class ConfigHandler
         If Debug Or CommandLine.Silent Or CommandLine.Log Then
             Static UniqueID As String = Guid.NewGuid().ToString
 
-            Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
-            Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
+            Dim AppLog As New IO.StreamWriter(Singleton.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
             AppLog.WriteLine(String.Format("[{0}][{1}] {2}", UniqueID, Date.Now.ToString(), EventData))
             AppLog.Close()
         End If
@@ -229,9 +228,6 @@ Class ProfileHandler
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
 
     Private PredicateConfigMatchingList As Dictionary(Of String, String)
-
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
     Public Sub New(ByVal Name As String)
         ProfileName = Name
@@ -551,9 +547,6 @@ Structure ScheduleInfo
 End Structure
 
 Public Module Updates
-    Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
-    Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
-
     Dim Parent As MainForm = Nothing 'Used for Application.Exit call.
 
     Public Sub SetParent(ByVal ParentForm As MainForm)
