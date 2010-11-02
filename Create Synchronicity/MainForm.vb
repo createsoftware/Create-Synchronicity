@@ -69,6 +69,27 @@ Public Class MainForm
             Exit Sub
         End If
 
+        ''''''''''''''''''
+        ' Hide main form '
+        ''''''''''''''''''
+        If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+            Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
+            Interaction.ShowStatusIcon()
+            Main_ConcealForm()
+        End If
+
+        ''''''''''''''''''''''''''''
+        ' Check if single-instance '
+        ''''''''''''''''''''''''''''
+        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+            If Main_SchedulerAlreadyRunning() Then
+                ApplicationTimer.Stop()
+                ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
+                ExitApp()
+                Exit Sub
+            End If
+        End If
+
         ''''''''''''''''''''
         ' Look for updates '
         ''''''''''''''''''''
@@ -96,9 +117,6 @@ Public Class MainForm
         Main_RedoSchedulerRegistration()
 
         If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-            Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
-            Interaction.ShowStatusIcon()
-            Main_ConcealForm()
             ApplicationTimer.Start()
         End If
     End Sub
@@ -106,13 +124,11 @@ Public Class MainForm
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         Interaction.HideStatusIcon()
         ConfigHandler.LogAppEvent("Program exited")
-        Try
-            If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.ReleaseMutex()
-        Catch Ex As Exception
-#If DEBUG Then
-            Interaction.ShowMsg(Ex.ToString)
-#End If
-        End Try
+
+        'Unlike ReleaseMutex(), Close() will only release the mutex if it Blocker holds it.
+        'Calling ReleaseMutex() would only work if the application was not already running, ie. that this instance did create the Mutex.
+        'Otherwise it ould raise and ApplicationException.
+        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -266,14 +282,6 @@ Public Class MainForm
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
             If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-                If Main_SchedulerAlreadyRunning() Then
-                    ApplicationTimer.Stop()
-                    Interaction.ShowMsg("Already running")
-                    ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
-                    Application.Exit()
-                    Exit Sub
-                End If
-
                 ConfigHandler.LogAppEvent("Worker thread: Running as scheduler")
                 ReloadProfilesScheduler(ProfilesToRun)
             Else '(CommandLine.RunAs = CommandLine.RunMode.Queue): A list of profiles has been provided.
@@ -538,6 +546,7 @@ Public Class MainForm
         Try
             Blocker = New Threading.Mutex(False, MutexName)
         Catch Ex As Threading.AbandonedMutexException
+            Interaction.ShowMsg("Abandoned mutex")
             Return False
         End Try
 
@@ -546,6 +555,7 @@ Public Class MainForm
 
     Public Delegate Sub ExitAppCallBack()
     Public Sub ExitApp()
+        Me.Close()
         Application.Exit()
     End Sub
 #End Region
