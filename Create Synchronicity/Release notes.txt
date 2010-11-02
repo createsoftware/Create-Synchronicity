@@ -25,6 +25,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Nov. 02, 2010 - UPD: Complete rewrite of the threading system, for better efficiency and precision.
 Nov. 01, 2010 - NEW: !Estonian translation, by Andres Aule. Aitäh!
 Oct. 29, 2010 - NEW: !Language selection screen at first launch.
 Oct. 29, 2010 - NEW: !Danish translation, by Bjørn Karlstrøm. Tak!
