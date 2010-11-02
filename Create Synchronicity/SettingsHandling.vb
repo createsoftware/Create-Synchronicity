@@ -208,7 +208,7 @@ Public Class ConfigHandler
 
             Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
             Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
-            AppLog.WriteLine(String.Format("[{0}][{1}] {1}", UniqueID, Date.Now.ToString(), EventData))
+            AppLog.WriteLine(String.Format("[{0}][{1}] {2}", UniqueID, Date.Now.ToString(), EventData))
             AppLog.Close()
         End If
     End Sub
