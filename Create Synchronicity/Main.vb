@@ -62,7 +62,7 @@
             ProgramConfig.SaveProgramSettings()
         End If
 
-        If ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
+        If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
             Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start(True)
         End If
@@ -74,6 +74,7 @@
             Interaction.ShowStatusIcon()
             MainFormInstance.ApplicationTimer.Start()
             Application.Run()
+            Interaction.HideStatusIcon()
         Else
             Application.Run(MainFormInstance)
         End If
@@ -121,7 +122,7 @@
             If NeedToRunAtBootTime Then
                 ConfigHandler.RegisterBoot()
                 ConfigHandler.LogAppEvent("Registered program in startup list, trying to start scheduler")
-                If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler")
+                If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler /noupdates")
             Else
                 If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")

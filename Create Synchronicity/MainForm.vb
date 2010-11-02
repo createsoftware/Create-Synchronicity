@@ -8,12 +8,12 @@
 
 Public Class MainForm
 #Region " Events "
-    Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+
         Me.Icon = ProgramConfig.GetIcon()
 
-        '''''''''''''''''''''
-        ' Load translations '
-        '''''''''''''''''''''
         Translation.TranslateControl(Me)
         Translation.TranslateControl(Me.Main_ActionsMenu)
         Translation.TranslateControl(Me.StatusIconMenu)
@@ -22,16 +22,11 @@ Public Class MainForm
         Dim PreviousWidth As Integer = Main_AboutLinkLabel.Width
         Main_AboutLinkLabel.AutoSize = True
         Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
-
-        '''''''''''''''''''''''''''''''''''
-        ' Load profiles and start working '
-        '''''''''''''''''''''''''''''''''''
-        Main_ReloadConfigs()
-        RedoSchedulerRegistration()
     End Sub
 
-    Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        Interaction.HideStatusIcon()
+    Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Main_ReloadConfigs()
+        RedoSchedulerRegistration()
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
