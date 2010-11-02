@@ -204,9 +204,11 @@ Public Class ConfigHandler
 
     Public Shared Sub LogAppEvent(ByVal EventData As String)
         If Debug Or CommandLine.Silent Or CommandLine.Log Then
+            Static UniqueID As String = Guid.NewGuid().ToString
+
             Dim Instance As ConfigHandler = ConfigHandler.GetSingleton()
             Dim AppLog As New IO.StreamWriter(Instance.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
-            AppLog.WriteLine(String.Format("[{0}] {1}", Date.Now.ToString(), EventData))
+            AppLog.WriteLine(String.Format("[{0}][{1}] {1}", UniqueID, Date.Now.ToString(), EventData))
             AppLog.Close()
         End If
     End Sub
