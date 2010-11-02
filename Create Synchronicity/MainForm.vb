@@ -92,14 +92,14 @@ Public Class MainForm
         ' Load profiles and start working '
         '''''''''''''''''''''''''''''''''''
         Main_ReloadConfigs()
-        Main_TryUnregStartAtBoot()
+        Main_RedoSchedulerRegistration()
 
-        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then 'TODO: Move to the tick event?
 #If 0 Then
             'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
-            'This code is not functional
-            Dim Blocker As New Threading.Mutex(False, Application.ExecutablePath.Replace("\"c, "_"c))
+            Dim Blocker As New Threading.Mutex(False, Application.ExecutablePath.Replace("\"c, "|"c) & " [[scheduler]]")
             If Not Blocker.WaitOne(0, False) Then
+                Blocker.Close()
                 ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
                 Application.Exit()
                 Exit Sub
@@ -257,7 +257,7 @@ Public Class MainForm
         Dim SchedForm As New SchedulingForm(CurrentProfile)
         SchedForm.ShowDialog()
         Main_ReloadConfigs()
-        Main_TryUnregStartAtBoot()
+        Main_RedoSchedulerRegistration()
     End Sub
 
     Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ApplicationTimer.Tick
@@ -499,7 +499,7 @@ Public Class MainForm
         Return True
     End Function
 
-    Sub Main_TryUnregStartAtBoot()
+    Sub Main_RedoSchedulerRegistration()
         Dim NeedToRunAtBootTime As Boolean = False
         For Each Profile As ProfileHandler In Profiles.Values
             NeedToRunAtBootTime = NeedToRunAtBootTime Or (Profile.Scheduler.Frequency <> ScheduleInfo.NEVER)
@@ -510,6 +510,7 @@ Public Class MainForm
             If NeedToRunAtBootTime Then
                 ConfigHandler.LogAppEvent("Registered program in startup list")
                 ConfigHandler.RegisterBoot()
+
             Else
                 If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")
