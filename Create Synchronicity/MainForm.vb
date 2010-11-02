@@ -9,6 +9,7 @@
 Public Class MainForm
     Private Profiles As Dictionary(Of String, ProfileHandler)
 
+    Dim Blocker As Threading.Mutex = Nothing
     Dim Translation As LanguageHandler = LanguageHandler.GetSingleton
     Dim ProgramConfig As ConfigHandler = ConfigHandler.GetSingleton
 
@@ -94,19 +95,6 @@ Public Class MainForm
         Main_ReloadConfigs()
         Main_RedoSchedulerRegistration()
 
-        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then 'TODO: Move to the tick event?
-#If 0 Then
-            'TODO: Register a mutex to prevent multi-instances scheduler. Decide if this should also run in RELEASE mode.
-            Dim Blocker As New Threading.Mutex(False, Application.ExecutablePath.Replace("\"c, "|"c) & " [[scheduler]]")
-            If Not Blocker.WaitOne(0, False) Then
-                Blocker.Close()
-                ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
-                Application.Exit()
-                Exit Sub
-            End If
-#End If
-        End If
-
         If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
             Interaction.StatusIcon.ContextMenuStrip = StatusIconMenu
             Interaction.ShowStatusIcon()
@@ -118,6 +106,13 @@ Public Class MainForm
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         Interaction.HideStatusIcon()
         ConfigHandler.LogAppEvent("Program exited")
+        Try
+            If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.ReleaseMutex()
+        Catch Ex As Exception
+#If DEBUG Then
+            Interaction.ShowMsg(Ex.ToString)
+#End If
+        End Try
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -271,6 +266,14 @@ Public Class MainForm
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
             If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+                If Main_SchedulerAlreadyRunning() Then
+                    ApplicationTimer.Stop()
+                    Interaction.ShowMsg("Already running")
+                    ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
+                    Application.Exit()
+                    Exit Sub
+                End If
+
                 ConfigHandler.LogAppEvent("Worker thread: Running as scheduler")
                 ReloadProfilesScheduler(ProfilesToRun)
             Else '(CommandLine.RunAs = CommandLine.RunMode.Queue): A list of profiles has been provided.
@@ -526,9 +529,23 @@ Public Class MainForm
         Return Main_Actions.SelectedItems(0).Text
     End Function
 
+    Function Main_SchedulerAlreadyRunning() As Boolean
+        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace("\"c, "|"c).ToLower
+#If DEBUG Then
+        ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
+#End If
+        
+        Try
+            Blocker = New Threading.Mutex(False, MutexName)
+        Catch Ex As Threading.AbandonedMutexException
+            Return False
+        End Try
+
+        Return (Not Blocker.WaitOne(0, False))
+    End Function
+
     Public Delegate Sub ExitAppCallBack()
     Public Sub ExitApp()
-        Me.Close()
         Application.Exit()
     End Sub
 #End Region
