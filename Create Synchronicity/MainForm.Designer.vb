@@ -136,9 +136,9 @@ Partial Class MainForm
         Me.Main_InfoLayout.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.[Single]
         Me.Main_InfoLayout.ColumnCount = 4
         Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.0!))
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70.0!))
         Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.0!))
+        Me.Main_InfoLayout.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
         Me.Main_InfoLayout.Controls.Add(Me.Main_TimeOffset, 3, 2)
         Me.Main_InfoLayout.Controls.Add(Me.Main_Scheduling, 1, 2)
         Me.Main_InfoLayout.Controls.Add(Me.Main_SchedulingLabel, 0, 2)
@@ -163,7 +163,6 @@ Partial Class MainForm
         Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
         Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
         Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.Main_InfoLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.Main_InfoLayout.Size = New System.Drawing.Size(331, 142)
         Me.Main_InfoLayout.TabIndex = 0
         '
@@ -171,9 +170,10 @@ Partial Class MainForm
         '
         Me.Main_TimeOffset.AutoSize = True
         Me.Main_TimeOffset.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_TimeOffset.Location = New System.Drawing.Point(284, 57)
+        Me.Main_TimeOffset.Font = New System.Drawing.Font("Verdana", 7.0!)
+        Me.Main_TimeOffset.Location = New System.Drawing.Point(296, 57)
         Me.Main_TimeOffset.Name = "Main_TimeOffset"
-        Me.Main_TimeOffset.Size = New System.Drawing.Size(43, 27)
+        Me.Main_TimeOffset.Size = New System.Drawing.Size(31, 27)
         Me.Main_TimeOffset.TabIndex = 15
         Me.Main_TimeOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -181,9 +181,10 @@ Partial Class MainForm
         '
         Me.Main_Scheduling.AutoSize = True
         Me.Main_Scheduling.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_Scheduling.Font = New System.Drawing.Font("Verdana", 7.0!)
         Me.Main_Scheduling.Location = New System.Drawing.Point(104, 57)
         Me.Main_Scheduling.Name = "Main_Scheduling"
-        Me.Main_Scheduling.Size = New System.Drawing.Size(67, 27)
+        Me.Main_Scheduling.Size = New System.Drawing.Size(79, 27)
         Me.Main_Scheduling.TabIndex = 14
         Me.Main_Scheduling.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -246,9 +247,10 @@ Partial Class MainForm
         '
         Me.Main_FileTypes.AutoSize = True
         Me.Main_FileTypes.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_FileTypes.Location = New System.Drawing.Point(284, 29)
+        Me.Main_FileTypes.Font = New System.Drawing.Font("Verdana", 7.0!)
+        Me.Main_FileTypes.Location = New System.Drawing.Point(296, 29)
         Me.Main_FileTypes.Name = "Main_FileTypes"
-        Me.Main_FileTypes.Size = New System.Drawing.Size(43, 27)
+        Me.Main_FileTypes.Size = New System.Drawing.Size(31, 27)
         Me.Main_FileTypes.TabIndex = 7
         Me.Main_FileTypes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -256,7 +258,7 @@ Partial Class MainForm
         '
         Me.Main_FileTypesLabel.AutoSize = True
         Me.Main_FileTypesLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_FileTypesLabel.Location = New System.Drawing.Point(178, 29)
+        Me.Main_FileTypesLabel.Location = New System.Drawing.Point(190, 29)
         Me.Main_FileTypesLabel.Name = "Main_FileTypesLabel"
         Me.Main_FileTypesLabel.Size = New System.Drawing.Size(99, 27)
         Me.Main_FileTypesLabel.TabIndex = 6
@@ -267,9 +269,10 @@ Partial Class MainForm
         '
         Me.Main_Method.AutoSize = True
         Me.Main_Method.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_Method.Font = New System.Drawing.Font("Verdana", 7.0!)
         Me.Main_Method.Location = New System.Drawing.Point(104, 29)
         Me.Main_Method.Name = "Main_Method"
-        Me.Main_Method.Size = New System.Drawing.Size(67, 27)
+        Me.Main_Method.Size = New System.Drawing.Size(79, 27)
         Me.Main_Method.TabIndex = 5
         Me.Main_Method.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -288,9 +291,10 @@ Partial Class MainForm
         '
         Me.Main_LimitedCopy.AutoSize = True
         Me.Main_LimitedCopy.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_LimitedCopy.Location = New System.Drawing.Point(284, 1)
+        Me.Main_LimitedCopy.Font = New System.Drawing.Font("Verdana", 7.0!)
+        Me.Main_LimitedCopy.Location = New System.Drawing.Point(296, 1)
         Me.Main_LimitedCopy.Name = "Main_LimitedCopy"
-        Me.Main_LimitedCopy.Size = New System.Drawing.Size(43, 27)
+        Me.Main_LimitedCopy.Size = New System.Drawing.Size(31, 27)
         Me.Main_LimitedCopy.TabIndex = 3
         Me.Main_LimitedCopy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -298,7 +302,7 @@ Partial Class MainForm
         '
         Me.Main_LimitedCopyLabel.AutoSize = True
         Me.Main_LimitedCopyLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_LimitedCopyLabel.Location = New System.Drawing.Point(178, 1)
+        Me.Main_LimitedCopyLabel.Location = New System.Drawing.Point(190, 1)
         Me.Main_LimitedCopyLabel.Name = "Main_LimitedCopyLabel"
         Me.Main_LimitedCopyLabel.Size = New System.Drawing.Size(99, 27)
         Me.Main_LimitedCopyLabel.TabIndex = 2
@@ -309,9 +313,10 @@ Partial Class MainForm
         '
         Me.Main_Name.AutoSize = True
         Me.Main_Name.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Main_Name.Font = New System.Drawing.Font("Verdana", 7.0!)
         Me.Main_Name.Location = New System.Drawing.Point(104, 1)
         Me.Main_Name.Name = "Main_Name"
-        Me.Main_Name.Size = New System.Drawing.Size(67, 27)
+        Me.Main_Name.Size = New System.Drawing.Size(79, 27)
         Me.Main_Name.TabIndex = 1
         Me.Main_Name.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -330,7 +335,7 @@ Partial Class MainForm
         '
         Me.Main_TimeOffsetLabel.AutoSize = True
         Me.Main_TimeOffsetLabel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Main_TimeOffsetLabel.Location = New System.Drawing.Point(178, 57)
+        Me.Main_TimeOffsetLabel.Location = New System.Drawing.Point(190, 57)
         Me.Main_TimeOffsetLabel.Name = "Main_TimeOffsetLabel"
         Me.Main_TimeOffsetLabel.Size = New System.Drawing.Size(99, 27)
         Me.Main_TimeOffsetLabel.TabIndex = 12
