@@ -27,6 +27,7 @@ Public Class MainForm
         ' Load profiles and start working '
         '''''''''''''''''''''''''''''''''''
         Main_ReloadConfigs()
+        RedoSchedulerRegistration()
     End Sub
 
     Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed

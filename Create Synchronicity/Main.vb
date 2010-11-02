@@ -121,8 +121,7 @@
             If NeedToRunAtBootTime Then
                 ConfigHandler.RegisterBoot()
                 ConfigHandler.LogAppEvent("Registered program in startup list, trying to start scheduler")
-                ' TODO: The started app takes focus anyway.
-                'If CommandLine.RunAs = CommandLine.RunMode.Normal Then Microsoft.VisualBasic.Interaction.Shell(Application.ExecutablePath & " /scheduler", Microsoft.VisualBasic.AppWinStyle.NormalNoFocus)
+                If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler")
             Else
                 If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")
