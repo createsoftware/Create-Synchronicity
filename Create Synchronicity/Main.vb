@@ -205,10 +205,12 @@
             ProfilesToRun.RemoveAt(0)
 
             If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, False, True)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, True)
+                SyncForm.StartSynchronization(False)
                 ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
             Else
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, CommandLine.ShowPreview, False, CommandLine.Quiet)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, CommandLine.ShowPreview, CommandLine.Quiet)
+                SyncForm.StartSynchronization(False)
             End If
         End If
     End Sub

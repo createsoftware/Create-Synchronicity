@@ -43,7 +43,7 @@ Public Class SynchronizeForm
     End Structure
 
     Dim ColumnSorter As ListViewColumnSorter
-    Dim DisplayPreview As Boolean, PreviewFinished As Boolean
+    Dim Preview As Boolean, PreviewFinished As Boolean
 
     Dim FullSyncThread As Threading.Thread
     Dim FirstSyncThread As Threading.Thread
@@ -62,20 +62,20 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal _DisplayPreview As Boolean, ByVal CalledShowModal As Boolean, ByVal _Quiet As Boolean)
+    Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         [STOP] = False
         Failed = False
-        Quiet = _Quiet
 
-        DisplayPreview = _DisplayPreview
-        PreviewFinished = Not DisplayPreview
+        Quiet = _Quiet
+        Preview = DisplayPreview
+        PreviewFinished = Not Preview
 
         SyncBtn.Enabled = False
-        SyncBtn.Visible = DisplayPreview
+        SyncBtn.Visible = Preview
 
         Status.BytesCopied = 0
         Status.FilesScanned = 0
@@ -107,10 +107,12 @@ Public Class SynchronizeForm
         SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
-        DoSynchronization(CalledShowModal)
+        Translation.TranslateControl(Me)
+        Me.Icon = ProgramConfig.GetIcon()
+        Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
     End Sub
 
-    Sub DoSynchronization(ByVal CalledShowModal As Boolean)
+    Sub StartSynchronization(ByVal CalledShowModal As Boolean)
         Handler.SetLastRun()
         ProgramConfig.CanGoOn = False
 
@@ -126,12 +128,12 @@ Public Class SynchronizeForm
             Interaction.ShowStatusIcon()
             Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName))
         Else
-            If Not CalledShowModal Then Me.Visible = True
+            If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
 
         FailureMsg = ""
         If Handler.ValidateConfigFile(False, FailureMsg) Then
-            If DisplayPreview Then
+            If Preview Then
                 PreviewList.Items.Clear()
                 FirstSyncThread.Start()
             Else
@@ -142,12 +144,6 @@ Public Class SynchronizeForm
             Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), FailureMsg)
             Me.Close()
         End If
-    End Sub
-
-    Private Sub SynchronizeForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Translation.TranslateControl(Me)
-        Me.Icon = ProgramConfig.GetIcon()
-        Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
     End Sub
 
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
