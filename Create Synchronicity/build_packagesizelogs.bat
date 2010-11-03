@@ -1,0 +1,1 @@
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\vbc.exe /out:"..\build\package-size-history.exe" package-size-history.vb
