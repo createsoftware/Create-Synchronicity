@@ -8,16 +8,16 @@
 
     <STAThread()> _
     Sub Main()
+        ' Must come first
         Application.EnableVisualStyles()
 
-        ' Load program configuration
-        ProgramConfig = ConfigHandler.GetSingleton
-        Translation = LanguageHandler.GetSingleton
+        ' Initialize ProgramConfig, Translation, Main, Updates 
+        InitializeSharedObjects()
 
         'Read command line settings
         CommandLine.ReadArgs(New List(Of String)(Environment.GetCommandLineArgs()))
 
-        ' Start the program itself
+        ' Start logging
         ConfigHandler.LogAppEvent("Program started, configuration loaded")
         ConfigHandler.LogAppEvent(String.Format("Profiles will be loaded from {0}.", ProgramConfig.ConfigRootDir))
 #If DEBUG Then
@@ -32,36 +32,14 @@
             End If
         End If
 
-        ' Create MainForm
-        MainFormInstance = New MainForm()
-        AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf ApplicationTimer_Tick
-
-        'Run preliminary checks & initializations
-        IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
-        IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
-        IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
-
-        Interaction.LoadStatusIcon()
-        Updates.SetParent(MainFormInstance)
-
+        ' Setup settings
+        ReloadProfiles()
         ProgramConfig.LoadProgramSettings()
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
-            If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
-                Application.Run(New LanguageForm)
-                Translation = LanguageHandler.GetSingleton(True)
-            End If
-
-            If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
-                If Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
-                Else
-                    ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
-                End If
-            End If
-
-            ProgramConfig.SaveProgramSettings()
+            HandleFirstRun()
         End If
 
+        ' Look for updates
         If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
             Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start(True)
@@ -69,19 +47,59 @@
 
         If CommandLine.Help Then
             Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles are loaded from ""{2}"".{0}{0}Available commands:{0}    /help,{0}    /scheduler,{0}    /log,{0}    [/preview] [/quiet|/silent] /run ""ProfileName1|ProfileName2|ProfileName3[|...]""{0}{0}License information: See ""Release notes.txt"".{0}{0}Help: See http://synchronicity.sourceforge.net/help.html.{0}{0}You can help this software! See http://synchronicity.sourceforge.net/contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir), "Help!")
-        ElseIf CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-            Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
-            Interaction.ShowStatusIcon()
-            MainFormInstance.ApplicationTimer.Start()
-            Application.Run()
-            Interaction.HideStatusIcon()
         Else
-            Application.Run(MainFormInstance)
+            If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+                Interaction.ShowStatusIcon()
+                MainFormInstance.ApplicationTimer.Start()
+                Application.Run()
+                Interaction.HideStatusIcon()
+            Else
+                Application.Run(MainFormInstance)
+            End If
         End If
 
-        'Calling ReleaseMutex would be the same, since Blocker necessary holds it at this point, otherwise the app would have closed already.
+        'Calling ReleaseMutex would be the same, since Blocker necessary holds the mutex at this point (otherwise the app would have closed already).
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
         ConfigHandler.LogAppEvent("Program exited")
+    End Sub
+
+    Sub InitializeSharedObjects()
+        ' Load program configuration
+        ProgramConfig = ConfigHandler.GetSingleton
+        Translation = LanguageHandler.GetSingleton
+
+        ' Create required folders
+        IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
+        IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
+
+        ' Create MainForm
+        MainFormInstance = New MainForm()
+        AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf ApplicationTimer_Tick
+
+        'Load status icon
+        Interaction.LoadStatusIcon()
+        Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
+
+        'Give updates a way to notify exit
+        Updates.SetParent(MainFormInstance) 'TODO: CHeck if a callback is really needed
+    End Sub
+
+    Sub HandleFirstRun()
+        If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+            Application.Run(New LanguageForm)
+            Translation = LanguageHandler.GetSingleton(True)
+        End If
+
+        If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
+            If Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
+            Else
+                ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
+            End If
+        End If
+
+        ProgramConfig.SaveProgramSettings()
     End Sub
 
     Sub ReloadProfiles()
@@ -143,7 +161,6 @@
             ConfigHandler.LogAppEvent("Worker thread started")
             MainFormInstance.ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
 
-            ReloadProfiles()
             ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
 
             If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
@@ -243,9 +260,6 @@
         Next
 
         'Tracker #3000728
-        'Check this comparison function (ordering and first item) -- Done ; it's cool.
         ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
     End Sub
-
-
 End Module
