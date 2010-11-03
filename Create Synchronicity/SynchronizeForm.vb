@@ -69,6 +69,7 @@ Public Class SynchronizeForm
         ' Add any initialization after the InitializeComponent() call.
         [STOP] = False
         Failed = False
+        Quiet = _Quiet
 
         DisplayPreview = _DisplayPreview
         PreviewFinished = Not DisplayPreview
@@ -106,10 +107,13 @@ Public Class SynchronizeForm
         SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
 
         Me.CreateHandle()
+        DoSynchronization(CalledShowModal)
+    End Sub
+
+    Sub DoSynchronization(ByVal CalledShowModal As Boolean)
         Handler.SetLastRun()
         ProgramConfig.CanGoOn = False
 
-        Quiet = _Quiet
         If Quiet Then
             Me.Visible = False
 
@@ -120,9 +124,9 @@ Public Class SynchronizeForm
             Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
             Interaction.ShowStatusIcon()
-            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), ConfigName))
-        ElseIf Not CalledShowModal Then
-            Me.Visible = True
+            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName))
+        Else
+            If Not CalledShowModal Then Me.Visible = True
         End If
 
         FailureMsg = ""
