@@ -111,6 +111,7 @@
         Next
     End Sub
 
+#Region "Scheduling"
     Function SchedulerAlreadyRunning() As Boolean
         Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace("\"c, "!"c).ToLower
 #If DEBUG Then
@@ -151,7 +152,6 @@
             Interaction.ShowMsg(Translation.Translate("\UNREG_ERROR"), Translation.Translate("\ERROR"), MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
-
 
     Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Static ProfilesToRun As List(Of KeyValuePair(Of Date, String))
@@ -262,4 +262,5 @@
         'Tracker #3000728
         ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
     End Sub
+#End Region
 End Module
