@@ -57,6 +57,8 @@ Public Class SynchronizeForm
     Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
     Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
+    Friend Event OnFormClosedAfterSyncFinished()
+
     'Not evaluating file size gives better performance (See FileLen_Speed_Test.vb for tests):
     'With size evaluation: 1'20, 46'', 36'', 35'', 31''
     'Without:                    41'', 42'', 26'', 29''
@@ -153,6 +155,7 @@ Public Class SynchronizeForm
         RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
         Interaction.StatusIcon.Text = Translation.Translate("\WAITING")
+        RaiseEvent OnFormClosedAfterSyncFinished()
     End Sub
 
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
