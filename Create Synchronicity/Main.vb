@@ -50,6 +50,13 @@
         Else
             If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                 Interaction.ShowStatusIcon()
+
+                If CommandLine.RunAs = CommandLine.RunMode.Queue Then
+                    AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf ProcessProfilesQueue
+                ElseIf CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+                    AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf Scheduling_Tick
+                End If
+
                 MainFormInstance.ApplicationTimer.Start()
                 Application.Run()
                 Interaction.HideStatusIcon()
@@ -75,7 +82,6 @@
 
         ' Create MainForm
         MainFormInstance = New MainForm()
-        AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf ApplicationTimer_Tick
 
         'Load status icon
         Interaction.LoadStatusIcon()
@@ -153,64 +159,76 @@
         End Try
     End Sub
 
-    Private Sub ApplicationTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Static ProfilesToRun As List(Of KeyValuePair(Of Date, String))
+    Sub ProcessProfilesQueue(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        MainFormInstance.ApplicationTimer.Stop()
+        MainFormInstance.ApplicationTimer.Interval = 2000
 
-        If ProfilesToRun Is Nothing Then
-            ProgramConfig.CanGoOn = False 'Stop tick events from happening
-            ConfigHandler.LogAppEvent("Worker thread started")
-            MainFormInstance.ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
+        Static ProfilesQueue As List(Of String) = Nothing
 
-            ProfilesToRun = New List(Of KeyValuePair(Of Date, String))
+        If ProfilesQueue Is Nothing Then
+            ProfilesQueue = New List(Of String)
 
-            If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-                ConfigHandler.LogAppEvent("Worker thread: Running as scheduler")
-                ReloadProfilesScheduler(ProfilesToRun)
-            Else '(CommandLine.RunAs = CommandLine.RunMode.Queue): A list of profiles has been provided.
-                ConfigHandler.LogAppEvent("Worker thread: Running as batch sync engine")
-                For Each Profile As String In CommandLine.TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
-                    If Profiles.ContainsKey(Profile) Then
-                        If Profiles(Profile).ValidateConfigFile() Then
-                            ConfigHandler.LogAppEvent("Worker thread: Registered profile for immediate run: " & Profile)
-                            ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Date.Now.AddDays(-1), Profile)) 'Make sure it runs immediately
-                        Else
-                            Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
-                        End If
+            ConfigHandler.LogAppEvent("Profiles queue: Queue created.")
+            For Each Profile As String In CommandLine.TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
+                If Profiles.ContainsKey(Profile) Then
+                    If Profiles(Profile).ValidateConfigFile() Then
+                        ConfigHandler.LogAppEvent("Profiles queue: Registered profile " & Profile)
+                        ProfilesQueue.Add(Profile)
                     Else
-                        Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
+                        Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
                     End If
-                Next
-            End If
+                Else
+                    Interaction.ShowMsg(Translation.Translate("\INVALID_PROFILE"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
+                End If
+            Next
+        End If
+
+        If ProfilesQueue.Count = 0 Then
+            ConfigHandler.LogAppEvent("Profiles queue: Synced all profiles.")
+            Application.Exit()
+        Else
+            Dim SyncForm As New SynchronizeForm(ProfilesQueue(0), CommandLine.ShowPreview, CommandLine.Quiet)
+            AddHandler SyncForm.OnFormClosedAfterSyncFinished, Sub() MainFormInstance.ApplicationTimer.Start()
+            SyncForm.StartSynchronization(False)
+            ProfilesQueue.RemoveAt(0)
+        End If
+    End Sub
+
+    Private Sub Scheduling_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Static ScheduledProfiles As List(Of KeyValuePair(Of Date, String)) = Nothing
+
+        If ScheduledProfiles Is Nothing Then
+            ProgramConfig.CanGoOn = False 'Stop tick events from happening
+            MainFormInstance.ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
+            ScheduledProfiles = New List(Of KeyValuePair(Of Date, String))
+
+            ConfigHandler.LogAppEvent("Scheduler: Started application timer.")
+            ReloadProfilesScheduler(ScheduledProfiles)
 
             ProgramConfig.CanGoOn = True
         End If
 
         If ProgramConfig.CanGoOn = False Then Exit Sub 'Don't start next sync yet.
-        If ProfilesToRun.Count = 0 Then
-            Interaction.HideStatusIcon()
-            ConfigHandler.LogAppEvent("Worker thread: Synced all profiles.")
+
+        ReloadProfilesScheduler(ScheduledProfiles)
+        If ScheduledProfiles.Count = 0 Then
+            ConfigHandler.LogAppEvent("Scheduler: No profiles left to run, exiting.")
             Application.Exit()
             Exit Sub
-        End If
+        Else
+            Dim NextRun As Date = ScheduledProfiles(0).Key
+            Dim NextInQueue As KeyValuePair(Of Date, String) = ScheduledProfiles(0) 'TODO: See how the reference is updated when calling SheduledProfiles.RemoveAt(0)
+            Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), NextInQueue.Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
+            Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
-        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then ReloadProfilesScheduler(ProfilesToRun)
+            If Date.Compare(NextInQueue.Key, Date.Now) <= 0 Then
+                ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Value)
 
-        Dim NextRun As Date = ProfilesToRun(0).Key
-        Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), ProfilesToRun(0).Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
-        Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
-
-        If Date.Compare(ProfilesToRun(0).Key, Date.Now) <= 0 Then
-            Dim NextInQueue As New KeyValuePair(Of Date, String)(ProfilesToRun(0).Key, ProfilesToRun(0).Value) 'Copy. TODO: Could be removed. -> Why?
-            ConfigHandler.LogAppEvent("Worker thread: Launching " & NextInQueue.Value)
-            ProfilesToRun.RemoveAt(0)
-
-            If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, True)
                 SyncForm.StartSynchronization(False)
-                ProfilesToRun.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
-            Else
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, CommandLine.ShowPreview, CommandLine.Quiet)
-                SyncForm.StartSynchronization(False)
+                ScheduledProfiles.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
+
+                ScheduledProfiles.RemoveAt(0)
             End If
         End If
     End Sub
@@ -245,11 +263,11 @@
                     If DateOfNextRun < ProfilesToRun(ProfileIndex).Key Then 'The schedules may be brought forward, never postponed.
                         ProfilesToRun.RemoveAt(ProfileIndex)
                         ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
-                        ConfigHandler.LogAppEvent("Worker thread: Re-registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
+                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                     End If
                 Else
                     ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
-                    ConfigHandler.LogAppEvent("Worker thread: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
+                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
                 End If
             End If
         Next

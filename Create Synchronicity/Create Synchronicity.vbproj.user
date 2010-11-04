@@ -16,7 +16,6 @@
     <ErrorReportUrlHistory />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartArguments>
-    </StartArguments>
+    <StartArguments>/run "Test0|Test1|Test 2|Test3"</StartArguments>
   </PropertyGroup>
 </Project>
