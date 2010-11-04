@@ -587,15 +587,15 @@ Public Class SynchronizeForm
                 Status.ActionsDone += 1
                 Log.LogAction(Entry, Side, True)
 
-            Catch StopEx As System.Threading.ThreadAbortException
+            Catch StopEx As Threading.ThreadAbortException
+                Exit Sub
 
             Catch ex As Exception
                 Log.HandleError(ex, Source & Entry.Path)
                 Log.LogAction(Entry, Side, False) 'Side parameter is only used for logging purposes.
-
-            Finally
-                If Not [STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
             End Try
+
+            If Not [STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
         Next
     End Sub
 

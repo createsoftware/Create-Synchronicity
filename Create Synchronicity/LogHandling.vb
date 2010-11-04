@@ -190,6 +190,10 @@ Class LogHandler
                 PutHTML(LogWriter, "</table>")
 
                 CloseHTMLHeaders(LogWriter)
+
+            Catch Ex As Threading.ThreadAbortException
+                Exit Sub
+
             Catch Ex As Exception
                 Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
 
