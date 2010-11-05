@@ -283,7 +283,6 @@ Partial Class SchedulingForm
         Me.Scheduling_Catchup.Tag = "\CATCHUP_MISSED_BACKUPS_TAG"
         Me.Scheduling_Catchup.Text = "\CATCHUP_MISSED_BACKUPS"
         Me.Scheduling_Catchup.UseVisualStyleBackColor = True
-        Me.Scheduling_Catchup.Visible = False
         '
         'SchedulingForm
         '

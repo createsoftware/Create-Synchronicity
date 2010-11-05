@@ -201,7 +201,7 @@
 
         If ScheduledProfiles Is Nothing Then
             ProgramConfig.CanGoOn = False 'Stop tick events from happening
-            MainFormInstance.ApplicationTimer.Interval = 20000 'First tick was forced by the very low ticking interval.
+            MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval.
             ScheduledProfiles = New List(Of KeyValuePair(Of Date, String))
 
             ConfigHandler.LogAppEvent("Scheduler: Started application timer.")
@@ -236,43 +236,32 @@
     End Sub
 
     Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String)))
-        ' Note: (TODO?)
-        ' This sub will update profiles scheduling settings
-        ' However, for the sake of simplicity, a change that would postpone a backup will not be detected.
-        ' This is a limitation due to the fact that we allow for catching up missed syncs.
-        ' It is therefore impossible - in the current state of things - to say if the backup was postponed:
-        '   1. due to its being rescheduled
-        '   2. due to its having been previously marked as needing to be caught up. 'TODO: Catching up is currently disabled (4.3)
-        ' It would be possible though to force updates of scheduling settings for profiles which are not 'catching-up' enabled.
-        ' Yet this would rather introduce a lack of coherence, unsuitable above all.
-
-        ' In fact, the point here is that if A was scheduled to run at time T, and was maked for catching up at time T0 < T
-        ' then when reloading the profile we don't know if it's been actually rescheduled, or if we're actually reading T. 
-
         ReloadProfiles() 'Needed! This allows to detect config changes.
+
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                Dim DateOfNextRun As Date = Profile.Value.Scheduler.NextRun()
-                'TODO: Catching up is currently disabled (5.0)
-                'Catchup problem: any newly scheduled profile is immediately caught up.
-                'Test catchup, and show a ballon to say which profiles will be catched up.
+                Dim NextRun As Date = Profile.Value.Scheduler.NextRun()
+                'TODO: Test catchup, and show a ballon to say which profiles will be catched up (only on the first time that the profile is marked for catching up)
                 '<catchup>
-                'If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, True) And DateOfNextRun - Profile.Value.GetLastRun() > Profile.Value.Scheduler.GetInterval(2) Then
-                '    DateOfNextRun = ScheduleInfo.DATE_CATCHUP
-                'End If
+                Dim LastRun As Date = Profile.Value.GetLastRun()
+                'TODO: Choose default value for catchup.
+                If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NextRun - LastRun > Profile.Value.Scheduler.GetInterval(2) Then
+                    NextRun = ScheduleInfo.DATE_CATCHUP
+                End If
                 '</catchup>
 
                 Dim ProfileName As String = Profile.Value.ProfileName
                 Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of KeyValuePair(Of Date, String))(Function(Item As KeyValuePair(Of Date, String)) Item.Value = ProfileName))
                 If ProfileIndex <> -1 Then
-                    If DateOfNextRun < ProfilesToRun(ProfileIndex).Key Then 'The schedules may be brought forward, never postponed.
+                    If NextRun <> ProfilesToRun(ProfileIndex).Key And ProfilesToRun(ProfileIndex).Key >= Date.Now() Then
+                        'Don't postpone already late backups
                         ProfilesToRun.RemoveAt(ProfileIndex)
-                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
-                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
+                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
+                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NextRun.ToString & ": " & Profile.Key)
                     End If
                 Else
-                    ProfilesToRun.Add(New KeyValuePair(Of Date, String)(DateOfNextRun, Profile.Key))
-                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & DateOfNextRun.ToString & ": " & Profile.Key)
+                    ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
+                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & NextRun.ToString & ": " & Profile.Key)
                 End If
             End If
         Next
