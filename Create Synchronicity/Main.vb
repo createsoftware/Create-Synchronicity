@@ -88,7 +88,7 @@
         Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
 
         'Give updates a way to notify exit
-        Updates.SetParent(MainFormInstance) 'TODO: CHeck if a callback is really needed
+        Updates.SetParent(MainFormInstance) 'TODO: Check if a callback is really needed
     End Sub
 
     Sub HandleFirstRun()
