@@ -6,6 +6,7 @@
 
     Private Blocker As Threading.Mutex = Nothing
 
+#Region "Main program loop, first run"
     <STAThread()> _
     Sub Main()
         ' Must come first
@@ -88,7 +89,7 @@
         Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
 
         'Give updates a way to notify exit
-        Updates.SetParent(MainFormInstance) 'TODO: Check if a callback is really needed
+        Updates.SetParent(MainFormInstance) 'Using a callback is really needed.
     End Sub
 
     Sub HandleFirstRun()
@@ -116,6 +117,7 @@
             Profiles.Add(Name, New ProfileHandler(Name))
         Next
     End Sub
+#End Region
 
 #Region "Scheduling"
     Function SchedulerAlreadyRunning() As Boolean
@@ -243,6 +245,9 @@
         '   2. due to its having been previously marked as needing to be caught up. 'TODO: Catching up is currently disabled (4.3)
         ' It would be possible though to force updates of scheduling settings for profiles which are not 'catching-up' enabled.
         ' Yet this would rather introduce a lack of coherence, unsuitable above all.
+
+        ' In fact, the point here is that if A was scheduled to run at time T, and was maked for catching up at time T0 < T
+        ' then when reloading the profile we don't know if it's been actually rescheduled, or if we're actually reading T. 
 
         ReloadProfiles() 'Needed! This allows to detect config changes.
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles

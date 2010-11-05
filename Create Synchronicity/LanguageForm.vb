@@ -1,7 +1,9 @@
 ﻿Public Class LanguageForm
-    Private Sub LanguageForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.Icon = ProgramConfig.GetIcon()
+    Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
 
+        Me.Icon = ProgramConfig.GetIcon()
         Translation.FillLanguageListBox(Lng_LanguagesList)
     End Sub
 
