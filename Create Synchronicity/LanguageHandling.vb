@@ -87,25 +87,9 @@ Public Class LanguageHandler
                 Item.Text = Translate(Item.Text)
                 Item.Tag = Translate(Item.Tag, ";")
             Next
-
-        ElseIf TypeOf Ctrl Is Button Then
-            CType(Ctrl, Button).Tag = Translate(CType(Ctrl, Button).Tag, ";")
-
-        ElseIf TypeOf Ctrl Is Label Then
-            CType(Ctrl, Label).Tag = Translate(CType(Ctrl, Label).Tag, ";")
-
-        ElseIf TypeOf Ctrl Is CheckBox Then
-            CType(Ctrl, CheckBox).Tag = Translate(CType(Ctrl, CheckBox).Tag, ";")
-
-        ElseIf TypeOf Ctrl Is RadioButton Then
-            CType(Ctrl, RadioButton).Tag = Translate(CType(Ctrl, RadioButton).Tag, ";")
-
-        ElseIf TypeOf Ctrl Is TreeView Then
-            CType(Ctrl, TreeView).Tag = Translate(CType(Ctrl, TreeView).Tag, ";")
-
-        ElseIf TypeOf Ctrl Is TextBox Then
-            CType(Ctrl, TextBox).Tag = Translate(CType(Ctrl, TextBox).Tag, ";")
         End If
+
+        Ctrl.Tag = Translate(Ctrl.Tag, ";")
 
         For Each ChildCtrl As Control In Ctrl.Controls
             TranslateControl(ChildCtrl)
