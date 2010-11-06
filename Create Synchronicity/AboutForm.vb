@@ -67,6 +67,7 @@ Public Class AboutForm
             ProgramConfig.SetProgramSetting(ConfigOptions.Language, SelectedLanguage)
 
             If LanguageChanged Then
+                ReloadNeeded = True
                 Translation = LanguageHandler.GetSingleton(True)
                 Interaction.ShowMsg(Translation.Translate("\RESTART"), Translation.Translate("\RESTART_NEEDED"))
             End If

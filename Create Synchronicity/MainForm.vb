@@ -12,6 +12,12 @@ Public Class MainForm
         ' This call is required by the designer.
         InitializeComponent()
 
+        If ReloadNeeded Then
+            Me.Location = MainFormInstance.Location 'Refering to MainFormInstance is still valid here
+            Me.StartPosition = FormStartPosition.Manual
+            ReloadNeeded = False
+        End If
+
         Me.Icon = ProgramConfig.GetIcon()
 
         Translation.TranslateControl(Me)
@@ -111,6 +117,7 @@ Public Class MainForm
     Private Sub Main_AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles Main_AboutLinkLabel.LinkClicked
         Dim About As New AboutForm
         About.ShowDialog()
+        If ReloadNeeded Then Me.Close()
     End Sub
 
     Private Sub Main_ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Main_ActionsMenu.Opening

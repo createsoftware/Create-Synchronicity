@@ -1,4 +1,5 @@
 ﻿Module MessageLoop
+    Friend ReloadNeeded As Boolean
     Friend MainFormInstance As MainForm
     Friend Translation As LanguageHandler
     Friend ProgramConfig As ConfigHandler
@@ -62,7 +63,10 @@
                 Application.Run()
                 Interaction.HideStatusIcon()
             Else
-                Application.Run(MainFormInstance)
+                Do
+                    If ReloadNeeded Then MainFormInstance = New MainForm
+                    Application.Run(MainFormInstance)
+                Loop While ReloadNeeded
             End If
         End If
 
