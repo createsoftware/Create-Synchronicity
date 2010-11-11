@@ -152,3 +152,4 @@ TOGGLE=Avanzato: Seleziona/Deseleziona questa cartella
 RELOAD_TREES=Caricare l'albero delle cartelle
 CATCHUP_MISSED_BACKUPS=Recuperare i Backup mancanti
 CATCHUP_MISSED_BACKUPS_TAG=Indica che cosa fare se il computer è spento durante il tempo pianificato;Controllato, recuperato, e sincronizzato appena possibile;Non controllato, attendere la prossima sincronizzazione pianificata.
+->CATCHING_UP=
