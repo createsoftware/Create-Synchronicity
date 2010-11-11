@@ -2,9 +2,9 @@ czech:1
 danish:1
 deutsch:1
 dutch:1
-english:1
+english:0
 estonian:1
-francais:1
+francais:0
 hebrew:18
 indonesian:1
 italian:1
