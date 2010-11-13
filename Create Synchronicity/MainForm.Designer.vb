@@ -423,7 +423,7 @@ Partial Class MainForm
         '
         Me.Main_AboutLinkLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Main_AboutLinkLabel.BackColor = System.Drawing.Color.White
-        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(234, 6)
+        Me.Main_AboutLinkLabel.Location = New System.Drawing.Point(230, 3)
         Me.Main_AboutLinkLabel.Name = "Main_AboutLinkLabel"
         Me.Main_AboutLinkLabel.Size = New System.Drawing.Size(118, 13)
         Me.Main_AboutLinkLabel.TabIndex = 1
@@ -466,8 +466,8 @@ Partial Class MainForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(355, 422)
-        Me.Controls.Add(Me.Main_Donate)
         Me.Controls.Add(Me.Main_AboutLinkLabel)
+        Me.Controls.Add(Me.Main_Donate)
         Me.Controls.Add(Me.Main_Actions)
         Me.Controls.Add(Me.Main_InfoPanel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
