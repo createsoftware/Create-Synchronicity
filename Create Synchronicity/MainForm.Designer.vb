@@ -73,11 +73,13 @@ Partial Class MainForm
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Main_Donate = New System.Windows.Forms.PictureBox()
+        Me.WarningIcon = New System.Windows.Forms.PictureBox()
         Me.Main_InfoPanel.SuspendLayout()
         Me.Main_InfoLayout.SuspendLayout()
         Me.Main_ActionsMenu.SuspendLayout()
         Me.StatusIconMenu.SuspendLayout()
         CType(Me.Main_Donate, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.WarningIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Main_Actions
@@ -461,11 +463,24 @@ Partial Class MainForm
         Me.Main_Donate.TabIndex = 3
         Me.Main_Donate.TabStop = False
         '
+        'WarningIcon
+        '
+        Me.WarningIcon.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.WarningIcon.BackColor = System.Drawing.Color.White
+        Me.WarningIcon.Image = CType(resources.GetObject("WarningIcon.Image"), System.Drawing.Image)
+        Me.WarningIcon.Location = New System.Drawing.Point(324, 232)
+        Me.WarningIcon.Name = "WarningIcon"
+        Me.WarningIcon.Size = New System.Drawing.Size(24, 24)
+        Me.WarningIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.WarningIcon.TabIndex = 4
+        Me.WarningIcon.TabStop = False
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(355, 422)
+        Me.Controls.Add(Me.WarningIcon)
         Me.Controls.Add(Me.Main_AboutLinkLabel)
         Me.Controls.Add(Me.Main_Donate)
         Me.Controls.Add(Me.Main_Actions)
@@ -481,6 +496,7 @@ Partial Class MainForm
         Me.Main_ActionsMenu.ResumeLayout(False)
         Me.StatusIconMenu.ResumeLayout(False)
         CType(Me.Main_Donate, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.WarningIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -522,4 +538,5 @@ Partial Class MainForm
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RenameMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Main_Donate As System.Windows.Forms.PictureBox
+    Friend WithEvents WarningIcon As System.Windows.Forms.PictureBox
 End Class

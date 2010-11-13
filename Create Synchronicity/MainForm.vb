@@ -30,10 +30,6 @@ Public Class MainForm
         Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
     End Sub
 
-    Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
-        Application.Exit()
-    End Sub
-
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Main_ReloadConfigs()
         RedoSchedulerRegistration()
@@ -184,12 +180,12 @@ Public Class MainForm
         Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
     End Sub
 
-    Private Sub Main_Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter
-        Main_Donate.BackColor = Drawing.Color.LightGray
+    Private Sub Main_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter, WarningIcon.MouseEnter
+        CType(sender, PictureBox).BackColor = Drawing.Color.LightGray
     End Sub
 
-    Private Sub Main_Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave
-        Main_Donate.BackColor = Drawing.Color.White
+    Private Sub Main_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave, WarningIcon.MouseLeave
+        CType(sender, PictureBox).BackColor = Drawing.Color.White
     End Sub
 #End Region
 
