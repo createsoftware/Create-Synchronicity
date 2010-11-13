@@ -474,6 +474,7 @@ Partial Class MainForm
         Me.WarningIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.WarningIcon.TabIndex = 4
         Me.WarningIcon.TabStop = False
+        Me.WarningIcon.Visible = False
         '
         'MainForm
         '
