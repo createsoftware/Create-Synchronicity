@@ -30,6 +30,10 @@ Public Class MainForm
         Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
     End Sub
 
+    Private Sub MainForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        Application.Exit()
+    End Sub
+
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Main_ReloadConfigs()
         RedoSchedulerRegistration()
