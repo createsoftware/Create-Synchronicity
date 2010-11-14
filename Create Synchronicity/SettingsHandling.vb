@@ -42,6 +42,7 @@ Public Module ConfigOptions
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
     Public Const AppLogName As String = "app.log"
+    'Public Const MessagesFileName As String = "messages.txt"
 
     Public Const EnqueuingSeparator As Char = "|"c
 #If LINUX Then
@@ -60,11 +61,12 @@ Public Class ConfigHandler
 
     Public ConfigRootDir As String
     Public LogRootDir As String
+    'Public MessagesFile As String
     Public MainConfigFile As String
 
     Public LanguageRootDir As String = Application.StartupPath & "\languages" 'TODO: Linux
     Public LocalNamesFile As String = LanguageRootDir & "\local-names.txt"
-    Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode, or when queuing multiple profiles).
+    Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode only, queuing uses callbacks).
 
 #If DEBUG Then
     Const Debug As Boolean = True
@@ -77,6 +79,7 @@ Public Class ConfigHandler
     Protected Sub New()
         ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
         LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
+        'MessagesFile = GetUserFilesRootDir() & ConfigOptions.MessagesFileName
         MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
     End Sub
 

@@ -180,11 +180,18 @@ Public Class MainForm
         Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
     End Sub
 
-    Private Sub Main_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter, WarningIcon.MouseEnter
+#If 0 Then
+    Private Sub WarningIcon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles WarningIcon.Click
+        If IO.File.Exists(ProgramConfig.MessagesFile) Then
+        End If
+    End Sub
+#End If
+
+    Private Sub Main_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter
         CType(sender, PictureBox).BackColor = Drawing.Color.LightGray
     End Sub
 
-    Private Sub Main_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave, WarningIcon.MouseLeave
+    Private Sub Main_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave
         CType(sender, PictureBox).BackColor = Drawing.Color.White
     End Sub
 #End Region
