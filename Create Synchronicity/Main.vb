@@ -7,7 +7,7 @@
 
     Private Blocker As Threading.Mutex = Nothing
 
-#Region "Main program loop, first run"
+#Region "Main program loop & first run"
     <STAThread()> _
     Sub Main()
         ' Must come first
