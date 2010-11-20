@@ -61,7 +61,7 @@
 
                 MainFormInstance.ApplicationTimer.Start()
                 Application.Run()
-                Interaction.HideStatusIcon()
+                Interaction.HideStatusIcon() 'TODO: Huh?
             Else
                 Do
                     If ReloadNeeded Then MainFormInstance = New MainForm
