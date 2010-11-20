@@ -18,6 +18,7 @@ Public Class MainForm
             ReloadNeeded = False
         End If
 
+        BuildIcons()
         Me.Icon = ProgramConfig.GetIcon()
 
         Translation.TranslateControl(Me)
@@ -204,7 +205,6 @@ Public Class MainForm
 
     Sub Main_ReloadConfigs()
         If Me.IsDisposed Then Exit Sub
-
         Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
 
         ReloadProfiles()
@@ -217,7 +217,7 @@ Public Class MainForm
             Dim NewItem As ListViewItem = Main_Actions.Items.Add(ProfileName)
 
             NewItem.Group = Main_Actions.Groups(1)
-            NewItem.ImageIndex = CInt(Profiles(ProfileName).GetSetting(ConfigOptions.Method))
+            NewItem.ImageIndex = CInt(Profiles(ProfileName).GetSetting(ConfigOptions.Method)) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
             NewItem.SubItems.Add(GetMethodName(ProfileName)).ForeColor = Drawing.Color.DarkGray
 
             Dim GroupName As String = Profiles(ProfileName).GetSetting(ConfigOptions.Group)
@@ -301,11 +301,24 @@ Public Class MainForm
         Return True
     End Function
 
-
     Function CurrentProfile() As String
         Return Main_Actions.SelectedItems(0).Text
     End Function
 
+    Sub BuildIcons()
+        For Id As Integer = 0 To Main_SyncIcons.Images.Count - 2
+            Dim NewImg As New Drawing.Bitmap(32, 32)
+            Dim Painter As Drawing.Graphics = Drawing.Graphics.FromImage(NewImg)
+
+            If Id < 2 Then
+                Painter.DrawImage(ScheduleMenuItem.Image, 0, 0, 16, 16) 'Not specifying the destination size makes everything blurry.
+            Else
+                Painter.DrawImage(ScheduleMenuItem.Image, 9, 6, 16, 16)
+            End If
+            Painter.DrawImageUnscaled(Main_SyncIcons.Images(Id), 0, 0)
+            Main_SyncIcons.Images.Add(NewImg)
+        Next
+    End Sub
 
     Public Delegate Sub ExitAppCallBack()
     Public Sub ExitApp()
@@ -313,5 +326,4 @@ Public Class MainForm
         Application.Exit()
     End Sub
 #End Region
-
 End Class
