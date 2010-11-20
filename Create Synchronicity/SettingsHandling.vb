@@ -582,7 +582,10 @@ Public Module Updates
             End If
         Catch Ex As InvalidOperationException
             'Some form couldn't close properly because of thread accesses
-            'TODO: SHouldn't happen anymore now, due to the rewriting of the message loop.
+            'TODO: Shouldn't happen anymore now, due to the rewriting of the message loop.
+#If DEBUG Then
+            Interaction.ShowMsg(Ex.ToString)
+#End If
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
 #If DEBUG Then

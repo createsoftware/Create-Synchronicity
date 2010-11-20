@@ -128,7 +128,7 @@ Public Class SynchronizeForm
             Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
             Interaction.ShowStatusIcon()
-            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName))
+            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName)) 'TODO: Handle catching up.
         Else
             If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
@@ -662,8 +662,7 @@ Public Class SynchronizeForm
         SyncPreviewList(Side, -1)
     End Sub
 
-    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: TBOptimized
-        ' TODO: Test this new function
+    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: Should be optimized, Linux
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
     End Function
 

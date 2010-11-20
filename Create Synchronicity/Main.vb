@@ -60,8 +60,8 @@
                 End If
 
                 MainFormInstance.ApplicationTimer.Start()
-                Application.Run()
-                Interaction.HideStatusIcon() 'TODO: Huh?
+                Application.Run() 'This call won't exit until Application.Exit is called from elsewhere.
+                Interaction.HideStatusIcon()
             Else
                 Do
                     If ReloadNeeded Then MainFormInstance = New MainForm
