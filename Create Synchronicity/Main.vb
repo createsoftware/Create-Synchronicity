@@ -230,7 +230,7 @@
             If Date.Compare(NextInQueue.NextRun, Date.Now) <= 0 Then
                 ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.NextRun = ScheduleInfo.DATE_CATCHUP)
                 SyncForm.StartSynchronization(False)
                 ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun()))
 
