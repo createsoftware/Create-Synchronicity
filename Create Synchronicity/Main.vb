@@ -201,12 +201,12 @@
     End Sub
 
     Private Sub Scheduling_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Static ScheduledProfiles As List(Of KeyValuePair(Of Date, String)) = Nothing
+        Static ScheduledProfiles As List(Of SchedulerEntry) = Nothing
 
         If ScheduledProfiles Is Nothing Then
             ProgramConfig.CanGoOn = False 'Stop tick events from happening
             MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval.
-            ScheduledProfiles = New List(Of KeyValuePair(Of Date, String))
+            ScheduledProfiles = New List(Of SchedulerEntry)
 
             ConfigHandler.LogAppEvent("Scheduler: Started application timer.")
             ReloadProfilesScheduler(ScheduledProfiles)
@@ -222,63 +222,65 @@
             Application.Exit()
             Exit Sub
         Else
-            Dim NextRun As Date = ScheduledProfiles(0).Key
-            Dim NextInQueue As KeyValuePair(Of Date, String) = ScheduledProfiles(0) 'TODO: See how the reference is updated when calling SheduledProfiles.RemoveAt(0)
-            Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), NextInQueue.Value, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
+            Dim NextRun As Date = ScheduledProfiles(0).NextRun
+            Dim NextInQueue As SchedulerEntry = ScheduledProfiles(0) 'TODO: See how the reference is updated when calling SheduledProfiles.RemoveAt(0)
+            Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), NextInQueue.Name, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
             Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
-            If Date.Compare(NextInQueue.Key, Date.Now) <= 0 Then
-                ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Value)
+            If Date.Compare(NextInQueue.NextRun, Date.Now) <= 0 Then
+                ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Value, False, True)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True)
                 SyncForm.StartSynchronization(False)
-                ScheduledProfiles.Add(New KeyValuePair(Of Date, String)(Profiles(NextInQueue.Value).Scheduler.NextRun(), NextInQueue.Value))
+                ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun()))
 
                 ScheduledProfiles.RemoveAt(0)
             End If
         End If
     End Sub
 
-    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of KeyValuePair(Of Date, String)))
+    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of SchedulerEntry))
         ReloadProfiles() 'Needed! This allows to detect config changes.
 
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-            If Profile.Value.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                Dim NextRun As Date = Profile.Value.Scheduler.NextRun()
-                'TODO: Test catchup, and show a ballon to say which profiles will be catched up (only on the first time that the profile is marked for catching up)
+            Dim Name As String = Profile.Key 'TODO: Handler.ProfileName was used in the predicate find function. Should be the same as Profile.Key
+            Dim Handler As ProfileHandler = Profile.Value
+            If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
+                Dim NextRun As Date = Handler.Scheduler.NextRun()
+                'TODO: Test catchup
+                'TODO: A message should appear when syncing starts.
                 '<catchup>
-                Dim LastRun As Date = Profile.Value.GetLastRun()
+                Dim LastRun As Date = Handler.GetLastRun()
                 'TODO: Choose default value for catchup.
-                If Profile.Value.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NextRun - LastRun > Profile.Value.Scheduler.GetInterval(2) Then
+                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NextRun - LastRun > Handler.Scheduler.GetInterval(2) Then
                     NextRun = ScheduleInfo.DATE_CATCHUP
                 End If
                 '</catchup>
 
-                Dim ProfileName As String = Profile.Value.ProfileName
-                Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of KeyValuePair(Of Date, String))(Function(Item As KeyValuePair(Of Date, String)) Item.Value = ProfileName))
+                Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of SchedulerEntry)(Function(Item As SchedulerEntry) Item.Name = Name))
                 If ProfileIndex <> -1 Then
-                    If NextRun <> ProfilesToRun(ProfileIndex).Key And ProfilesToRun(ProfileIndex).Key >= Date.Now() Then
+                    If NextRun <> ProfilesToRun(ProfileIndex).NextRun And ProfilesToRun(ProfileIndex).NextRun >= Date.Now() Then
                         'Don't postpone already late backups
                         ProfilesToRun.RemoveAt(ProfileIndex)
-                        ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
-                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NextRun.ToString & ": " & Profile.Key)
+                        ProfilesToRun.Add(New SchedulerEntry(Name, NextRun))
+                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NextRun.ToString & ": " & Name)
                     End If
                 Else
-                    ProfilesToRun.Add(New KeyValuePair(Of Date, String)(NextRun, Profile.Key))
-                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & NextRun.ToString & ": " & Profile.Key)
+                    ProfilesToRun.Add(New SchedulerEntry(Name, NextRun))
+                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & NextRun.ToString & ": " & Name)
                 End If
             End If
         Next
 
         'Remove deleted or disabled profiles
         For ProfileIndex As Integer = ProfilesToRun.Count - 1 To 0 Step -1
-            If Not Profiles.ContainsKey(ProfilesToRun(ProfileIndex).Value) OrElse Profiles(ProfilesToRun(ProfileIndex).Value).Scheduler.Frequency = ScheduleInfo.NEVER Then
+            If Not Profiles.ContainsKey(ProfilesToRun(ProfileIndex).Name) OrElse Profiles(ProfilesToRun(ProfileIndex).Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
                 ProfilesToRun.RemoveAt(ProfileIndex)
             End If
         Next
 
         'Tracker #3000728
-        ProfilesToRun.Sort(Function(First As KeyValuePair(Of Date, String), Second As KeyValuePair(Of Date, String)) First.Key.CompareTo(Second.Key))
+        ProfilesToRun.Sort(Function(First As SchedulerEntry, Second As SchedulerEntry) First.NextRun.CompareTo(Second.NextRun))
     End Sub
 #End Region
 End Module

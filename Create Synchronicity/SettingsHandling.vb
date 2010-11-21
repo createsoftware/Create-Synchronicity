@@ -56,6 +56,16 @@ Public Module ConfigOptions
     Public Const RegistryRootedBootKey As String = "HKEY_CURRENT_USER\" & RegistryBootKey
 End Module
 
+Structure SchedulerEntry
+    Dim Name As String
+    Dim NextRun As Date
+
+    Sub New(ByVal _Name As String, ByVal _NextRun As Date)
+        Name = _Name
+        NextRun = _NextRun
+    End Sub
+End Structure
+
 Public Class ConfigHandler
     Private Shared Singleton As ConfigHandler
 
