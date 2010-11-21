@@ -17,6 +17,7 @@ Public Class SynchronizeForm
     Dim ExcludedDirPatterns As New List(Of FileNamePattern)
 
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
+    Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
     Dim SingleTask As Boolean
     Dim [STOP] As Boolean
     Dim Failed As Boolean : Dim FailureMsg As String
@@ -64,7 +65,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean)
+    Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean, Optional ByVal _Catchup As Boolean = False)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -73,6 +74,7 @@ Public Class SynchronizeForm
         Failed = False
 
         Quiet = _Quiet
+        Catchup = _Catchup
         Preview = DisplayPreview
         PreviewFinished = Not Preview
 
@@ -115,7 +117,6 @@ Public Class SynchronizeForm
     End Sub
 
     Sub StartSynchronization(ByVal CalledShowModal As Boolean)
-        Handler.SetLastRun()
         ProgramConfig.CanGoOn = False
 
         If Quiet Then
@@ -128,13 +129,19 @@ Public Class SynchronizeForm
             Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
             Interaction.ShowStatusIcon()
-            Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName)) 'TODO: Handle catching up.
+            If Catchup Then
+                Dim LastRun As Date = Handler.GetLastRun()
+                Interaction.ShowBalloonTip(String.Format(Translation.Translate("\CATCHING_UP"), Handler.ProfileName, (Date.Now - LastRun).Days, (Date.Now - LastRun).Hours, LastRun.ToString))
+            Else
+                Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName))
+            End If
         Else
             If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
 
         FailureMsg = ""
         If Handler.ValidateConfigFile(False, FailureMsg) Then
+            Handler.SetLastRun() 'Only set LastRun when the synchronization actually happens.
             If Preview Then
                 PreviewList.Items.Clear()
                 FirstSyncThread.Start()
