@@ -144,7 +144,7 @@ Public Class MainForm
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
         Dim SettingsForm As New SettingsForm(CurrentProfile)
-        Main_SetVisible(False) : SettingsForm.ShowDialog() : Main_SetVisible(True)
+        SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub
 
