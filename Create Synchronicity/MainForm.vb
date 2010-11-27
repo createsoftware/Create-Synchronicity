@@ -12,7 +12,7 @@ Public Class MainForm
         ' This call is required by the designer.
         InitializeComponent()
 
-        ' Code (largely inspired) by <name here>
+        ' Code (largely inspired) by U.N. Owen (patch #)
         Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(MainFormAttributes, "").Split(","))
         If WindowSettings.Count = 4 Then
             Try
