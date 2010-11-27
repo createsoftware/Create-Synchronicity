@@ -12,11 +12,19 @@ Public Class MainForm
         ' This call is required by the designer.
         InitializeComponent()
 
-        If ReloadNeeded Then
-            Me.Location = MainFormInstance.Location 'Refering to MainFormInstance is still valid here
-            Me.StartPosition = FormStartPosition.Manual
-            ReloadNeeded = False
+        ' Code (largely inspired) by <name here>
+        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(MainFormAttributes, "").Split(","))
+        If WindowSettings.Count = 4 Then
+            Try
+                Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
+                Me.Size = New Drawing.Point(WindowSettings(2), WindowSettings(3))
+                Me.StartPosition = FormStartPosition.Manual
+            Catch
+                ' If any string->integer conversion fails (due to invalid syntax), then Me.StartPosition will have remained unchanged.
+            End Try
         End If
+
+        ReloadNeeded = False
 
         BuildIcons()
         Me.Icon = ProgramConfig.GetIcon()
@@ -29,6 +37,11 @@ Public Class MainForm
         Dim PreviousWidth As Integer = Main_AboutLinkLabel.Width
         Main_AboutLinkLabel.AutoSize = True
         Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
+    End Sub
+
+    Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Dim WindowAttributes As String = String.Format("{0},{1},{2},{3}", Me.Location.X, Me.Location.Y, Me.Size.Width, Me.Size.Height)
+        ProgramConfig.SetProgramSetting(ConfigOptions.MainFormAttributes, WindowAttributes)
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

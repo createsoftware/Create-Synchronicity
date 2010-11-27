@@ -37,6 +37,7 @@ Public Module ConfigOptions
     Public Const Language As String = "Language"
     Public Const DefaultLanguage As String = "english"
     Public Const AutoUpdates As String = "Auto updates"
+    Public Const MainFormAttributes As String = "Window size & position"
 
     Public Const ConfigFolderName As String = "config"
     Public Const LogFolderName As String = "log"
@@ -208,7 +209,13 @@ Public Class ConfigHandler
             ConfigString = ConfigString & Setting.Key & ":" & Setting.Value & ";"
         Next
 
-        My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
+        Try
+            My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
+        Catch
+#If DEBUG Then
+            Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
+#End If
+        End Try
     End Sub
 
     Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean

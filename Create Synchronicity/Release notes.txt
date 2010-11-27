@@ -7,6 +7,7 @@ Created on:			June 3, 2009
 Created by:			Clément Pit--Claudel (Create Software)
 Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
 					Dr. Beau Webber - Lab-Tools Ltd
+Patches:			U.N. Owen
 Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
 					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
 					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
@@ -25,6 +26,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Nov. 27, 2010 - UPD: Save main window location and size on exit (patch #3120708)
 Nov. 20, 2010 - UPD: Add a clock icon to identify scheduled profiles in the main window.
 Nov. 06, 2010 - UPD: No need to restart to change language anymore.
 Nov. 03, 2010 - UPD: !Auto-start the scheduler when needed, eg. after a change in scheduling settings.
