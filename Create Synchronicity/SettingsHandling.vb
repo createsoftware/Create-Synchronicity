@@ -37,7 +37,7 @@ Public Module ConfigOptions
     Public Const Language As String = "Language"
     Public Const DefaultLanguage As String = "english"
     Public Const AutoUpdates As String = "Auto updates"
-    Public Const MainFormAttributes As String = "Window size & position"
+    Public Const MainFormAttributes As String = "Window size and position"
 
     Public Const ConfigFolderName As String = "config"
     Public Const LogFolderName As String = "log"
