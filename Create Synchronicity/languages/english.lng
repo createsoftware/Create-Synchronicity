@@ -154,4 +154,5 @@ RELOAD_TREES=Load folder tree
 CATCHUP_MISSED_BACKUPS=Catch up missed backups
 CATCHUP_MISSED_BACKUPS_TAG=Indicates what to do if the computer was off at the scheduled time;Checked, catch up and sync as soon as possible; Unchecked, wait for next scheduled sync.
 CATCHING_UP=Create Synchronicity is catching up "{0}" (last run {1} day(s), {2} hour(s) ago ({3})).
-->FOLDER_MISSING=
+FOLDER_MISSING=Folder "{0}" does not exist. Would you like to create it?
+FOLDER_FAILED=Could not create folder "{0}".

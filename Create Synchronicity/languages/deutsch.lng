@@ -155,3 +155,4 @@ CATCHUP_MISSED_BACKUPS=Verpasste Sicherungen nachholen
 CATCHUP_MISSED_BACKUPS_TAG=Gibt an, was passieren soll, wenn der Computer zum geplanten Sicherungszeitpunkt
 ->CATCHING_UP=
 ->FOLDER_MISSING=
+->FOLDER_FAILED=

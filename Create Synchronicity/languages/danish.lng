@@ -155,3 +155,4 @@ CATCHUP_MISSED_BACKUPS=Udfør missede synkroniseringer
 CATCHUP_MISSED_BACKUPS_TAG=Fortæller hvad der skal gøres, hvis computeren var slukket på det skemalagte tidspunkt; hvis afkrydset, så skal synkroniseringen gennemføres så hurtigt som muligt; Hvis efterladt blank, så gennemføre synkroniseringen på næste skemalagte tidspunkt.
 ->CATCHING_UP=
 ->FOLDER_MISSING=
+->FOLDER_FAILED=

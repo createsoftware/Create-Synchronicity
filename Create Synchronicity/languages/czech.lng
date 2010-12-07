@@ -155,3 +155,4 @@ CATCHUP_MISSED_BACKUPS=Dohonit zmeškané zálohování
 CATCHUP_MISSED_BACKUPS_TAG=Signalizuje co dělat jestliže počítač byl vypnutý v plánovaném čase;Označeno, Dohonit a zálohovat co nejdříve; Neoznačeno, čekej na další plán.
 ->CATCHING_UP=
 ->FOLDER_MISSING=
+->FOLDER_FAILED=

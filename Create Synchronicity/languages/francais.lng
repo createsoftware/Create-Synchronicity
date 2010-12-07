@@ -154,4 +154,5 @@ RELOAD_TREES=Afficher l'arborescence
 CATCHUP_MISSED_BACKUPS=Rattraper les sauvegardes non réalisées
 CATCHUP_MISSED_BACKUPS_TAG=Indique le comportement à tenir si l'ordinateur était éteint à l'heure prévue;Coché, Create Synchronicity réalise dès que possible la synchronisation manquée, sans attendre l'éxecution planifiée suivante.
 CATCHING_UP=Create Synchronicity rattrape la synchronisation de "{0}" (dernière exécution il y a {1} jour(s), {2} heure(s) ({3})).
-->FOLDER_MISSING=
+FOLDER_MISSING=Le dossier "{0}" n'existe pas. Voulez-vous le créer?
+FOLDER_FAILED=Impossible de créer le dossier "{0}".

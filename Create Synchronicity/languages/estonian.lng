@@ -155,3 +155,4 @@ CATCHUP_MISSED_BACKUPS=Ärajäänud varunduskordade tasategemine
 CATCHUP_MISSED_BACKUPS_TAG=Näitab, mida tehakse siis, kui arvuti automaatvarundamiseks ette nähtud ajal ei töötanud;Kui siin on linnuke, käivitatakse automaatvarundamine niipea, kui võimalik.; Kui siin linnukest ei ole, oodatakse järgmise planeeritud sünkroniseerimiskorrani.
 ->CATCHING_UP=
 ->FOLDER_MISSING=
+->FOLDER_FAILED=
