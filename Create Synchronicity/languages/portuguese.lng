@@ -154,3 +154,4 @@ RELOAD_TREES=Carregar a árvore de pastas
 CATCHUP_MISSED_BACKUPS=Executar o backup agendado assim que possível
 CATCHUP_MISSED_BACKUPS_TAG=Indica o que fazer quando o computador não tiver feito o backup agendado, (desligado ou a hibernar por ex.);Se estiver marcado, sincronizar assim que possível; Desmarcado, esperar até ao próximo agendamento.
 ->CATCHING_UP=
+->FOLDER_MISSING=

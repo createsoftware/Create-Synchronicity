@@ -157,3 +157,4 @@ RELOAD_TREES=Загрузка дерева файлов
 CATCHUP_MISSED_BACKUPS=Запустить пропущенную синхронизацию
 CATCHUP_MISSED_BACKUPS_TAG=Показывает, что делать, если компьютер был выключен во время планируемой синхронизации...
 ->CATCHING_UP=
+->FOLDER_MISSING=

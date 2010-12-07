@@ -155,3 +155,4 @@ RELOAD_TREES=טען עץ תיקיות
 ->CATCHUP_MISSED_BACKUPS=Catch up missed backups
 ->CATCHUP_MISSED_BACKUPS_TAG=Indicates what to do if the computer was off at the scheduled time;Checked, catch up and sync as soon as possible; Unchecked, wait for next scheduled sync.
 ->CATCHING_UP=
+->FOLDER_MISSING=

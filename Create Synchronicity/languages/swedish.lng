@@ -154,3 +154,4 @@ RELOAD_TREES=Ladda filstruktur
 CATCHUP_MISSED_BACKUPS=Utför missade synkroniseringar
 CATCHUP_MISSED_BACKUPS_TAG=Markerar vad som händer om datorn var avstängd vid den schemalagda tiden; Ikryssad = utför synkronisering så fort som möjligt. Ej ikryssad = vänta på nästa schemalagda synkronisering.
 ->CATCHING_UP=
+->FOLDER_MISSING=
