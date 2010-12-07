@@ -26,6 +26,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Dec. 07, 2010 - NEW: !Polish translation, by forum user matczar. Dziękuję!
 Nov. 27, 2010 - UPD: Save main window location and size on exit (patch #3120708).
 Nov. 20, 2010 - UPD: Add a clock icon to identify scheduled profiles in the main window.
 Nov. 06, 2010 - UPD: No need to restart to change language anymore.
