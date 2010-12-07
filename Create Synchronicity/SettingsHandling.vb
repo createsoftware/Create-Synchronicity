@@ -630,6 +630,7 @@ Structure CommandLine
     Shared Silent As Boolean = False
     Shared Log As Boolean = False
     Shared NoUpdates As Boolean = False
+    Shared NoStop As Boolean = False
 
     Shared Sub ReadArgs(ByVal ArgsList As List(Of String))
         If ArgsList.Count > 1 Then
@@ -639,6 +640,7 @@ Structure CommandLine
             CommandLine.Silent = ArgsList.Contains("/silent")
             CommandLine.Log = ArgsList.Contains("/log")
             CommandLine.NoUpdates = ArgsList.Contains("/noupdates")
+            CommandLine.NoStop = ArgsList.Contains("/nostop")
 
             CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
 

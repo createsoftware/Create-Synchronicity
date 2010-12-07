@@ -18,6 +18,7 @@ Public Class SynchronizeForm
 
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
+    Dim NoStop As Boolean = CommandLine.NoStop
     Dim SingleTask As Boolean
     Dim [STOP] As Boolean
     Dim Failed As Boolean : Dim FailureMsg As String
@@ -368,7 +369,7 @@ Public Class SynchronizeForm
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
 
-                    If Quiet Then
+                    If Quiet Then ' TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
                         If Failed Then
                             Interaction.ShowBalloonTip(FailureMsg)
                         Else
@@ -382,7 +383,7 @@ Public Class SynchronizeForm
                 SyncingTimeCounter.Stop()
                 Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
 
-                If Quiet And Not Me.Visible Then
+                If (Quiet And Not Me.Visible) Or NoStop Then
                     Me.Close()
                 Else
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
