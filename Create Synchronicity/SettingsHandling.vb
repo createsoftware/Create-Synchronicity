@@ -470,6 +470,9 @@ Class ProfileHandler
         End If
 #End If
 
+        ' Use a path-friendly version of the DATE constant.
+        Environment.SetEnvironmentVariable("DATE", Environment.GetEnvironmentVariable("DATE").Replace("/"c, "-"))
+
         Return Environment.ExpandEnvironmentVariables(Translated_Path)
     End Function
 
