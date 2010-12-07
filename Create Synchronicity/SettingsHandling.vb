@@ -22,7 +22,7 @@ Public Module ConfigOptions
     Public Const StrictMirror As String = "Strict mirror"
     Public Const TimeOffset As String = "Time Offset"
     Public Const LastRun As String = "Last run"
-    Public Const CatchUpSync As String = "Catch up if missed" '-> Not enabled yet.
+    Public Const CatchUpSync As String = "Catch up if missed"
 
     'TODO: NOTE: These settings are hidden settings, not automatically appended to config files.
     Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
