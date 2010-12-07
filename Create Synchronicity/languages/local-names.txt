@@ -8,6 +8,7 @@ francais;french;fr
 hebrew;עִבְרִית;he
 indonesian;bahasa indonesia;id
 italian;italiano;it
+polish;polski;pl
 portuguese;português;pt
 russian;русский язык;ru
 spanish;español;es
