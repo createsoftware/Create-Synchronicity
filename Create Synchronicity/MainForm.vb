@@ -66,7 +66,6 @@ Public Class MainForm
                         ProgramConfig.SetProgramSetting(ConfigOptions.ExpertMode, Not EMEnabled)
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If
-
             End Select
         End If
     End Sub
