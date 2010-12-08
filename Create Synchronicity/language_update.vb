@@ -38,6 +38,7 @@ Module Update_Languages
             Try
                 Dim Reader As New IO.StreamReader(File, System.Text.Encoding.UTF8)
                 Dim Output As New List(Of String)
+                Dim FName = IO.Path.GetFileNameWithoutExtension(File)
 
                 Dim TODO As Integer = 0
 
@@ -51,14 +52,19 @@ Module Update_Languages
                         Try
                             Dim Key As String = If(Contents(0).StartsWith("->"), Contents(0).Remove(0, "->".Length), Contents(0))
 
-                            If Key <> Contents(0) Or Updated.Contains(Key) Then
-                                TODO += 1 : Output.Add("->" & Key & "=" & Contents(1))
-                            ElseIf Not DelVars.Contains(Contents(0)) Then
-                                Output.Add(Line)
+                            If Not DelVars.Contains(Key) Then
+                                If Key <> Contents(0) Or Updated.Contains(Key) Then
+                                    TODO += 1 : Output.Add("->" & Key & "=" & Contents(1))
+                                    Console.WriteLine("    " & FName & ": " & Key & " should be updated")
+                                Else
+                                    Output.Add(Line)
+                                End If
+                            Else
+                                Console.WriteLine("    " & FName & ": " & Key & " has been removed")
                             End If
                         Catch ex As Exception
-                            Console.WriteLine("Exception in " & File & " at line " & Line)
-                        End Try
+                Console.WriteLine("Exception in " & FName & " at line " & Line)
+            End Try
                     End If
                 End While
                 Reader.Close()
