@@ -16,7 +16,8 @@ Public Module ConfigOptions
     Public Const Restrictions As String = "Files restrictions"
     Public Const LeftSubFolders As String = "Source folders to be synchronized"
     Public Const RightSubFolders As String = "Destination folders to be synchronized"
-    Public Const ComputeHash As String = "Compute Hash"
+    ' Public Const ComputeHash As String = "Compute Hash" 'DEPRECATED
+    Public Const CreateDestination As String = "Create destination folder"
     Public Const StrictDateComparison As String = "Strict date comparison"
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
@@ -24,8 +25,9 @@ Public Module ConfigOptions
     Public Const LastRun As String = "Last run"
     Public Const CatchUpSync As String = "Catch up if missed"
 
-    'TODO: NOTE: These settings are hidden settings, not automatically appended to config files.
+    ' TODO: NOTE: These settings are hidden settings, not automatically appended to config files.
     Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
+
     ' TODO: Automatically add when enabled.
     Public Const Group As String = "Group"
     Public Const ExcludedFolders As String = "Excluded folder patterns"
@@ -252,6 +254,7 @@ Class ProfileHandler
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
+        If GetSetting(ConfigOptions.CreateDestination, "False") And GetSetting(ConfigOptions.RightSubFolders, Nothing) = Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*")
 
         PredicateConfigMatchingList = New Dictionary(Of String, String)
         PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
@@ -317,6 +320,7 @@ Class ProfileHandler
             IsValid = False
         End If
 
+        If GetSetting(ConfigOptions.CreateDestination, "False") Then IO.Directory.CreateDirectory(TranslatePath(GetSetting(ConfigOptions.Destination)))
         If Not IO.Directory.Exists(TranslatePath(GetSetting(ConfigOptions.Destination))) Then
             InvalidListing.Add(Translation.Translate("\INVALID_DEST"))
             IsValid = False

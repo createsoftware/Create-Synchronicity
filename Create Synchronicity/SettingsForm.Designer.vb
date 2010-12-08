@@ -79,7 +79,7 @@ Partial Class SettingsForm
         Me.Settings_CancelButton = New System.Windows.Forms.Button()
         Me.Settings_SaveButton = New System.Windows.Forms.Button()
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog()
-        Me.Settings_ComputeHashOption = New System.Windows.Forms.CheckBox()
+        Me.Settings_CreateDestOption = New System.Windows.Forms.CheckBox()
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox()
         Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox()
         Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label()
@@ -606,16 +606,15 @@ Partial Class SettingsForm
         '
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
         '
-        'Settings_ComputeHashOption
+        'Settings_CreateDestOption
         '
-        Me.Settings_ComputeHashOption.AutoSize = True
-        Me.Settings_ComputeHashOption.Location = New System.Drawing.Point(6, 44)
-        Me.Settings_ComputeHashOption.Name = "Settings_ComputeHashOption"
-        Me.Settings_ComputeHashOption.Size = New System.Drawing.Size(126, 17)
-        Me.Settings_ComputeHashOption.TabIndex = 1
-        Me.Settings_ComputeHashOption.Tag = "\COMPUTEHASH_TAG"
-        Me.Settings_ComputeHashOption.Text = "\COMPUTE_HASH"
-        Me.Settings_ComputeHashOption.UseVisualStyleBackColor = True
+        Me.Settings_CreateDestOption.AutoSize = True
+        Me.Settings_CreateDestOption.Location = New System.Drawing.Point(6, 44)
+        Me.Settings_CreateDestOption.Name = "Settings_CreateDestOption"
+        Me.Settings_CreateDestOption.Size = New System.Drawing.Size(109, 17)
+        Me.Settings_CreateDestOption.TabIndex = 1
+        Me.Settings_CreateDestOption.Text = "\CREATE_DEST"
+        Me.Settings_CreateDestOption.UseVisualStyleBackColor = True
         '
         'Settings_AdvancedBox
         '
@@ -625,7 +624,7 @@ Partial Class SettingsForm
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetLabel)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffset)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
-        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_ComputeHashOption)
+        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_CreateDestOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
         Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 433)
         Me.Settings_AdvancedBox.Name = "Settings_AdvancedBox"
@@ -785,7 +784,7 @@ Partial Class SettingsForm
     Friend WithEvents Settings_TreeViewMenuStrip As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents Settings_DontSynchronizeMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
-    Friend WithEvents Settings_ComputeHashOption As System.Windows.Forms.CheckBox
+    Friend WithEvents Settings_CreateDestOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_PropagateUpdatesOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_AdvancedBox As System.Windows.Forms.GroupBox
     Friend WithEvents Settings_BottomDescLabel As System.Windows.Forms.Label

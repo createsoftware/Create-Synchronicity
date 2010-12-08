@@ -140,11 +140,11 @@ Public Class SettingsForm
         Interaction.HideToolTip(CType(sender, Control))
     End Sub
 
-    Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_ComputeHashOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
+    Private Sub Settings_Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseEnter, Settings_StrictDateComparisonOption.MouseEnter
         Settings_BottomDescLabel.Text = CType(sender, Control).Tag
     End Sub
 
-    Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_ComputeHashOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
+    Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
         Settings_BottomDescLabel.Text = ""
     End Sub
 
@@ -413,7 +413,7 @@ Public Class SettingsForm
         Handler.SetSetting(ConfigOptions.IncludedTypes, Settings_IncludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ExcludedTypes, Settings_ExcludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.ComputeHash, Settings_ComputeHashOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.CreateDestination, Settings_CreateDestOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictDateComparison, Settings_StrictDateComparisonOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)

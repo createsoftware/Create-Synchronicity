@@ -142,7 +142,7 @@ Public Class SynchronizeForm
 
         FailureMsg = ""
         If Handler.ValidateConfigFile(False, FailureMsg) Then
-            Handler.SetLastRun() 'Only set LastRun when the synchronization actually happens.
+            Handler.SetLastRun() 'Only set LastRun when the synchronization actually happens. 'TODO: Move to the end of the sync?
             If Preview Then
                 PreviewList.Items.Clear()
                 FirstSyncThread.Start()
@@ -914,10 +914,11 @@ Public Class SynchronizeForm
         Return False
     End Function
 
-    Function ComputeFileHash(ByVal Path As String) As String
-        Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
-        Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
-    End Function
+    ' DEPRECATED
+    ' Function ComputeFileHash(ByVal Path As String) As String
+    '     Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
+    '     Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
+    ' End Function
 
     Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
@@ -938,11 +939,11 @@ Public Class SynchronizeForm
 
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
 
-        If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then
-            Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
-        Else
-            Return True
-        End If
+        'If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then ' DEPRECATED
+        '    Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
+        'Else
+        Return True
+        'End If
     End Function
 
     Function NTFSToFATTime(ByVal NTFSTime As Date) As Date

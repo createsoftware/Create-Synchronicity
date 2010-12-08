@@ -5,7 +5,7 @@ dutch:2
 english:0
 estonian:3
 francais:0
-hebrew:20
+hebrew:19
 indonesian:3
 italian:3
 polish:2
