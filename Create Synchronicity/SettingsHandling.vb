@@ -17,7 +17,7 @@ Public Module ConfigOptions
     Public Const LeftSubFolders As String = "Source folders to be synchronized"
     Public Const RightSubFolders As String = "Destination folders to be synchronized"
     ' Public Const ComputeHash As String = "Compute Hash" 'DEPRECATED
-    Public Const CreateDestination As String = "Create destination folder"
+    Public Const MayCreateDestination As String = "Create destination folder"
     Public Const StrictDateComparison As String = "Strict date comparison"
     Public Const PropagateUpdates As String = "Propagate Updates"
     Public Const StrictMirror As String = "Strict mirror"
@@ -40,6 +40,7 @@ Public Module ConfigOptions
     Public Const DefaultLanguage As String = "english"
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MainFormAttributes As String = "Window size and position"
+    Public Const ExpertMode As String = "Expert mode"
 
     Public Const ConfigFolderName As String = "config"
     Public Const LogFolderName As String = "log"
@@ -254,7 +255,7 @@ Class ProfileHandler
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
-        If GetSetting(ConfigOptions.CreateDestination, "False") And GetSetting(ConfigOptions.RightSubFolders, Nothing) = Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*")
+        If GetSetting(ConfigOptions.MayCreateDestination, "False") And GetSetting(ConfigOptions.RightSubFolders, Nothing) = Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*")
 
         PredicateConfigMatchingList = New Dictionary(Of String, String)
         PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
@@ -311,7 +312,7 @@ Class ProfileHandler
     End Function
 
     ' `ReturnString` is used to pass locally generated error messages to caller.
-    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False, Optional ByRef FailureMsg As String = Nothing) As Boolean
+    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False, Optional ByVal TryCreateDest As Boolean = False, Optional ByRef FailureMsg As String = Nothing) As Boolean
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
@@ -320,8 +321,17 @@ Class ProfileHandler
             IsValid = False
         End If
 
-        If GetSetting(ConfigOptions.CreateDestination, "False") Then IO.Directory.CreateDirectory(TranslatePath(GetSetting(ConfigOptions.Destination)))
-        If Not IO.Directory.Exists(TranslatePath(GetSetting(ConfigOptions.Destination))) Then
+        Dim Dest As String = TranslatePath(GetSetting(ConfigOptions.Destination))
+        Dim _MayCreateDest As Boolean = GetSetting(ConfigOptions.MayCreateDestination, "False")
+        If _MayCreateDest And TryCreateDest Then
+            Try
+                IO.Directory.CreateDirectory(Dest)
+            Catch ex As Exception
+                InvalidListing.Add(String.Format(Translation.Translate("\FOLDER_FAILED"), Dest))
+            End Try
+        End If
+
+        If (Not IO.Directory.Exists(Dest)) And (TryCreateDest Or (Not _MayCreateDest)) Then
             InvalidListing.Add(Translation.Translate("\INVALID_DEST"))
             IsValid = False
         End If

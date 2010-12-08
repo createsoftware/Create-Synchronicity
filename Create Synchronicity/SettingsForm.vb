@@ -28,6 +28,7 @@ Public Class SettingsForm
 #Region " Events "
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
+        Settings_CreateDestOption.Visible = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
         Settings_Update(True)
@@ -326,7 +327,7 @@ Public Class SettingsForm
             LoadTree(Settings_LeftView, Settings_FromTextBox.Text)
         End If
         If FullReload Or CurrentRight <> Settings_ToTextBox.Text Then
-            LoadTree(Settings_RightView, Settings_ToTextBox.Text)
+            LoadTree(Settings_RightView, Settings_ToTextBox.Text, Settings_CreateDestOption.Checked)
         End If
 
         If Settings_LeftView.Enabled Then Settings_LeftReloadButton.Visible = False
@@ -340,27 +341,29 @@ Public Class SettingsForm
         CurrentRight = Settings_ToTextBox.Text
     End Sub
 
-    Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String)
+    Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, Optional ByVal ForceLoad As Boolean = False)
         Tree.Nodes.Clear()
 
         Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
-        Tree.Enabled = OriginalPath <> "" AndAlso IO.Directory.Exists(Path) 'Linux
+        Tree.Enabled = OriginalPath <> "" AndAlso (ForceLoad OrElse IO.Directory.Exists(Path)) 'Linux
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
             Settings_SetRootPathDisplay(True) 'Needed for the FullPath method, see tracker #3006324
-            Try
-                For Each Dir As String In IO.Directory.GetDirectories(Path)
-                    Application.DoEvents()
-                    Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
-                Next
+            If Not ForceLoad Then
+                Try
+                    For Each Dir As String In IO.Directory.GetDirectories(Path)
+                        Application.DoEvents()
+                        Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
+                    Next
 
-                Tree.Nodes(0).Expand()
-                Settings_LoadCheckState(Tree.Name = "Settings_LeftView")
-            Catch Ex As Exception
-                Tree.Nodes.Clear()
-                Tree.Enabled = False
-            End Try
+                    Tree.Nodes(0).Expand()
+                    Settings_LoadCheckState(Tree.Name = "Settings_LeftView")
+                Catch Ex As Exception
+                    Tree.Nodes.Clear()
+                    Tree.Enabled = False
+                End Try
+            End If
         Else
             Tree.BackColor = Drawing.Color.LightGray
         End If
@@ -417,7 +420,7 @@ Public Class SettingsForm
         Handler.SetSetting(ConfigOptions.IncludedTypes, Settings_IncludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ExcludedTypes, Settings_ExcludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.CreateDestination, Settings_CreateDestOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.MayCreateDestination, Settings_CreateDestOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictDateComparison, Settings_StrictDateComparisonOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)
