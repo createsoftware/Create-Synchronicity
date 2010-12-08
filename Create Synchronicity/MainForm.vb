@@ -14,7 +14,7 @@ Public Class MainForm
 
         ' Code (largely inspired) by U.N. Owen (patch #)
         Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(MainFormAttributes, "").Split(","))
-        If WindowSettings.Count = 4 Then
+        If WindowSettings.Count = 4 AndAlso WindowSettings.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
             Try
                 Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
                 Me.Size = New Drawing.Point(WindowSettings(2), WindowSettings(3))
@@ -60,6 +60,13 @@ Public Class MainForm
                     Main_Actions.Items(0).BeginEdit()
                 Case Keys.O
                     Diagnostics.Process.Start(ProgramConfig.ConfigRootDir)
+                Case Keys.E
+                    If e.Alt Then
+                        Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
+                        ProgramConfig.SetProgramSetting(ConfigOptions.ExpertMode, Not EMEnabled)
+                        Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
+                    End If
+
             End Select
         End If
     End Sub
