@@ -41,6 +41,13 @@ Partial Class SettingsForm
         Me.Settings_ToLabel = New System.Windows.Forms.Label()
         Me.Settings_FromLabel = New System.Windows.Forms.Label()
         Me.Settings_ViewsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
+        Me.Settings_ReloadButton = New System.Windows.Forms.Button()
+        Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
+        Me.Settings_RightViewLabel = New System.Windows.Forms.Label()
+        Me.Settings_Loading = New System.Windows.Forms.Label()
+        Me.Settings_HelpLink = New System.Windows.Forms.Label()
+        Me.Settings_LeftViewPanel = New System.Windows.Forms.Panel()
+        Me.Settings_LeftReloadButton = New System.Windows.Forms.Button()
         Me.Settings_LeftView = New System.Windows.Forms.TreeView()
         Me.Settings_TreeViewMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Settings_SynchronizeFolderAndSubfoldersMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -51,15 +58,10 @@ Partial Class SettingsForm
         Me.Settings_DontSynchronizeMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.Settings_ToggleMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Settings_RightView = New System.Windows.Forms.TreeView()
-        Me.Settings_ReloadButton = New System.Windows.Forms.Button()
-        Me.Settings_LeftViewLabel = New System.Windows.Forms.Label()
-        Me.Settings_RightViewLabel = New System.Windows.Forms.Label()
-        Me.Settings_Loading = New System.Windows.Forms.Label()
-        Me.Settings_HelpLink = New System.Windows.Forms.Label()
-        Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox()
+        Me.Settings_RightViewPanel = New System.Windows.Forms.Panel()
         Me.Settings_RightReloadButton = New System.Windows.Forms.Button()
-        Me.Settings_LeftReloadButton = New System.Windows.Forms.Button()
+        Me.Settings_RightView = New System.Windows.Forms.TreeView()
+        Me.Settings_ViewsBox = New System.Windows.Forms.GroupBox()
         Me.Settings_SynchronizationMethodBox = New System.Windows.Forms.GroupBox()
         Me.Settings_StrictMirrorOption = New System.Windows.Forms.CheckBox()
         Me.Settings_MethodLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
@@ -86,11 +88,11 @@ Partial Class SettingsForm
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown()
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label()
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label()
-        Me.Settings_LeftViewPanel = New System.Windows.Forms.Panel()
-        Me.Settings_RightViewPanel = New System.Windows.Forms.Panel()
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
+        Me.Settings_LeftViewPanel.SuspendLayout()
         Me.Settings_TreeViewMenuStrip.SuspendLayout()
+        Me.Settings_RightViewPanel.SuspendLayout()
         Me.Settings_ViewsBox.SuspendLayout()
         Me.Settings_SynchronizationMethodBox.SuspendLayout()
         Me.Settings_MethodLayoutPanel.SuspendLayout()
@@ -99,8 +101,6 @@ Partial Class SettingsForm
         Me.Settings_ActionsPanel.SuspendLayout()
         Me.Settings_AdvancedBox.SuspendLayout()
         CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Settings_LeftViewPanel.SuspendLayout()
-        Me.Settings_RightViewPanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'Settings_FromTextBox
@@ -217,6 +217,72 @@ Partial Class SettingsForm
         Me.Settings_ViewsLayoutPanel.Size = New System.Drawing.Size(694, 140)
         Me.Settings_ViewsLayoutPanel.TabIndex = 0
         '
+        'Settings_ReloadButton
+        '
+        Me.Settings_ReloadButton.Image = CType(resources.GetObject("Settings_ReloadButton.Image"), System.Drawing.Image)
+        Me.Settings_ReloadButton.Location = New System.Drawing.Point(332, 16)
+        Me.Settings_ReloadButton.Name = "Settings_ReloadButton"
+        Me.Settings_ReloadButton.Size = New System.Drawing.Size(29, 29)
+        Me.Settings_ReloadButton.TabIndex = 4
+        Me.Settings_ReloadButton.UseVisualStyleBackColor = False
+        '
+        'Settings_LeftViewLabel
+        '
+        Me.Settings_LeftViewLabel.AutoSize = True
+        Me.Settings_LeftViewLabel.Location = New System.Drawing.Point(3, 0)
+        Me.Settings_LeftViewLabel.Name = "Settings_LeftViewLabel"
+        Me.Settings_LeftViewLabel.Size = New System.Drawing.Size(74, 13)
+        Me.Settings_LeftViewLabel.TabIndex = 0
+        Me.Settings_LeftViewLabel.Text = "\LEFT_SIDE"
+        '
+        'Settings_RightViewLabel
+        '
+        Me.Settings_RightViewLabel.AutoSize = True
+        Me.Settings_RightViewLabel.Location = New System.Drawing.Point(367, 0)
+        Me.Settings_RightViewLabel.Name = "Settings_RightViewLabel"
+        Me.Settings_RightViewLabel.Size = New System.Drawing.Size(85, 13)
+        Me.Settings_RightViewLabel.TabIndex = 2
+        Me.Settings_RightViewLabel.Text = "\RIGHT_SIDE"
+        '
+        'Settings_Loading
+        '
+        Me.Settings_Loading.Image = CType(resources.GetObject("Settings_Loading.Image"), System.Drawing.Image)
+        Me.Settings_Loading.Location = New System.Drawing.Point(332, 48)
+        Me.Settings_Loading.Name = "Settings_Loading"
+        Me.Settings_Loading.Size = New System.Drawing.Size(29, 29)
+        Me.Settings_Loading.TabIndex = 5
+        Me.Settings_Loading.Visible = False
+        '
+        'Settings_HelpLink
+        '
+        Me.Settings_HelpLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Settings_HelpLink.Image = CType(resources.GetObject("Settings_HelpLink.Image"), System.Drawing.Image)
+        Me.Settings_HelpLink.Location = New System.Drawing.Point(332, 112)
+        Me.Settings_HelpLink.Name = "Settings_HelpLink"
+        Me.Settings_HelpLink.Size = New System.Drawing.Size(28, 28)
+        Me.Settings_HelpLink.TabIndex = 6
+        '
+        'Settings_LeftViewPanel
+        '
+        Me.Settings_LeftViewPanel.Controls.Add(Me.Settings_LeftReloadButton)
+        Me.Settings_LeftViewPanel.Controls.Add(Me.Settings_LeftView)
+        Me.Settings_LeftViewPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_LeftViewPanel.Location = New System.Drawing.Point(3, 16)
+        Me.Settings_LeftViewPanel.Name = "Settings_LeftViewPanel"
+        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftViewPanel, 3)
+        Me.Settings_LeftViewPanel.Size = New System.Drawing.Size(323, 121)
+        Me.Settings_LeftViewPanel.TabIndex = 7
+        '
+        'Settings_LeftReloadButton
+        '
+        Me.Settings_LeftReloadButton.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Settings_LeftReloadButton.Location = New System.Drawing.Point(111, 27)
+        Me.Settings_LeftReloadButton.Name = "Settings_LeftReloadButton"
+        Me.Settings_LeftReloadButton.Size = New System.Drawing.Size(100, 66)
+        Me.Settings_LeftReloadButton.TabIndex = 7
+        Me.Settings_LeftReloadButton.Text = "\RELOAD_TREES"
+        Me.Settings_LeftReloadButton.UseVisualStyleBackColor = True
+        '
         'Settings_LeftView
         '
         Me.Settings_LeftView.CheckBoxes = True
@@ -282,6 +348,27 @@ Partial Class SettingsForm
         Me.Settings_ToggleMenuItem.Tag = ""
         Me.Settings_ToggleMenuItem.Text = "\TOGGLE"
         '
+        'Settings_RightViewPanel
+        '
+        Me.Settings_RightViewPanel.Controls.Add(Me.Settings_RightReloadButton)
+        Me.Settings_RightViewPanel.Controls.Add(Me.Settings_RightView)
+        Me.Settings_RightViewPanel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_RightViewPanel.Location = New System.Drawing.Point(367, 16)
+        Me.Settings_RightViewPanel.Name = "Settings_RightViewPanel"
+        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightViewPanel, 3)
+        Me.Settings_RightViewPanel.Size = New System.Drawing.Size(324, 121)
+        Me.Settings_RightViewPanel.TabIndex = 8
+        '
+        'Settings_RightReloadButton
+        '
+        Me.Settings_RightReloadButton.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Settings_RightReloadButton.Location = New System.Drawing.Point(112, 27)
+        Me.Settings_RightReloadButton.Name = "Settings_RightReloadButton"
+        Me.Settings_RightReloadButton.Size = New System.Drawing.Size(100, 66)
+        Me.Settings_RightReloadButton.TabIndex = 8
+        Me.Settings_RightReloadButton.Text = "\RELOAD_TREES"
+        Me.Settings_RightReloadButton.UseVisualStyleBackColor = True
+        '
         'Settings_RightView
         '
         Me.Settings_RightView.Dock = System.Windows.Forms.DockStyle.Fill
@@ -290,51 +377,6 @@ Partial Class SettingsForm
         Me.Settings_RightView.Size = New System.Drawing.Size(324, 121)
         Me.Settings_RightView.TabIndex = 3
         Me.Settings_RightView.Tag = "\TREEVIEW_TIPS"
-        '
-        'Settings_ReloadButton
-        '
-        Me.Settings_ReloadButton.Image = CType(resources.GetObject("Settings_ReloadButton.Image"), System.Drawing.Image)
-        Me.Settings_ReloadButton.Location = New System.Drawing.Point(332, 16)
-        Me.Settings_ReloadButton.Name = "Settings_ReloadButton"
-        Me.Settings_ReloadButton.Size = New System.Drawing.Size(29, 29)
-        Me.Settings_ReloadButton.TabIndex = 4
-        Me.Settings_ReloadButton.UseVisualStyleBackColor = False
-        '
-        'Settings_LeftViewLabel
-        '
-        Me.Settings_LeftViewLabel.AutoSize = True
-        Me.Settings_LeftViewLabel.Location = New System.Drawing.Point(3, 0)
-        Me.Settings_LeftViewLabel.Name = "Settings_LeftViewLabel"
-        Me.Settings_LeftViewLabel.Size = New System.Drawing.Size(74, 13)
-        Me.Settings_LeftViewLabel.TabIndex = 0
-        Me.Settings_LeftViewLabel.Text = "\LEFT_SIDE"
-        '
-        'Settings_RightViewLabel
-        '
-        Me.Settings_RightViewLabel.AutoSize = True
-        Me.Settings_RightViewLabel.Location = New System.Drawing.Point(367, 0)
-        Me.Settings_RightViewLabel.Name = "Settings_RightViewLabel"
-        Me.Settings_RightViewLabel.Size = New System.Drawing.Size(85, 13)
-        Me.Settings_RightViewLabel.TabIndex = 2
-        Me.Settings_RightViewLabel.Text = "\RIGHT_SIDE"
-        '
-        'Settings_Loading
-        '
-        Me.Settings_Loading.Image = CType(resources.GetObject("Settings_Loading.Image"), System.Drawing.Image)
-        Me.Settings_Loading.Location = New System.Drawing.Point(332, 48)
-        Me.Settings_Loading.Name = "Settings_Loading"
-        Me.Settings_Loading.Size = New System.Drawing.Size(29, 29)
-        Me.Settings_Loading.TabIndex = 5
-        Me.Settings_Loading.Visible = False
-        '
-        'Settings_HelpLink
-        '
-        Me.Settings_HelpLink.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.Settings_HelpLink.Image = CType(resources.GetObject("Settings_HelpLink.Image"), System.Drawing.Image)
-        Me.Settings_HelpLink.Location = New System.Drawing.Point(332, 112)
-        Me.Settings_HelpLink.Name = "Settings_HelpLink"
-        Me.Settings_HelpLink.Size = New System.Drawing.Size(28, 28)
-        Me.Settings_HelpLink.TabIndex = 6
         '
         'Settings_ViewsBox
         '
@@ -348,26 +390,6 @@ Partial Class SettingsForm
         Me.Settings_ViewsBox.TabIndex = 1
         Me.Settings_ViewsBox.TabStop = False
         Me.Settings_ViewsBox.Text = "\SUBDIRECTORIES"
-        '
-        'Settings_RightReloadButton
-        '
-        Me.Settings_RightReloadButton.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Settings_RightReloadButton.Location = New System.Drawing.Point(112, 27)
-        Me.Settings_RightReloadButton.Name = "Settings_RightReloadButton"
-        Me.Settings_RightReloadButton.Size = New System.Drawing.Size(100, 66)
-        Me.Settings_RightReloadButton.TabIndex = 8
-        Me.Settings_RightReloadButton.Text = "\RELOAD_TREES"
-        Me.Settings_RightReloadButton.UseVisualStyleBackColor = True
-        '
-        'Settings_LeftReloadButton
-        '
-        Me.Settings_LeftReloadButton.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Settings_LeftReloadButton.Location = New System.Drawing.Point(111, 27)
-        Me.Settings_LeftReloadButton.Name = "Settings_LeftReloadButton"
-        Me.Settings_LeftReloadButton.Size = New System.Drawing.Size(100, 66)
-        Me.Settings_LeftReloadButton.TabIndex = 7
-        Me.Settings_LeftReloadButton.Text = "\RELOAD_TREES"
-        Me.Settings_LeftReloadButton.UseVisualStyleBackColor = True
         '
         'Settings_SynchronizationMethodBox
         '
@@ -387,7 +409,7 @@ Partial Class SettingsForm
         Me.Settings_StrictMirrorOption.AutoSize = True
         Me.Settings_StrictMirrorOption.Location = New System.Drawing.Point(6, 46)
         Me.Settings_StrictMirrorOption.Name = "Settings_StrictMirrorOption"
-        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(169, 17)
+        Me.Settings_StrictMirrorOption.Size = New System.Drawing.Size(155, 17)
         Me.Settings_StrictMirrorOption.TabIndex = 2
         Me.Settings_StrictMirrorOption.Text = "\STRICT_MIRROR_DESC"
         Me.Settings_StrictMirrorOption.UseVisualStyleBackColor = True
@@ -402,7 +424,7 @@ Partial Class SettingsForm
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRIncrementalMethodOption, 1, 0)
         Me.Settings_MethodLayoutPanel.Controls.Add(Me.Settings_LRMirrorMethodOption, 0, 0)
         Me.Settings_MethodLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 17)
+        Me.Settings_MethodLayoutPanel.Location = New System.Drawing.Point(3, 16)
         Me.Settings_MethodLayoutPanel.Name = "Settings_MethodLayoutPanel"
         Me.Settings_MethodLayoutPanel.RowCount = 1
         Me.Settings_MethodLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -468,7 +490,7 @@ Partial Class SettingsForm
         Me.Settings_CopyAllFilesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_CopyAllFilesCheckBox.Location = New System.Drawing.Point(6, 20)
         Me.Settings_CopyAllFilesCheckBox.Name = "Settings_CopyAllFilesCheckBox"
-        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(90, 17)
+        Me.Settings_CopyAllFilesCheckBox.Size = New System.Drawing.Size(85, 17)
         Me.Settings_CopyAllFilesCheckBox.TabIndex = 0
         Me.Settings_CopyAllFilesCheckBox.Text = "\ALL_FILES"
         Me.Settings_CopyAllFilesCheckBox.UseVisualStyleBackColor = True
@@ -541,9 +563,9 @@ Partial Class SettingsForm
         Me.Settings_ReplicateEmptyDirectoriesOption.AutoSize = True
         Me.Settings_ReplicateEmptyDirectoriesOption.Checked = True
         Me.Settings_ReplicateEmptyDirectoriesOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(558, 20)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Location = New System.Drawing.Point(564, 20)
         Me.Settings_ReplicateEmptyDirectoriesOption.Name = "Settings_ReplicateEmptyDirectoriesOption"
-        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(139, 17)
+        Me.Settings_ReplicateEmptyDirectoriesOption.Size = New System.Drawing.Size(133, 17)
         Me.Settings_ReplicateEmptyDirectoriesOption.TabIndex = 1
         Me.Settings_ReplicateEmptyDirectoriesOption.Text = "\REPLICATE_EMPTY"
         Me.Settings_ReplicateEmptyDirectoriesOption.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -556,7 +578,7 @@ Partial Class SettingsForm
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(6, 20)
         Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
-        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(101, 17)
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(97, 17)
         Me.Settings_PropagateUpdatesOption.TabIndex = 0
         Me.Settings_PropagateUpdatesOption.Tag = "\PROPAGATE_TAG"
         Me.Settings_PropagateUpdatesOption.Text = "\PROPAGATE"
@@ -639,9 +661,9 @@ Partial Class SettingsForm
         Me.Settings_StrictDateComparisonOption.AutoSize = True
         Me.Settings_StrictDateComparisonOption.Checked = True
         Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(532, 20)
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(546, 20)
         Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
-        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(148, 17)
         Me.Settings_StrictDateComparisonOption.TabIndex = 2
         Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
         Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
@@ -687,28 +709,6 @@ Partial Class SettingsForm
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(497, 31)
         Me.Settings_BottomDescLabel.TabIndex = 5
         '
-        'Settings_LeftViewPanel
-        '
-        Me.Settings_LeftViewPanel.Controls.Add(Me.Settings_LeftReloadButton)
-        Me.Settings_LeftViewPanel.Controls.Add(Me.Settings_LeftView)
-        Me.Settings_LeftViewPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Settings_LeftViewPanel.Location = New System.Drawing.Point(3, 16)
-        Me.Settings_LeftViewPanel.Name = "Settings_LeftViewPanel"
-        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_LeftViewPanel, 3)
-        Me.Settings_LeftViewPanel.Size = New System.Drawing.Size(323, 121)
-        Me.Settings_LeftViewPanel.TabIndex = 7
-        '
-        'Settings_RightViewPanel
-        '
-        Me.Settings_RightViewPanel.Controls.Add(Me.Settings_RightReloadButton)
-        Me.Settings_RightViewPanel.Controls.Add(Me.Settings_RightView)
-        Me.Settings_RightViewPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Settings_RightViewPanel.Location = New System.Drawing.Point(367, 16)
-        Me.Settings_RightViewPanel.Name = "Settings_RightViewPanel"
-        Me.Settings_ViewsLayoutPanel.SetRowSpan(Me.Settings_RightViewPanel, 3)
-        Me.Settings_RightViewPanel.Size = New System.Drawing.Size(324, 121)
-        Me.Settings_RightViewPanel.TabIndex = 8
-        '
         'SettingsForm
         '
         Me.AcceptButton = Me.Settings_SaveButton
@@ -732,7 +732,9 @@ Partial Class SettingsForm
         Me.Settings_DirectoriesBox.PerformLayout()
         Me.Settings_ViewsLayoutPanel.ResumeLayout(False)
         Me.Settings_ViewsLayoutPanel.PerformLayout()
+        Me.Settings_LeftViewPanel.ResumeLayout(False)
         Me.Settings_TreeViewMenuStrip.ResumeLayout(False)
+        Me.Settings_RightViewPanel.ResumeLayout(False)
         Me.Settings_ViewsBox.ResumeLayout(False)
         Me.Settings_SynchronizationMethodBox.ResumeLayout(False)
         Me.Settings_SynchronizationMethodBox.PerformLayout()
@@ -746,8 +748,6 @@ Partial Class SettingsForm
         Me.Settings_AdvancedBox.ResumeLayout(False)
         Me.Settings_AdvancedBox.PerformLayout()
         CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Settings_LeftViewPanel.ResumeLayout(False)
-        Me.Settings_RightViewPanel.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
