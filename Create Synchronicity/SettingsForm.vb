@@ -51,12 +51,16 @@ Public Class SettingsForm
         Settings_RightReloadButton.Visible = True
     End Sub
 
-    Private Sub Settings_From_To_TextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged, Settings_ToTextBox.TextChanged
-        BlinkIfInvalidPath(CType(sender, TextBox))
+    Private Sub Settings_FromTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged
+        BlinkIfInvalidPath(Settings_FromTextBox)
     End Sub
 
-    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox)
-        If PathBox.Text = "" Or IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
+    Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged, Settings_CreateDestOption.CheckedChanged
+        BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
+    End Sub
+
+    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox, Optional ByVal ForceWhite As Boolean = False)
+        If ForceWhite Or PathBox.Text = "" Or IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
             PathBox.BackColor = Drawing.Color.White
         Else
             PathBox.BackColor = Drawing.Color.LightPink
@@ -340,7 +344,7 @@ Public Class SettingsForm
         Tree.Nodes.Clear()
 
         Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
-        Tree.Enabled = OriginalPath <> "" AndAlso IO.Directory.Exists(Path)
+        Tree.Enabled = OriginalPath <> "" AndAlso IO.Directory.Exists(Path) 'Linux
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
