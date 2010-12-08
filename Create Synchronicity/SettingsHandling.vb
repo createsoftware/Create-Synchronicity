@@ -486,6 +486,7 @@ Class ProfileHandler
 
         ' Use a path-friendly version of the DATE constant.
         Environment.SetEnvironmentVariable("DATE", Date.Today.ToShortDateString.Replace("/"c, "-"c))
+        Environment.SetEnvironmentVariable("MMMYYYY", Date.Today.ToString("MMMYYYY"))
 
         Return Environment.ExpandEnvironmentVariables(Translated_Path)
     End Function
