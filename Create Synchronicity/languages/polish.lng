@@ -154,5 +154,5 @@ RELOAD_TREES=Ładuj drzewo katalogów
 CATCHUP_MISSED_BACKUPS=Wykryj pominięte zadania synchronizacji
 CATCHUP_MISSED_BACKUPS_TAG=Wskaż postępowanie gdy komputer był wyłączony w ustalonym czasie synchronizacji;Zaznaczone - wykryj i synchronizuj tak szybko jak to możliwe; Odznaczone - czekaj do następnego terminu synchronizacji.
 CATCHING_UP=Create Synchronicity wykrył "{0}" (ostatnie uruchomienie {1} dni, {2} godz. temu ({3})).
-->FOLDER_MISSING=
 ->FOLDER_FAILED=
+->CREATE_DEST=

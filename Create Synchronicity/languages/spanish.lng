@@ -152,5 +152,5 @@ RELOAD_TREES=Cargar el árbol de carpetas
 CATCHUP_MISSED_BACKUPS=Ponerse al día con respaldos olvidados
 CATCHUP_MISSED_BACKUPS_TAG=Indica que hacer si el equipo estuvo fuera de línea en el horario programado;Habilitado, ponerse al día y sincronizar lo antes posible;Sin habilitar, se espera a la siguiente sincronización programada
 ->CATCHING_UP=
-->FOLDER_MISSING=
 ->FOLDER_FAILED=
+->CREATE_DEST=

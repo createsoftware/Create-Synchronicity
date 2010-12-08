@@ -152,5 +152,5 @@ RELOAD_TREES=Load struktur direktori
 CATCHUP_MISSED_BACKUPS=Mengejar backup yang tertinggal
 CATCHUP_MISSED_BACKUPS_TAG=Menunjukkan apa yang dilakukan jika komputer dimatikan pada waktu yang dijadwalkan;Dicentang, sinkronisasi sesegera mungkin; Tidak dicentang; tunggu sinkronisasi berikutnya pada jadwal.
 ->CATCHING_UP=
-->FOLDER_MISSING=
 ->FOLDER_FAILED=
+->CREATE_DEST=

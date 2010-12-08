@@ -152,5 +152,5 @@ RELOAD_TREES=Laad mappenstructuur
 CATCHUP_MISSED_BACKUPS=Haal gemiste backups in
 CATCHUP_MISSED_BACKUPS_TAG=Geeft aan wat te doen als de computer is uitgeschakeld op het geplande tijdstip ; Aangevinkt, inhalen en synchroniseren zo spoedig mogelijk ; Niet-aangevinkt, wacht op de volgende geplande synchronisatie.
 CATCHING_UP=Create Synchronicity werkt "{0}" bij (laatste keer {1} dag(en), {2} (u)ur(en) geleden ({3})).
-->FOLDER_MISSING=
 ->FOLDER_FAILED=
+->CREATE_DEST=
