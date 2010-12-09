@@ -26,6 +26,7 @@ SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Dec. 09, 2010 - UPD: Revision 1000!
 Dec. 08, 2010 - NEW: Introduce automatic creation of destination root in expert mode, deprecate hashes. 
 Dec. 08, 2010 - NEW: Expert mode. 
 Dec. 07, 2010 - NEW: !Polish translation, by forum user matczar. Dziękuję!
