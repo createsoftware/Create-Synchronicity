@@ -105,7 +105,7 @@ Public Class SynchronizeForm
 
         FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
         FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
-        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
+        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries), True)
 
         FullSyncThread = New Threading.Thread(AddressOf Synchronize)
         FirstSyncThread = New Threading.Thread(AddressOf Do_FirstStep)
@@ -894,7 +894,7 @@ Public Class SynchronizeForm
     End Function
 
     Function GetExtension(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(".") + 1) 'TODO: Returns full path if no extension is found.
+        Return Path.Substring(Path.LastIndexOf(".") + 1) 'Not used when dealing with a folder.
     End Function
 
     Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
@@ -906,6 +906,8 @@ Public Class SynchronizeForm
                     If String.Compare(Extension, Pattern.Pattern, True) = 0 Then Return True
                 Case FileNamePattern.PatternType.FileName
                     If String.Compare(PathOrFileName, Pattern.Pattern, True) = 0 Then Return True
+                Case FileNamePattern.PatternType.FolderName
+                    If PathOrFileName.EndsWith(Pattern.Pattern, StringComparison.CurrentCultureIgnoreCase) Then Return True
                 Case FileNamePattern.PatternType.Regex
                     If System.Text.RegularExpressions.Regex.IsMatch(PathOrFileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
             End Select

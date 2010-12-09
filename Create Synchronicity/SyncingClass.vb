@@ -76,6 +76,7 @@ Public Class FileNamePattern
     Public Enum PatternType
         FileExt
         FileName
+        FolderName
         Regex
     End Enum
 
@@ -87,9 +88,9 @@ Public Class FileNamePattern
         Pattern = _Pattern
     End Sub
 
-    Shared Function GetPattern(ByVal Pattern As String) As FileNamePattern
+    Shared Function GetPattern(ByVal Pattern As String, Optional ByVal IsFolder As Boolean = False) As FileNamePattern
         If Pattern.StartsWith("""") And Pattern.EndsWith("""") Then 'Filename
-            Return New FileNamePattern(PatternType.FileName, Pattern.Substring(1, Pattern.Length - 2).ToLower)
+            Return New FileNamePattern(If(IsFolder, PatternType.FolderName, PatternType.FileName), Pattern.Substring(1, Pattern.Length - 2).ToLower)
         ElseIf Pattern.StartsWith("/") And Pattern.EndsWith("/") Then 'Regex
             Return New FileNamePattern(PatternType.Regex, Pattern.Substring(1, Pattern.Length - 2).ToLower)
         Else
@@ -97,11 +98,11 @@ Public Class FileNamePattern
         End If
     End Function
 
-    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal Patterns As String())
+    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal Patterns As String(), Optional ByVal IsFolder As Boolean = False)
         PatternsList = New List(Of FileNamePattern)
 
         For Each Pattern As String In Patterns
-            If Not Pattern = "" Then PatternsList.Add(GetPattern(Pattern))
+            If Not Pattern = "" Then PatternsList.Add(GetPattern(Pattern, IsFolder))
         Next
     End Sub
 End Class
