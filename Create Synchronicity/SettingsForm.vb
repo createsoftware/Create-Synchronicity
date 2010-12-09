@@ -219,7 +219,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_HelpLink.Click
-        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+        Interaction.StartProcess("http://synchronicity.sourceforge.net/help.html")
     End Sub
 #End Region
 

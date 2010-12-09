@@ -156,6 +156,13 @@ Public Class SynchronizeForm
         End If
     End Sub
 
+    Private Sub SynchronizeForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        If e.Control AndAlso e.KeyCode = Keys.L AndAlso Status.CurrentStep = -1 Then
+            Interaction.StartProcess(ProgramConfig.GetLogPath(Handler.ProfileName))
+        End If
+    End Sub
+
+
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
         ProgramConfig.CanGoOn = True
@@ -222,7 +229,7 @@ Public Class SynchronizeForm
                 Exit Sub
         End Select
 
-        If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Diagnostics.Process.Start(If(My.Computer.Keyboard.CtrlKeyDown, Address.Substring(0, Address.LastIndexOf(ConfigOptions.DirSep)), Address))
+        If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, Address.Substring(0, Address.LastIndexOf(ConfigOptions.DirSep)), Address))
     End Sub
 
     Sub UpdateStatuses()

@@ -52,14 +52,14 @@ Public Class MainForm
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
         If e.KeyCode = Keys.F1 Then
-            Diagnostics.Process.Start("http://synchronicity.sourceforge.net/help.html")
+            Interaction.StartProcess("http://synchronicity.sourceforge.net/help.html")
         ElseIf e.Control Then
             Select Case e.KeyCode
                 Case Keys.N
                     Main_Actions.LabelEdit = True
                     Main_Actions.Items(0).BeginEdit()
                 Case Keys.O
-                    Diagnostics.Process.Start(ProgramConfig.ConfigRootDir)
+                    Interaction.StartProcess(ProgramConfig.ConfigRootDir)
                 Case Keys.E
                     If e.Alt Then
                         Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
@@ -182,7 +182,7 @@ Public Class MainForm
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
         If Not IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)) Then Exit Sub
-        Diagnostics.Process.Start(ProgramConfig.GetLogPath(CurrentProfile))
+        Interaction.StartProcess(ProgramConfig.GetLogPath(CurrentProfile))
     End Sub
 
     Private Sub ClearLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearLogMenuItem.Click
@@ -197,7 +197,7 @@ Public Class MainForm
     End Sub
 
     Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.Click
-        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/contribute.html")
+        Interaction.StartProcess("http://synchronicity.sourceforge.net/contribute.html")
     End Sub
 
 #If 0 Then

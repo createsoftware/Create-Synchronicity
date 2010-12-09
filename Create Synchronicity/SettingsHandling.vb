@@ -682,7 +682,7 @@ Public Module Interaction
 
         If Not Loaded Then
             Loaded = True
-            AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.StartProcess
+            AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.BallonClick
             Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
             StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("Create_Synchronicity.create-synchronicity-icon-16x16.ico"))
         End If
@@ -744,10 +744,14 @@ Public Module Interaction
     End Function
 
     Private CurrentFileToOpen As String = ""
-    Private Sub StartProcess(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub BallonClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        If Not CurrentFileToOpen = "" Then StartProcess(CurrentFileToOpen)
+    End Sub
+
+    Public Sub StartProcess(ByVal Address As String)
         Try
-            If Not CurrentFileToOpen = "" Then Diagnostics.Process.Start(CurrentFileToOpen)
-        Catch ex As Exception
+            Diagnostics.Process.Start(Address)
+        Catch
         End Try
     End Sub
 End Module

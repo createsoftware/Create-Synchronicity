@@ -36,11 +36,11 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked
-        StartProcess("http://synchronicity.sourceforge.net/")
+        Interaction.StartProcess("http://synchronicity.sourceforge.net/")
     End Sub
 
     Private Sub About_LinkToWebsite_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToWebsite.LinkClicked
-        StartProcess("http://createsoftware.users.sourceforge.net/")
+        Interaction.StartProcess("http://createsoftware.users.sourceforge.net/")
     End Sub
 
     Private Sub About_VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_VersionInfo.LinkClicked
@@ -48,15 +48,15 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_ContactLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_ContactLink.LinkClicked
-        StartProcess("http://createsoftware.users.sourceforge.net/")
+        Interaction.StartProcess("http://createsoftware.users.sourceforge.net/")
     End Sub
 
     Private Sub About_LinkToLicense_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToLicense.LinkClicked
-        StartProcess("http://www.gnu.org/licenses/gpl.html")
+        Interaction.StartProcess("http://www.gnu.org/licenses/gpl.html")
     End Sub
 
     Private Sub About_BugReport_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_BugReport.LinkClicked
-        StartProcess("http://sourceforge.net/tracker/?group_id=264348&atid=1130882")
+        Interaction.StartProcess("http://sourceforge.net/tracker/?group_id=264348&atid=1130882")
     End Sub
 
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
@@ -74,12 +74,5 @@ Public Class AboutForm
 
         ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
         ProgramConfig.SaveProgramSettings()
-    End Sub
-
-    Sub StartProcess(ByVal Address As String)
-        Try
-            Diagnostics.Process.Start(Address)
-        Catch
-        End Try
     End Sub
 End Class
