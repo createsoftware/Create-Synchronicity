@@ -1,7 +1,7 @@
 czech;čeština;cs
 danish;dansk;da
 deutsch;german;de
-dutch;nederlands;nt
+dutch;nederlands;nl
 english;english;en
 estonian;eesti;et
 francais;french;fr
