@@ -485,8 +485,11 @@ Class ProfileHandler
 #End If
 
         ' Use a path-friendly version of the DATE constant.
-        Environment.SetEnvironmentVariable("DATE", Date.Today.ToShortDateString.Replace("/"c, "-"c))
         Environment.SetEnvironmentVariable("MMMYYYY", Date.Today.ToString("MMMYYYY").ToLower)
+        Environment.SetEnvironmentVariable("DATE", Date.Today.ToShortDateString.Replace("/"c, "-"c))
+        Environment.SetEnvironmentVariable("DAY", Date.Today.Day.ToString)
+        Environment.SetEnvironmentVariable("MONTH", Date.Today.Month.ToString)
+        Environment.SetEnvironmentVariable("YEAR", Date.Today.Year.ToString)
 
         Return Environment.ExpandEnvironmentVariables(Translated_Path)
     End Function
