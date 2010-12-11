@@ -142,6 +142,7 @@ Public Class SynchronizeForm
 
         FailureMsg = ""
         If Handler.ValidateConfigFile(False, True, FailureMsg) Then
+            ProgramConfig.IncrementSyncsCount()
             Handler.SetLastRun() 'Only set LastRun when the synchronization actually happens. 'TODO: Move to the end of the sync?
             If Preview Then
                 PreviewList.Items.Clear()

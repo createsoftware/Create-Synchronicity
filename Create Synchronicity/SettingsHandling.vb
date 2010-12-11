@@ -38,6 +38,7 @@ Public Module ConfigOptions
     'Main program settings
     Public Const Language As String = "Language"
     Public Const DefaultLanguage As String = "english"
+    Public Const SyncsCount As String = "Syncs count"
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MainFormAttributes As String = "Window size and position"
     Public Const ExpertMode As String = "Expert mode"
@@ -240,6 +241,16 @@ Public Class ConfigHandler
             ConfigHandler.LogAppEvent("Registering program in startup list")
             My.Computer.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
         End If
+    End Sub
+
+    Public Sub IncrementSyncsCount()
+        Dim Count As Integer
+        Try
+            Count = GetProgramSetting(ConfigOptions.SyncsCount, "0")
+        Catch
+            Count = 0
+        End Try
+        SetProgramSetting(ConfigOptions.SyncsCount, Count + 1)
     End Sub
 End Class
 
