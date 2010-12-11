@@ -11,5 +11,5 @@ italian:3
 polish:0
 portuguese:3
 russian:3
-spanish:3
+spanish:0
 swedish:3
