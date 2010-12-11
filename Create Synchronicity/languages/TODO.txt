@@ -1,14 +1,14 @@
 czech:3
 danish:3
 deutsch:3
-dutch:2
+dutch:0
 english:0
 estonian:3
 francais:0
 hebrew:19
 indonesian:3
 italian:3
-polish:2
+polish:0
 portuguese:3
 russian:3
 spanish:3
