@@ -337,8 +337,8 @@ Class ProfileHandler
         If _MayCreateDest And TryCreateDest Then
             Try
                 IO.Directory.CreateDirectory(Dest)
-            Catch ex As Exception
-                InvalidListing.Add(String.Format(Translation.Translate("\FOLDER_FAILED"), Dest))
+            Catch Ex As Exception
+                InvalidListing.Add(String.Format(Translation.Translate("\FOLDER_FAILED"), Dest, Ex.Message))
             End Try
         End If
 
