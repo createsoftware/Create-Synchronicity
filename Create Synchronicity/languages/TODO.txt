@@ -9,7 +9,7 @@ hebrew:19
 indonesian:3
 italian:3
 polish:0
-portuguese:3
+portuguese:0
 russian:3
 spanish:0
 swedish:3
