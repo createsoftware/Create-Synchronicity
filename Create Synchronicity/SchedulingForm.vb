@@ -13,6 +13,7 @@ Public Class SchedulingForm
 
     Private Sub SchedulingForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Translation.TranslateControl(Me)
+        Scheduling_Time.CustomFormat = "HH" & Translation.Translate("\H_M_SEP") & "mm"
         Scheduling_WeekDay.Items.AddRange(Translation.Translate("\WEEK_DAYS").Split(";"c))
         If Scheduling_WeekDay.Items.Count > 0 Then Scheduling_WeekDay.SelectedIndex() = 0
 
@@ -31,8 +32,7 @@ Public Class SchedulingForm
             Case ScheduleInfo.NEVER
                 Scheduling_Enable.Checked = False
             Case Else
-                Scheduling_Hour.Value = Handler.Scheduler.Hour
-                Scheduling_Minute.Value = Handler.Scheduler.Minute
+                Scheduling_Time.Value = New Date(2011, 1, 1, Handler.Scheduler.Hour, Handler.Scheduler.Minute, 0)
 
                 Select Case Handler.Scheduler.Frequency
                     Case ScheduleInfo.DAILY
@@ -56,8 +56,8 @@ Public Class SchedulingForm
             If Not Scheduling_Enable.Checked Then
                 Handler.Scheduler.Frequency = ScheduleInfo.NEVER
             Else
-                Handler.Scheduler.Hour = Scheduling_Hour.Value
-                Handler.Scheduler.Minute = Scheduling_Minute.Value
+                Handler.Scheduler.Hour = Scheduling_Time.Value.Hour
+                Handler.Scheduler.Minute = Scheduling_Time.Value.Minute
                 Handler.Scheduler.WeekDay = Scheduling_WeekDay.SelectedIndex
                 Handler.Scheduler.MonthDay = Scheduling_MonthDay.Value
                 Handler.Scheduler.Frequency = If(DailyBtn.Checked, ScheduleInfo.DAILY, If(WeeklyBtn.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))

@@ -36,18 +36,14 @@ Partial Class SchedulingForm
         Me.Scheduling_Panel = New System.Windows.Forms.Panel()
         Me.Scheduling_AtLabel = New System.Windows.Forms.Label()
         Me.Scheduling_TimeSelectionPanel = New System.Windows.Forms.FlowLayoutPanel()
-        Me.Scheduling_Hour = New System.Windows.Forms.NumericUpDown()
-        Me.Scheduling_HMSepLabel = New System.Windows.Forms.Label()
-        Me.Scheduling_Minute = New System.Windows.Forms.NumericUpDown()
         Me.Scheduling_OptionsLayoutPanel = New System.Windows.Forms.TableLayoutPanel()
         Me.Scheduling_Catchup = New System.Windows.Forms.CheckBox()
+        Me.Scheduling_Time = New System.Windows.Forms.DateTimePicker()
         Me.Scheduling_ActionsPanel.SuspendLayout()
         Me.OptionsLayoutPanel.SuspendLayout()
         CType(Me.Scheduling_MonthDay, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Scheduling_Panel.SuspendLayout()
         Me.Scheduling_TimeSelectionPanel.SuspendLayout()
-        CType(Me.Scheduling_Hour, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Scheduling_Minute, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Scheduling_OptionsLayoutPanel.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -209,63 +205,26 @@ Partial Class SchedulingForm
         '
         'Scheduling_AtLabel
         '
-        Me.Scheduling_AtLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_AtLabel.AutoSize = True
+        Me.Scheduling_AtLabel.Dock = System.Windows.Forms.DockStyle.Left
         Me.Scheduling_AtLabel.Location = New System.Drawing.Point(3, 0)
         Me.Scheduling_AtLabel.Name = "Scheduling_AtLabel"
-        Me.Scheduling_AtLabel.Size = New System.Drawing.Size(27, 31)
+        Me.Scheduling_AtLabel.Size = New System.Drawing.Size(27, 27)
         Me.Scheduling_AtLabel.TabIndex = 0
         Me.Scheduling_AtLabel.Text = "\AT"
-        Me.Scheduling_AtLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Scheduling_AtLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'Scheduling_TimeSelectionPanel
         '
         Me.Scheduling_TimeSelectionPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_AtLabel)
-        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Hour)
-        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_HMSepLabel)
-        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Minute)
+        Me.Scheduling_TimeSelectionPanel.Controls.Add(Me.Scheduling_Time)
         Me.Scheduling_TimeSelectionPanel.Enabled = False
         Me.Scheduling_TimeSelectionPanel.Location = New System.Drawing.Point(12, 173)
         Me.Scheduling_TimeSelectionPanel.Name = "Scheduling_TimeSelectionPanel"
         Me.Scheduling_TimeSelectionPanel.Size = New System.Drawing.Size(344, 31)
         Me.Scheduling_TimeSelectionPanel.TabIndex = 3
-        '
-        'Scheduling_Hour
-        '
-        Me.Scheduling_Hour.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
-        Me.Scheduling_Hour.AutoSize = True
-        Me.Scheduling_Hour.Location = New System.Drawing.Point(36, 5)
-        Me.Scheduling_Hour.Margin = New System.Windows.Forms.Padding(3, 5, 0, 5)
-        Me.Scheduling_Hour.Maximum = New Decimal(New Integer() {23, 0, 0, 0})
-        Me.Scheduling_Hour.Name = "Scheduling_Hour"
-        Me.Scheduling_Hour.Size = New System.Drawing.Size(37, 21)
-        Me.Scheduling_Hour.TabIndex = 1
-        Me.Scheduling_Hour.Value = New Decimal(New Integer() {20, 0, 0, 0})
-        '
-        'Scheduling_HMSepLabel
-        '
-        Me.Scheduling_HMSepLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
-        Me.Scheduling_HMSepLabel.AutoSize = True
-        Me.Scheduling_HMSepLabel.Location = New System.Drawing.Point(74, 0)
-        Me.Scheduling_HMSepLabel.Margin = New System.Windows.Forms.Padding(1, 0, 1, 0)
-        Me.Scheduling_HMSepLabel.Name = "Scheduling_HMSepLabel"
-        Me.Scheduling_HMSepLabel.Size = New System.Drawing.Size(65, 31)
-        Me.Scheduling_HMSepLabel.TabIndex = 2
-        Me.Scheduling_HMSepLabel.Text = "\H_M_SEP"
-        Me.Scheduling_HMSepLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'Scheduling_Minute
-        '
-        Me.Scheduling_Minute.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom), System.Windows.Forms.AnchorStyles)
-        Me.Scheduling_Minute.AutoSize = True
-        Me.Scheduling_Minute.Location = New System.Drawing.Point(140, 5)
-        Me.Scheduling_Minute.Margin = New System.Windows.Forms.Padding(0, 5, 3, 5)
-        Me.Scheduling_Minute.Maximum = New Decimal(New Integer() {59, 0, 0, 0})
-        Me.Scheduling_Minute.Name = "Scheduling_Minute"
-        Me.Scheduling_Minute.Size = New System.Drawing.Size(37, 21)
-        Me.Scheduling_Minute.TabIndex = 3
         '
         'Scheduling_OptionsLayoutPanel
         '
@@ -297,6 +256,17 @@ Partial Class SchedulingForm
         Me.Scheduling_Catchup.Text = "\CATCHUP_MISSED_BACKUPS"
         Me.Scheduling_Catchup.UseVisualStyleBackColor = True
         '
+        'Scheduling_Time
+        '
+        Me.Scheduling_Time.CustomFormat = "HH:mm"
+        Me.Scheduling_Time.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.Scheduling_Time.Location = New System.Drawing.Point(36, 3)
+        Me.Scheduling_Time.Name = "Scheduling_Time"
+        Me.Scheduling_Time.ShowUpDown = True
+        Me.Scheduling_Time.Size = New System.Drawing.Size(63, 21)
+        Me.Scheduling_Time.TabIndex = 6
+        Me.Scheduling_Time.Value = New Date(2011, 1, 1, 0, 0, 0, 0)
+        '
         'SchedulingForm
         '
         Me.AcceptButton = Me.Scheduling_Save
@@ -324,8 +294,6 @@ Partial Class SchedulingForm
         Me.Scheduling_Panel.PerformLayout()
         Me.Scheduling_TimeSelectionPanel.ResumeLayout(False)
         Me.Scheduling_TimeSelectionPanel.PerformLayout()
-        CType(Me.Scheduling_Hour, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Scheduling_Minute, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Scheduling_OptionsLayoutPanel.ResumeLayout(False)
         Me.Scheduling_OptionsLayoutPanel.PerformLayout()
         Me.ResumeLayout(False)
@@ -342,13 +310,11 @@ Partial Class SchedulingForm
     Friend WithEvents Scheduling_WeekDay As System.Windows.Forms.ComboBox
     Friend WithEvents Scheduling_AtLabel As System.Windows.Forms.Label
     Friend WithEvents Scheduling_TimeSelectionPanel As System.Windows.Forms.FlowLayoutPanel
-    Friend WithEvents Scheduling_Hour As System.Windows.Forms.NumericUpDown
-    Friend WithEvents Scheduling_HMSepLabel As System.Windows.Forms.Label
-    Friend WithEvents Scheduling_Minute As System.Windows.Forms.NumericUpDown
     Friend WithEvents Scheduling_OptionsLayoutPanel As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents Scheduling_Catchup As System.Windows.Forms.CheckBox
     Friend WithEvents DailyBtn As System.Windows.Forms.RadioButton
     Friend WithEvents MonthlyBtn As System.Windows.Forms.RadioButton
     Friend WithEvents WeeklyBtn As System.Windows.Forms.RadioButton
+    Friend WithEvents Scheduling_Time As System.Windows.Forms.DateTimePicker
 
 End Class
