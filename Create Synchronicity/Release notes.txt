@@ -1,31 +1,32 @@
 -- Create Synchronicity --
 * Information
-Languages:			English, French, German, Portuguese, Italian, Spanish, 
-					Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
-					Estonian
-Created on:			June 3, 2009
-Created by:			Clément Pit--Claudel (Create Software)
-Special thanks:		Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
-					Dr. Beau Webber - Lab-Tools Ltd, John Lundy
-Patches:			U.N. Owen
-Translations:		Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
-					Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
-					John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
-					Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule
+Languages:          English, French, German, Portuguese, Italian, Spanish, 
+                    Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
+                    Estonian
+Created on:         June 3, 2009
+Created by:         Clément Pit--Claudel (Create Software)
+Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
+                    Dr. Beau Webber - Lab-Tools Ltd, John Lundy
+Patches:            U.N. Owen
+Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
+                    Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
+                    John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
+                    Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule
 
 * Technical information
-License:			GNU GPL v3 or later (see "COPYING")
-Coded in:			Visual Basic .Net
-Requires:			.Net Framework v2
+License:            GNU GPL v3 or later (see "COPYING")
+Coded in:           Visual Basic .Net
+Requires:           .Net Framework v2
 
 * Contact
-Website:			http://synchronicity.sourceforge.net
-Contact:			createsoftware@users.sourceforge.net
-SVN Server:			https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
+Website:            http://synchronicity.sourceforge.net
+Contact:            createsoftware@users.sourceforge.net
+SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronicity
 
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Dec. 18, 2010 - FIX: Fix #3037531 (display scheduled time as HH:MM instead of hh:mm).
 Dec. 09, 2010 - UPD: Revision 1000!
 Dec. 08, 2010 - NEW: Introduce automatic creation of destination root in expert mode, deprecate hashes. 
 Dec. 08, 2010 - NEW: Expert mode. 
