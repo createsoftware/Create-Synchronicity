@@ -226,7 +226,7 @@
             Exit Sub
         Else
             Dim NextRun As Date = ScheduledProfiles(0).NextRun
-            Dim NextInQueue As SchedulerEntry = ScheduledProfiles(0) 'TODO: See how the reference is updated when calling SheduledProfiles.RemoveAt(0)
+            Dim NextInQueue As SchedulerEntry = ScheduledProfiles(0)
             Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), NextInQueue.Name, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
             Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
