@@ -250,7 +250,6 @@
             Dim Handler As ProfileHandler = Profile.Value
             If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim NextRun As Date = Handler.Scheduler.NextRun()
-                'TODO: A message should appear when syncing starts.
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
                 'TODO: Choose default value for catchup.
