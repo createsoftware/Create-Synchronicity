@@ -25,10 +25,10 @@ Public Module ConfigOptions
     Public Const LastRun As String = "Last run"
     Public Const CatchUpSync As String = "Catch up if missed"
 
-    ' TODO: NOTE: These settings are hidden settings, not automatically appended to config files.
+    'These settings are hidden settings, not automatically appended to config files.
     Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
 
-    ' TODO: Automatically add when enabled.
+    'NOTE: Automatically create entry in config file when these settings are enabled.
     Public Const Group As String = "Group"
     Public Const ExcludedFolders As String = "Excluded folder patterns"
 
@@ -477,7 +477,7 @@ Class ProfileHandler
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
             Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
-            If ClosingPos = 0 Then Return "" 'TODO: Currently returns "" if no closing op is found.
+            If ClosingPos = 0 Then Return "" 'TODO: Currently returns "" if no closing op is found. Linux problem.
 
             Label = Path.Substring(1, ClosingPos - 1)
             RelativePath = Path.Substring(ClosingPos + 1)
@@ -632,7 +632,6 @@ Public Module Updates
             End If
         Catch Ex As InvalidOperationException
             'Some form couldn't close properly because of thread accesses
-            'TODO: Shouldn't happen anymore now, due to the rewriting of the message loop.
 #If DEBUG Then
             Interaction.ShowMsg(Ex.ToString)
 #End If
