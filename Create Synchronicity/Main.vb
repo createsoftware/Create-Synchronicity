@@ -246,11 +246,10 @@
         ReloadProfiles() 'Needed! This allows to detect config changes.
 
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
-            Dim Name As String = Profile.Key 'TODO: Handler.ProfileName was used in the predicate find function. Should be the same as Profile.Key
+            Dim Name As String = Profile.Key
             Dim Handler As ProfileHandler = Profile.Value
             If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim NextRun As Date = Handler.Scheduler.NextRun()
-                'TODO: Test catchup
                 'TODO: A message should appear when syncing starts.
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
