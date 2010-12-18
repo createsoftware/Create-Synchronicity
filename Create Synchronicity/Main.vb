@@ -248,12 +248,14 @@
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             Dim Name As String = Profile.Key
             Dim Handler As ProfileHandler = Profile.Value
+            Static TwoDays As TimeSpan = New TimeSpan(2, 0, 0, 0)
+
             If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim NextRun As Date = Handler.Scheduler.NextRun()
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
-                'TODO: Choose default value for catchup.
-                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NextRun - LastRun > Handler.Scheduler.GetInterval(2) Then
+                'TODO: Customizable time span?
+                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NextRun - LastRun > TwoDays Then
                     NextRun = ScheduleInfo.DATE_CATCHUP
                 End If
                 '</catchup>
