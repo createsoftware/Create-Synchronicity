@@ -555,7 +555,7 @@ Structure ScheduleInfo
         MonthDay = _MonthDay
     End Sub
 
-    Function GetInterval(Optional ByVal Multiplicator As Integer = 1) As TimeSpan
+    Function GetInterval(Optional ByVal Multiplicator As Integer = 1) As TimeSpan 'COULDDO: Suppress multiplier.
         Dim Interval As TimeSpan
         Dim Today As Date = Date.Today
 
