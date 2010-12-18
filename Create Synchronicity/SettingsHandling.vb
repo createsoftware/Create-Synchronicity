@@ -615,10 +615,11 @@ Public Module Updates
 
         Try
             Dim UpdateClient As New Net.WebClient
+            UpdateClient.Headers.Add("version", Application.ProductVersion)
             UpdateClient.UseDefaultCredentials = True 'Needed? -- Does no harm
             UpdateClient.Proxy = System.Net.HttpWebRequest.DefaultWebProxy 'Tracker #2976549
             UpdateClient.Proxy.Credentials = Net.CredentialCache.DefaultCredentials
-            Dim CurrentVersion As String = UpdateClient.DownloadString("http://synchronicity.sourceforge.net/code/version.txt")
+            Dim CurrentVersion As String = UpdateClient.DownloadString(If(CommandLine.RunAs = CommandLine.RunMode.Scheduler, "http://synchronicity.sourceforge.net/code/scheduler-version.txt", "http://synchronicity.sourceforge.net/code/version.txt"))
 
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
