@@ -377,7 +377,7 @@ Public Class SynchronizeForm
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
 
-                    If Quiet Then ' TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
+                    If Quiet Then 'TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
                         If Failed Then
                             Interaction.ShowBalloonTip(FailureMsg)
                         Else
@@ -678,7 +678,7 @@ Public Class SynchronizeForm
         SyncPreviewList(Side, -1)
     End Sub
 
-    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'TODO: Should be optimized, Linux
+    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path? 'LINUX
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
     End Function
 
@@ -850,7 +850,7 @@ Public Class SynchronizeForm
     Function HasAcceptedFilename(ByVal Path As String) As Boolean
         Try
             Select Case Handler.GetSetting(ConfigOptions.Restrictions)
-                'TODO: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
+                'COULDDO: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
                 Case "1"
                     Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
                 Case "2"
@@ -908,7 +908,7 @@ Public Class SynchronizeForm
     Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
         Dim Extension As String = GetExtension(PathOrFileName)
 
-        For Each Pattern As FileNamePattern In Patterns 'TODO: IgnoreCase and Linux
+        For Each Pattern As FileNamePattern In Patterns 'LINUX: Problem with IgnoreCase
             Select Case Pattern.Type
                 Case FileNamePattern.PatternType.FileExt
                     If String.Compare(Extension, Pattern.Pattern, True) = 0 Then Return True

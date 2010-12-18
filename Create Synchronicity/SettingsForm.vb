@@ -480,7 +480,7 @@ Public Class SettingsForm
         If LoadToForm Then Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Sub Settings_Cleanup_Paths() 'TODO: Careful with linux root path.
+    Sub Settings_Cleanup_Paths() 'LINUX: Careful with root path.
         Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
         Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
     End Sub

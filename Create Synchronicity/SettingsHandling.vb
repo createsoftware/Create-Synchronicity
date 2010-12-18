@@ -79,7 +79,7 @@ Public Class ConfigHandler
     'Public MessagesFile As String
     Public MainConfigFile As String
 
-    Public LanguageRootDir As String = Application.StartupPath & "\languages" 'TODO: Linux
+    Public LanguageRootDir As String = Application.StartupPath & "\languages" 'LINUX
     Public LocalNamesFile As String = LanguageRootDir & "\local-names.txt"
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode only, queuing uses callbacks).
 
