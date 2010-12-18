@@ -16,7 +16,6 @@ Public Module ConfigOptions
     Public Const Restrictions As String = "Files restrictions"
     Public Const LeftSubFolders As String = "Source folders to be synchronized"
     Public Const RightSubFolders As String = "Destination folders to be synchronized"
-    ' Public Const ComputeHash As String = "Compute Hash" 'DEPRECATED
     Public Const MayCreateDestination As String = "Create destination folder"
     Public Const StrictDateComparison As String = "Strict date comparison"
     Public Const PropagateUpdates As String = "Propagate Updates"
