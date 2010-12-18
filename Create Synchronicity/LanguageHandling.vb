@@ -120,7 +120,6 @@ Public Class LanguageHandler
         Dim CurProgramLanguage As String = ProgramConfig.GetProgramSetting(ConfigOptions.Language, "")
         Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
 
-        'TODO: Duplicate code.
         LanguagesComboBox.Items.Clear()
         Dim LanguageFiles As New List(Of String)
         For Each File As String In IO.Directory.GetFiles(ProgramConfig.LanguageRootDir, "*.lng")
