@@ -143,7 +143,7 @@ Public Class SynchronizeForm
         FailureMsg = ""
         If Handler.ValidateConfigFile(False, True, FailureMsg) Then
             ProgramConfig.IncrementSyncsCount()
-            Handler.SetLastRun() 'Only set LastRun when the synchronization actually happens. 'TODO: Move to the end of the sync?
+            Handler.SetLastRun() 'TODO: Move to the end of the sync? 'Only set LastRun when the synchronization actually happens. 
             If Preview Then
                 PreviewList.Items.Clear()
                 FirstSyncThread.Start()
@@ -226,7 +226,7 @@ Public Class SynchronizeForm
             Case "RL"
                 Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
             Case Else
-                'We're in errors list
+                'In errors list
                 Exit Sub
         End Select
 
