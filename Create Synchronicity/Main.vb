@@ -128,7 +128,7 @@
 
 #Region "Scheduling"
     Function SchedulerAlreadyRunning() As Boolean
-        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace("\"c, "!"c).ToLower
+        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ConfigOptions.DirSep, "!"c).ToLower
 #If DEBUG Then
         ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
 #End If
