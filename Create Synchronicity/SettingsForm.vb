@@ -40,24 +40,18 @@ Public Class SettingsForm
         Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Private Sub Settings_FromTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown
+    Private Sub Settings_To_FromTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_FromTextBox.KeyDown, Settings_ToTextBox.KeyDown
         Interaction.ShowToolTip(CType(sender, Control))
-        Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
-        Settings_LeftReloadButton.Visible = True
-    End Sub
-
-    Private Sub Settings_ToTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles Settings_ToTextBox.KeyDown
-        Interaction.ShowToolTip(CType(sender, Control))
-        Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
-        Settings_RightReloadButton.Visible = True
     End Sub
 
     Private Sub Settings_FromTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged
         BlinkIfInvalidPath(Settings_FromTextBox)
+        DisableTree(Settings_LeftReloadButton, Settings_LeftView)
     End Sub
 
     Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged, Settings_CreateDestOption.CheckedChanged
         BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
+        DisableTree(Settings_RightReloadButton, Settings_RightView)
     End Sub
 
     Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox, Optional ByVal ForceWhite As Boolean = False)
@@ -78,14 +72,14 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseLButton.Click
-        BrowseTo(Translation.Translate("\CHOOSE_SOURCE"), Settings_FromTextBox)
+        BrowseTo(Translation.Translate("\CHOOSE_SOURCE"), Settings_FromTextBox, Settings_LeftReloadButton, Settings_LeftView)
     End Sub
 
     Private Sub Settings_BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_BrowseRButton.Click
-        BrowseTo(Translation.Translate("\CHOOSE_DEST"), Settings_ToTextBox)
+        BrowseTo(Translation.Translate("\CHOOSE_DEST"), Settings_ToTextBox, Settings_RightReloadButton, Settings_RightView)
     End Sub
 
-    Private Sub BrowseTo(ByVal DialogMessage As String, ByRef TextboxField As TextBox)
+    Private Sub BrowseTo(ByVal DialogMessage As String, ByRef TextboxField As TextBox, ByVal Btn As Button, ByVal Tree As TreeView)
         Settings_FolderBrowser.Description = DialogMessage
         If Not TextboxField.Text = "" AndAlso IO.Directory.Exists(ProfileHandler.TranslatePath(TextboxField.Text)) Then
             Settings_FolderBrowser.SelectedPath = ProfileHandler.TranslatePath(TextboxField.Text)
@@ -96,7 +90,13 @@ Public Class SettingsForm
             Else
                 TextboxField.Text = Settings_FolderBrowser.SelectedPath
             End If
+            DisableTree(Btn, Tree)
         End If
+    End Sub
+
+    Private Sub DisableTree(ByVal Btn As Button, ByVal Tree As TreeView)
+        Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
+        Btn.Visible = True : Tree.Enabled = False
     End Sub
 
     Private Sub Settings_SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SwapButton.Click
@@ -323,6 +323,8 @@ Public Class SettingsForm
         Dim FullReload As Boolean = (AllowFullReload And CurrentLeft = Settings_FromTextBox.Text And CurrentRight = Settings_ToTextBox.Text)
 
         Settings_Cleanup_Paths()
+        Settings_LeftView.Enabled = True : Settings_RightView.Enabled = True
+
         If FullReload Or CurrentLeft <> Settings_FromTextBox.Text Then
             LoadTree(Settings_LeftView, Settings_FromTextBox.Text)
         End If
@@ -330,8 +332,8 @@ Public Class SettingsForm
             LoadTree(Settings_RightView, Settings_ToTextBox.Text, Settings_CreateDestOption.Checked)
         End If
 
-        If Settings_LeftView.Enabled Then Settings_LeftReloadButton.Visible = False
-        If Settings_RightView.Enabled Then Settings_RightReloadButton.Visible = False
+        Settings_LeftReloadButton.Visible = Not Settings_LeftView.Enabled
+        Settings_RightReloadButton.Visible = Not Settings_RightView.Enabled
 
         Settings_SetRootPathDisplay(True)
         Settings_Loading.Visible = False : InhibitAutocheck = False
