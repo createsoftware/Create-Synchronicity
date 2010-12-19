@@ -28,8 +28,8 @@ NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modifica
 --------------------------
 Dec. 18, 2010 - FIX: Fix #3037531 (display times as HH:MM instead of HH:M).
 Dec. 09, 2010 - UPD: Revision 1000!
-Dec. 08, 2010 - NEW: Introduce automatic creation of destination root in expert mode, deprecate hashes. 
-Dec. 08, 2010 - NEW: Expert mode. 
+Dec. 08, 2010 - NEW: Introduce automatic creation of destination root in expert mode 
+Dec. 08, 2010 - NEW: Create an Expert mode, deprecate hashing. 
 Dec. 07, 2010 - NEW: !Polish translation, by forum user matczar. Dziękuję!
 Nov. 27, 2010 - UPD: Save main window location and size on exit (patch #3120708).
 Nov. 20, 2010 - UPD: Add a clock icon to identify scheduled profiles in the main window.
