@@ -48,7 +48,7 @@ Public Class AboutForm
     End Sub
 
     Private Sub About_ContactLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_ContactLink.LinkClicked
-        Interaction.StartProcess("http://createsoftware.users.sourceforge.net/")
+        Interaction.StartProcess("mailto:createsoftware@users.sourceforge.net")
     End Sub
 
     Private Sub About_LinkToLicense_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToLicense.LinkClicked
