@@ -37,7 +37,7 @@ Public Module ConfigOptions
     'Main program settings
     Public Const Language As String = "Language"
     Public Const DefaultLanguage As String = "english"
-    Public Const SyncsCount As String = "Syncs count"
+    'Public Const SyncsCount As String = "Syncs count"
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MainFormAttributes As String = "Window size and position"
     Public Const ExpertMode As String = "Expert mode"
@@ -243,6 +243,7 @@ Public Class ConfigHandler
     End Sub
 
 #If 0 Then
+    ' This method requires saving mainconfig.ini, thus overwriting customizations made when the scheduler was running. Problem.
     Public Sub IncrementSyncsCount()
         Dim Count As Integer
         Try
