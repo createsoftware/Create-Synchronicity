@@ -1,5 +1,5 @@
 czech:3
-danish:3
+danish:0
 deutsch:3
 dutch:0
 english:0
