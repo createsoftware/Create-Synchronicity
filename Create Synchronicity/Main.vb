@@ -13,7 +13,7 @@
         ' Must come first
         Application.EnableVisualStyles()
 
-        ' Initialize ProgramConfig, Translation, Main, Updates 
+        ' Initialize ProgramConfig, Translation 
         InitializeSharedObjects()
 
         'Read command line settings
@@ -40,6 +40,9 @@
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
             HandleFirstRun()
         End If
+
+        ' Initialize Main, Updates
+        InitializeForms()
 
         ' Look for updates
         If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
@@ -87,7 +90,9 @@
         IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
         IO.Directory.CreateDirectory(ProgramConfig.ConfigRootDir)
         IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
+    End Sub
 
+    Sub InitializeForms()
         ' Create MainForm
         MainFormInstance = New MainForm()
 

@@ -43,7 +43,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyVersion("5.1.*")> 
 #If DEBUG Then
-<Assembly: AssemblyFileVersion("5.2010.12.19")> 
+<Assembly: AssemblyFileVersion("5.2010.12.20")> 
 #Else
 <Assembly: AssemblyFileVersion("5.1.0.0")> 
 #End If
