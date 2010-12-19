@@ -6,7 +6,7 @@
 * Update DEBUG and RELEASE versions numbers
 * Update release notes, add a "SYN:" entry
 * Test program on guest session
-* Branch
+* Tag
 * Build installer package and zip file (!from trunk, otherwise version.txt path is wrong!)
 * Test package on Guest session
 
