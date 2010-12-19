@@ -623,7 +623,7 @@ Public Module Updates
             If CurrentVersion = "" Then Throw New Exception()
             If (CurrentVersion <> Application.ProductVersion) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/downloads.html")
+                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/update.html")
                     If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
                 End If
             Else
