@@ -476,7 +476,7 @@ Class ProfileHandler
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
             Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
-            If ClosingPos = 0 Then Return "" 'TODO: Currently returns "" if no closing op is found. Linux problem.
+            If ClosingPos = 0 Then Return "" 'LINUX: Currently returns "" (aka linux root) if no closing op is found.
 
             Label = Path.Substring(1, ClosingPos - 1)
             RelativePath = Path.Substring(ClosingPos + 1)

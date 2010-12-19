@@ -773,7 +773,8 @@ Public Class SynchronizeForm
                     Status.TotalActionsCount -= 1
                     RemoveFromSyncingList(Context.Source)
                 End If
-                '(Should be Else =>) Delete it (already present). TODO: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
+                '(Could be Else =>) Delete it (aka don't mark it for preservation).
+                'COULDDO: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
                 RemoveValidFile(Folder)
                 'Problem: What if ancestors of a folder have been marked valid, and the folder is empty?
                 'If the folder didn't exist, it's ancestors won't be created, since only the folder itself is added.
