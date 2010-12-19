@@ -242,6 +242,7 @@ Public Class ConfigHandler
         End If
     End Sub
 
+#If 0 Then
     Public Sub IncrementSyncsCount()
         Dim Count As Integer
         Try
@@ -251,6 +252,7 @@ Public Class ConfigHandler
         End Try
         SetProgramSetting(ConfigOptions.SyncsCount, Count + 1)
     End Sub
+#End If
 End Class
 
 Class ProfileHandler

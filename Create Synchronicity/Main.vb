@@ -71,7 +71,7 @@
         End If
 
         ' Save last window information.
-        ProgramConfig.SaveProgramSettings()
+        If Not CommandLine.RunAs = CommandLine.RunMode.Scheduler Then ProgramConfig.SaveProgramSettings()
 
         'Calling ReleaseMutex would be the same, since Blocker necessary holds the mutex at this point (otherwise the app would have closed already).
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
