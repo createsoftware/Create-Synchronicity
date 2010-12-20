@@ -64,11 +64,13 @@ Structure SchedulerEntry
     Dim Name As String
     Dim NextRun As Date
     Dim CatchUp As Boolean
+    Dim HasFailed As Boolean
 
-    Sub New(ByVal _Name As String, ByVal _NextRun As Date, ByVal _Catchup As Boolean)
+    Sub New(ByVal _Name As String, ByVal _NextRun As Date, ByVal _Catchup As Boolean, ByVal _HasFailed As Boolean)
         Name = _Name
         NextRun = _NextRun
-        Catchup = _Catchup
+        CatchUp = _Catchup
+        HasFailed = _HasFailed
     End Sub
 End Structure
 

@@ -230,18 +230,19 @@
             Application.Exit()
             Exit Sub
         Else
-            Dim NextRun As Date = ScheduledProfiles(0).NextRun
             Dim NextInQueue As SchedulerEntry = ScheduledProfiles(0)
-            Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), NextInQueue.Name, If(NextRun = ScheduleInfo.DATE_CATCHUP, "", NextRun.ToString))
+            Dim Status As String = String.Format(Translation.Translate("\SCH_WAITING"), NextInQueue.Name, If(NextInQueue.NextRun = ScheduleInfo.DATE_CATCHUP, "", NextInQueue.NextRun.ToString))
             Interaction.StatusIcon.Text = If(Status.Length >= 64, Status.Substring(0, 63), Status)
 
             If Date.Compare(NextInQueue.NextRun, Date.Now) <= 0 Then
                 ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.Catchup)
-                SyncForm.StartSynchronization(False)
-                ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False))
-
+                If SyncForm.StartSynchronization(False) Then
+                    ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False, False))
+                Else
+                    ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Date.Now.AddHours(1), True, True))
+                End If
                 ScheduledProfiles.RemoveAt(0)
             End If
         End If
@@ -256,12 +257,22 @@
             Static TwoDays As TimeSpan = New TimeSpan(2, 0, 0, 0)
 
             If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                Dim NewEntry As New SchedulerEntry(Name, Handler.Scheduler.NextRun(), False)
+                Dim NewEntry As New SchedulerEntry(Name, Handler.Scheduler.NextRun(), False, False)
+
+                'Logic of this function:
+                ' A new entry is created. The need for catching up is calculated regardless of the current state of the list.
+                ' Then, a corresponding entry (same name) is searched for. If not found, then the new entry is simply added to the list.
+                ' OOH, if a corresponding entry is found, then
+                '    If it's already late, or if changes would postpone it, then nothing happens.
+                '    But if it's not late, ant the change will bring the sync forward, then the new entry superseedes the previous one.
+                '       Note: In the latter case, if current entry is marked as failed, then the next run time is loaded from it
+                '             (that's to avoid infinite loops when eg. the backup medium is unplugged)
+
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
                 'TODO: Customizable time span?
                 If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > TwoDays Then
-                    NewEntry.NextRun = ScheduleInfo.DATE_CATCHUP 'TODO: Postpone catching up when impossible.
+                    NewEntry.NextRun = ScheduleInfo.DATE_CATCHUP
                     NewEntry.CatchUp = True
                 End If
                 '</catchup>
@@ -269,7 +280,11 @@
                 Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of SchedulerEntry)(Function(Item As SchedulerEntry) Item.Name = Name))
                 If ProfileIndex <> -1 Then
                     Dim CurEntry As SchedulerEntry = ProfilesToRun(ProfileIndex)
+
                     If NewEntry.NextRun <> CurEntry.NextRun And CurEntry.NextRun >= Date.Now() Then 'Don't postpone queued late backups
+                        NewEntry.HasFailed = CurEntry.HasFailed
+                        If CurEntry.HasFailed Then NewEntry.NextRun = CurEntry.NextRun
+
                         ProfilesToRun.RemoveAt(ProfileIndex)
                         ProfilesToRun.Add(NewEntry)
                         ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NewEntry.NextRun.ToString & ": " & Name)

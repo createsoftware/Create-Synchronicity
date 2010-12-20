@@ -117,11 +117,11 @@ Public Class SynchronizeForm
         Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
     End Sub
 
-    Sub StartSynchronization(ByVal CalledShowModal As Boolean)
+    Function StartSynchronization(ByVal CalledShowModal As Boolean) As Boolean
         ProgramConfig.CanGoOn = False
 
         FailureMsg = ""
-        Dim ValidProfile As Boolean = Handler.ValidateConfigFile(False, True, Quiet, FailureMsg)
+        Failed = Not Handler.ValidateConfigFile(False, True, Quiet, FailureMsg)
 
         If Quiet Then
             Me.Visible = False
@@ -135,7 +135,7 @@ Public Class SynchronizeForm
             Interaction.ShowStatusIcon()
             If Catchup Then
                 Dim LastRun As Date = Handler.GetLastRun()
-                If ValidProfile Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\CATCHING_UP"), Handler.ProfileName, (Date.Now - LastRun).Days, (Date.Now - LastRun).Hours, LastRun.ToString))
+                Interaction.ShowBalloonTip(String.Format(Translation.Translate("\CATCHING_UP"), Handler.ProfileName, (Date.Now - LastRun).Days, (Date.Now - LastRun).Hours, LastRun.ToString))
             Else
                 Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName))
             End If
@@ -143,7 +143,7 @@ Public Class SynchronizeForm
             If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
 
-        If ValidProfile Then
+        If Not Failed Then
             'ProgramConfig.IncrementSyncsCount() 'TODO: Enable.
             Handler.SetLastRun() 'TODO: Move to the end of the sync? 'Only set LastRun when the synchronization actually happens. 
             If Preview Then
@@ -153,11 +153,12 @@ Public Class SynchronizeForm
                 FullSyncThread.Start()
             End If
         Else
-            Failed = True
             Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), FailureMsg)
-            Me.Close()
+            EndAll()
         End If
-    End Sub
+
+        Return (Not Failed)
+    End Function
 
     Private Sub SynchronizeForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         If e.Control AndAlso e.KeyCode = Keys.L AndAlso Status.CurrentStep = -1 Then
@@ -381,7 +382,7 @@ Public Class SynchronizeForm
 
                     If Quiet Then 'TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
                         If Failed Then
-                            If Not Catchup Then Interaction.ShowBalloonTip(FailureMsg)
+                            Interaction.ShowBalloonTip(FailureMsg)
                         Else
                             Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                         End If
@@ -393,7 +394,7 @@ Public Class SynchronizeForm
                 SyncingTimeCounter.Stop()
                 Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
 
-                If ((Quiet And Not Me.Visible) Or NoStop) And (Not Failed) Then ' Failed => Me.Close already called
+                If ((Quiet And Not Me.Visible) Or NoStop) Then
                     Me.Close()
                 Else
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
