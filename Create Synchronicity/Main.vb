@@ -238,9 +238,9 @@
             If Date.Compare(NextInQueue.NextRun, Date.Now) <= 0 Then
                 ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.NextRun = ScheduleInfo.DATE_CATCHUP)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.Catchup)
                 SyncForm.StartSynchronization(False)
-                ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun()))
+                ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False))
 
                 ScheduledProfiles.RemoveAt(0)
             End If
@@ -256,27 +256,27 @@
             Static TwoDays As TimeSpan = New TimeSpan(2, 0, 0, 0)
 
             If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
-                Dim NextRun As Date = Handler.Scheduler.NextRun()
+                Dim NewEntry As New SchedulerEntry(Name, Handler.Scheduler.NextRun(), False)
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
                 'TODO: Customizable time span?
-                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NextRun - LastRun > TwoDays Then
-                    NextRun = ScheduleInfo.DATE_CATCHUP
+                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > TwoDays Then
+                    NewEntry.NextRun = ScheduleInfo.DATE_CATCHUP 'TODO: Postpone catching up when impossible.
+                    NewEntry.CatchUp = True
                 End If
                 '</catchup>
 
                 Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of SchedulerEntry)(Function(Item As SchedulerEntry) Item.Name = Name))
                 If ProfileIndex <> -1 Then
-                    If NextRun <> ProfilesToRun(ProfileIndex).NextRun And ProfilesToRun(ProfileIndex).NextRun >= Date.Now() Then
-                        'Don't postpone already late backups
-                        'Problem: If the backup medium is unavailable, then the program will loop.
+                    Dim CurEntry As SchedulerEntry = ProfilesToRun(ProfileIndex)
+                    If NewEntry.NextRun <> CurEntry.NextRun And CurEntry.NextRun >= Date.Now() Then 'Don't postpone queued late backups
                         ProfilesToRun.RemoveAt(ProfileIndex)
-                        ProfilesToRun.Add(New SchedulerEntry(Name, NextRun))
-                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NextRun.ToString & ": " & Name)
+                        ProfilesToRun.Add(NewEntry)
+                        ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NewEntry.NextRun.ToString & ": " & Name)
                     End If
                 Else
-                    ProfilesToRun.Add(New SchedulerEntry(Name, NextRun))
-                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & NextRun.ToString & ": " & Name)
+                    ProfilesToRun.Add(NewEntry)
+                    ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & NewEntry.NextRun.ToString & ": " & Name)
                 End If
             End If
         Next

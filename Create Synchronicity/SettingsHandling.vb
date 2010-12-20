@@ -63,10 +63,12 @@ End Module
 Structure SchedulerEntry
     Dim Name As String
     Dim NextRun As Date
+    Dim CatchUp As Boolean
 
-    Sub New(ByVal _Name As String, ByVal _NextRun As Date)
+    Sub New(ByVal _Name As String, ByVal _NextRun As Date, ByVal _Catchup As Boolean)
         Name = _Name
         NextRun = _NextRun
+        Catchup = _Catchup
     End Sub
 End Structure
 
@@ -325,7 +327,7 @@ Class ProfileHandler
     End Function
 
     ' `ReturnString` is used to pass locally generated error messages to caller.
-    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False, Optional ByVal TryCreateDest As Boolean = False, Optional ByRef FailureMsg As String = Nothing) As Boolean
+    Function ValidateConfigFile(Optional ByVal WarnUnrootedPaths As Boolean = False, Optional ByVal TryCreateDest As Boolean = False, Optional ByVal Silent As Boolean = False, Optional ByRef FailureMsg As String = Nothing) As Boolean
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
@@ -364,7 +366,7 @@ Class ProfileHandler
             Dim ErrMsg As String = String.Format("{0} - {1}{2}{3}", ProfileName, Translation.Translate("\INVALID_CONFIG"), Environment.NewLine, ErrorsList)
 
             If Not FailureMsg Is Nothing Then FailureMsg = ErrMsg
-            Interaction.ShowMsg(ErrMsg, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            If Not Silent Then Interaction.ShowMsg(ErrMsg, Translation.Translate("\INVALID_CONFIG"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Return False
         Else
             If WarnUnrootedPaths Then

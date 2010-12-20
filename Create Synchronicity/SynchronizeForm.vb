@@ -121,7 +121,7 @@ Public Class SynchronizeForm
         ProgramConfig.CanGoOn = False
 
         FailureMsg = ""
-        Dim ValidProfile As Boolean = Handler.ValidateConfigFile(False, True, FailureMsg)
+        Dim ValidProfile As Boolean = Handler.ValidateConfigFile(False, True, Quiet, FailureMsg)
 
         If Quiet Then
             Me.Visible = False
@@ -135,7 +135,7 @@ Public Class SynchronizeForm
             Interaction.ShowStatusIcon()
             If Catchup Then
                 Dim LastRun As Date = Handler.GetLastRun()
-                Interaction.ShowBalloonTip(String.Format(Translation.Translate("\CATCHING_UP"), Handler.ProfileName, (Date.Now - LastRun).Days, (Date.Now - LastRun).Hours, LastRun.ToString))
+                If ValidProfile Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\CATCHING_UP"), Handler.ProfileName, (Date.Now - LastRun).Days, (Date.Now - LastRun).Hours, LastRun.ToString))
             Else
                 Interaction.ShowBalloonTip(String.Format(Translation.Translate("\RUNNING_TASK"), Handler.ProfileName))
             End If
@@ -327,7 +327,7 @@ Public Class SynchronizeForm
     End Sub
 
     Sub TaskDone(ByVal Id As Integer)
-        If Not Status.CurrentStep = Id Then Exit Sub
+        If Not Status.CurrentStep = Id Then Exit Sub 'Prevents infinite exit loop.
 
         Select Case Id
             Case 1
@@ -381,7 +381,7 @@ Public Class SynchronizeForm
 
                     If Quiet Then 'TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
                         If Failed Then
-                            Interaction.ShowBalloonTip(FailureMsg)
+                            If Not Catchup Then Interaction.ShowBalloonTip(FailureMsg)
                         Else
                             Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                         End If
@@ -393,7 +393,7 @@ Public Class SynchronizeForm
                 SyncingTimeCounter.Stop()
                 Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
 
-                If (Quiet And Not Me.Visible) Or NoStop Then
+                If ((Quiet And Not Me.Visible) Or NoStop) And (Not Failed) Then ' Failed => Me.Close already called
                     Me.Close()
                 Else
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
