@@ -120,6 +120,9 @@ Public Class SynchronizeForm
     Sub StartSynchronization(ByVal CalledShowModal As Boolean)
         ProgramConfig.CanGoOn = False
 
+        FailureMsg = ""
+        Dim ValidProfile As Boolean = Handler.ValidateConfigFile(False, True, FailureMsg)
+
         If Quiet Then
             Me.Visible = False
 
@@ -140,8 +143,7 @@ Public Class SynchronizeForm
             If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
 
-        FailureMsg = ""
-        If Handler.ValidateConfigFile(False, True, FailureMsg) Then
+        If ValidProfile Then
             'ProgramConfig.IncrementSyncsCount() 'TODO: Enable.
             Handler.SetLastRun() 'TODO: Move to the end of the sync? 'Only set LastRun when the synchronization actually happens. 
             If Preview Then

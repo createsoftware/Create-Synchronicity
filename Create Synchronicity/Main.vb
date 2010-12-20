@@ -269,6 +269,7 @@
                 If ProfileIndex <> -1 Then
                     If NextRun <> ProfilesToRun(ProfileIndex).NextRun And ProfilesToRun(ProfileIndex).NextRun >= Date.Now() Then
                         'Don't postpone already late backups
+                        'Problem: If the backup medium is unavailable, then the program will loop.
                         ProfilesToRun.RemoveAt(ProfileIndex)
                         ProfilesToRun.Add(New SchedulerEntry(Name, NextRun))
                         ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NextRun.ToString & ": " & Name)
