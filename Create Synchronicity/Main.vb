@@ -161,7 +161,7 @@
             If NeedToRunAtBootTime Then
                 ConfigHandler.RegisterBoot()
                 ConfigHandler.LogAppEvent("Registered program in startup list, trying to start scheduler")
-                If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler /noupdates")
+                If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler /noupdates" & If(CommandLine.Log, " /log", ""))
             Else
                 If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")
@@ -256,7 +256,7 @@
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
             Dim Name As String = Profile.Key
             Dim Handler As ProfileHandler = Profile.Value
-            Static TwoDays As TimeSpan = New TimeSpan(2, 0, 0, 0)
+            Static OneDay As TimeSpan = New TimeSpan(1, 0, 0, 0)
 
             If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
                 Dim NewEntry As New SchedulerEntry(Name, Handler.Scheduler.NextRun(), False, False)
@@ -266,14 +266,15 @@
                 ' Then, a corresponding entry (same name) is searched for. If not found, then the new entry is simply added to the list.
                 ' OOH, if a corresponding entry is found, then
                 '    If it's already late, or if changes would postpone it, then nothing happens.
-                '    But if it's not late, ant the change will bring the sync forward, then the new entry superseedes the previous one.
+                '    But if it's not late, and the change will bring the sync forward, then the new entry superseedes the previous one.
                 '       Note: In the latter case, if current entry is marked as failed, then the next run time is loaded from it
                 '             (that's to avoid infinite loops when eg. the backup medium is unplugged)
 
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
                 'TODO: Customizable time span?
-                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > TwoDays Then
+                If Handler.GetSetting(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > Handler.Scheduler.GetInterval() + OneDay Then
+                    ConfigHandler.LogAppEvent("Scheduler: Profile " & Name & " was last executed on " & LastRun.ToString & ", marked for catching up.")
                     NewEntry.NextRun = ScheduleInfo.DATE_CATCHUP
                     NewEntry.CatchUp = True
                 End If
