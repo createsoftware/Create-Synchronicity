@@ -241,7 +241,7 @@
                 If SyncForm.StartSynchronization(False) Then
                     ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False, False))
                 Else
-                    ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Date.Now.AddHours(1), True, True))
+                    ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Date.Now.AddHours(4), True, True))
                 End If
                 ScheduledProfiles.RemoveAt(0)
             End If
