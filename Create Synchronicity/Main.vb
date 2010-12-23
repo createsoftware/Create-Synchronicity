@@ -239,8 +239,10 @@
 
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.Catchup)
                 If SyncForm.StartSynchronization(False) Then
+                    ConfigHandler.LogAppEvent("Scheduler: " & NextInQueue.Name & " exited successfully.")
                     ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False, False))
                 Else
+                    ConfigHandler.LogAppEvent("Scheduler: " & NextInQueue.Name & " reported an error, will run again in 4 hours.")
                     ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Date.Now.AddHours(4), True, True))
                 End If
                 ScheduledProfiles.RemoveAt(0)
