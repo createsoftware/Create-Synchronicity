@@ -120,9 +120,6 @@ Public Class SynchronizeForm
     Function StartSynchronization(ByVal CalledShowModal As Boolean) As Boolean
         ProgramConfig.CanGoOn = False
 
-        FailureMsg = ""
-        Failed = Not Handler.ValidateConfigFile(False, True, Quiet, FailureMsg)
-
         If Quiet Then
             Me.Visible = False
 
@@ -143,9 +140,13 @@ Public Class SynchronizeForm
             If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
 
-        If Not Failed Then
-            'ProgramConfig.IncrementSyncsCount() 'TODO: Enable.
-            Handler.SetLastRun() 'TODO: Move to the end of the sync? 'Only set LastRun when the synchronization actually happens. 
+        FailureMsg = ""
+        Dim IsValid As Boolean = Handler.ValidateConfigFile(False, True, Quiet, FailureMsg)
+        Failed = Not IsValid
+
+        If IsValid Then
+            'ProgramConfig.IncrementSyncsCount() 'TODO: Enable. Problem of concurrent savings of the main config file.
+            Handler.SetLastRun() 'TODO: Move to the end of the sync? 'Only set LastRun when the synchronization actually happens. But there would be a problem with the return value.
             If Preview Then
                 PreviewList.Items.Clear()
                 FirstSyncThread.Start()
@@ -157,7 +158,7 @@ Public Class SynchronizeForm
             EndAll()
         End If
 
-        Return (Not Failed)
+        Return IsValid
     End Function
 
     Private Sub SynchronizeForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown

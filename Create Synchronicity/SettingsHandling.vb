@@ -324,6 +324,7 @@ Class ProfileHandler
             FileWriter.Close()
             Return True
         Catch Ex As Exception
+            ConfigHandler.LogAppEvent("Unable to save config file for " & ProfileName & Environment.NewLine & Ex.ToString)
             Return False
         End Try
     End Function
