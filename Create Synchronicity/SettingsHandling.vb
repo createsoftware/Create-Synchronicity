@@ -39,7 +39,7 @@ Public Module ConfigOptions
     Public Const DefaultLanguage As String = "english"
     'Public Const SyncsCount As String = "Syncs count"
     Public Const AutoUpdates As String = "Auto updates"
-    Public Const MaxLogEntries As String = "Max log entries"
+    Public Const MaxLogEntries As String = "Archived log entries"
     Public Const MainFormAttributes As String = "Window size and position"
     Public Const ExpertMode As String = "Expert mode"
 
