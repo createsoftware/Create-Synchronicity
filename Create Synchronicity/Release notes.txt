@@ -26,6 +26,7 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Dec. 24, 2010 - NEW: Automatic log cleaning.
 Dec. 23, 2010 - FIX: !Fix catching-up interval miscalculation for monthly backups, spotted by Tim Coysh. Thanks!
 
 -- Version 5.1 --
