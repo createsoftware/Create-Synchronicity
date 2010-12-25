@@ -136,13 +136,15 @@ Class LogHandler
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
 #Else
             'Load the contents of the previous log, excluding the closing tags
-            Dim LogText As New Text.StringBuilder()
+            Dim PreviousLogs As New List(Of Text.StringBuilder)
+            PreviousLogs.Add(New Text.StringBuilder())
 
             If Not NewLog Then
                 Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
                 While Not LogReader.EndOfStream
                     Dim Line As String = LogReader.ReadLine()
-                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then LogText.AppendLine(Line)
+                    If Line.Contains("<h2>") Then PreviousLogs.Add(New Text.StringBuilder())
+                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then PreviousLogs(PreviousLogs.Count - 1).AppendLine(Line)
                 End While
                 LogReader.Close()
                 LogReader.Dispose()
@@ -151,16 +153,18 @@ Class LogHandler
             'This initialization erases log contents, and should come after loading those.
             Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
 
-            PutHTML(LogWriter, LogText.ToString)
+            OpenHTMLHeaders(LogWriter)
+            For LogId As Integer = Math.Max(1, PreviousLogs.Count - CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MaxLogEntries, 7))) To PreviousLogs.Count - 1
+                PutHTML(LogWriter, PreviousLogs(LogId).ToString)
+            Next
 #End If
 
             Try
-                If NewLog Then OpenHTMLHeaders(LogWriter)
-
+                ' Log format: <h2>, then two <table>s (info, errors)
                 PutHTML(LogWriter, "<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
 
                 PutHTML(LogWriter, "<p>")
-                LogWriter.WriteLine(String.Format("{0} v{1}", "Create Synchronicity", Application.ProductVersion))
+                LogWriter.WriteLine(String.Format("Create Synchronicity v{0}", Application.ProductVersion))
                 PutHTML(LogWriter, "<br />")
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\LEFT"), Left))
                 PutHTML(LogWriter, "<br />")
