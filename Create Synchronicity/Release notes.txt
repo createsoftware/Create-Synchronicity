@@ -6,7 +6,8 @@ Languages:          English, French, German, Portuguese, Italian, Spanish,
 Created on:         June 3, 2009
 Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
-                    Dr. Beau Webber - Lab-Tools Ltd, John Lundy, William Cook
+                    Dr. Beau Webber - Lab-Tools Ltd, John Lundy, William Cook,
+                    Carl Almond
 Patches:            U.N. Owen
 Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
                     Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
