@@ -1,3 +1,4 @@
+bulgarian:0
 czech:3
 danish:0
 deutsch:3
@@ -6,7 +7,7 @@ english:0
 estonian:3
 francais:0
 hebrew:19
-indonesian:3
+indonesian:0
 italian:3
 polish:0
 portuguese:0

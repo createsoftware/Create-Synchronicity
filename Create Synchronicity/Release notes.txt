@@ -27,8 +27,9 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Dec. 24, 2010 - NEW: Automatic log cleaning.
-Dec. 23, 2010 - FIX: !Fix catching-up interval miscalculation for monthly backups, spotted by Tim Coysh. Thanks!
+Jan. 07, 2010 - NEW: !Bulgarian translation. благодаря!
+Dec. 24, 2010 - NEW: !Automatic log cleaning.
+Dec. 23, 2010 - FIX: Fix catching-up interval miscalculation for monthly backups, spotted by Tim Coysh. Thanks!
 
 -- Version 5.1 --
 Dec. 19, 2010 - SYN: Create Synchronicity 5.1 introduces lots of productivity upgrades, a new threading system, cosmetic improvements, and 3 new translations.

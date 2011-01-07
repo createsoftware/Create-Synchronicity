@@ -1,3 +1,4 @@
+bulgarian;Български;bg
 czech;čeština;cs
 danish;dansk;da
 deutsch;german;de
