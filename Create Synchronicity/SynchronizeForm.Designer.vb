@@ -102,7 +102,7 @@ Partial Class SynchronizeForm
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.MainLayoutPanel.Size = New System.Drawing.Size(601, 263)
+        Me.MainLayoutPanel.Size = New System.Drawing.Size(601, 268)
         Me.MainLayoutPanel.TabIndex = 0
         '
         'Step3LayoutPanel
@@ -113,12 +113,12 @@ Partial Class SynchronizeForm
         Me.Step3LayoutPanel.Controls.Add(Me.Step3_ProgressLayout, 0, 1)
         Me.Step3LayoutPanel.Controls.Add(Me.Step3Label, 0, 0)
         Me.Step3LayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step3LayoutPanel.Location = New System.Drawing.Point(4, 178)
+        Me.Step3LayoutPanel.Location = New System.Drawing.Point(4, 182)
         Me.Step3LayoutPanel.Name = "Step3LayoutPanel"
         Me.Step3LayoutPanel.RowCount = 2
         Me.Step3LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Step3LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step3LayoutPanel.Size = New System.Drawing.Size(593, 81)
+        Me.Step3LayoutPanel.Size = New System.Drawing.Size(593, 82)
         Me.Step3LayoutPanel.TabIndex = 2
         '
         'Step3_ProgressLayout
@@ -133,7 +133,7 @@ Partial Class SynchronizeForm
         Me.Step3_ProgressLayout.RowCount = 2
         Me.Step3_ProgressLayout.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Step3_ProgressLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step3_ProgressLayout.Size = New System.Drawing.Size(583, 46)
+        Me.Step3_ProgressLayout.Size = New System.Drawing.Size(583, 47)
         Me.Step3_ProgressLayout.TabIndex = 0
         '
         'Step3StatusLabel
@@ -142,14 +142,14 @@ Partial Class SynchronizeForm
         Me.Step3StatusLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step3StatusLabel.Location = New System.Drawing.Point(3, 0)
         Me.Step3StatusLabel.Name = "Step3StatusLabel"
-        Me.Step3StatusLabel.Size = New System.Drawing.Size(577, 13)
+        Me.Step3StatusLabel.Size = New System.Drawing.Size(577, 14)
         Me.Step3StatusLabel.TabIndex = 2
         Me.Step3StatusLabel.Text = "\WAITING"
         '
         'Step3ProgressBar
         '
         Me.Step3ProgressBar.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step3ProgressBar.Location = New System.Drawing.Point(3, 16)
+        Me.Step3ProgressBar.Location = New System.Drawing.Point(3, 17)
         Me.Step3ProgressBar.Name = "Step3ProgressBar"
         Me.Step3ProgressBar.Size = New System.Drawing.Size(577, 27)
         Me.Step3ProgressBar.TabIndex = 3
@@ -173,12 +173,12 @@ Partial Class SynchronizeForm
         Me.Step2LayoutPanel.Controls.Add(Me.Step2ProgressLayout, 0, 1)
         Me.Step2LayoutPanel.Controls.Add(Me.Step2Label, 0, 0)
         Me.Step2LayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step2LayoutPanel.Location = New System.Drawing.Point(4, 91)
+        Me.Step2LayoutPanel.Location = New System.Drawing.Point(4, 93)
         Me.Step2LayoutPanel.Name = "Step2LayoutPanel"
         Me.Step2LayoutPanel.RowCount = 2
         Me.Step2LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Step2LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step2LayoutPanel.Size = New System.Drawing.Size(593, 80)
+        Me.Step2LayoutPanel.Size = New System.Drawing.Size(593, 82)
         Me.Step2LayoutPanel.TabIndex = 1
         '
         'Step2ProgressLayout
@@ -202,7 +202,7 @@ Partial Class SynchronizeForm
         Me.Step2StatusLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step2StatusLabel.Location = New System.Drawing.Point(3, 0)
         Me.Step2StatusLabel.Name = "Step2StatusLabel"
-        Me.Step2StatusLabel.Size = New System.Drawing.Size(577, 13)
+        Me.Step2StatusLabel.Size = New System.Drawing.Size(577, 14)
         Me.Step2StatusLabel.TabIndex = 2
         Me.Step2StatusLabel.Text = "\WAITING"
         '
@@ -238,7 +238,7 @@ Partial Class SynchronizeForm
         Me.Step1LayoutPanel.RowCount = 2
         Me.Step1LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Step1LayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step1LayoutPanel.Size = New System.Drawing.Size(593, 80)
+        Me.Step1LayoutPanel.Size = New System.Drawing.Size(593, 82)
         Me.Step1LayoutPanel.TabIndex = 0
         '
         'Step1ProgressLayout
@@ -253,7 +253,7 @@ Partial Class SynchronizeForm
         Me.Step1ProgressLayout.RowCount = 2
         Me.Step1ProgressLayout.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Step1ProgressLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step1ProgressLayout.Size = New System.Drawing.Size(583, 45)
+        Me.Step1ProgressLayout.Size = New System.Drawing.Size(583, 47)
         Me.Step1ProgressLayout.TabIndex = 0
         '
         'Step1StatusLabel
@@ -262,17 +262,17 @@ Partial Class SynchronizeForm
         Me.Step1StatusLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Step1StatusLabel.Location = New System.Drawing.Point(3, 0)
         Me.Step1StatusLabel.Name = "Step1StatusLabel"
-        Me.Step1StatusLabel.Size = New System.Drawing.Size(577, 13)
+        Me.Step1StatusLabel.Size = New System.Drawing.Size(577, 14)
         Me.Step1StatusLabel.TabIndex = 2
         Me.Step1StatusLabel.Text = "\WAITING"
         '
         'Step1ProgressBar
         '
         Me.Step1ProgressBar.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step1ProgressBar.Location = New System.Drawing.Point(3, 16)
+        Me.Step1ProgressBar.Location = New System.Drawing.Point(3, 17)
         Me.Step1ProgressBar.MarqueeAnimationSpeed = 50
         Me.Step1ProgressBar.Name = "Step1ProgressBar"
-        Me.Step1ProgressBar.Size = New System.Drawing.Size(577, 26)
+        Me.Step1ProgressBar.Size = New System.Drawing.Size(577, 27)
         Me.Step1ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.Step1ProgressBar.TabIndex = 3
         Me.Step1ProgressBar.Value = 100
@@ -295,7 +295,7 @@ Partial Class SynchronizeForm
         Me.ButtonsLayoutPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.ButtonsLayoutPanel.Controls.Add(Me.SyncBtn, 0, 0)
         Me.ButtonsLayoutPanel.Controls.Add(Me.StopBtn, 0, 1)
-        Me.ButtonsLayoutPanel.Location = New System.Drawing.Point(489, 281)
+        Me.ButtonsLayoutPanel.Location = New System.Drawing.Point(489, 286)
         Me.ButtonsLayoutPanel.Name = "ButtonsLayoutPanel"
         Me.ButtonsLayoutPanel.RowCount = 2
         Me.ButtonsLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -348,7 +348,7 @@ Partial Class SynchronizeForm
         Me.StatisticsPanel.Controls.Add(Me.FoldersCreatedLabel, 0, 2)
         Me.StatisticsPanel.Controls.Add(Me.FoldersCreated, 1, 2)
         Me.StatisticsPanel.Controls.Add(Me.FilesDeleted, 1, 1)
-        Me.StatisticsPanel.Location = New System.Drawing.Point(12, 281)
+        Me.StatisticsPanel.Location = New System.Drawing.Point(12, 286)
         Me.StatisticsPanel.Name = "StatisticsPanel"
         Me.StatisticsPanel.RowCount = 4
         Me.StatisticsPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
@@ -501,7 +501,7 @@ Partial Class SynchronizeForm
         Me.PreviewList.Location = New System.Drawing.Point(12, 12)
         Me.PreviewList.MultiSelect = False
         Me.PreviewList.Name = "PreviewList"
-        Me.PreviewList.Size = New System.Drawing.Size(601, 263)
+        Me.PreviewList.Size = New System.Drawing.Size(601, 268)
         Me.PreviewList.SmallImageList = Me.SyncingIcons
         Me.PreviewList.TabIndex = 4
         Me.PreviewList.UseCompatibleStateImageBehavior = False
@@ -548,7 +548,7 @@ Partial Class SynchronizeForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(625, 362)
+        Me.ClientSize = New System.Drawing.Size(625, 367)
         Me.Controls.Add(Me.PreviewList)
         Me.Controls.Add(Me.StatisticsPanel)
         Me.Controls.Add(Me.ButtonsLayoutPanel)
