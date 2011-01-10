@@ -1,4 +1,4 @@
-﻿# Create Synchronicity German Language file
+# Create Synchronicity German Language file
 # Translation by Florian Haag, with few additions by Jeanne Tourette
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -151,6 +151,6 @@ TOGGLE=Fortgeschritten: Markierung dieses Ordners hinzufügen/entfernen
 RELOAD_TREES=Ordnerstruktur auslesen
 CATCHUP_MISSED_BACKUPS=Verpasste Sicherungen nachholen
 CATCHUP_MISSED_BACKUPS_TAG=Gibt an, was passieren soll, wenn der Computer zum geplanten Sicherungszeitpunkt
-->CATCHING_UP=Create Synchronicity is catching up "{0}" last run {1} days, {2} hours ago {3}.
-->FOLDER_FAILED=Could not create folder "{0}" {1}.
-->CREATE_DEST=Dynamically create destination folder
+CATCHING_UP=Create Synchronicity holt "{0}" nach (zuletzt vor {1} Tag(en), {2} Stunde(n) ausgeführt ({3})).
+FOLDER_FAILED=Konnte den Ordner "{0}" nicht erzeugen ({1}).
+CREATE_DEST=Zielordner dynamisch erzeugen
