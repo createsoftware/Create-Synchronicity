@@ -2,7 +2,7 @@
 * Information
 Languages:          English, French, German, Portuguese, Italian, Spanish, 
                     Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
-                    Estonian
+                    Estonian, Korean
 Created on:         June 3, 2009
 Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
@@ -12,7 +12,8 @@ Patches:            U.N. Owen
 Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
                     Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
                     John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
-                    Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule
+                    Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule,
+                    S.G.Park
 
 * Technical information
 License:            GNU GPL v3 or later (see "COPYING")
@@ -27,7 +28,8 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Jan. 07, 2010 - NEW: !Bulgarian translation. благодаря!
+Jan. 21, 2011 - NEW: !Korean translation, by S.G.Park. 감사합니다!
+Jan. 07, 2011 - NEW: !Bulgarian translation. благодаря!
 Dec. 24, 2010 - NEW: !Automatic log cleaning.
 Dec. 23, 2010 - FIX: Fix catching-up interval miscalculation for monthly backups, spotted by Tim Coysh. Thanks!
 

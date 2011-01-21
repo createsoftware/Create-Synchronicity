@@ -9,6 +9,7 @@ francais;french;fr
 hebrew;עִבְרִית;he
 indonesian;bahasa indonesia;id
 italian;italiano;it
+korean;한국어;ko
 polish;polski;pl
 portuguese;português;pt
 russian;русский язык;ru
