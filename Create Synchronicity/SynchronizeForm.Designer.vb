@@ -145,6 +145,7 @@ Partial Class SynchronizeForm
         Me.Step3StatusLabel.Size = New System.Drawing.Size(577, 14)
         Me.Step3StatusLabel.TabIndex = 2
         Me.Step3StatusLabel.Text = "\WAITING"
+        Me.Step3StatusLabel.UseMnemonic = False
         '
         'Step3ProgressBar
         '
@@ -193,7 +194,7 @@ Partial Class SynchronizeForm
         Me.Step2ProgressLayout.RowCount = 2
         Me.Step2ProgressLayout.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Step2ProgressLayout.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.Step2ProgressLayout.Size = New System.Drawing.Size(583, 45)
+        Me.Step2ProgressLayout.Size = New System.Drawing.Size(583, 47)
         Me.Step2ProgressLayout.TabIndex = 0
         '
         'Step2StatusLabel
@@ -205,13 +206,14 @@ Partial Class SynchronizeForm
         Me.Step2StatusLabel.Size = New System.Drawing.Size(577, 14)
         Me.Step2StatusLabel.TabIndex = 2
         Me.Step2StatusLabel.Text = "\WAITING"
+        Me.Step2StatusLabel.UseMnemonic = False
         '
         'Step2ProgressBar
         '
         Me.Step2ProgressBar.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Step2ProgressBar.Location = New System.Drawing.Point(3, 16)
+        Me.Step2ProgressBar.Location = New System.Drawing.Point(3, 17)
         Me.Step2ProgressBar.Name = "Step2ProgressBar"
-        Me.Step2ProgressBar.Size = New System.Drawing.Size(577, 26)
+        Me.Step2ProgressBar.Size = New System.Drawing.Size(577, 27)
         Me.Step2ProgressBar.TabIndex = 3
         '
         'Step2Label
@@ -265,6 +267,7 @@ Partial Class SynchronizeForm
         Me.Step1StatusLabel.Size = New System.Drawing.Size(577, 14)
         Me.Step1StatusLabel.TabIndex = 2
         Me.Step1StatusLabel.Text = "\WAITING"
+        Me.Step1StatusLabel.UseMnemonic = False
         '
         'Step1ProgressBar
         '

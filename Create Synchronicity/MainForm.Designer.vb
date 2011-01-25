@@ -209,6 +209,7 @@ Partial Class MainForm
         Me.Main_Destination.Size = New System.Drawing.Size(223, 28)
         Me.Main_Destination.TabIndex = 11
         Me.Main_Destination.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Main_Destination.UseMnemonic = False
         '
         'Main_DestinationLabel
         '
@@ -231,6 +232,7 @@ Partial Class MainForm
         Me.Main_Source.Size = New System.Drawing.Size(223, 27)
         Me.Main_Source.TabIndex = 9
         Me.Main_Source.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Main_Source.UseMnemonic = False
         '
         'Main_SourceLabel
         '
