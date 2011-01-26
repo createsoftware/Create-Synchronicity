@@ -167,7 +167,6 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
         ProgramConfig.CanGoOn = True
@@ -509,45 +508,7 @@ Public Class SynchronizeForm
         End Select
         Me.Invoke(TaskDoneDelegate, 1)
 
-        'NOTE: [to sysadmins] (March 13, 2010)
-        '
-        '      When mirroring a folder, the folders included for cleanup
-        '      deletions are all the right folders. This means that if
-        '      you have the following tree:
-        '      o A (contains f1.abc, f2.def, f3.ghi)
-        '        x B
-        '        x C
-        '        x D
-        '        o E
-        '      and A and E are unchecked, while B, C, D are, you will end 
-        '      up, regardless of the original situation, with 
-        '      A (containing no files)
-        '        B
-        '        C
-        '        D
-        '      
-        '      The folder labelled E will be deleted: having unchecked A
-        '      only means that you do not want its files to be synced.
-        '      
-        '      If you however wish E to NOT be deleted, then you /must/
-        '      manually specify it by editing the configuration file:
-        '         Find the "Destination folders to be synchronized:" line
-        '         
-        '         There, add all the folders where Create Synchronicity 
-        '         should search for potential files to remove, optionally
-        '         followed by a * to include subfolders. In the previous 
-        '         example, if you want folder E to not be deleted, but 
-        '         but not otherwise change the syncing behaviour, you would
-        '         input the following:
-        '             ;\B*;\C*;\D*     
-        '         
-        '         Note the preceding semi-colon, indicating the empty
-        '         entry, indicating that the root folder is to be synced
-        '         too.
-        '         
-        '         An easy way to achieve this behaviour is to copy-paste
-        '         the "Destination folders to be synchronized:" list,
-        '         prefixing it with a semi-colon.
+        'NOTE: [to sysadmins] (March 13, 2010) -- Moved to FAQ
     End Sub
 
     Sub Do_SecondThirdStep()
@@ -935,7 +896,7 @@ Public Class SynchronizeForm
     '     Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
     ' End Function
 
-    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean
+    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
@@ -946,6 +907,14 @@ Public Class SynchronizeForm
             If Math.Abs(HoursDiff) = 1 Then DestFATTime = DestFATTime.AddHours(HoursDiff)
         End If
 
+        'If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then ' DEPRECATED
+        '    Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
+        'End If
+
+        If Handler.GetSetting(ConfigOptions.CheckFileSize, "False") Then 'TODO: Test for 5.2
+            Return (New System.IO.FileInfo(Source)).Length <> (New System.IO.FileInfo(Destination)).Length
+        End If
+
         If Handler.GetSetting(ConfigOptions.StrictDateComparison, "True") = "True" Then
             If SourceFATTime = DestFATTime Then Return False
         Else
@@ -954,11 +923,7 @@ Public Class SynchronizeForm
 
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
 
-        'If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then ' DEPRECATED
-        '    Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
-        'Else
         Return True
-        'End If
     End Function
 
     Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
@@ -966,12 +931,4 @@ Public Class SynchronizeForm
         Return (New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second).AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))))
     End Function
 #End Region
-
-    ' This code won't be compiled.
-    'Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
-    '    If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
-    '    Dim Index As Integer = PreviewList.SelectedIndices(0)
-    '    Dim CopyFromLeft As Boolean = (PreviewList.SelectedItems(0).Text = "Left->Right") Xor PreviewList.SelectedItems(0).SubItems(0).Text = "Delete"
-    '    System.Diagnostics.Process.Start(If(CopyFromLeft, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Source) & SyncingList(
-    'End Sub
 End Class

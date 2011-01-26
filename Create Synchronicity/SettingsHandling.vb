@@ -25,11 +25,12 @@ Public Module ConfigOptions
     Public Const CatchUpSync As String = "Catch up if missed"
 
     'These settings are hidden settings, not automatically appended to config files.
-    Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
-
     'NOTE: Automatically create entry in config file when these settings are enabled.
     Public Const Group As String = "Group"
+    Public Const CheckFileSize As String = "Check file size"
     Public Const ExcludedFolders As String = "Excluded folder patterns"
+    Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
+    '</>
 
     Public Const Scheduling As String = "Scheduling"
     Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute
@@ -37,7 +38,7 @@ Public Module ConfigOptions
     'Main program settings
     Public Const Language As String = "Language"
     Public Const DefaultLanguage As String = "english"
-    'Public Const SyncsCount As String = "Syncs count"
+    'Public Const SyncsCount As String = "Syncs count" 'COULDDO: Problem with concurrent savings of the config file.
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MaxLogEntries As String = "Archived log entries"
     Public Const MainFormAttributes As String = "Window size and position"
