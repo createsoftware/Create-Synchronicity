@@ -28,7 +28,7 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
-Jan. 26, 2011 - NEW: Hidden setting: compare file size in addition to last modified date.
+Jan. 26, 2011 - NEW: (Hidden setting) Compare file size in addition to last modified date.
 Jan. 21, 2011 - NEW: !Korean translation, by S.G.Park. 감사합니다!
 Jan. 07, 2011 - NEW: !Bulgarian translation. благодаря!
 Dec. 24, 2010 - NEW: !Automatic log cleaning.
