@@ -236,6 +236,19 @@ Public Class SynchronizeForm
         If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, Address.Substring(0, Address.LastIndexOf(ConfigOptions.DirSep)), Address))
     End Sub
 
+    Function FormatSize(ByVal Size As Long) As String
+        Select Case Size
+            Case Is > 1024 * 1000 * 1000
+                Return Math.Round(Size / (1024 * 1000 * 1000), 2).ToString & " GB"
+            Case Is > 1024 * 1000
+                Return Math.Round(Size / (1024 * 1000), 2).ToString & " MB"
+            Case Is > 1024
+                Return Math.Round(Size / 1024, 2).ToString & " kB"
+            Case Else
+                Return Math.Round(Size, 2).ToString & " B"
+        End Select
+    End Function
+
     Sub UpdateStatuses()
         Status.TimeElapsed = DateTime.Now - Status.StartTime
         ElapsedTime.Text = If(Status.TimeElapsed.Hours = 0, "", Status.TimeElapsed.Hours.ToString & "h, ") & If(Status.TimeElapsed.Minutes = 0, "", Status.TimeElapsed.Minutes.ToString & "m, ") & Status.TimeElapsed.Seconds.ToString & "s."
@@ -246,23 +259,15 @@ Public Class SynchronizeForm
             Speed.Text = Math.Round(Status.FilesScanned / (Status.TimeElapsed.TotalMilliseconds / 1000)).ToString & " files/s"
         Else
             Status.MillisecondsSpeed = Status.BytesCopied / (Status.TimeElapsed.TotalMilliseconds / 1000)
-
-            Select Case Status.MillisecondsSpeed
-                Case Is > 1024 * 1000 * 1000
-                    Speed.Text = Math.Round(Status.MillisecondsSpeed / (1024 * 1000 * 1000), 2).ToString & "GB/s"
-                Case Is > 1024 * 1000
-                    Speed.Text = Math.Round(Status.MillisecondsSpeed / (1024 * 1000), 2).ToString & "MB/s"
-                Case Is > 1024
-                    Speed.Text = Math.Round(Status.MillisecondsSpeed / 1024, 2).ToString & "kB/s"
-                Case Else
-                    Speed.Text = Math.Round(Status.MillisecondsSpeed, 2).ToString & "B/s"
-            End Select
+            Speed.Text = FormatSize(Status.MillisecondsSpeed) & "/s"
         End If
 
         If Not Status.CurrentStep = 1 Then
             Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
-            FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate : FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
-            FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate : FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
+            FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
+            FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate & " (" & FormatSize(Status.BytesCopied) & ")"
+            FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
+            FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate
         End If
     End Sub
 #End Region

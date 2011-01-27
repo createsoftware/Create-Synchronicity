@@ -333,10 +333,10 @@ Partial Class SynchronizeForm
         Me.StatisticsPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.StatisticsPanel.ColumnCount = 4
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.0!))
-        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.StatisticsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.StatisticsPanel.Controls.Add(Me.FoldersDeleted, 0, 3)
         Me.StatisticsPanel.Controls.Add(Me.FoldersDeletedLabel, 0, 3)
         Me.StatisticsPanel.Controls.Add(Me.ElapsedTimeLabel, 2, 0)
@@ -363,6 +363,7 @@ Partial Class SynchronizeForm
         '
         'FoldersDeleted
         '
+        Me.FoldersDeleted.AutoEllipsis = True
         Me.FoldersDeleted.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FoldersDeleted.Location = New System.Drawing.Point(144, 51)
         Me.FoldersDeleted.Name = "FoldersDeleted"
@@ -372,6 +373,7 @@ Partial Class SynchronizeForm
         '
         'FoldersDeletedLabel
         '
+        Me.FoldersDeletedLabel.AutoSize = True
         Me.FoldersDeletedLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FoldersDeletedLabel.Location = New System.Drawing.Point(3, 51)
         Me.FoldersDeletedLabel.Name = "FoldersDeletedLabel"
@@ -382,6 +384,7 @@ Partial Class SynchronizeForm
         '
         'ElapsedTimeLabel
         '
+        Me.ElapsedTimeLabel.AutoSize = True
         Me.ElapsedTimeLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ElapsedTimeLabel.Location = New System.Drawing.Point(238, 0)
         Me.ElapsedTimeLabel.Name = "ElapsedTimeLabel"
@@ -392,6 +395,7 @@ Partial Class SynchronizeForm
         '
         'ElapsedTime
         '
+        Me.ElapsedTime.AutoEllipsis = True
         Me.ElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ElapsedTime.Location = New System.Drawing.Point(379, 0)
         Me.ElapsedTime.Name = "ElapsedTime"
@@ -401,6 +405,7 @@ Partial Class SynchronizeForm
         '
         'SpeedLabel
         '
+        Me.SpeedLabel.AutoSize = True
         Me.SpeedLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SpeedLabel.Location = New System.Drawing.Point(238, 17)
         Me.SpeedLabel.Name = "SpeedLabel"
@@ -411,6 +416,7 @@ Partial Class SynchronizeForm
         '
         'Speed
         '
+        Me.Speed.AutoEllipsis = True
         Me.Speed.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Speed.Location = New System.Drawing.Point(379, 17)
         Me.Speed.Name = "Speed"
@@ -420,6 +426,7 @@ Partial Class SynchronizeForm
         '
         'FilesCreatedLabel
         '
+        Me.FilesCreatedLabel.AutoSize = True
         Me.FilesCreatedLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FilesCreatedLabel.Location = New System.Drawing.Point(3, 0)
         Me.FilesCreatedLabel.Name = "FilesCreatedLabel"
@@ -430,6 +437,7 @@ Partial Class SynchronizeForm
         '
         'FilesCreated
         '
+        Me.FilesCreated.AutoEllipsis = True
         Me.FilesCreated.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FilesCreated.Location = New System.Drawing.Point(144, 0)
         Me.FilesCreated.Name = "FilesCreated"
@@ -439,6 +447,7 @@ Partial Class SynchronizeForm
         '
         'DoneLabel
         '
+        Me.DoneLabel.AutoSize = True
         Me.DoneLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.DoneLabel.Location = New System.Drawing.Point(238, 51)
         Me.DoneLabel.Name = "DoneLabel"
@@ -449,6 +458,7 @@ Partial Class SynchronizeForm
         '
         'Done
         '
+        Me.Done.AutoEllipsis = True
         Me.Done.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Done.Location = New System.Drawing.Point(379, 51)
         Me.Done.Name = "Done"
@@ -458,6 +468,7 @@ Partial Class SynchronizeForm
         '
         'FilesDeletedLabel
         '
+        Me.FilesDeletedLabel.AutoSize = True
         Me.FilesDeletedLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FilesDeletedLabel.Location = New System.Drawing.Point(3, 17)
         Me.FilesDeletedLabel.Name = "FilesDeletedLabel"
@@ -468,6 +479,7 @@ Partial Class SynchronizeForm
         '
         'FoldersCreatedLabel
         '
+        Me.FoldersCreatedLabel.AutoSize = True
         Me.FoldersCreatedLabel.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FoldersCreatedLabel.Location = New System.Drawing.Point(3, 34)
         Me.FoldersCreatedLabel.Name = "FoldersCreatedLabel"
@@ -478,6 +490,7 @@ Partial Class SynchronizeForm
         '
         'FoldersCreated
         '
+        Me.FoldersCreated.AutoEllipsis = True
         Me.FoldersCreated.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FoldersCreated.Location = New System.Drawing.Point(144, 34)
         Me.FoldersCreated.Name = "FoldersCreated"
@@ -487,6 +500,7 @@ Partial Class SynchronizeForm
         '
         'FilesDeleted
         '
+        Me.FilesDeleted.AutoEllipsis = True
         Me.FilesDeleted.Dock = System.Windows.Forms.DockStyle.Fill
         Me.FilesDeleted.Location = New System.Drawing.Point(144, 17)
         Me.FilesDeleted.Name = "FilesDeleted"
@@ -572,6 +586,7 @@ Partial Class SynchronizeForm
         Me.Step1ProgressLayout.ResumeLayout(False)
         Me.ButtonsLayoutPanel.ResumeLayout(False)
         Me.StatisticsPanel.ResumeLayout(False)
+        Me.StatisticsPanel.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
