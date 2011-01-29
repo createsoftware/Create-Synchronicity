@@ -97,6 +97,7 @@ Partial Class SynchronizeForm
         Me.MainLayoutPanel.Controls.Add(Me.Step2LayoutPanel, 0, 1)
         Me.MainLayoutPanel.Controls.Add(Me.Step1LayoutPanel, 0, 0)
         Me.MainLayoutPanel.Location = New System.Drawing.Point(12, 12)
+        Me.MainLayoutPanel.MaximumSize = New System.Drawing.Size(65536, 400)
         Me.MainLayoutPanel.Name = "MainLayoutPanel"
         Me.MainLayoutPanel.RowCount = 3
         Me.MainLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
