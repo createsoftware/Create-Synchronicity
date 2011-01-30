@@ -93,3 +93,4 @@ http://www.firstsoft.se/article/18463-create_synchronicity
 http://www.opensource-dvd.de/sicherheit1.htm
 http://download.techworld.com/3248815/create-synchronicity-50/
 http://www.pcadvisor.co.uk/downloads/windows/index.cfm?catId=2&id=3248815
+http://sourceforge.net/blog/create-synchronicity
