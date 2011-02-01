@@ -671,7 +671,7 @@ Public Class SynchronizeForm
         IsSingularity = Not IO.Directory.Exists(Dest_FilePath)
 
         If IsSingularity Then
-            AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+            AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action, False))
 #If DEBUG Then
             Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will be copied.", Dest_FilePath, Folder))
 #End If
@@ -695,8 +695,9 @@ Public Class SynchronizeForm
                 'First check if the file is part of the synchronization profile.
                 'Then, check whether it requires updating.
                 If HasAcceptedFilename(SourceFile) Then
-                    If Not IO.File.Exists(DestinationFile) OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
-                        AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action))
+                    Dim DestinationExists As Boolean = IO.File.Exists(DestinationFile)
+                    If Not DestinationExists OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
+                        AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action, Not DestinationExists))
 #If DEBUG Then
                         Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will be copied.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
@@ -773,7 +774,7 @@ Public Class SynchronizeForm
             For Each File As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
                 If Not IsValidFile(RelativeFName) Then
-                    AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action))
+                    AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action, False))
 #If DEBUG Then
                     Log.LogInfo(String.Format("""{0}"" ({1}) does NOT belong to the list, so will be deleted.", File, RelativeFName))
                 Else
@@ -806,7 +807,7 @@ Public Class SynchronizeForm
 #If DEBUG Then
             Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] does NOT belong to the list, so will be deleted.", Dest_FilePath, Folder))
 #End If
-            AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action))
+            AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action, False))
         End If
     End Sub
 

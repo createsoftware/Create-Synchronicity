@@ -32,12 +32,15 @@ End Class
 Public Class SyncingItem
     Public Path As String
     Public Type As TypeOfItem
+
+    Public IsUpdate As Boolean
     Public Action As TypeOfAction
 
-    Sub New(ByVal _Path As String, ByVal _Type As TypeOfItem, ByVal _Action As TypeOfAction)
+    Sub New(ByVal _Path As String, ByVal _Type As TypeOfItem, ByVal _Action As TypeOfAction, ByVal _IsUpdate As Boolean)
         Path = _Path
         Type = _Type
         Action = _Action
+        IsUpdate = _IsUpdate
     End Sub
 
     Function FormatType() As String
@@ -52,7 +55,7 @@ Public Class SyncingItem
     Function FormatAction() As String
         Select Case Action
             Case TypeOfAction.Copy
-                Return Translation.Translate("\CREATE")
+                Return If(IsUpdate, Translation.Translate("\UPDATE"), Translation.Translate("\CREATE"))
             Case TypeOfAction.Delete
                 Return Translation.Translate("\DELETE")
             Case Else
