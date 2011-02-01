@@ -430,7 +430,7 @@ Public Class SynchronizeForm
         ListItem.Tag = If(Side = SideOfSource.Left, "LR", "RL")
 
         Select Case Item.Action
-            Case TypeOfAction.Create
+            Case TypeOfAction.Copy
                 If Item.Type = TypeOfItem.Folder Then
                     ListItem.ImageIndex = 3
                     Status.FoldersToCreate += 1
@@ -497,7 +497,7 @@ Public Class SynchronizeForm
         Context.Source = SideOfSource.Left
         Context.SourcePath = Source
         Context.DestinationPath = Destination
-        Context.Action = TypeOfAction.Create
+        Context.Action = TypeOfAction.Copy
         Init_Synchronization(Handler.LeftCheckedNodes, Context)
 
         Context.Source = SideOfSource.Right
@@ -508,7 +508,7 @@ Public Class SynchronizeForm
                 Context.Action = TypeOfAction.Delete
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
             Case "2"
-                Context.Action = TypeOfAction.Create
+                Context.Action = TypeOfAction.Copy
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
         Me.Invoke(TaskDoneDelegate, 1)
@@ -546,7 +546,7 @@ Public Class SynchronizeForm
                 Select Case Entry.Type
                     Case TypeOfItem.File
                         Select Case Entry.Action
-                            Case TypeOfAction.Create
+                            Case TypeOfAction.Copy
                                 CopyFile(Entry.Path, Source, Destination)
                             Case TypeOfAction.Delete
                                 IO.File.SetAttributes(Source & Entry.Path, IO.FileAttributes.Normal)
@@ -556,7 +556,7 @@ Public Class SynchronizeForm
 
                     Case TypeOfItem.Folder
                         Select Case Entry.Action
-                            Case TypeOfAction.Create
+                            Case TypeOfAction.Copy
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
                                 IO.Directory.SetCreationTimeUtc(Destination & Entry.Path, IO.Directory.GetCreationTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
                                 Status.CreatedFolders += 1
@@ -594,7 +594,7 @@ Public Class SynchronizeForm
             Log.LogInfo(String.Format("=> Scanning top-level folders from side {0}: Folder ""{1}""", Context.SourcePath, Folder))
 #End If
             If IO.Directory.Exists(CombinePathes(Context.SourcePath, Folder)) Then
-                If Context.Action = TypeOfAction.Create Then
+                If Context.Action = TypeOfAction.Copy Then
                     'FIXED-BUG: Every ancestor of this folder should be added too.
                     'Careful with this, for it's a performance issue. Ancestors should only be added /once/.
                     'How to do that? Well, if ancestors of a folder have not been scanned, it means that this folder wasn't reached by a recursive call, but by a initial call.

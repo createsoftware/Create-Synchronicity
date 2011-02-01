@@ -14,7 +14,7 @@ End Enum
 Public Enum TypeOfAction As Integer
     Delete = -1
     None = 0
-    Create = 1
+    Copy = 1
 End Enum
 
 Public Enum SideOfSource As Integer
@@ -51,7 +51,7 @@ Public Class SyncingItem
 
     Function FormatAction() As String
         Select Case Action
-            Case TypeOfAction.Create
+            Case TypeOfAction.Copy
                 Return Translation.Translate("\CREATE")
             Case TypeOfAction.Delete
                 Return Translation.Translate("\DELETE")
@@ -63,9 +63,9 @@ Public Class SyncingItem
     Function FormatDirection(ByVal Side As SideOfSource) As String
         Select Case Side
             Case SideOfSource.Left
-                Return If(Action = TypeOfAction.Create, Translation.Translate("\LR"), Translation.Translate("\LEFT"))
+                Return If(Action = TypeOfAction.Copy, Translation.Translate("\LR"), Translation.Translate("\LEFT"))
             Case SideOfSource.Right
-                Return If(Action = TypeOfAction.Create, Translation.Translate("\RL"), Translation.Translate("\RIGHT"))
+                Return If(Action = TypeOfAction.Copy, Translation.Translate("\RL"), Translation.Translate("\RIGHT"))
             Case Else
                 Return ""
         End Select
