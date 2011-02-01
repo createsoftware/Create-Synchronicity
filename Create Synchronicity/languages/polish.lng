@@ -157,3 +157,4 @@ CATCHING_UP=Create Synchronicity wykrył "{0}" (ostatnie uruchomienie {1} dni, {
 FOLDER_MISSING=Katalog "{0}" nie istnieje. Czy chcesz go utworzyć?
 FOLDER_FAILED=Nie można utworzyć katalogu "{0}" ({1}).
 CREATE_DEST=Dynamicznie utwórz katalog docelowy
+->UPDATE=

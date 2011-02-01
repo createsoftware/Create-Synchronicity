@@ -154,3 +154,4 @@ CATCHUP_MISSED_BACKUPS_TAG=Geeft aan wat te doen als de computer is uitgeschakel
 CATCHING_UP=Create Synchronicity werkt "{0}" bij (laatste keer {1} dag(en), {2} (u)ur(en) geleden ({3})).
 FOLDER_FAILED=Map "{0}" kon niet aangemaakt worden ({1}).
 CREATE_DEST=Creëer doelmap dynamisch
+->UPDATE=

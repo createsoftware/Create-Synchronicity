@@ -154,3 +154,4 @@ CATCHUP_MISSED_BACKUPS_TAG=Indique le comportement à tenir si l'ordinateur éta
 CATCHING_UP=Create Synchronicity rattrape la synchronisation de "{0}" (dernière exécution il y a {1} jour(s), {2} heure(s) ({3})).
 FOLDER_FAILED=Impossible de créer le dossier "{0}" ({1}).
 CREATE_DEST=Créer dynamiquement le dossier de destination
+UPDATE=Mettre à jour
