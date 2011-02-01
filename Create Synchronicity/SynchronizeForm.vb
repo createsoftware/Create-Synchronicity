@@ -162,8 +162,20 @@ Public Class SynchronizeForm
     End Function
 
     Private Sub SynchronizeForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
-        If e.Control AndAlso e.KeyCode = Keys.L AndAlso Status.CurrentStep = -1 Then
-            Interaction.StartProcess(ProgramConfig.GetLogPath(Handler.ProfileName))
+        If e.Control Then
+            If e.KeyCode = Keys.L AndAlso Status.CurrentStep = -1 Then
+                Interaction.StartProcess(ProgramConfig.GetLogPath(Handler.ProfileName))
+            ElseIf e.KeyCode = Keys.D And PreviewList.SelectedIndices.Count <> 0 Then
+                Dim DiffProgram As String = ProgramConfig.GetProgramSetting(ConfigOptions.DiffProgram, "")
+                Dim DiffArguments As String = ProgramConfig.GetProgramSetting(ConfigOptions.DiffArguments, "")
+                Dim NewFile As String = "", OldFile As String = ""
+                If Not GetPathFromSelectedItem(NewFile, OldFile) Then Exit Sub
+                Try
+                    If DiffProgram <> "" AndAlso IO.File.Exists(OldFile) AndAlso IO.File.Exists(NewFile) Then Diagnostics.Process.Start(DiffProgram.Trim, DiffArguments.Replace("%o", OldFile).Replace("%n", NewFile))
+                Catch Ex As Exception
+                    Interaction.ShowMsg("Error loading diff: " & Ex.ToString)
+                End Try
+            End If
         End If
     End Sub
 
@@ -219,22 +231,32 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
-        If PreviewList.SelectedIndices.Count = 0 Then Exit Sub
+        Dim Source As String = "", Dest As String = ""
+        If Not GetPathFromSelectedItem(Source, Dest) Then Exit Sub
 
-        Dim Address As String = ""
-        If PreviewList.SelectedItems(0).Tag Is Nothing Then Exit Sub
+        If IO.File.Exists(Source) Or IO.Directory.Exists(Source) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, Source.Substring(0, Source.LastIndexOf(ConfigOptions.DirSep)), Source))
+    End Sub
+
+    Function GetPathFromSelectedItem(ByRef Source As String, ByRef Dest As String) As Boolean
+        If PreviewList.SelectedIndices.Count = 0 Then Return False
+        If PreviewList.SelectedItems(0).Tag Is Nothing OrElse PreviewList.SelectedItems(0).SubItems.Count < 3 Then Return False
+
+        Dim Left As String, Right As String
+        Left = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
+        Right = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
+
         Select Case PreviewList.SelectedItems(0).Tag.ToString
             Case "LR"
-                Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
+                Source = Left : Dest = Right
             Case "RL"
-                Address = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
+                Source = Right : Left = Dest
             Case Else
                 'In errors list
-                Exit Sub
+                Return False
         End Select
 
-        If IO.File.Exists(Address) Or IO.Directory.Exists(Address) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, Address.Substring(0, Address.LastIndexOf(ConfigOptions.DirSep)), Address))
-    End Sub
+        Return True
+    End Function
 
     Function FormatSize(ByVal Size As Long) As String
         Select Case Size
@@ -697,7 +719,7 @@ Public Class SynchronizeForm
                 If HasAcceptedFilename(SourceFile) Then
                     Dim DestinationExists As Boolean = IO.File.Exists(DestinationFile)
                     If Not DestinationExists OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
-                        AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action, Not DestinationExists))
+                        AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action, DestinationExists))
 #If DEBUG Then
                         Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will be copied.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If

@@ -55,7 +55,7 @@ Public Class SyncingItem
     Function FormatAction() As String
         Select Case Action
             Case TypeOfAction.Copy
-                Return If(IsUpdate, Translation.Translate("\UPDATE"), Translation.Translate("\CREATE"))
+                Return If(IsUpdate, Translation.Translate("\CREATE"), Translation.Translate("\CREATE")) 'TODO !! s/\CREATE/\UPDATE when translations are ok.
             Case TypeOfAction.Delete
                 Return Translation.Translate("\DELETE")
             Case Else

@@ -43,6 +43,8 @@ Public Module ConfigOptions
     Public Const MaxLogEntries As String = "Archived log entries"
     Public Const MainFormAttributes As String = "Window size and position"
     Public Const ExpertMode As String = "Expert mode"
+    Public Const DiffProgram As String = "Diff program"
+    Public Const DiffArguments As String = "Diff arguments"
 
     Public Const ConfigFolderName As String = "config"
     Public Const LogFolderName As String = "log"
@@ -202,7 +204,7 @@ Public Class ConfigHandler
         Dim ConfigString As String = My.Computer.FileSystem.ReadAllText(MainConfigFile)
         Dim ConfigArray As New List(Of String)(ConfigString.Split(";"c))
         For Each Setting As String In ConfigArray
-            Dim Pair As String() = Setting.Split(":"c)
+            Dim Pair As String() = Setting.Split(New Char() {":"c}, 2)
             If Pair.Length() < 2 Then Continue For
             If ProgramSettings.ContainsKey(Pair(0)) Then ProgramSettings.Remove(Pair(0))
             ProgramSettings.Add(Pair(0), Pair(1))
