@@ -249,7 +249,7 @@ Public Class SynchronizeForm
             Case "LR"
                 Source = Left : Dest = Right
             Case "RL"
-                Source = Right : Left = Dest
+                Source = Right : Dest = Left
             Case Else
                 'In errors list
                 Return False
