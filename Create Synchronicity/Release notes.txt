@@ -28,6 +28,7 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Feb. 03, 2011 - NEW: Pressing Ctrl+L in main window will display a list of profiles instead of a tile.
 Feb. 02, 2011 - NEW: (Hidden setting) Show diff for modified files.
 Jan. 26, 2011 - NEW: (Hidden setting) Compare file size in addition to last modified date.
 Jan. 21, 2011 - NEW: !Korean translation, by S.G.Park. 감사합니다!
