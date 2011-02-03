@@ -66,6 +66,9 @@ Public Class MainForm
                         ProgramConfig.SetProgramSetting(ConfigOptions.ExpertMode, Not EMEnabled)
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If
+                Case Keys.L
+                    Main_Actions.View = View.Details
+                    Main_Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
             End Select
         End If
     End Sub
