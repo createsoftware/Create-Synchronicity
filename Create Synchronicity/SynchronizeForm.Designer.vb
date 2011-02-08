@@ -550,12 +550,14 @@ Partial Class SynchronizeForm
         '
         Me.SyncingIcons.ImageStream = CType(resources.GetObject("SyncingIcons.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.SyncingIcons.TransparentColor = System.Drawing.Color.Transparent
-        Me.SyncingIcons.Images.SetKeyName(0, "go-next.png")
-        Me.SyncingIcons.Images.SetKeyName(1, "go-previous.png")
-        Me.SyncingIcons.Images.SetKeyName(2, "list-remove.png")
-        Me.SyncingIcons.Images.SetKeyName(3, "folder-new.png")
-        Me.SyncingIcons.Images.SetKeyName(4, "delete-folder.png")
-        Me.SyncingIcons.Images.SetKeyName(5, "process-stop.png")
+        Me.SyncingIcons.Images.SetKeyName(0, "go-next-upd.png")
+        Me.SyncingIcons.Images.SetKeyName(1, "go-next.png")
+        Me.SyncingIcons.Images.SetKeyName(2, "go-previous-upd.png")
+        Me.SyncingIcons.Images.SetKeyName(3, "go-previous.png")
+        Me.SyncingIcons.Images.SetKeyName(4, "list-remove.png")
+        Me.SyncingIcons.Images.SetKeyName(5, "folder-new.png")
+        Me.SyncingIcons.Images.SetKeyName(6, "delete-folder.png")
+        Me.SyncingIcons.Images.SetKeyName(7, "process-stop.png")
         '
         'SyncingTimeCounter
         '

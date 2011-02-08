@@ -401,7 +401,7 @@ Public Class SynchronizeForm
                         ErrorListItem.SubItems.Add(Err.Details)
                         ErrorListItem.SubItems.Add(Err.Ex.Message)
                         PreviewList.Items.Add(ErrorListItem)
-                        ErrorListItem.ImageIndex = 5
+                        ErrorListItem.ImageIndex = 7
                     Next
 
                     PreviewList.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
@@ -454,25 +454,25 @@ Public Class SynchronizeForm
         Select Case Item.Action
             Case TypeOfAction.Copy
                 If Item.Type = TypeOfItem.Folder Then
-                    ListItem.ImageIndex = 3
+                    ListItem.ImageIndex = 5
                     Status.FoldersToCreate += 1
                 End If
                 If Item.Type = TypeOfItem.File Then
                     Select Case Side
                         Case SideOfSource.Left
-                            ListItem.ImageIndex = 0
+                            ListItem.ImageIndex = If(Item.IsUpdate, 1, 0)
                         Case SideOfSource.Right
-                            ListItem.ImageIndex = 1
+                            ListItem.ImageIndex = If(Item.IsUpdate, 3, 2)
                     End Select
                     Status.FilesToCreate += 1
                 End If
             Case TypeOfAction.Delete
                 If Item.Type = TypeOfItem.Folder Then
-                    ListItem.ImageIndex = 4
+                    ListItem.ImageIndex = 6
                     Status.FoldersToDelete += 1
                 End If
                 If Item.Type = TypeOfItem.File Then
-                    ListItem.ImageIndex = 2
+                    ListItem.ImageIndex = 4
                     Status.FilesToDelete += 1
                 End If
         End Select
