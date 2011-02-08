@@ -41,6 +41,7 @@ Public Module ConfigOptions
     'Public Const SyncsCount As String = "Syncs count" 'COULDDO: Problem with concurrent savings of the config file.
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MaxLogEntries As String = "Archived log entries"
+    Public Const MainView As String = "Main view"
     Public Const MainFormAttributes As String = "Window size and position"
     Public Const ExpertMode As String = "Expert mode"
     Public Const DiffProgram As String = "Diff program"

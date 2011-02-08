@@ -7,13 +7,16 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class MainForm
+    Dim CurView As Integer = 0
+    Dim Views() As View = New View() {View.Tile, View.Details, View.LargeIcon}
+
 #Region " Events "
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Code (largely inspired) by U.N. Owen (patch #)
-        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(MainFormAttributes, "").Split(","))
+        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(ConfigOptions.MainFormAttributes, "").Split(","))
         If WindowSettings.Count = 4 AndAlso WindowSettings.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
             Try
                 Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
@@ -25,6 +28,9 @@ Public Class MainForm
         End If
 
         ReloadNeeded = False
+
+        CurView = CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MainView, "0")) Mod Views.Length
+        Main_Actions.View = Views(CurView)
 
         BuildIcons()
         Me.Icon = ProgramConfig.GetIcon()
@@ -42,6 +48,7 @@ Public Class MainForm
     Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Dim WindowAttributes As String = String.Format("{0},{1},{2},{3}", Me.Location.X, Me.Location.Y, Me.Size.Width, Me.Size.Height)
         ProgramConfig.SetProgramSetting(ConfigOptions.MainFormAttributes, WindowAttributes)
+        ProgramConfig.SetProgramSetting(ConfigOptions.MainView, CurView)
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -67,8 +74,8 @@ Public Class MainForm
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If
                 Case Keys.L
-                    Main_Actions.View = View.Details
-                    Main_Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+                    CurView = (CurView + 1) Mod Views.Length
+                    Main_Actions.View = Views(CurView)
             End Select
         End If
     End Sub
@@ -252,6 +259,8 @@ Public Class MainForm
                 NewItem.Group = Main_Actions.Groups.Item(GroupName)
             End If
         Next
+
+        Main_Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
     End Sub
 
     Sub Main_Display_Options(ByVal Name As String, ByVal Clear As Boolean)
