@@ -8,12 +8,12 @@
 
 Public Class AboutForm
     Private Sub SetLinkArea(ByVal Link As LinkLabel)
-        If Link.Text.IndexOf("\") = -1 Or Link.Text.IndexOf("/") = -1 Then Exit Sub
+        If Link.Text.IndexOf("\"c) = -1 Or Link.Text.IndexOf("/"c) = -1 Then Exit Sub
 
         Dim Area As New LinkArea
-        Area.Start = Link.Text.IndexOf("\")
+        Area.Start = Link.Text.IndexOf("\"c)
         Link.Text = Link.Text.Remove(Area.Start, 1)
-        Area.Length = Link.Text.IndexOf("/") - Area.Start
+        Area.Length = Link.Text.IndexOf("/"c) - Area.Start
         Link.Text = Link.Text.Remove(Area.Start + Area.Length, 1)
         Link.LinkArea = Area
     End Sub
