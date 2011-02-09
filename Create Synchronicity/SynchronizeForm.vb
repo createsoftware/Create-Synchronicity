@@ -19,7 +19,6 @@ Public Class SynchronizeForm
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
     Dim NoStop As Boolean = CommandLine.NoStop
-    Dim SingleTask As Boolean
     Dim [STOP] As Boolean
     Dim Failed As Boolean : Dim FailureMsg As String
 
@@ -805,7 +804,6 @@ Public Class SynchronizeForm
                 End If
 
                 Status.FilesScanned += 1
-                'Status.BytesCopied += (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
             Next
         Catch Ex As Exception
 #If DEBUG Then
@@ -825,7 +823,8 @@ Public Class SynchronizeForm
             End Try
         End If
 
-        If Folder <> "" AndAlso Not IsValidFile(Folder) Then
+        ' Folder.Length = 0 <=> This is the root folder, not to be deleted.
+        If Folder.Length <> 0 AndAlso Not IsValidFile(Folder) Then
 #If DEBUG Then
             Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] does NOT belong to the list, so will be deleted.", Dest_FilePath, Folder))
 #End If
@@ -896,7 +895,7 @@ Public Class SynchronizeForm
     End Function
 
     Function GetExtension(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(".") + 1) 'Not used when dealing with a folder.
+        Return Path.Substring(Path.LastIndexOf("."c) + 1) 'Not used when dealing with a folder.
     End Function
 
     Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
