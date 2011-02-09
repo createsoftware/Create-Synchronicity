@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Public Class LanguageHandler
+Friend Class LanguageHandler
     Private Shared Singleton As LanguageHandler
 
     Structure LanguageInfo

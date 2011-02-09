@@ -240,7 +240,7 @@ Public Class SettingsForm
         InhibitAutocheck = False
     End Sub
 
-    Sub Settings_CheckNodeTree(ByVal Checked As Boolean, Optional ByVal NodeParam As TreeNode = Nothing)
+    Private Sub Settings_CheckNodeTree(ByVal Checked As Boolean, Optional ByVal NodeParam As TreeNode = Nothing)
         ProcessingNodes = True
         If ClickedRightTreeView Then
             Settings_Inner_CheckNodeTree(If(NodeParam Is Nothing, Settings_RightView.SelectedNode, NodeParam), Checked)
@@ -250,7 +250,7 @@ Public Class SettingsForm
         ProcessingNodes = False
     End Sub
 
-    Sub Settings_Inner_CheckNodeTree(ByVal Root As TreeNode, ByVal Status As Boolean)
+    Private Sub Settings_Inner_CheckNodeTree(ByVal Root As TreeNode, ByVal Status As Boolean)
         Root.ToolTipText = "*"
         For Each SubNode As TreeNode In Root.Nodes
             SubNode.Checked = Status
@@ -259,7 +259,7 @@ Public Class SettingsForm
         Root.Checked = Status
     End Sub
 
-    Sub Settings_BuildCheckedNodesList(ByRef NodesList As Dictionary(Of String, Boolean), ByVal Node As TreeNode)
+    Private Sub Settings_BuildCheckedNodesList(ByRef NodesList As Dictionary(Of String, Boolean), ByVal Node As TreeNode)
         Dim OverAllNodeStatus As Integer = Settings_OverAllCheckStatus(Node)
 
         If Node.Checked OrElse Node.TreeView.CheckBoxes = False Then
@@ -283,7 +283,7 @@ Public Class SettingsForm
         Next
     End Sub
 
-    Function Settings_OverAllCheckStatus(ByVal Node As TreeNode) As Integer '0 All clear, 1 All checked, -1 different states
+    Private Function Settings_OverAllCheckStatus(ByVal Node As TreeNode) As Integer '0 All clear, 1 All checked, -1 different states
         If Not Node.TreeView.CheckBoxes Then Return 1
         If (Node.Nodes.Count = 0) Then Return If(Node.Checked, 1, 0)
 
@@ -343,7 +343,7 @@ Public Class SettingsForm
         CurrentRight = Settings_ToTextBox.Text
     End Sub
 
-    Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, Optional ByVal ForceLoad As Boolean = False)
+    Private Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, Optional ByVal ForceLoad As Boolean = False)
         Tree.Nodes.Clear()
 
         Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
@@ -386,7 +386,7 @@ Public Class SettingsForm
         End Select
     End Sub
 
-    Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
+    Private Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
         If Path.Count <> 0 AndAlso Path(0) = "" Then Path.RemoveAt(0)
 
         If Path.Count = 0 Then
@@ -487,7 +487,7 @@ Public Class SettingsForm
         Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
     End Sub
 
-    Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
+    Private Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
         Dim ListString As New System.Text.StringBuilder
         For Each Node As String In Table.Keys
             ListString.Append(Node).Append(";")

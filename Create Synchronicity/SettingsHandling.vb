@@ -79,7 +79,7 @@ Structure SchedulerEntry
     End Sub
 End Structure
 
-Public Class ConfigHandler
+NotInheritable Class ConfigHandler
     Private Shared Singleton As ConfigHandler
 
     Public ConfigRootDir As String
@@ -265,7 +265,7 @@ Public Class ConfigHandler
 #End If
 End Class
 
-Class ProfileHandler
+NotInheritable Class ProfileHandler
     Public ProfileName As String
     Public Scheduler As New ScheduleInfo()
     Public Configuration As New Dictionary(Of String, String)
@@ -301,8 +301,9 @@ Class ProfileHandler
             Dim ConfigLine As String = ""
             Try
                 ConfigLine = FileReader.ReadLine()
-                Dim Key As String = ConfigLine.Substring(0, ConfigLine.IndexOf(":"))
-                Dim Value As String = ConfigLine.Substring(ConfigLine.IndexOf(":") + 1)
+                Dim ColonIndex As Integer = ConfigLine.IndexOf(":"c)
+                Dim Key As String = ConfigLine.Substring(0, ColonIndex)
+                Dim Value As String = ConfigLine.Substring(ColonIndex + 1)
                 If Not Configuration.ContainsKey(Key) Then Configuration.Add(Key, Value)
             Catch ex As Exception
                 Interaction.ShowMsg(String.Format(Translation.Translate("\INVALID_SETTING"), ConfigLine))
@@ -633,7 +634,7 @@ Public Module Updates
             UpdateClient.Proxy.Credentials = Net.CredentialCache.DefaultCredentials
             Dim CurrentVersion As String = UpdateClient.DownloadString(If(CommandLine.RunAs = CommandLine.RunMode.Scheduler, "http://synchronicity.sourceforge.net/code/scheduler-version.txt", "http://synchronicity.sourceforge.net/code/version.txt"))
 
-            If CurrentVersion = "" Then Throw New Exception()
+            If CurrentVersion = "" Then Throw New Net.WebException()
             If (CurrentVersion <> Application.ProductVersion) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, CurrentVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/update.html")

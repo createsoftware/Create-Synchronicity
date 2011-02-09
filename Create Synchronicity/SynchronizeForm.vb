@@ -50,13 +50,12 @@ Public Class SynchronizeForm
     Dim FirstSyncThread As Threading.Thread
     Dim SecondSyncThread As Threading.Thread
 
-    Delegate Sub UpdateListCallBack()
-    Delegate Sub LaunchTimerCallBack()
+    Delegate Sub Action() 'TODO: replace with
     Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
     Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
     Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
-    Delegate Sub SetProgessCallBack(ByVal Id As Integer, ByVal Progress As Integer)
+    Delegate Sub SetProgressCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
     Friend Event OnFormClosedAfterSyncFinished()
 
@@ -441,7 +440,7 @@ Public Class SynchronizeForm
         If Not [STOP] Then SyncBtn.Enabled = True
     End Sub
 
-    Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
+    Private Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
         Dim ListItem As New ListViewItem
         ListItem = PreviewList.Items.Add(Item.FormatType())
         ListItem.SubItems.Add(Item.FormatAction())
@@ -514,7 +513,7 @@ Public Class SynchronizeForm
         Dim Source As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
         Dim Destination As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
 
-        Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
+        Me.Invoke(New Action(AddressOf LaunchTimer))
         Context.Source = SideOfSource.Left
         Context.SourcePath = Source
         Context.DestinationPath = Destination
@@ -539,14 +538,14 @@ Public Class SynchronizeForm
 
     Sub Do_SecondThirdStep()
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
-        Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
+        Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
         Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
 
-        Me.Invoke(New LaunchTimerCallBack(AddressOf LaunchTimer))
+        Me.Invoke(New Action(AddressOf LaunchTimer))
         Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
         Do_Task(SideOfSource.Left, SyncingList(SideOfSource.Left), Left, Right, 2)
         Me.Invoke(TaskDoneDelegate, 2)
@@ -556,8 +555,8 @@ Public Class SynchronizeForm
         Me.Invoke(TaskDoneDelegate, 3)
     End Sub
 
-    Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
-        Dim SetProgessDelegate As New SetProgessCallBack(AddressOf SetProgess)
+    Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
+        Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
@@ -609,7 +608,7 @@ Public Class SynchronizeForm
         Next
     End Sub
 
-    Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
+    Private Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
 #If DEBUG Then
             Log.LogInfo(String.Format("=> Scanning top-level folders from side {0}: Folder ""{1}""", Context.SourcePath, Folder))
@@ -629,7 +628,7 @@ Public Class SynchronizeForm
         Next
     End Sub
 
-    Sub AddToSyncingList(ByVal Side As SideOfSource, ByRef Entry As SyncingItem)
+    Private Sub AddToSyncingList(ByVal Side As SideOfSource, ByRef Entry As SyncingItem)
         SyncingList(Side).Add(Entry)
         SyncPreviewList(Side, 1)
         If Entry.Action <> TypeOfAction.Delete Then AddValidFile(Entry.Path)
@@ -639,7 +638,7 @@ Public Class SynchronizeForm
         If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower, Nothing)
     End Sub
 
-    Sub AddValidAncestors(ByVal Folder As String)
+    Private Sub AddValidAncestors(ByVal Folder As String)
 #If DEBUG Then
         Log.LogInfo(String.Format("Folder ""{0}"" is a top level folder, adding it's ancestors.", Folder))
 #End If
@@ -655,11 +654,11 @@ Public Class SynchronizeForm
         Next
     End Sub
 
-    Sub RemoveValidFile(ByVal File As String)
+    Private Sub RemoveValidFile(ByVal File As String)
         If IsValidFile(File) Then ValidFiles.Remove(File.ToLower)
     End Sub
 
-    Function IsValidFile(ByVal File As String) As Boolean
+    Private Function IsValidFile(ByVal File As String) As Boolean
         Return ValidFiles.ContainsKey(File.ToLower)
     End Function
 
@@ -669,13 +668,13 @@ Public Class SynchronizeForm
         SyncPreviewList(Side, -1)
     End Sub
 
-    Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path? 'LINUX
+    Private Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path? 'LINUX
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
     End Function
 
     ' This procedure searches for changes in the source directory, in regards
     ' to the status of the destination directory.
-    Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+    Private Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
@@ -775,7 +774,7 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Sub SearchForCrap(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
+    Private Sub SearchForCrap(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
         'Here, Source is set to be the right folder, and dest to be the left folder
@@ -890,15 +889,15 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Functions "
-    Function GetFileOrFolderName(ByVal Path As String) As String
+    Private Function GetFileOrFolderName(ByVal Path As String) As String
         Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
     End Function
 
-    Function GetExtension(ByVal Path As String) As String
+    Private Function GetExtension(ByVal Path As String) As String
         Return Path.Substring(Path.LastIndexOf("."c) + 1) 'Not used when dealing with a folder.
     End Function
 
-    Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
+    Private Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
         Dim Extension As String = GetExtension(PathOrFileName)
 
         For Each Pattern As FileNamePattern In Patterns 'LINUX: Problem with IgnoreCase

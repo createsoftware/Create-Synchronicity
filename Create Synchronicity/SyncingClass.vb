@@ -22,14 +22,14 @@ Public Enum SideOfSource As Integer
     Right = 1
 End Enum
 
-Public Class SyncingAction
+Structure SyncingAction
     Public Action As TypeOfAction
     Public Source As SideOfSource
     Public SourcePath As String
     Public DestinationPath As String
-End Class
+End Structure
 
-Public Class SyncingItem
+Structure SyncingItem
     Public Path As String
     Public Type As TypeOfItem
 
@@ -73,7 +73,7 @@ Public Class SyncingItem
                 Return ""
         End Select
     End Function
-End Class
+End Structure
 
 Public Class FileNamePattern
     Public Enum PatternType
