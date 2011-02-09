@@ -15,8 +15,8 @@ Public Class MainForm
         ' This call is required by the designer.
         InitializeComponent()
 
-        ' Code (largely inspired) by U.N. Owen (patch #)
-        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(ConfigOptions.MainFormAttributes, "").Split(","))
+        ' Code (largely inspired) by U.N. Owen
+        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(ConfigOptions.MainFormAttributes, String.Empty).Split(","))
         If WindowSettings.Count = 4 AndAlso WindowSettings.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
             Try
                 Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
