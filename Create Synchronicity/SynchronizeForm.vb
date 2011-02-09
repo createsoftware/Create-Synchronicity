@@ -237,13 +237,15 @@ Public Class SynchronizeForm
 
     Function GetPathFromSelectedItem(ByRef Source As String, ByRef Dest As String) As Boolean
         If PreviewList.SelectedIndices.Count = 0 Then Return False
-        If PreviewList.SelectedItems(0).Tag Is Nothing OrElse PreviewList.SelectedItems(0).SubItems.Count < 3 Then Return False
+
+        Dim CurItem As ListViewItem = PreviewList.SelectedItems(0)
+        If CurItem.Tag Is Nothing OrElse CurItem.SubItems.Count < 3 Then Return False
 
         Dim Left As String, Right As String
-        Left = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & PreviewList.SelectedItems(0).SubItems(3).Text
-        Right = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & PreviewList.SelectedItems(0).SubItems(3).Text
+        Left = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & CurItem.SubItems(3).Text
+        Right = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & CurItem.SubItems(3).Text
 
-        Select Case PreviewList.SelectedItems(0).Tag.ToString
+        Select Case CurItem.Tag.ToString
             Case "LR"
                 Source = Left : Dest = Right
             Case "RL"
