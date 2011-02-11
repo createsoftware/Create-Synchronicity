@@ -40,7 +40,6 @@ Public Class SynchronizeForm
         Shared CurrentStep As Integer
         Shared TimeElapsed As TimeSpan
         Shared MillisecondsSpeed As Double
-        Shared BytesToCreate As Long 'TODO: Deprecated
     End Structure
 
     Dim ColumnSorter As ListViewColumnSorter
@@ -50,7 +49,7 @@ Public Class SynchronizeForm
     Dim FirstSyncThread As Threading.Thread
     Dim SecondSyncThread As Threading.Thread
 
-    Delegate Sub Action() 'TODO: replace with
+    Delegate Sub Action() 'TODO: replace with .Net 4.0 standards.
     Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
     Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
@@ -740,7 +739,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status.FilesScanned += 1
-                'Status.BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+                'Status.BytesCopied += GetSize(SourceFile)
             Next
         Catch Ex As Exception
 #If DEBUG Then
@@ -904,7 +903,6 @@ Public Class SynchronizeForm
             Using outFile As IO.FileStream = IO.File.Create(DestFile)
                 Using Compress As IO.Compression.GZipStream = New IO.Compression.GZipStream(outFile, IO.Compression.CompressionMode.Compress)
                     'DONE: Figure out the right buffer size.
-                    'Note: the buffer size slightly impacts on the compression ratio, lager buffers giving a better compression.
                     Dim Buffer(524228) As Byte '281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
                     Dim ReadBytes As Integer = 0
 

@@ -76,6 +76,7 @@ Public Class MainForm
                 Case Keys.L
                     CurView = (CurView + 1) Mod Views.Length
                     Main_Actions.View = Views(CurView)
+                    Main_Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
             End Select
         End If
     End Sub
@@ -259,8 +260,6 @@ Public Class MainForm
                 NewItem.Group = Main_Actions.Groups.Item(GroupName)
             End If
         Next
-
-        Main_Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
     End Sub
 
     Sub Main_Display_Options(ByVal Name As String, ByVal Clear As Boolean)
