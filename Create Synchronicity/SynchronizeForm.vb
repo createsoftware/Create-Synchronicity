@@ -40,7 +40,7 @@ Public Class SynchronizeForm
         Shared CurrentStep As Integer
         Shared TimeElapsed As TimeSpan
         Shared MillisecondsSpeed As Double
-        Shared BytesToCreate As Long
+        Shared BytesToCreate As Long 'TODO: Deprecated
     End Structure
 
     Dim ColumnSorter As ListViewColumnSorter
@@ -706,10 +706,10 @@ Public Class SynchronizeForm
         End If
 
         InitialCount = ValidFiles.Count
-        Dim Suffix As String = If(Handler.GetSetting(ConfigOptions.Compression, "False"), ".gz", "")
 
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
+                Dim Suffix As String = If(ShouldCompress(SourceFile), ConfigOptions.CompressionExtension, "")
                 Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix) ' TODO: Compression
 
 #If DEBUG Then
@@ -869,8 +869,8 @@ Public Class SynchronizeForm
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
 
-        Dim Compression As Boolean = Handler.GetSetting(ConfigOptions.Compression, "False")
-        If Compression Then DestFile &= ".gz"
+        Dim Compression As Boolean = ShouldCompress(SourceFile)
+        If Compression Then DestFile &= ConfigOptions.CompressionExtension
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
@@ -896,21 +896,23 @@ Public Class SynchronizeForm
         IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
 
         Status.CreatedFiles += 1
-        Status.BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+        If Not Compression Then Status.BytesCopied += GetSize(SourceFile)
     End Sub
 
     Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String)
         Using Input As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
             Using outFile As IO.FileStream = IO.File.Create(DestFile)
                 Using Compress As IO.Compression.GZipStream = New IO.Compression.GZipStream(outFile, IO.Compression.CompressionMode.Compress)
-                    'TODO: Figure out the right buffer size and optimize.
-                    Dim Buffer(65536) As Byte
+                    'DONE: Figure out the right buffer size.
+                    'Note: the buffer size slightly impacts on the compression ratio, lager buffers giving a better compression.
+                    Dim Buffer(524228) As Byte '281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
                     Dim ReadBytes As Integer = 0
 
                     While True
                         ReadBytes = Input.Read(Buffer, 0, Buffer.Length)
                         If ReadBytes <= 0 Then Exit While
                         Compress.Write(Buffer, 0, ReadBytes)
+                        Status.BytesCopied += ReadBytes
                     End While
                 End Using
             End Using
@@ -923,8 +925,16 @@ Public Class SynchronizeForm
         Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
     End Function
 
-    Private Function GetExtension(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf("."c) + 1) 'Not used when dealing with a folder.
+    Private Function GetExtension(ByVal File As String) As String
+        Return File.Substring(File.LastIndexOf("."c) + 1) 'Not used when dealing with a folder.
+    End Function
+
+    Function GetSize(ByVal File As String) As Long
+        Return (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+    End Function
+
+    Function ShouldCompress(ByVal File As String) As Boolean
+        Return Handler.GetSetting(ConfigOptions.Compression, "False") AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 
     Private Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
