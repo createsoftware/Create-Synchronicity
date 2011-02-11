@@ -557,6 +557,7 @@ Public Class SynchronizeForm
         Me.Invoke(TaskDoneDelegate, 3)
     End Sub
 
+    '"Source" is "current side", with the corresponding side set to "Side"
     Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
         Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
         Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
@@ -630,10 +631,10 @@ Public Class SynchronizeForm
         Next
     End Sub
 
-    Private Sub AddToSyncingList(ByVal Side As SideOfSource, ByRef Entry As SyncingItem)
+    Private Sub AddToSyncingList(ByVal Side As SideOfSource, ByRef Entry As SyncingItem, Optional ByVal Suffix As String = "")
         SyncingList(Side).Add(Entry)
         SyncPreviewList(Side, 1)
-        If Entry.Action <> TypeOfAction.Delete Then AddValidFile(Entry.Path)
+        If Entry.Action <> TypeOfAction.Delete Then AddValidFile(Entry.Path & Suffix)
     End Sub
 
     Sub AddValidFile(ByVal File As String)
@@ -705,10 +706,11 @@ Public Class SynchronizeForm
         End If
 
         InitialCount = ValidFiles.Count
+        Dim Suffix As String = If(Handler.GetSetting(ConfigOptions.Compression, "False"), ".gz", "")
 
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
-                Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile))
+                Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix) ' TODO: Compression
 
 #If DEBUG Then
                 Log.LogInfo("Scanning " & SourceFile)
@@ -718,14 +720,15 @@ Public Class SynchronizeForm
                 'Then, check whether it requires updating.
                 If HasAcceptedFilename(SourceFile) Then
                     Dim DestinationExists As Boolean = IO.File.Exists(DestinationFile)
+                    Dim RelativeFilePath As String = SourceFile.Substring(Context.SourcePath.Length)
                     If Not DestinationExists OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
-                        AddToSyncingList(Context.Source, New SyncingItem(SourceFile.Substring(Context.SourcePath.Length), TypeOfItem.File, Context.Action, DestinationExists))
+                        AddToSyncingList(Context.Source, New SyncingItem(RelativeFilePath, TypeOfItem.File, Context.Action, DestinationExists), Suffix)
 #If DEBUG Then
                         Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will be copied.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
-                        AddValidFile(SourceFile.Substring(Context.SourcePath.Length))
+                        AddValidFile(RelativeFilePath & Suffix) 'TODO: Compression
 #If DEBUG Then
                         Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will not be deleted.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
@@ -795,7 +798,7 @@ Public Class SynchronizeForm
         Try
             For Each File As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
-                If Not IsValidFile(RelativeFName) Then
+                If Not IsValidFile(RelativeFName) Then 'TODO: Compression
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action, False))
 #If DEBUG Then
                     Log.LogInfo(String.Format("""{0}"" ({1}) does NOT belong to the list, so will be deleted.", File, RelativeFName))
@@ -864,10 +867,17 @@ Public Class SynchronizeForm
     End Function
 
     Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
-        Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path
+        Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
+
+        Dim Compression As Boolean = Handler.GetSetting(ConfigOptions.Compression, "False")
+        If Compression Then DestFile &= ".gz"
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
-        IO.File.Copy(SourceFile, DestFile, True)
+        If Compression Then
+            CompressFile(SourceFile, DestFile)
+        Else
+            IO.File.Copy(SourceFile, DestFile, True)
+        End If
 
         If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
 #If DEBUG Then
@@ -887,6 +897,24 @@ Public Class SynchronizeForm
 
         Status.CreatedFiles += 1
         Status.BytesCopied += (New System.IO.FileInfo(SourceFile)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+    End Sub
+
+    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String)
+        Using Input As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
+            Using outFile As IO.FileStream = IO.File.Create(DestFile)
+                Using Compress As IO.Compression.GZipStream = New IO.Compression.GZipStream(outFile, IO.Compression.CompressionMode.Compress)
+                    'TODO: Figure out the right buffer size and optimize.
+                    Dim Buffer(65536) As Byte
+                    Dim ReadBytes As Integer = 0
+
+                    While True
+                        ReadBytes = Input.Read(Buffer, 0, Buffer.Length)
+                        If ReadBytes <= 0 Then Exit While
+                        Compress.Write(Buffer, 0, ReadBytes)
+                    End While
+                End Using
+            End Using
+        End Using
     End Sub
 #End Region
 

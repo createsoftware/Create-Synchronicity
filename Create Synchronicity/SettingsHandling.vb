@@ -23,6 +23,7 @@ Public Module ConfigOptions
     Public Const TimeOffset As String = "Time Offset"
     Public Const LastRun As String = "Last run"
     Public Const CatchUpSync As String = "Catch up if missed"
+    Public Const Compression As String = "Compress"
 
     'These settings are hidden settings, not automatically appended to config files.
     'NOTE: Automatically create entry in config file when these settings are enabled.
