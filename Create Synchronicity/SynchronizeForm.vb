@@ -896,7 +896,7 @@ Public Class SynchronizeForm
         IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
 
         Status.CreatedFiles += 1
-        If Not Compression Then Status.BytesCopied += GetSize(SourceFile)
+        Status.BytesCopied += GetSize(SourceFile)
     End Sub
 #End Region
 

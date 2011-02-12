@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("ZLib.Net Wrapper for Create Synchronicity")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Create Software, based on a lib by ComponentAce")> 
+<Assembly: AssemblyTitle("SharpZipLib wrapper for Create Synchronicity")> 
+<Assembly: AssemblyDescription("Provides a gzip-compression interface.")> 
+<Assembly: AssemblyCompany("Create Software")> 
 <Assembly: AssemblyProduct("GZipCompressor")> 
-<Assembly: AssemblyCopyright("GNU GPL, Wrapper Copyright @ComponentAce")> 
+<Assembly: AssemblyCopyright("Create Software")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

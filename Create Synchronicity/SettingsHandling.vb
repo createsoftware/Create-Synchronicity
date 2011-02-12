@@ -52,7 +52,7 @@ Public Module ConfigOptions
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
     Public Const AppLogName As String = "app.log"
-    Public Const CompressionDll As String = "gzip.dll"
+    Public Const CompressionDll As String = "compress.dll"
     Public Const CompressionThreshold As Integer = 32768
     Public Const CompressionExtension As String = ".gz"
 
@@ -374,6 +374,14 @@ NotInheritable Class ProfileHandler
                 InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
             End If
         Next
+
+        If Configuration.ContainsKey(ConfigOptions.Compression) Then
+            Dim DLLFile As String = Application.StartupPath & "\" & ConfigOptions.CompressionDll
+            If Not IO.File.Exists(DLLFile) Then
+                IsValid = False
+                InvalidListing.Add(String.Format("{0} not found!", DLLFile))
+            End If
+        End If
 
         If Not IsValid Then
             Dim ErrorsList As String = ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0))

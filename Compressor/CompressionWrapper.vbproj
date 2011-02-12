@@ -10,7 +10,7 @@
     <ProjectGuid>{DF285136-6FCB-4CE5-8732-C7A371533B1B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>GZipCompressor</RootNamespace>
-    <AssemblyName>gzip</AssemblyName>
+    <AssemblyName>compress</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
@@ -21,7 +21,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>gzip.xml</DocumentationFile>
+    <DocumentationFile>compress.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,7 +30,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>gzip.xml</DocumentationFile>
+    <DocumentationFile>compress.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -50,7 +50,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>gzip.xml</DocumentationFile>
+    <DocumentationFile>compress.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -60,7 +60,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>gzip.xml</DocumentationFile>
+    <DocumentationFile>compress.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -69,10 +69,11 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="zlib.net">
-      <HintPath>.\zlib.net.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
@@ -96,7 +97,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)zlib.net.dll" "$(SolutionDir)Create Synchronicity\bin\$(ConfigurationName)\zlib.net.dll" &gt; output.txt
+    <PostBuildEvent>copy "$(TargetDir)ICSharpCode.SharpZipLib.dll" "$(SolutionDir)Create Synchronicity\bin\$(ConfigurationName)\ICSharpCode.SharpZipLib.dll" &gt; output.txt
 copy "$(TargetPath)" "$(SolutionDir)\Create Synchronicity\bin\$(ConfigurationName)\$(TargetFileName)" &gt;&gt; output.txt</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

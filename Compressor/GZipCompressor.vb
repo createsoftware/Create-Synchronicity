@@ -6,22 +6,29 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Imports ICSharpCode.SharpZipLib.GZip
+Imports ICSharpCode.SharpZipLib.Core
+
 Public Class GZipCompressor
     Implements Create_Synchronicity.Compressor
-    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByRef Progress As Long) Implements Create_Synchronicity.Compressor.CompressFile
-        Using Input As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
-            Using Output As New IO.FileStream(DestFile, IO.FileMode.Create)
-                Using Compress As New zlib.ZOutputStream(Output, zlib.zlibConst.Z_DEFAULT_COMPRESSION)
-                    'DONE: Figure out the right buffer size.
-                    Dim Buffer(524228) As Byte '281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
-                    Dim ReadBytes As Integer = 0
 
-                    While True
-                        ReadBytes = Input.Read(Buffer, 0, Buffer.Length)
-                        If ReadBytes <= 0 Then Exit While
-                        Compress.Write(Buffer, 0, ReadBytes)
-                        Progress += ReadBytes
-                    End While
+    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByRef Progress As Long) Implements Create_Synchronicity.Compressor.CompressFile
+        Using InputFile As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
+            Using OutputFile As New IO.FileStream(DestFile, IO.FileMode.Create)
+                Using GZipStream As New GZipOutputStream(OutputFile)
+                    Dim Buffer(524228) As Byte 'DONE: Figure out the right buffer size. 281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
+                    StreamUtils.Copy(InputFile, GZipStream, Buffer)
+                End Using
+            End Using
+        End Using
+    End Sub
+
+    Sub DecompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByRef Progress As Long)
+        Using InputFile As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
+            Using OutputFile As New IO.FileStream(DestFile, IO.FileMode.Create)
+                Using GZipStream As New GZipInputStream(InputFile)
+                    Dim Buffer(524228) As Byte
+                    StreamUtils.Copy(GZipStream, OutputFile, Buffer)
                 End Using
             End Using
         End Using
