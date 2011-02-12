@@ -1,4 +1,5 @@
 bulgarian:1
+chinese (simplified):0
 czech:4
 danish:1
 deutsch:1

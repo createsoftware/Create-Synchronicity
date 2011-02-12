@@ -15,3 +15,4 @@ portuguese;português;pt
 russian;русский язык;ru
 spanish;español;es
 swedish;svenska;sv
+chinese (simplified);中文;zh
