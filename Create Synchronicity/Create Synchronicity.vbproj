@@ -101,6 +101,7 @@
     <Compile Include="AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CompressionInterface.vb" />
     <Compile Include="IOInterface.vb" />
     <Compile Include="LanguageForm.Designer.vb">
       <DependentUpon>LanguageForm.vb</DependentUpon>

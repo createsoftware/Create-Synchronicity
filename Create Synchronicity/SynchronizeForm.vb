@@ -873,7 +873,8 @@ Public Class SynchronizeForm
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
-            CompressFile(SourceFile, DestFile)
+            Static GZipCompressor As Compressor = LoadCompressionDll()
+            GZipCompressor.CompressFile(SourceFile, DestFile, Status.BytesCopied)
         Else
             IO.File.Copy(SourceFile, DestFile, True)
         End If
@@ -890,31 +891,12 @@ Public Class SynchronizeForm
         End If
 
 #If DEBUG Then
-        Log.LogInfo("CopyFile: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
+        Log.LogInfo("CopyFile: now setting attributes on """ & Path & """")
 #End If
         IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
 
         Status.CreatedFiles += 1
         If Not Compression Then Status.BytesCopied += GetSize(SourceFile)
-    End Sub
-
-    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String)
-        Using Input As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
-            Using outFile As IO.FileStream = IO.File.Create(DestFile)
-                Using Compress As IO.Compression.GZipStream = New IO.Compression.GZipStream(outFile, IO.Compression.CompressionMode.Compress)
-                    'DONE: Figure out the right buffer size.
-                    Dim Buffer(524228) As Byte '281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
-                    Dim ReadBytes As Integer = 0
-
-                    While True
-                        ReadBytes = Input.Read(Buffer, 0, Buffer.Length)
-                        If ReadBytes <= 0 Then Exit While
-                        Compress.Write(Buffer, 0, ReadBytes)
-                        Status.BytesCopied += ReadBytes
-                    End While
-                End Using
-            End Using
-        End Using
     End Sub
 #End Region
 
@@ -933,6 +915,16 @@ Public Class SynchronizeForm
 
     Function ShouldCompress(ByVal File As String) As Boolean
         Return Handler.GetSetting(ConfigOptions.Compression, "False") AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
+    End Function
+
+    Function LoadCompressionDll() As Compressor
+        Dim DLL As Reflection.Assembly = Reflection.Assembly.LoadFrom(ConfigOptions.CompressionDll)
+
+        For Each SubType As Type In DLL.GetTypes
+            If GetType(Compressor).IsAssignableFrom(SubType) Then Return CType(Activator.CreateInstance(SubType), Compressor)
+        Next
+
+        Throw New ArgumentException("Unable to launch " & ConfigOptions.CompressionDll)
     End Function
 
     Private Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Create Synchronicity", "Create Synchronicity\Create Synchronicity.vbproj", "{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CompressionWrapper", "Compressor\CompressionWrapper.vbproj", "{DF285136-6FCB-4CE5-8732-C7A371533B1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,18 @@ Global
 		{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}.Release|x86.ActiveCfg = Release|x86
 		{7E32DD30-2788-4A93-A35F-2229CCC3D6C9}.Release|x86.Build.0 = Release|x86
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Debug|x86.ActiveCfg = Debug|x86
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Debug|x86.Build.0 = Debug|x86
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Release|x86.ActiveCfg = Release|x86
+		{DF285136-6FCB-4CE5-8732-C7A371533B1B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

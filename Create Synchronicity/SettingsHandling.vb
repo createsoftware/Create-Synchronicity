@@ -52,6 +52,7 @@ Public Module ConfigOptions
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
     Public Const AppLogName As String = "app.log"
+    Public Const CompressionDll As String = "gzip.dll"
     Public Const CompressionThreshold As Integer = 32768
     Public Const CompressionExtension As String = ".gz"
 
