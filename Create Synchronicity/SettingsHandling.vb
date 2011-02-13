@@ -23,7 +23,7 @@ Public Module ConfigOptions
     Public Const TimeOffset As String = "Time Offset"
     Public Const LastRun As String = "Last run"
     Public Const CatchUpSync As String = "Catch up if missed"
-    Public Const Compression As String = "Compress"
+    Public Const CompressionExt As String = "Compress"
 
     'These settings are hidden settings, not automatically appended to config files.
     'NOTE: Automatically create entry in config file when these settings are enabled.
@@ -54,7 +54,6 @@ Public Module ConfigOptions
     Public Const AppLogName As String = "app.log"
     Public Const CompressionDll As String = "compress.dll"
     Public Const CompressionThreshold As Integer = 32768
-    Public Const CompressionExtension As String = ".gz"
 
     'Public Const MessagesFileName As String = "messages.txt"
 
@@ -375,7 +374,12 @@ NotInheritable Class ProfileHandler
             End If
         Next
 
-        If Configuration.ContainsKey(ConfigOptions.Compression) Then
+        If Configuration.ContainsKey(ConfigOptions.CompressionExt) AndAlso Configuration(ConfigOptions.CompressionExt) <> "" Then
+            If Not (New List(Of String)(New String() {".gz", ".bz2"})).Contains(Configuration(ConfigOptions.CompressionExt)) Then
+                IsValid = False
+                InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ConfigOptions.CompressionExt)))
+            End If
+
             Dim DLLFile As String = Application.StartupPath & "\" & ConfigOptions.CompressionDll
             If Not IO.File.Exists(DLLFile) Then
                 IsValid = False

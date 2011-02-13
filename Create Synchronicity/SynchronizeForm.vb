@@ -708,7 +708,7 @@ Public Class SynchronizeForm
 
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
-                Dim Suffix As String = If(ShouldCompress(SourceFile), ConfigOptions.CompressionExtension, "")
+                Dim Suffix As String = If(ShouldCompress(SourceFile), Handler.GetSetting(ConfigOptions.CompressionExt, ""), "")
                 Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix)
 
 #If DEBUG Then
@@ -869,7 +869,7 @@ Public Class SynchronizeForm
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
 
         Dim Compression As Boolean = ShouldCompress(SourceFile)
-        If Compression Then DestFile &= ConfigOptions.CompressionExtension
+        If Compression Then DestFile &= Handler.GetSetting(ConfigOptions.CompressionExt, "")
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
@@ -914,7 +914,7 @@ Public Class SynchronizeForm
     End Function
 
     Function ShouldCompress(ByVal File As String) As Boolean
-        Return Handler.GetSetting(ConfigOptions.Compression, "False") AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
+        Return Handler.GetSetting(ConfigOptions.CompressionExt, "") <> "" AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 
     Function LoadCompressionDll() As Compressor
