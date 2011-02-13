@@ -6,6 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Imports ICSharpCode.SharpZipLib.BZip2
 Imports ICSharpCode.SharpZipLib.GZip
 Imports ICSharpCode.SharpZipLib.Core
 
@@ -24,18 +25,28 @@ Public Class GZipCompressor
         PreviousProgress = 0
         ProgressReporter = ReportCallback
 
+        Dim Buffer(524228) As Byte 'DONE: Figure out the right buffer size. 281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
+        Dim Handler As New ProgressHandler(AddressOf HandleProgress)
+
         Using InputFile As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
             Using OutputFile As New IO.FileStream(DestFile, IO.FileMode.Create)
-                Using GZipStream As New GZipOutputStream(OutputFile)
-                    Dim Buffer(524228) As Byte 'DONE: Figure out the right buffer size. 281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
-                    Dim Handler As New ProgressHandler(AddressOf HandleProgress)
-                    StreamUtils.Copy(InputFile, GZipStream, Buffer, Handler, New TimeSpan(10000000), Nothing, "")
-                End Using
+                Select Case IO.Path.GetExtension(DestFile)
+                    Case ".gz"
+                        Using GZipStream As New GZipOutputStream(OutputFile)
+                            StreamUtils.Copy(InputFile, GZipStream, Buffer, Handler, New TimeSpan(10000000), Nothing, "")
+                        End Using
+                    Case ".bz2"
+                        Using Bz2Stream As New BZip2OutputStream(OutputFile)
+                            StreamUtils.Copy(InputFile, Bz2Stream, Buffer, Handler, New TimeSpan(10000000), Nothing, "")
+                        End Using
+                    Case Else
+                        Throw New InvalidCastException("Unrecognized compression extension: " & IO.Path.GetExtension(DestFile))
+                End Select
             End Using
         End Using
     End Sub
 
-    Sub DecompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByRef Progress As Long)
+    Sub DecompressFile(ByVal SourceFile As String, ByVal DestFile As String)
         Using InputFile As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
             Using OutputFile As New IO.FileStream(DestFile, IO.FileMode.Create)
                 Using GZipStream As New GZipInputStream(InputFile)
