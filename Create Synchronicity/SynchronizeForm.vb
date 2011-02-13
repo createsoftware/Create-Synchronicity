@@ -979,7 +979,11 @@ Public Class SynchronizeForm
 
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
 
-        Return True
+        If Handler.GetSetting(ConfigOptions.Checksum, "False") Then
+            Return (Md5(Source) <> Md5(Destination))
+        Else
+            Return True
+        End If
     End Function
 
     Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
