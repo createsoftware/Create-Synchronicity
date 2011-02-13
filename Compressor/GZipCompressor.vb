@@ -12,12 +12,24 @@ Imports ICSharpCode.SharpZipLib.Core
 Public Class GZipCompressor
     Implements Create_Synchronicity.Compressor
 
-    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByRef Progress As Long) Implements Create_Synchronicity.Compressor.CompressFile
+    Dim PreviousProgress As Long
+    Dim ProgressReporter As Create_Synchronicity.PluginCallback
+
+    Sub HandleProgress(ByVal Sender As Object, ByVal EventArgs As ProgressEventArgs)
+        ProgressReporter(EventArgs.Processed - PreviousProgress)
+        PreviousProgress = EventArgs.Processed
+    End Sub
+
+    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByVal ReportCallback As Create_Synchronicity.PluginCallback) Implements Create_Synchronicity.Compressor.CompressFile
+        PreviousProgress = 0
+        ProgressReporter = ReportCallback
+
         Using InputFile As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.Read)
             Using OutputFile As New IO.FileStream(DestFile, IO.FileMode.Create)
                 Using GZipStream As New GZipOutputStream(OutputFile)
                     Dim Buffer(524228) As Byte 'DONE: Figure out the right buffer size. 281 739 264 Bytes -> 268435456:27s ; 67108864:32s ; 2097152:29s ; 524228:27s ; 4:32s
-                    StreamUtils.Copy(InputFile, GZipStream, Buffer)
+                    Dim Handler As New ProgressHandler(AddressOf HandleProgress)
+                    StreamUtils.Copy(InputFile, GZipStream, Buffer, Handler, New TimeSpan(10000000), Nothing, "")
                 End Using
             End Using
         End Using

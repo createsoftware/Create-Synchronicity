@@ -49,7 +49,7 @@ Public Class SynchronizeForm
     Dim FirstSyncThread As Threading.Thread
     Dim SecondSyncThread As Threading.Thread
 
-    Delegate Sub Action() 'TODO: replace with .Net 4.0 standards.
+    Delegate Sub Action() 'COULDDO: replace with .Net 4.0 standards.
     Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
     Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
@@ -709,7 +709,7 @@ Public Class SynchronizeForm
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim Suffix As String = If(ShouldCompress(SourceFile), ConfigOptions.CompressionExtension, "")
-                Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix) ' TODO: Compression
+                Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix)
 
 #If DEBUG Then
                 Log.LogInfo("Scanning " & SourceFile)
@@ -727,7 +727,7 @@ Public Class SynchronizeForm
 #End If
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
-                        AddValidFile(RelativeFilePath & Suffix) 'TODO: Compression
+                        AddValidFile(RelativeFilePath & Suffix)
 #If DEBUG Then
                         Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will not be deleted.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
 #End If
@@ -797,7 +797,7 @@ Public Class SynchronizeForm
         Try
             For Each File As String In IO.Directory.GetFiles(Src_FilePath)
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
-                If Not IsValidFile(RelativeFName) Then 'TODO: Compression
+                If Not IsValidFile(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action, False))
 #If DEBUG Then
                     Log.LogInfo(String.Format("""{0}"" ({1}) does NOT belong to the list, so will be deleted.", File, RelativeFName))
@@ -874,7 +874,7 @@ Public Class SynchronizeForm
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
             Static GZipCompressor As Compressor = LoadCompressionDll()
-            GZipCompressor.CompressFile(SourceFile, DestFile, Status.BytesCopied)
+            GZipCompressor.CompressFile(SourceFile, DestFile, Sub(Progress As Long) Status.BytesCopied += Progress) ', ByRef ContinueRunning As Boolean) 'ContinueRunning = Not [STOP]
         Else
             IO.File.Copy(SourceFile, DestFile, True)
         End If
