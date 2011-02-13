@@ -60,6 +60,8 @@ Public Class MainForm
         'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
         If e.KeyCode = Keys.F1 Then
             Interaction.StartProcess("http://synchronicity.sourceforge.net/help.html")
+        ElseIf e.KeyCode = Keys.F5 Then
+            Main_ReloadConfigs()
         ElseIf e.Control Then
             Select Case e.KeyCode
                 Case Keys.N
