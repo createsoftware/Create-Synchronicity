@@ -31,6 +31,7 @@ Public Module ConfigOptions
     Public Const CheckFileSize As String = "Check file size"
     Public Const ExcludedFolders As String = "Excluded folder patterns"
     Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
+    Public Const Checksum As String = "Checksum"
     '</>
 
     Public Const Scheduling As String = "Scheduling"

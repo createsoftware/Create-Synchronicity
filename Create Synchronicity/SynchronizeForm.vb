@@ -897,6 +897,7 @@ Public Class SynchronizeForm
 
         Status.CreatedFiles += 1
         Status.BytesCopied += GetSize(SourceFile)
+        If Handler.GetSetting(ConfigOptions.Checksum) AndAlso Md5(SourceFile) <> Md5(DestFile) Then Throw New System.Security.Cryptography.CryptographicException("MD5 validation: failed.")
     End Sub
 #End Region
 
@@ -946,11 +947,10 @@ Public Class SynchronizeForm
         Return False
     End Function
 
-    ' DEPRECATED
-    ' Function ComputeFileHash(ByVal Path As String) As String
-    '     Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
-    '     Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
-    ' End Function
+    Function Md5(ByVal Path As String) As String
+        Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
+        Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
+    End Function
 
     Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False

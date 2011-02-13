@@ -79,6 +79,10 @@
         'Calling ReleaseMutex would be the same, since Blocker necessary holds the mutex at this point (otherwise the app would have closed already).
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
         ConfigHandler.LogAppEvent("Program exited")
+
+#If DEBUG And 0 Then
+        VariousTests()
+#End If
     End Sub
 
     Sub InitializeSharedObjects()
@@ -310,4 +314,21 @@
         ProfilesToRun.Sort(Function(First As SchedulerEntry, Second As SchedulerEntry) First.NextRun.CompareTo(Second.NextRun))
     End Sub
 #End Region
+
+#If DEBUG Then
+    Sub VariousTests()
+        MessageBox.Show(Nothing = "")
+        MessageBox.Show("" = Nothing)
+        'MessageBox.Show(Nothing.ToString = "")
+        'MessageBox.Show(Nothing.ToString = String.Empty)
+        MessageBox.Show(CStr(Nothing) = "")
+        MessageBox.Show(CStr(Nothing) = String.Empty)
+
+        'MessageBox.Show(CBool(""))
+        'If "" Then MessageBox.Show(""""" -> True")
+        If Nothing Then MessageBox.Show("Nothing -> True")
+        If Not Nothing Then MessageBox.Show("Nothing -> False")
+        MessageBox.Show(CBool(Nothing))
+    End Sub
+#End If
 End Module

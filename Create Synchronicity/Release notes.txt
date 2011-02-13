@@ -28,6 +28,7 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Feb. 13, 2011 - NEW: Copy integrity validation using md5 checksums.
 Feb. 13, 2011 - NEW: (Hidden setting) On-the-fly BZip2 compression.
 Feb. 12, 2011 - NEW: !Chinese (simplified) translation, by ycysuk. 谢谢!
 Feb. 11, 2011 - NEW: (Hidden setting) On-the-fly GZip compression.
