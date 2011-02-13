@@ -949,7 +949,9 @@ Public Class SynchronizeForm
 
     Function Md5(ByVal Path As String) As String
         Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
-        Return Convert.ToBase64String(CryptObject.ComputeHash((New IO.StreamReader(Path)).BaseStream))
+        Using DataStream As New IO.StreamReader(Path)
+            Return Convert.ToBase64String(CryptObject.ComputeHash(DataStream.BaseStream))
+        End Using
     End Function
 
     Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
@@ -963,13 +965,9 @@ Public Class SynchronizeForm
             If Math.Abs(HoursDiff) = 1 Then DestFATTime = DestFATTime.AddHours(HoursDiff)
         End If
 
-        'If Handler.GetSetting(ConfigOptions.ComputeHash, "False") Then ' DEPRECATED
-        '    Return Not (ComputeFileHash(Source) = ComputeFileHash(Destination))
-        'End If
-
-        If Handler.GetSetting(ConfigOptions.CheckFileSize, "False") Then 'TODO: Test for 5.2
-            Return (New System.IO.FileInfo(Source)).Length <> (New System.IO.FileInfo(Destination)).Length
-        End If
+        'User-enabled checks
+        If Handler.GetSetting(ConfigOptions.Checksum, "False") AndAlso Md5(Source) <> Md5(Destination) Then Return True
+        If Handler.GetSetting(ConfigOptions.CheckFileSize, "False") AndAlso GetSize(Source) <> GetSize(Destination) Then Return True
 
         If Handler.GetSetting(ConfigOptions.StrictDateComparison, "True") = "True" Then
             If SourceFATTime = DestFATTime Then Return False
@@ -979,11 +977,7 @@ Public Class SynchronizeForm
 
         If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
 
-        If Handler.GetSetting(ConfigOptions.Checksum, "False") Then
-            Return (Md5(Source) <> Md5(Destination))
-        Else
-            Return True
-        End If
+        Return True
     End Function
 
     Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
