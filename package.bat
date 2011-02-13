@@ -42,6 +42,7 @@ cd ..\..\..
 
 cd "Create Synchronicity\bin\Debug"
 "C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%-DEBUG.zip" "Create Synchronicity.exe" "Release notes.txt" "COPYING" "languages\*"
+"C:\Program Files\7-Zip\7z.exe" a "..\..\..\build\Create_Synchronicity-r%REV%-Extensions.zip" "compress.dll" "ICSharpCode.SharpZipLib.dll"
 cd ..\..\..
 ) >> %LOG%
 
@@ -57,6 +58,7 @@ echo.
 echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%.zip/download"
 echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity_Setup-r%REV%.exe/download"
 echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%-DEBUG.zip/download"
+echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%-Extensions.zip/download"
 ) > build\current-build.txt
 
 echo (6/7) Uploading builds to frs.sourceforge.net and rev info to web.sourceforge.net
@@ -65,7 +67,7 @@ echo.
 echo -----
 echo Uploading files via SCP.
 "C:\Program Files (x86)\PuTTY\pscp.exe" "build\current-build.txt" "createsoftware,synchronicity@web.sourceforge.net:/home/groups/s/sy/synchronicity/htdocs/code"
-"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity-r%REV%-DEBUG.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
+"C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity-r%REV%-DEBUG.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "build\Create_Synchronicity-r%REV%-Extensions.zip" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
 ) >> %LOG%
 
 echo (7/7) Building manual and uploading it to web.sourceforge.net.
