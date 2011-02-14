@@ -56,13 +56,18 @@ Public Module ConfigOptions
     Public Const DllName As String = "compress.dll"
     'Public CompressionThreshold As Integer = 0 'Better not filter at all
 
-    'Public Const MessagesFileName As String = "messages.txt"
 
     Public Const EnqueuingSeparator As Char = "|"c
-#If LINUX Then
+#If CONFIG = "Linux" Then
     Public Const DirSep As Char = "/"c
 #Else
     Public Const DirSep As Char = "\"c
+#End If
+
+#If DEBUG Then
+    Public Const Debug As Boolean = True
+#Else
+    Public Const Debug As Boolean = False
 #End If
 
     Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
@@ -87,28 +92,25 @@ End Structure
 NotInheritable Class ConfigHandler
     Private Shared Singleton As ConfigHandler
 
-    Public ConfigRootDir As String
     Public LogRootDir As String
-    'Public MessagesFile As String
-    Public MainConfigFile As String
-    Public CompressionDll As String
+    Public ConfigRootDir As String
+    Public LanguageRootDir As String
 
-    Public LanguageRootDir As String = Application.StartupPath & "\languages" 'LINUX
-    Public LocalNamesFile As String = LanguageRootDir & "\local-names.txt"
+    Public CompressionDll As String
+    Public LocalNamesFile As String
+    Public MainConfigFile As String
+
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode only, queuing uses callbacks).
 
-#If DEBUG Then
-    Const Debug As Boolean = True
-#Else
-    Const Debug As Boolean = False
-#End If
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
     Protected Sub New()
-        ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
         LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
-        'MessagesFile = GetUserFilesRootDir() & ConfigOptions.MessagesFileName
+        ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
+        LanguageRootDir = Application.StartupPath & ConfigOptions.DirSep & "languages"
+
+        LocalNamesFile = LanguageRootDir & ConfigOptions.DirSep & "local-names.txt"
         MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
         CompressionDll = Application.StartupPath & ConfigOptions.DirSep & ConfigOptions.DllName
     End Sub
@@ -242,7 +244,7 @@ NotInheritable Class ConfigHandler
     End Function
 
     Public Shared Sub LogAppEvent(ByVal EventData As String)
-        If Debug Or CommandLine.Silent Or CommandLine.Log Then
+        If ConfigOptions.Debug Or CommandLine.Silent Or CommandLine.Log Then
             Static UniqueID As String = Guid.NewGuid().ToString
 
             Dim AppLog As New IO.StreamWriter(Singleton.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
@@ -489,7 +491,7 @@ NotInheritable Class ProfileHandler
     End Function
 
     Public Shared Function TranslatePath_Inverse(ByVal Path As String) As String
-#If Not LINUX Then
+#If CONFIG <> "Linux" Then
         If Text.RegularExpressions.Regex.IsMatch(Path, "^(?<driveletter>[A-Z]\:)(\\(?<relativepath>.*))?$") Then
             Dim Label As String = ""
             For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
@@ -505,7 +507,7 @@ NotInheritable Class ProfileHandler
     Private Shared Function TranslatePath_Unsafe(ByVal Path As String) As String
         Dim Translated_Path As String = Path
 
-#If Not LINUX Then
+#If CONFIG <> "Linux" Then
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
             Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
