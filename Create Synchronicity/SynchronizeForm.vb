@@ -919,13 +919,13 @@ Public Class SynchronizeForm
     End Function
 
     Function LoadCompressionDll() As Compressor
-        Dim DLL As Reflection.Assembly = Reflection.Assembly.LoadFrom(ConfigOptions.CompressionDll)
+        Dim DLL As Reflection.Assembly = Reflection.Assembly.LoadFrom(ProgramConfig.CompressionDll)
 
         For Each SubType As Type In DLL.GetTypes
             If GetType(Compressor).IsAssignableFrom(SubType) Then Return CType(Activator.CreateInstance(SubType), Compressor)
         Next
 
-        Throw New ArgumentException("Unable to launch " & ConfigOptions.CompressionDll)
+        Throw New ArgumentException("Invalid DLL: " & ProgramConfig.CompressionDll)
     End Function
 
     Private Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean

@@ -53,8 +53,8 @@ Public Module ConfigOptions
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
     Public Const AppLogName As String = "app.log"
-    Public Const CompressionDll As String = "compress.dll"
-    Public Const CompressionThreshold As Integer = 32768
+    Public Const DllName As String = "compress.dll"
+    Public Const CompressionThreshold As Integer = 1024
 
     'Public Const MessagesFileName As String = "messages.txt"
 
@@ -91,6 +91,7 @@ NotInheritable Class ConfigHandler
     Public LogRootDir As String
     'Public MessagesFile As String
     Public MainConfigFile As String
+    Public CompressionDll As String
 
     Public LanguageRootDir As String = Application.StartupPath & "\languages" 'LINUX
     Public LocalNamesFile As String = LanguageRootDir & "\local-names.txt"
@@ -109,6 +110,7 @@ NotInheritable Class ConfigHandler
         LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
         'MessagesFile = GetUserFilesRootDir() & ConfigOptions.MessagesFileName
         MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
+        CompressionDll = Application.StartupPath & ConfigOptions.DirSep & ConfigOptions.DllName
     End Sub
 
     Public Shared Function GetSingleton() As ConfigHandler
@@ -381,10 +383,9 @@ NotInheritable Class ProfileHandler
                 InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ConfigOptions.CompressionExt)))
             End If
 
-            Dim DLLFile As String = Application.StartupPath & "\" & ConfigOptions.CompressionDll 'FIXME: Linux
-            If Not IO.File.Exists(DLLFile) Then
+            If Not IO.File.Exists(ProgramConfig.CompressionDll) Then
                 IsValid = False
-                InvalidListing.Add(String.Format("{0} not found!", DLLFile))
+                InvalidListing.Add(String.Format("{0} not found!", ProgramConfig.CompressionDll))
             End If
         End If
 
