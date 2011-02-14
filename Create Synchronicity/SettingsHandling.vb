@@ -54,7 +54,7 @@ Public Module ConfigOptions
     Public Const SettingsFileName As String = "mainconfig.ini"
     Public Const AppLogName As String = "app.log"
     Public Const DllName As String = "compress.dll"
-    Public Const CompressionThreshold As Integer = 1024
+    'Public CompressionThreshold As Integer = 0 'Better not filter at all
 
     'Public Const MessagesFileName As String = "messages.txt"
 

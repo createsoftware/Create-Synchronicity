@@ -915,7 +915,7 @@ Public Class SynchronizeForm
     End Function
 
     Function ShouldCompress(ByVal File As String) As Boolean
-        Return Handler.GetSetting(ConfigOptions.CompressionExt, "") <> "" AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
+        Return Handler.GetSetting(ConfigOptions.CompressionExt, "") <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 
     Function LoadCompressionDll() As Compressor

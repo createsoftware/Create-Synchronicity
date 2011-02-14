@@ -78,7 +78,7 @@
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
         ConfigHandler.LogAppEvent("Program exited")
 
-#If DEBUG And 1 Then
+#If DEBUG And 0 Then
         VariousTests()
 #End If
     End Sub
