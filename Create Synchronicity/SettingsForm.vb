@@ -30,6 +30,8 @@ Public Class SettingsForm
 #Region " Events "
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
+        Settings_LeftView.PathSeparator = ConfigOptions.DirSep
+        Settings_RightView.PathSeparator = ConfigOptions.DirSep
         Settings_CreateDestOption.Visible = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
@@ -160,7 +162,7 @@ Public Class SettingsForm
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
             Try
-                For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath)) 'FIXME: Set separator char properly
+                For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath))
                     Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
@@ -482,15 +484,15 @@ Public Class SettingsForm
         If LoadToForm Then Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Sub Settings_Cleanup_Paths()
-        Dim Cleanup = Function(Path As String) As String
+    Private Function Cleanup(ByVal Path As String) As String
 #If LINUX Then
-                          Return If(Path.Contains("/"), "/", "") & Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+        Return If(Path.Contains("/"), "/", "") & Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
 #Else
-                          Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+        Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
 #End If
-                      End Function
+    End Function
 
+    Private Sub Settings_Cleanup_Paths()
         Settings_FromTextBox.Text = Cleanup(Settings_FromTextBox.Text)
         Settings_ToTextBox.Text = Cleanup(Settings_ToTextBox.Text)
     End Sub
