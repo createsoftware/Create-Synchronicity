@@ -897,7 +897,7 @@ Public Class SynchronizeForm
 
         Status.CreatedFiles += 1
         Status.BytesCopied += GetSize(SourceFile)
-        If Handler.GetSetting(ConfigOptions.Checksum) AndAlso Md5(SourceFile) <> Md5(DestFile) Then Throw New System.Security.Cryptography.CryptographicException("MD5 validation: failed.")
+        If Handler.GetSetting(ConfigOptions.Checksum, "False") AndAlso Md5(SourceFile) <> Md5(DestFile) Then Throw New System.Security.Cryptography.CryptographicException("MD5 validation: failed.")
     End Sub
 #End Region
 
