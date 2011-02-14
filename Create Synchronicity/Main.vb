@@ -27,11 +27,9 @@
 #End If
 
         ' Check if multiple instances are allowed.
-        If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-            If SchedulerAlreadyRunning() Then
-                ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
-                Exit Sub
-            End If
+        If CommandLine.RunAs = CommandLine.RunMode.Scheduler AndAlso SchedulerAlreadyRunning() Then
+            ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
+            Exit Sub
         End If
 
         ' Setup settings
@@ -80,7 +78,7 @@
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
         ConfigHandler.LogAppEvent("Program exited")
 
-#If DEBUG And 0 Then
+#If DEBUG And 1 Then
         VariousTests()
 #End If
     End Sub
@@ -115,11 +113,8 @@
         End If
 
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
-            If Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "True")
-            Else
-                ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, "False")
-            End If
+            Dim AutoUpdates As Boolean = If(Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes, True, False)
+            ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, AutoUpdates.ToString)
         End If
 
         ProgramConfig.SaveProgramSettings()
@@ -179,7 +174,7 @@
 
     Sub ProcessProfilesQueue(ByVal sender As System.Object, ByVal e As System.EventArgs)
         MainFormInstance.ApplicationTimer.Stop()
-        MainFormInstance.ApplicationTimer.Interval = 2000
+        MainFormInstance.ApplicationTimer.Interval = 2000 'Leave two seconds between each queued profile
 
         Static ProfilesQueue As List(Of String) = Nothing
 

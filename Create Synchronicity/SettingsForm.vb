@@ -25,6 +25,8 @@ Public Class SettingsForm
     '
     'Careful: When calling Settings_Update(False), the Handler.Left/RightCheckNodes object is used to hold pathes containing * chars. Therefore, trying to reload the tree from it after invoking Settings_Update(False) cannot be done.
 
+    'Path handling: Always trim traliing path separator chars: it makes everything much simpler. Only exception: '/' in Linux
+
 #Region " Events "
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
@@ -50,12 +52,12 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged, Settings_CreateDestOption.CheckedChanged
-        BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
+        BlinkIfInvalidPath(Settings_ToTextBox)
         DisableTree(Settings_RightReloadButton, Settings_RightView)
     End Sub
 
-    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox, Optional ByVal ForceWhite As Boolean = False)
-        If ForceWhite Or PathBox.Text = "" Or IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
+    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox)
+        If PathBox.Text = "" Or Settings_CreateDestOption.Checked OrElse IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
             PathBox.BackColor = Drawing.Color.White
         Else
             PathBox.BackColor = Drawing.Color.LightPink
@@ -101,7 +103,7 @@ Public Class SettingsForm
 
     Private Sub Settings_SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SwapButton.Click
         If Interaction.ShowMsg(Translation.Translate("\WARNING_SWAP"), "\WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
-            Dim Settings_FromTextBox_Text As String = Settings_FromTextBox.Text
+            Dim Settings_FromTextBox_Text As String = Settings_FromTextBox.Text 'TODO: Better swapping?
             Settings_FromTextBox.Text = Settings_ToTextBox.Text
             Settings_ToTextBox.Text = Settings_FromTextBox_Text
             Settings_ReloadTrees()
@@ -152,13 +154,13 @@ Public Class SettingsForm
     Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
         Settings_BottomDescLabel.Text = ""
     End Sub
-
+    'FIXME: s/COULDDO/LATER
     Private Sub Settings_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_LeftView.AfterExpand, Settings_RightView.AfterExpand
         ClickedRightTreeView = (CType(sender, Control).Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For
             Try
-                For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath))
+                For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath)) 'FIXME: Set separator char properly
                     Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
@@ -219,7 +221,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_HelpLink.Click
-        Interaction.StartProcess("http://synchronicity.sourceforge.net/help.html")
+        Interaction.StartProcess("http://synchronicity.sourceforge.net/settings-help.html")
     End Sub
 #End Region
 
@@ -347,7 +349,7 @@ Public Class SettingsForm
         Tree.Nodes.Clear()
 
         Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
-        Tree.Enabled = OriginalPath <> "" AndAlso (ForceLoad OrElse IO.Directory.Exists(Path)) 'Linux
+        Tree.Enabled = OriginalPath <> "" AndAlso (ForceLoad OrElse IO.Directory.Exists(Path)) 'FIXME: Linux
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
@@ -387,28 +389,26 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
-        If Path.Count <> 0 AndAlso Path(0) = "" Then Path.RemoveAt(0)
+        If Path.Count <> 0 AndAlso Path(0) = "" Then Path.RemoveAt(0) 'Path is the path to the node, splitted at separator chars.
 
-        If Path.Count = 0 Then
-            If FullCheck Then
+        If Path.Count = 0 Then 'End of the path
+            If FullCheck Then 'Check all subnodes
                 ProcessingNodes = True
                 Settings_Inner_CheckNodeTree(BaseNode, True)
                 BaseNode.Collapse()
                 ProcessingNodes = False
             Else
-                BaseNode.Checked = True
+                BaseNode.Checked = True 'Only check this one.
             End If
-
-            Exit Sub
+        Else
+            For Each Node As TreeNode In BaseNode.Nodes 'Search for next node
+                If Node.Text = Path(0) Then
+                    Node.Expand() : Path.RemoveAt(0)
+                    Settings_CheckAccordingToPath(Node, Path, FullCheck)
+                    Exit For
+                End If
+            Next
         End If
-
-        For Each Node As TreeNode In BaseNode.Nodes
-            If Node.Text = Path(0) Then
-                Node.Expand() : Path.RemoveAt(0)
-                Settings_CheckAccordingToPath(Node, Path, FullCheck)
-                Exit For
-            End If
-        Next
     End Sub
 #End Region
 
@@ -482,9 +482,17 @@ Public Class SettingsForm
         If LoadToForm Then Settings_Update_Form_Enabled_Components()
     End Sub
 
-    Sub Settings_Cleanup_Paths() 'LINUX: Careful with root path.
-        Settings_FromTextBox.Text = Settings_FromTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
-        Settings_ToTextBox.Text = Settings_ToTextBox.Text.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+    Sub Settings_Cleanup_Paths()
+        Dim Cleanup = Function(Path As String) As String
+#If LINUX Then
+                          Return If(Path.Contains("/"), "/", "") & Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+#Else
+                          Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+#End If
+                      End Function
+
+        Settings_FromTextBox.Text = Cleanup(Settings_FromTextBox.Text)
+        Settings_ToTextBox.Text = Cleanup(Settings_ToTextBox.Text)
     End Sub
 
     Private Function Settings_GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
