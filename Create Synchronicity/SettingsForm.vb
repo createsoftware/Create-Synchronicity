@@ -154,7 +154,7 @@ Public Class SettingsForm
     Private Sub Settings_Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_PropagateUpdatesOption.MouseLeave, Settings_StrictDateComparisonOption.MouseLeave
         Settings_BottomDescLabel.Text = ""
     End Sub
-    'FIXME: s/COULDDO/LATER
+
     Private Sub Settings_AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles Settings_LeftView.AfterExpand, Settings_RightView.AfterExpand
         ClickedRightTreeView = (CType(sender, Control).Name = "Settings_RightView")
         For Each Node As TreeNode In e.Node.Nodes

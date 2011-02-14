@@ -40,7 +40,7 @@ Public Module ConfigOptions
     'Main program settings
     Public Const Language As String = "Language"
     Public Const DefaultLanguage As String = "english"
-    'Public Const SyncsCount As String = "Syncs count" 'COULDDO: Problem with concurrent savings of the config file.
+    'Public Const SyncsCount As String = "Syncs count" 'LATER: Problem with concurrent savings of the config file.
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MaxLogEntries As String = "Archived log entries"
     Public Const MainView As String = "Main view"
@@ -381,7 +381,7 @@ NotInheritable Class ProfileHandler
                 InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ConfigOptions.CompressionExt)))
             End If
 
-            Dim DLLFile As String = Application.StartupPath & "\" & ConfigOptions.CompressionDll
+            Dim DLLFile As String = Application.StartupPath & "\" & ConfigOptions.CompressionDll 'FIXME: Linux
             If Not IO.File.Exists(DLLFile) Then
                 IsValid = False
                 InvalidListing.Add(String.Format("{0} not found!", DLLFile))
@@ -587,7 +587,7 @@ Structure ScheduleInfo
         MonthDay = _MonthDay
     End Sub
 
-    Function GetInterval(Optional ByVal Multiplicator As Integer = 1) As TimeSpan 'COULDDO: Suppress multiplier.
+    Function GetInterval(Optional ByVal Multiplicator As Integer = 1) As TimeSpan 'LATER: Suppress multiplier.
         Dim Interval As TimeSpan
         Dim Today As Date = Date.Today
 

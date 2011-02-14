@@ -49,7 +49,7 @@ Public Class SynchronizeForm
     Dim FirstSyncThread As Threading.Thread
     Dim SecondSyncThread As Threading.Thread
 
-    Delegate Sub Action() 'COULDDO: replace with .Net 4.0 standards.
+    Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
     Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
     Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
     Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
@@ -670,7 +670,7 @@ Public Class SynchronizeForm
         SyncPreviewList(Side, -1)
     End Sub
 
-    Private Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path?
+    Private Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'LATER: Should be optimized; IO.Path?
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
     End Function
 
@@ -769,7 +769,7 @@ Public Class SynchronizeForm
                     RemoveFromSyncingList(Context.Source)
                 End If
                 '(Could be Else =>) Delete it (aka don't mark it for preservation).
-                'COULDDO: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
+                'LATER: This could normally be safely put in an else case, since no folder can be a singularity (=not in dest) and a valid file (=it's in dest and should stay there).
                 RemoveValidFile(Folder)
                 'Problem: What if ancestors of a folder have been marked valid, and the folder is empty?
                 'If the folder didn't exist, it's ancestors won't be created, since only the folder itself is added.
@@ -846,7 +846,7 @@ Public Class SynchronizeForm
     Function HasAcceptedFilename(ByVal Path As String) As Boolean
         Try
             Select Case Handler.GetSetting(ConfigOptions.Restrictions)
-                'COULDDO: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
+                'LATER: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
                 Case "1"
                     Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
                 Case "2"
