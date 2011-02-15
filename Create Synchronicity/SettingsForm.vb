@@ -62,17 +62,22 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_FromTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged
-        BlinkIfInvalidPath(Settings_FromTextBox)
+        BlinkIfInvalidPath(Settings_FromTextBox, False)
         DisableTrees()
     End Sub
 
-    Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged, Settings_CreateDestOption.CheckedChanged
-        BlinkIfInvalidPath(Settings_ToTextBox)
+    Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged
+        BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
         DisableTrees()
     End Sub
 
-    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox)
-        If PathBox.Text = "" Or Settings_CreateDestOption.Checked OrElse IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
+    Private Sub Settings_CreateDestOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_CreateDestOption.CheckedChanged
+        BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
+        Settings_ReloadTrees(False, True)
+    End Sub
+
+    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox, ByVal ForceWhite As Boolean)
+        If PathBox.Text = "" Or ForceWhite OrElse IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
             PathBox.BackColor = Drawing.Color.White
         Else
             PathBox.BackColor = Drawing.Color.LightPink
@@ -125,6 +130,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub BlinkBtn(ByVal Blink As Boolean)
+        Settings_SaveButton.Enabled = Not Blink
         Settings_ReloadButton.BackColor = If(Blink, System.Drawing.Color.Orange, System.Drawing.SystemColors.Control)
     End Sub
 
@@ -235,7 +241,7 @@ Public Class SettingsForm
 
         'Therefore, re-check the tree (if it has already been loaded)
         If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then
-            Settings_LoadCheckState(False)
+            Settings_LoadCheckState(Settings_RightView, Handler.RightCheckedNodes) 'FIXME: InhibitAutoCheck?
         End If
     End Sub
 
@@ -330,37 +336,40 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub Settings_ReloadTrees(ByVal AllowFullReload As Boolean)
-        Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False
-        Settings_Loading.Visible = True : InhibitAutocheck = True
+    Sub Settings_ReloadTrees(ByVal AllowFullReload As Boolean, Optional ByVal ForceRight As Boolean = False)
+        Settings_ReloadButton.Enabled = False
+        Settings_SaveButton.Enabled = False
+        Settings_Loading.Visible = True
+        InhibitAutocheck = True
 
         'Only reload fully if the user didn't input any text. Adding an extra trailing "\" for example will disable FullReload.
-        Dim FullReload As Boolean = AllowFullReload And Settings_FromTextBox.Text = PrevLeft And Settings_ToTextBox.Text = PrevRight
+        Dim FullReload As Boolean = AllowFullReload And Settings_FromTextBox.Text = PrevLeft And Settings_ToTextBox.Text = PrevRight And Settings_LeftView.Enabled And Settings_RightView.Enabled
 
         Settings_Cleanup_Paths()
-        Settings_LeftView.Enabled = True : Settings_RightView.Enabled = True
+        'FIXME: Check if this should really be removed
+        'Settings_LeftView.Enabled = True : Settings_RightView.Enabled = True 
 
         'Unless FullReload is true, and no path has changed, only the trees where paths have changed are reloaded.
         If FullReload Or PrevLeft <> Settings_FromTextBox.Text Then
-            LoadTree(Settings_LeftView, Settings_FromTextBox.Text)
+            LoadTree(Settings_LeftView, Settings_FromTextBox.Text, Handler.LeftCheckedNodes)
         End If
-        If FullReload Or PrevRight <> Settings_ToTextBox.Text Then
-            LoadTree(Settings_RightView, Settings_ToTextBox.Text, Settings_CreateDestOption.Checked)
+        If FullReload Or PrevRight <> Settings_ToTextBox.Text Or ForceRight Then
+            LoadTree(Settings_RightView, Settings_ToTextBox.Text, Handler.RightCheckedNodes, Settings_CreateDestOption.Checked)
         End If
 
         Settings_LeftReloadButton.Visible = Not Settings_LeftView.Enabled
         Settings_RightReloadButton.Visible = Not Settings_RightView.Enabled
         BlinkBtn(Settings_LeftReloadButton.Visible Or Settings_RightReloadButton.Visible)
 
-        Settings_SetRootPathDisplay(True)
-        Settings_Loading.Visible = False : InhibitAutocheck = False
-        Settings_ReloadButton.Enabled = True : Settings_SaveButton.Enabled = True
+        InhibitAutocheck = False
+        Settings_Loading.Visible = False
+        Settings_ReloadButton.Enabled = True
 
         PrevLeft = Settings_FromTextBox.Text
         PrevRight = Settings_ToTextBox.Text
     End Sub
 
-    Private Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, Optional ByVal ForceLoad As Boolean = False)
+    Private Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, ByVal CheckedNodes As Dictionary(Of String, Boolean), Optional ByVal ForceLoad As Boolean = False)
         Tree.Nodes.Clear()
 
         Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
@@ -377,6 +386,7 @@ Public Class SettingsForm
                     Next
 
                     Tree.Nodes(0).Expand()
+                    Settings_LoadCheckState(Tree, CheckedNodes)
                 Catch Ex As Exception
                     Tree.Nodes.Clear()
                     Tree.Enabled = False
@@ -387,18 +397,14 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub Settings_LoadCheckState(ByVal Left As Boolean)
-        If Left Then
-            Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
-            For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.LeftCheckedNodes
-                Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
-            Next
-        Else
-            Dim BaseNode As TreeNode = Settings_RightView.Nodes(0)
-            For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.RightCheckedNodes
-                Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
-            Next
-        End If
+    Sub Settings_LoadCheckState(ByVal Tree As TreeView, ByVal CheckedNodes As Dictionary(Of String, Boolean))
+        Dim BaseNode As TreeNode = Tree.Nodes(0)
+        'FIXME: Shouldn't be needed here, since it's already true anyway.
+        'InhibitAutocheck = True 
+        For Each CheckedPath As KeyValuePair(Of String, Boolean) In CheckedNodes
+            Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
+        Next
+        'InhibitAutocheck = False
     End Sub
 
     Private Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
@@ -446,55 +452,48 @@ Public Class SettingsForm
         Dim Restrictions As String = (If(Settings_CopyAllFilesCheckBox.Checked, 0, 1) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
         Dim Method As String = (If(Settings_LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(Settings_TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
 
-        Select Case LoadToForm
-            Case False
-                Handler.SetSetting(ConfigOptions.Method, Method)
-                Handler.SetSetting(ConfigOptions.Restrictions, Restrictions)
-            Case True
-                Select Case Handler.GetSetting(ConfigOptions.Method)
-                    Case "1"
-                        Settings_LRIncrementalMethodOption.Checked = True
-                    Case "2"
-                        Settings_TwoWaysIncrementalMethodOption.Checked = True
-                    Case Else
-                        Settings_LRMirrorMethodOption.Checked = True
-                End Select
+        If LoadToForm Then
+            Select Case Handler.GetSetting(ConfigOptions.Method)
+                Case "1"
+                    Settings_LRIncrementalMethodOption.Checked = True
+                Case "2"
+                    Settings_TwoWaysIncrementalMethodOption.Checked = True
+                Case Else
+                    Settings_LRMirrorMethodOption.Checked = True
+            End Select
 
-                Settings_CopyAllFilesCheckBox.Checked = False
-                Select Case Handler.GetSetting(ConfigOptions.Restrictions)
-                    Case "1"
-                        Settings_IncludeFilesOption.Checked = True
-                    Case "2"
-                        Settings_ExcludeFilesOption.Checked = True
-                    Case Else
-                        Settings_CopyAllFilesCheckBox.Checked = True
-                End Select
-        End Select
+            Settings_CopyAllFilesCheckBox.Checked = False
+            Select Case Handler.GetSetting(ConfigOptions.Restrictions)
+                Case "1"
+                    Settings_IncludeFilesOption.Checked = True
+                Case "2"
+                    Settings_ExcludeFilesOption.Checked = True
+                Case Else
+                    Settings_CopyAllFilesCheckBox.Checked = True
+            End Select
 
-        Select Case LoadToForm
-            Case False
-                Settings_SetRootPathDisplay(False)
-                If Settings_LeftView.Enabled Then
-                    Handler.LeftCheckedNodes.Clear()
-                    Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
-                    Handler.SetSetting(ConfigOptions.LeftSubFolders, Settings_GetString(Handler.LeftCheckedNodes))
+            Settings_ReloadTrees(True)
+            Settings_Update_Form_Enabled_Components()
+        Else
+            Handler.SetSetting(ConfigOptions.Method, Method)
+            Handler.SetSetting(ConfigOptions.Restrictions, Restrictions)
+
+            Settings_SetRootPathDisplay(False)
+            If Settings_LeftView.Enabled Then
+                Handler.LeftCheckedNodes.Clear()
+                Settings_BuildCheckedNodesList(Handler.LeftCheckedNodes, Settings_LeftView.Nodes(0))
+                Handler.SetSetting(ConfigOptions.LeftSubFolders, Settings_GetString(Handler.LeftCheckedNodes))
+            End If
+
+            If Settings_RightView.Enabled Then
+                If Settings_RightView.CheckBoxes Or Handler.GetSetting(ConfigOptions.RightSubFolders) Is Nothing Then
+                    Handler.RightCheckedNodes.Clear()
+                    Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
+                    Handler.SetSetting(ConfigOptions.RightSubFolders, Settings_GetString(Handler.RightCheckedNodes))
                 End If
-
-                If Settings_RightView.Enabled Then
-                    If Settings_RightView.CheckBoxes Or Handler.GetSetting(ConfigOptions.RightSubFolders) Is Nothing Then
-                        Handler.RightCheckedNodes.Clear()
-                        Settings_BuildCheckedNodesList(Handler.RightCheckedNodes, Settings_RightView.Nodes(0))
-                        Handler.SetSetting(ConfigOptions.RightSubFolders, Settings_GetString(Handler.RightCheckedNodes))
-                    End If
-                End If
-                Settings_SetRootPathDisplay(True)
-            Case True
-                Settings_ReloadTrees(True)
-                Settings_LoadCheckState(True)
-                Settings_LoadCheckState(False)
-        End Select
-
-        If LoadToForm Then Settings_Update_Form_Enabled_Components()
+            End If
+            Settings_SetRootPathDisplay(True)
+        End If
     End Sub
 
     Private Function Cleanup(ByVal Path As String) As String
