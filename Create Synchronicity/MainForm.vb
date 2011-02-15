@@ -124,7 +124,7 @@ Public Class MainForm
 
         If e.Item = 0 Then
             e.CancelEdit = True
-            Dim SettingsForm As New SettingsForm(e.Label)
+            Dim SettingsForm As New SettingsForm(e.Label, True)
             SettingsForm.ShowDialog()
         Else
             If Not Profiles(Main_Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
@@ -175,7 +175,7 @@ Public Class MainForm
     End Sub
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
-        Dim SettingsForm As New SettingsForm(CurrentProfile)
+        Dim SettingsForm As New SettingsForm(CurrentProfile, False)
         SettingsForm.ShowDialog()
         Main_ReloadConfigs()
     End Sub

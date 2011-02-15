@@ -13,6 +13,10 @@ Public Class SettingsForm
     Dim AdvancedSelection As Boolean = False 'Controls recursive selection.
     Dim ClickedRightTreeView As Boolean = False
 
+    Dim NewProfile As Boolean
+    Dim PrevLeft As String = "-1" 'Initiate to an invalid path value to force reloading.
+    Dim PrevRight As String = "-1" 'These values are used to check whether the folder tree should be reloaded.
+
     'Note:
     'The list called Handler.(left|right)CheckedNodes contains pathes not ending with "*", associated with booleans indicating whether all subfolders /path/ are to be synced.
     'The boolean value is stored as a * appended at the end of the file name.
@@ -28,6 +32,15 @@ Public Class SettingsForm
     'Path handling: Always trim traliing path separator chars: it makes everything much simpler. Only exception: '/' in Linux
 
 #Region " Events "
+    Public Sub New(ByVal Name As String, ByVal _NewProfile As Boolean)
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        Handler = New ProfileHandler(Name)
+        NewProfile = _NewProfile
+    End Sub
+
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
         Settings_LeftView.PathSeparator = ConfigOptions.DirSep
@@ -35,7 +48,7 @@ Public Class SettingsForm
         Settings_CreateDestOption.Visible = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
-        Settings_Update(True)
+        If Not NewProfile Then Settings_Update(True)
         Settings_RightView.Sorted = True : Settings_LeftView.Sorted = True
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
@@ -50,12 +63,12 @@ Public Class SettingsForm
 
     Private Sub Settings_FromTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_FromTextBox.TextChanged
         BlinkIfInvalidPath(Settings_FromTextBox)
-        DisableTree(Settings_LeftReloadButton, Settings_LeftView)
+        DisableTrees()
     End Sub
 
     Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged, Settings_CreateDestOption.CheckedChanged
         BlinkIfInvalidPath(Settings_ToTextBox)
-        DisableTree(Settings_RightReloadButton, Settings_RightView)
+        DisableTrees()
     End Sub
 
     Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox)
@@ -94,13 +107,25 @@ Public Class SettingsForm
             Else
                 TextboxField.Text = Settings_FolderBrowser.SelectedPath
             End If
-            DisableTree(Btn, Tree)
         End If
     End Sub
 
-    Private Sub DisableTree(ByVal Btn As Button, ByVal Tree As TreeView)
-        Settings_ReloadButton.BackColor = System.Drawing.Color.Orange
-        Btn.Visible = True : Tree.Enabled = False
+    'Returns true iff the center button should blink
+    Private Function DisableTree(ByVal Btn As Button, ByVal Tree As TreeView, ByVal CurPath As String, ByVal PrevPath As String) As Boolean
+        CurPath = Cleanup(CurPath)
+        If CurPath <> PrevPath Then
+            Btn.Visible = True
+            Tree.Enabled = False
+        End If
+        Return CurPath <> PrevPath
+    End Function
+
+    Private Sub DisableTrees() 'Disable the trees which display irrelevant data.
+        BlinkBtn(DisableTree(Settings_LeftReloadButton, Settings_LeftView, Settings_FromTextBox.Text, PrevLeft) Or DisableTree(Settings_RightReloadButton, Settings_RightView, Settings_ToTextBox.Text, PrevRight))
+    End Sub
+
+    Private Sub BlinkBtn(ByVal Blink As Boolean)
+        Settings_ReloadButton.BackColor = If(Blink, System.Drawing.Color.Orange, System.Drawing.SystemColors.Control)
     End Sub
 
     Private Sub Settings_SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_SwapButton.Click
@@ -108,7 +133,7 @@ Public Class SettingsForm
             Dim Settings_FromTextBox_Text As String = Settings_FromTextBox.Text 'TODO: Better swapping?
             Settings_FromTextBox.Text = Settings_ToTextBox.Text
             Settings_ToTextBox.Text = Settings_FromTextBox_Text
-            Settings_ReloadTrees()
+            Settings_ReloadTrees(False)
         End If
     End Sub
 
@@ -206,20 +231,12 @@ Public Class SettingsForm
         End If
 
         'When the CheckBoxes' display is switched on, the checked property is not taken into account for the display.
-        'That is, if Node.Checked = True but TreeView.CheckBoxes = False, then when Chekboxes = true Node
+        'That is, if Node.Checked = True but TreeView.CheckBoxes = False, then when Checkboxes = true Node
 
         'Therefore, re-check the tree (if it has already been loaded)
         If Settings_RightView.CheckBoxes AndAlso Settings_RightView.Nodes.Count > 0 Then
-            Settings_LoadCheckState(False) 'LoadTree(Settings_RightView, Settings_ToTextBox.Text & ConfigOptions.DirSep)
+            Settings_LoadCheckState(False)
         End If
-    End Sub
-
-    Public Sub New(ByVal Name As String)
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-        Handler = New ProfileHandler(Name)
     End Sub
 
     Private Sub Settings_HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_HelpLink.Click
@@ -313,38 +330,34 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub Settings_ReloadTrees(Optional ByVal AllowFullReload As Boolean = False)
-        Static CurrentLeft As String = "-1" 'Initiate to an invalid path value to force reloading.
-        Static CurrentRight As String = "-1"
-
-        Settings_ReloadButton.BackColor = System.Drawing.SystemColors.Control
+    Sub Settings_ReloadTrees(ByVal AllowFullReload As Boolean)
         Settings_ReloadButton.Enabled = False : Settings_SaveButton.Enabled = False
         Settings_Loading.Visible = True : InhibitAutocheck = True
 
-        'No changes: reload all trees if AllowFullReload is true (middle button clicked)
-        'Otherwise: Reload trees where paths have changed.
-        'Check for changes *before* normalizing the paths.
-        Dim FullReload As Boolean = (AllowFullReload And CurrentLeft = Settings_FromTextBox.Text And CurrentRight = Settings_ToTextBox.Text)
+        'Only reload fully if the user didn't input any text. Adding an extra trailing "\" for example will disable FullReload.
+        Dim FullReload As Boolean = AllowFullReload And Settings_FromTextBox.Text = PrevLeft And Settings_ToTextBox.Text = PrevRight
 
         Settings_Cleanup_Paths()
         Settings_LeftView.Enabled = True : Settings_RightView.Enabled = True
 
-        If FullReload Or CurrentLeft <> Settings_FromTextBox.Text Then
+        'Unless FullReload is true, and no path has changed, only the trees where paths have changed are reloaded.
+        If FullReload Or PrevLeft <> Settings_FromTextBox.Text Then
             LoadTree(Settings_LeftView, Settings_FromTextBox.Text)
         End If
-        If FullReload Or CurrentRight <> Settings_ToTextBox.Text Then
+        If FullReload Or PrevRight <> Settings_ToTextBox.Text Then
             LoadTree(Settings_RightView, Settings_ToTextBox.Text, Settings_CreateDestOption.Checked)
         End If
 
         Settings_LeftReloadButton.Visible = Not Settings_LeftView.Enabled
         Settings_RightReloadButton.Visible = Not Settings_RightView.Enabled
+        BlinkBtn(Settings_LeftReloadButton.Visible Or Settings_RightReloadButton.Visible)
 
         Settings_SetRootPathDisplay(True)
         Settings_Loading.Visible = False : InhibitAutocheck = False
         Settings_ReloadButton.Enabled = True : Settings_SaveButton.Enabled = True
 
-        CurrentLeft = Settings_FromTextBox.Text
-        CurrentRight = Settings_ToTextBox.Text
+        PrevLeft = Settings_FromTextBox.Text
+        PrevRight = Settings_ToTextBox.Text
     End Sub
 
     Private Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, Optional ByVal ForceLoad As Boolean = False)
@@ -360,11 +373,10 @@ Public Class SettingsForm
                 Try
                     For Each Dir As String In IO.Directory.GetDirectories(Path)
                         Application.DoEvents()
-                        Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
+                        Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1)) 'FIXME: GetFileOrFolderName
                     Next
 
                     Tree.Nodes(0).Expand()
-                    Settings_LoadCheckState(Tree.Name = "Settings_LeftView")
                 Catch Ex As Exception
                     Tree.Nodes.Clear()
                     Tree.Enabled = False
@@ -376,18 +388,17 @@ Public Class SettingsForm
     End Sub
 
     Sub Settings_LoadCheckState(ByVal Left As Boolean)
-        Select Case Left
-            Case True
-                Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
-                For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.LeftCheckedNodes
-                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
-                Next
-            Case False
-                Dim BaseNode As TreeNode = Settings_RightView.Nodes(0)
-                For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.RightCheckedNodes
-                    Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
-                Next
-        End Select
+        If Left Then
+            Dim BaseNode As TreeNode = Settings_LeftView.Nodes(0)
+            For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.LeftCheckedNodes
+                Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
+            Next
+        Else
+            Dim BaseNode As TreeNode = Settings_RightView.Nodes(0)
+            For Each CheckedPath As KeyValuePair(Of String, Boolean) In Handler.RightCheckedNodes
+                Settings_CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
+            Next
+        End If
     End Sub
 
     Private Sub Settings_CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)
@@ -429,7 +440,7 @@ Public Class SettingsForm
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.TimeOffset, Settings_TimeOffset.Value, LoadToForm)
-        'Fuzzy DST setting is among the hidden settings, thus not added here
+        'Hidden settings are not added here
 
         'Note: Behaves correctly when no radio button is checked, although CopyAllFiles is unchecked.
         Dim Restrictions As String = (If(Settings_CopyAllFilesCheckBox.Checked, 0, 1) * (If(Settings_IncludeFilesOption.Checked, 1, 0) + 2 * If(Settings_ExcludeFilesOption.Checked, 1, 0))).ToString
@@ -478,7 +489,9 @@ Public Class SettingsForm
                 End If
                 Settings_SetRootPathDisplay(True)
             Case True
-                Settings_ReloadTrees()
+                Settings_ReloadTrees(True)
+                Settings_LoadCheckState(True)
+                Settings_LoadCheckState(False)
         End Select
 
         If LoadToForm Then Settings_Update_Form_Enabled_Components()
