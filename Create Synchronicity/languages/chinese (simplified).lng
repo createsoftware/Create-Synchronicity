@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity 补完 "{0}" (上次运行 {1} 日(s), {2} 小�
 FOLDER_FAILED=不能建立文件夹 "{0}" ({1}).
 CREATE_DEST=动态建立目标文件夹
 UPDATE=更新
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

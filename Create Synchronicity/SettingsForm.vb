@@ -43,9 +43,10 @@ Public Class SettingsForm
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
+        Translation.TranslateControl(ExpertMenu)
         Settings_LeftView.PathSeparator = ConfigOptions.DirSep
         Settings_RightView.PathSeparator = ConfigOptions.DirSep
-        Settings_CreateDestOption.Visible = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
+        MoreLabel.Visible = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
         If Not NewProfile Then Settings_Update(True)
@@ -67,12 +68,12 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Settings_ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_ToTextBox.TextChanged
-        BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
+        BlinkIfInvalidPath(Settings_ToTextBox, CreateDestOption.Checked)
         DisableTrees()
     End Sub
 
-    Private Sub Settings_CreateDestOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Settings_CreateDestOption.CheckedChanged
-        BlinkIfInvalidPath(Settings_ToTextBox, Settings_CreateDestOption.Checked)
+    Private Sub CreateDestOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CreateDestOption.CheckedChanged
+        BlinkIfInvalidPath(Settings_ToTextBox, CreateDestOption.Checked)
         Settings_ReloadTrees(False, True)
     End Sub
 
@@ -354,7 +355,7 @@ Public Class SettingsForm
             LoadTree(Settings_LeftView, Settings_FromTextBox.Text, Handler.LeftCheckedNodes)
         End If
         If FullReload Or PrevRight <> Settings_ToTextBox.Text Or ForceRight Then
-            LoadTree(Settings_RightView, Settings_ToTextBox.Text, Handler.RightCheckedNodes, Settings_CreateDestOption.Checked)
+            LoadTree(Settings_RightView, Settings_ToTextBox.Text, Handler.RightCheckedNodes, CreateDestOption.Checked)
         End If
 
         Settings_LeftReloadButton.Visible = Not Settings_LeftView.Enabled
@@ -441,11 +442,14 @@ Public Class SettingsForm
         Handler.SetSetting(ConfigOptions.IncludedTypes, Settings_IncludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ExcludedTypes, Settings_ExcludedTypesTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, Settings_ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.MayCreateDestination, Settings_CreateDestOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.MayCreateDestination, CreateDestOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictDateComparison, Settings_StrictDateComparisonOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.PropagateUpdates, Settings_PropagateUpdatesOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.StrictMirror, Settings_StrictMirrorOption.Checked, LoadToForm)
         Handler.SetSetting(ConfigOptions.TimeOffset, Settings_TimeOffset.Value, LoadToForm)
+        Handler.SetSetting(ConfigOptions.Checksum, ChecksumOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.CheckFileSize, CheckFileSizeOption.Checked, LoadToForm)
+        Handler.SetSetting(ConfigOptions.Group, GroupTextBox.Text, LoadToForm)
         'Hidden settings are not added here
 
         'Note: Behaves correctly when no radio button is checked, although CopyAllFiles is unchecked.
@@ -517,4 +521,12 @@ Public Class SettingsForm
         Return ListString.ToString
     End Function
 #End Region
+
+    Private Sub MoreLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MoreLabel.MouseClick
+        ExpertMenu.Show(MoreLabel, e.Location)
+    End Sub
+
+    Private Sub GroupTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupTextBox.TextChanged
+        GroupOption.Checked = GroupTextBox.Text <> ""
+    End Sub
 End Class

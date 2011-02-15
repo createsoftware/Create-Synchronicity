@@ -1,18 +1,18 @@
-bulgarian:1
-chinese (simplified):0
-czech:4
-danish:1
-deutsch:1
-dutch:1
+bulgarian:5
+chinese (simplified):4
+czech:8
+danish:5
+deutsch:5
+dutch:5
 english:0
-estonian:4
+estonian:8
 francais:0
-hebrew:20
-indonesian:1
+hebrew:24
+indonesian:5
 italian:4
-korean:1
-polish:1
-portuguese:1
-russian:4
-spanish:1
-swedish:4
+korean:5
+polish:5
+portuguese:5
+russian:8
+spanish:5
+swedish:8

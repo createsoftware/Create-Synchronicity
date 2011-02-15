@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity가 따라 잡고 있음"{0}" (최근 실행{1}�
 FOLDER_FAILED=폴더를 생성 할 수 없음"{0}" ({1}).
 CREATE_DEST=대상 폴더를 동적으로 생성함
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

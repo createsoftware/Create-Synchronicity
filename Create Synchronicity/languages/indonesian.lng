@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity sedang mengejar "{0}" (Terakhir dijalankan {1} 
 FOLDER_FAILED=Tidak dapat mebuat folder "{0}" ({1}).
 CREATE_DEST=Membuat folder tujuan secara dinamis
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

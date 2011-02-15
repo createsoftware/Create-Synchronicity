@@ -106,8 +106,7 @@ Public Class MainForm
     Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
         If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
 
-        If Main_Actions.SelectedIndices(0) = 0 Then
-            If e.Button = Windows.Forms.MouseButtons.Right Then Exit Sub
+        If Main_Actions.SelectedIndices(0) = 0 And e.Button = MouseButtons.Left Then
             Main_Actions.LabelEdit = True
             Main_Actions.SelectedItems(0).BeginEdit()
         Else

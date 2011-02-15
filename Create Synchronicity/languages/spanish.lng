@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity se está poniendo al día "{0}" (última ejecuc
 FOLDER_FAILED=No se puede crear el directorio "{0}" ({1}).
 CREATE_DEST=Crear de forma dinámica el directorio destino
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

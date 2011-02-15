@@ -154,3 +154,7 @@ CATCHING_UP=Create Synchronicity sta eseguendo "{0}" lanciato per l'ultima volta
 FOLDER_FAILED=Impossibile creare la cartella "{0}" {1}.
 CREATE_DEST=Crea la cartella di destinazione qualora non esista
 UPDATE=Aggiorna
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

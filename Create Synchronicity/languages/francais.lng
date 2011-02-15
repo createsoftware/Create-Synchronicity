@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity rattrape la synchronisation de "{0}" (dernière
 FOLDER_FAILED=Impossible de créer le dossier "{0}" ({1}).
 CREATE_DEST=Créer dynamiquement le dossier de destination
 UPDATE=Mettre à jour
+MD5=Assurer l'intégrité des copies (somme de contrôle MD5)
+GROUP=Groupe
+COMPARE_SIZE=Comparer les tailles de fichiers
+MORE=Plus (reservé aux experts)

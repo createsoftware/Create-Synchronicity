@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity igangsætter misset backup "{0}" (sidste backup
 FOLDER_FAILED=Det var ikke muligt at oprette mappen "{0}" ({1}).
 CREATE_DEST=Muliggør oprettelse af profiler med dynamisk destinationsmappe.
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

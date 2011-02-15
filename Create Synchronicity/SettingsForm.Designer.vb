@@ -81,13 +81,19 @@ Partial Class SettingsForm
         Me.Settings_CancelButton = New System.Windows.Forms.Button()
         Me.Settings_SaveButton = New System.Windows.Forms.Button()
         Me.Settings_FolderBrowser = New System.Windows.Forms.FolderBrowserDialog()
-        Me.Settings_CreateDestOption = New System.Windows.Forms.CheckBox()
         Me.Settings_AdvancedBox = New System.Windows.Forms.GroupBox()
         Me.Settings_StrictDateComparisonOption = New System.Windows.Forms.CheckBox()
         Me.Settings_TimeOffsetLabel = New System.Windows.Forms.Label()
+        Me.MoreLabel = New System.Windows.Forms.LinkLabel()
         Me.Settings_TimeOffset = New System.Windows.Forms.NumericUpDown()
         Me.Settings_TimeOffsetHoursLabel = New System.Windows.Forms.Label()
         Me.Settings_BottomDescLabel = New System.Windows.Forms.Label()
+        Me.ExpertMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.CreateDestOption = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CheckFileSizeOption = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ChecksumOption = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GroupOption = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GroupTextBox = New System.Windows.Forms.ToolStripTextBox()
         Me.Settings_DirectoriesBox.SuspendLayout()
         Me.Settings_ViewsLayoutPanel.SuspendLayout()
         Me.Settings_LeftViewPanel.SuspendLayout()
@@ -101,6 +107,7 @@ Partial Class SettingsForm
         Me.Settings_ActionsPanel.SuspendLayout()
         Me.Settings_AdvancedBox.SuspendLayout()
         CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ExpertMenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'Settings_FromTextBox
@@ -508,7 +515,7 @@ Partial Class SettingsForm
         Me.Settings_IncludeExcludeLayoutPanel.Enabled = False
         Me.Settings_IncludeExcludeLayoutPanel.Location = New System.Drawing.Point(3, 43)
         Me.Settings_IncludeExcludeLayoutPanel.Name = "Settings_IncludeExcludeLayoutPanel"
-        Me.Settings_IncludeExcludeLayoutPanel.RowCount = 2
+        Me.Settings_IncludeExcludeLayoutPanel.RowCount = 3
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.Settings_IncludeExcludeLayoutPanel.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
@@ -578,7 +585,7 @@ Partial Class SettingsForm
         Me.Settings_PropagateUpdatesOption.CheckState = System.Windows.Forms.CheckState.Checked
         Me.Settings_PropagateUpdatesOption.Location = New System.Drawing.Point(6, 20)
         Me.Settings_PropagateUpdatesOption.Name = "Settings_PropagateUpdatesOption"
-        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(97, 17)
+        Me.Settings_PropagateUpdatesOption.Size = New System.Drawing.Size(101, 17)
         Me.Settings_PropagateUpdatesOption.TabIndex = 0
         Me.Settings_PropagateUpdatesOption.Tag = "\PROPAGATE_TAG"
         Me.Settings_PropagateUpdatesOption.Text = "\PROPAGATE"
@@ -628,25 +635,15 @@ Partial Class SettingsForm
         '
         Me.Settings_FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer
         '
-        'Settings_CreateDestOption
-        '
-        Me.Settings_CreateDestOption.AutoSize = True
-        Me.Settings_CreateDestOption.Location = New System.Drawing.Point(6, 44)
-        Me.Settings_CreateDestOption.Name = "Settings_CreateDestOption"
-        Me.Settings_CreateDestOption.Size = New System.Drawing.Size(109, 17)
-        Me.Settings_CreateDestOption.TabIndex = 1
-        Me.Settings_CreateDestOption.Text = "\CREATE_DEST"
-        Me.Settings_CreateDestOption.UseVisualStyleBackColor = True
-        '
         'Settings_AdvancedBox
         '
         Me.Settings_AdvancedBox.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_StrictDateComparisonOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetLabel)
+        Me.Settings_AdvancedBox.Controls.Add(Me.MoreLabel)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffset)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_PropagateUpdatesOption)
-        Me.Settings_AdvancedBox.Controls.Add(Me.Settings_CreateDestOption)
         Me.Settings_AdvancedBox.Controls.Add(Me.Settings_TimeOffsetHoursLabel)
         Me.Settings_AdvancedBox.Location = New System.Drawing.Point(12, 433)
         Me.Settings_AdvancedBox.Name = "Settings_AdvancedBox"
@@ -661,9 +658,9 @@ Partial Class SettingsForm
         Me.Settings_StrictDateComparisonOption.AutoSize = True
         Me.Settings_StrictDateComparisonOption.Checked = True
         Me.Settings_StrictDateComparisonOption.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(546, 20)
+        Me.Settings_StrictDateComparisonOption.Location = New System.Drawing.Point(532, 20)
         Me.Settings_StrictDateComparisonOption.Name = "Settings_StrictDateComparisonOption"
-        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(148, 17)
+        Me.Settings_StrictDateComparisonOption.Size = New System.Drawing.Size(162, 17)
         Me.Settings_StrictDateComparisonOption.TabIndex = 2
         Me.Settings_StrictDateComparisonOption.Tag = "\STRICTCOMPARISON_TAG"
         Me.Settings_StrictDateComparisonOption.Text = "\STRICT_COMPARISON"
@@ -679,6 +676,16 @@ Partial Class SettingsForm
         Me.Settings_TimeOffsetLabel.TabIndex = 3
         Me.Settings_TimeOffsetLabel.Text = "\TIME_OFFSET"
         Me.Settings_TimeOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'MoreLabel
+        '
+        Me.MoreLabel.AutoSize = True
+        Me.MoreLabel.Location = New System.Drawing.Point(3, 45)
+        Me.MoreLabel.Name = "MoreLabel"
+        Me.MoreLabel.Size = New System.Drawing.Size(45, 13)
+        Me.MoreLabel.TabIndex = 7
+        Me.MoreLabel.TabStop = True
+        Me.MoreLabel.Text = "\MORE"
         '
         'Settings_TimeOffset
         '
@@ -709,6 +716,48 @@ Partial Class SettingsForm
         Me.Settings_BottomDescLabel.Size = New System.Drawing.Size(497, 31)
         Me.Settings_BottomDescLabel.TabIndex = 5
         '
+        'ExpertMenu
+        '
+        Me.ExpertMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CreateDestOption, Me.CheckFileSizeOption, Me.ChecksumOption, Me.GroupOption})
+        Me.ExpertMenu.Name = "ExpertMenu"
+        Me.ExpertMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.ExpertMenu.ShowCheckMargin = True
+        Me.ExpertMenu.ShowImageMargin = False
+        Me.ExpertMenu.Size = New System.Drawing.Size(163, 92)
+        '
+        'CreateDestOption
+        '
+        Me.CreateDestOption.CheckOnClick = True
+        Me.CreateDestOption.Name = "CreateDestOption"
+        Me.CreateDestOption.Size = New System.Drawing.Size(162, 22)
+        Me.CreateDestOption.Text = "\CREATE_DEST"
+        '
+        'CheckFileSizeOption
+        '
+        Me.CheckFileSizeOption.CheckOnClick = True
+        Me.CheckFileSizeOption.Name = "CheckFileSizeOption"
+        Me.CheckFileSizeOption.Size = New System.Drawing.Size(162, 22)
+        Me.CheckFileSizeOption.Text = "\COMPARE_SIZE"
+        '
+        'ChecksumOption
+        '
+        Me.ChecksumOption.CheckOnClick = True
+        Me.ChecksumOption.Name = "ChecksumOption"
+        Me.ChecksumOption.Size = New System.Drawing.Size(162, 22)
+        Me.ChecksumOption.Text = "\MD5"
+        '
+        'GroupOption
+        '
+        Me.GroupOption.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GroupTextBox})
+        Me.GroupOption.Name = "GroupOption"
+        Me.GroupOption.Size = New System.Drawing.Size(162, 22)
+        Me.GroupOption.Text = "\GROUP"
+        '
+        'GroupTextBox
+        '
+        Me.GroupTextBox.Name = "GroupTextBox"
+        Me.GroupTextBox.Size = New System.Drawing.Size(100, 23)
+        '
         'SettingsForm
         '
         Me.AcceptButton = Me.Settings_SaveButton
@@ -716,13 +765,13 @@ Partial Class SettingsForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Settings_CancelButton
         Me.ClientSize = New System.Drawing.Size(724, 550)
-        Me.Controls.Add(Me.Settings_BottomDescLabel)
         Me.Controls.Add(Me.Settings_ActionsPanel)
         Me.Controls.Add(Me.Settings_AdvancedBox)
         Me.Controls.Add(Me.Settings_ViewsBox)
         Me.Controls.Add(Me.Settings_DirectoriesBox)
         Me.Controls.Add(Me.Settings_SynchronizationMethodBox)
         Me.Controls.Add(Me.Settings_IncludeExcludeBox)
+        Me.Controls.Add(Me.Settings_BottomDescLabel)
         Me.Font = New System.Drawing.Font("Verdana", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SettingsForm"
@@ -748,6 +797,7 @@ Partial Class SettingsForm
         Me.Settings_AdvancedBox.ResumeLayout(False)
         Me.Settings_AdvancedBox.PerformLayout()
         CType(Me.Settings_TimeOffset, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ExpertMenu.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -784,7 +834,6 @@ Partial Class SettingsForm
     Friend WithEvents Settings_TreeViewMenuStrip As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents Settings_DontSynchronizeMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Settings_ReplicateEmptyDirectoriesOption As System.Windows.Forms.CheckBox
-    Friend WithEvents Settings_CreateDestOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_PropagateUpdatesOption As System.Windows.Forms.CheckBox
     Friend WithEvents Settings_AdvancedBox As System.Windows.Forms.GroupBox
     Friend WithEvents Settings_BottomDescLabel As System.Windows.Forms.Label
@@ -807,4 +856,12 @@ Partial Class SettingsForm
     Friend WithEvents Settings_LeftReloadButton As System.Windows.Forms.Button
     Friend WithEvents Settings_LeftViewPanel As System.Windows.Forms.Panel
     Friend WithEvents Settings_RightViewPanel As System.Windows.Forms.Panel
+    Friend WithEvents MoreLabel As System.Windows.Forms.LinkLabel
+    Friend WithEvents ExpertMenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents CheckFileSizeOption As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ChecksumOption As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GroupOption As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GroupTextBox As System.Windows.Forms.ToolStripTextBox
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CreateDestOption As System.Windows.Forms.ToolStripMenuItem
 End Class

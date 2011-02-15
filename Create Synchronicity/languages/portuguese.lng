@@ -155,3 +155,7 @@ CATCHING_UP=A criar o backup que estava agendado "{0}" (Ultima vez que correu {1
 FOLDER_FAILED=Não foi possível criar a pasta "{0}" ({1}).
 CREATE_DEST=Criar a pasta de destino dinâmicamente
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

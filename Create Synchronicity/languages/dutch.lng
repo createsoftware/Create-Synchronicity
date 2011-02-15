@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity werkt "{0}" bij (laatste keer {1} dag(en), {2} 
 FOLDER_FAILED=Map "{0}" kon niet aangemaakt worden ({1}).
 CREATE_DEST=Creëer doelmap dynamisch
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

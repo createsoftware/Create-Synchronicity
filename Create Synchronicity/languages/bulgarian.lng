@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity прихваща "{0}" (последно ста
 FOLDER_FAILED=Папката  "{0}" ({1}) не може да бъде създадена.
 CREATE_DEST=Динамично създаване на папка (в момента на синхронизация), където се прави архива.
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

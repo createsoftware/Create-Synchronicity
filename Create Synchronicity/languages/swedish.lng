@@ -155,3 +155,7 @@ CATCHUP_MISSED_BACKUPS_TAG=Markerar vad som händer om datorn var avstängd vid 
 ->FOLDER_FAILED=Could not create folder "{0}" {1}.
 ->CREATE_DEST=Dynamically create destination folder
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=

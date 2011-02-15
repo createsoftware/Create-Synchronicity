@@ -155,3 +155,7 @@ CATCHING_UP=Create Synchronicity holt "{0}" nach (zuletzt vor {1} Tag(en), {2} S
 FOLDER_FAILED=Konnte den Ordner "{0}" nicht erzeugen ({1}).
 CREATE_DEST=Zielordner dynamisch erzeugen
 ->UPDATE=
+->MD5=
+->GROUP=
+->COMPARE_SIZE=
+->MORE=
