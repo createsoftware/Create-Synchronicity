@@ -21,47 +21,47 @@ Public Class AboutForm
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
 
-        About_VersionInfo.Text = About_VersionInfo.Text.Replace("%version%", Application.ProductVersion)
+        VersionInfo.Text = VersionInfo.Text.Replace("%version%", Application.ProductVersion)
 
-        SetLinkArea(About_BugReport)
-        SetLinkArea(About_ContactLink)
-        SetLinkArea(About_LinkToLicense)
-        SetLinkArea(About_LinkToProductPage)
-        SetLinkArea(About_LinkToWebsite)
-        SetLinkArea(About_VersionInfo)
+        SetLinkArea(BugReport)
+        SetLinkArea(ContactLink)
+        SetLinkArea(LinkToLicense)
+        SetLinkArea(LinkToProductPage)
+        SetLinkArea(LinkToWebsite)
+        SetLinkArea(VersionInfo)
 
         ProgramConfig.LoadProgramSettings()
-        Translation.FillLanguageListBox(About_LanguagesList)
-        About_Updates.Checked = ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
+        Translation.FillLanguageListBox(LanguagesList)
+        UpdatesOption.Checked = ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
     End Sub
 
-    Private Sub About_LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToProductPage.LinkClicked
+    Private Sub LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToProductPage.LinkClicked
         Interaction.StartProcess("http://synchronicity.sourceforge.net/")
     End Sub
 
-    Private Sub About_LinkToWebsite_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToWebsite.LinkClicked
+    Private Sub LinkToWebsite_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToWebsite.LinkClicked
         Interaction.StartProcess("http://createsoftware.users.sourceforge.net/")
     End Sub
 
-    Private Sub About_VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_VersionInfo.LinkClicked
+    Private Sub VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles VersionInfo.LinkClicked
         Updates.CheckForUpdates(False)
     End Sub
 
-    Private Sub About_ContactLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_ContactLink.LinkClicked
+    Private Sub ContactLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles ContactLink.LinkClicked
         Interaction.StartProcess("mailto:createsoftware@users.sourceforge.net")
     End Sub
 
-    Private Sub About_LinkToLicense_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_LinkToLicense.LinkClicked
+    Private Sub LinkToLicense_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToLicense.LinkClicked
         Interaction.StartProcess("http://www.gnu.org/licenses/gpl.html")
     End Sub
 
-    Private Sub About_BugReport_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles About_BugReport.LinkClicked
+    Private Sub BugReport_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles BugReport.LinkClicked
         Interaction.StartProcess("http://sourceforge.net/tracker/?group_id=264348&atid=1130882")
     End Sub
 
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If About_LanguagesList.SelectedIndex <> -1 Then
-            Dim SelectedLanguage As String = About_LanguagesList.SelectedItem.ToString.Split("-")(0).Trim
+        If LanguagesList.SelectedIndex <> -1 Then
+            Dim SelectedLanguage As String = LanguagesList.SelectedItem.ToString.Split("-")(0).Trim
             Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> SelectedLanguage
 
             ProgramConfig.SetProgramSetting(ConfigOptions.Language, SelectedLanguage)
@@ -72,7 +72,7 @@ Public Class AboutForm
             End If
         End If
 
-        ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, About_Updates.Checked)
+        ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, UpdatesOption.Checked)
         ProgramConfig.SaveProgramSettings()
     End Sub
 End Class

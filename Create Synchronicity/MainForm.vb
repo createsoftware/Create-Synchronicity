@@ -30,19 +30,19 @@ Public Class MainForm
         ReloadNeeded = False
 
         CurView = CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MainView, "0")) Mod Views.Length
-        Main_Actions.View = Views(CurView)
+        Actions.View = Views(CurView)
 
         BuildIcons()
         Me.Icon = ProgramConfig.GetIcon()
 
         Translation.TranslateControl(Me)
-        Translation.TranslateControl(Me.Main_ActionsMenu)
+        Translation.TranslateControl(Me.ActionsMenu)
         Translation.TranslateControl(Me.StatusIconMenu)
 
         'Position the "About" label correctly
-        Dim PreviousWidth As Integer = Main_AboutLinkLabel.Width
-        Main_AboutLinkLabel.AutoSize = True
-        Main_AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - Main_AboutLinkLabel.Width, 0)
+        Dim PreviousWidth As Integer = AboutLinkLabel.Width
+        AboutLinkLabel.AutoSize = True
+        AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - AboutLinkLabel.Width, 0)
     End Sub
 
     Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -52,7 +52,7 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Main_ReloadConfigs()
+        ReloadConfigs()
         RedoSchedulerRegistration()
     End Sub
 
@@ -61,12 +61,12 @@ Public Class MainForm
         If e.KeyCode = Keys.F1 Then
             Interaction.StartProcess("http://synchronicity.sourceforge.net/help.html")
         ElseIf e.KeyCode = Keys.F5 Then
-            Main_ReloadConfigs()
+            ReloadConfigs()
         ElseIf e.Control Then
             Select Case e.KeyCode
                 Case Keys.N
-                    Main_Actions.LabelEdit = True
-                    Main_Actions.Items(0).BeginEdit()
+                    Actions.LabelEdit = True
+                    Actions.Items(0).BeginEdit()
                 Case Keys.O
                     Interaction.StartProcess(ProgramConfig.ConfigRootDir)
                 Case Keys.E
@@ -77,8 +77,8 @@ Public Class MainForm
                     End If
                 Case Keys.L
                     CurView = (CurView + 1) Mod Views.Length
-                    Main_Actions.View = Views(CurView)
-                    Main_Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+                    Actions.View = Views(CurView)
+                    Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
             End Select
         End If
     End Sub
@@ -88,34 +88,34 @@ Public Class MainForm
         Application.Exit()
     End Sub
 
-    Private Sub Main_Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Main_Actions.KeyDown
-        If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
+    Private Sub Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Actions.KeyDown
+        If Actions.SelectedItems.Count = 0 Then Exit Sub
         If e.KeyCode = Keys.Enter Then
-            If Main_Actions.SelectedIndices(0) = 0 Then
-                Main_Actions.LabelEdit = True
-                Main_Actions.SelectedItems(0).BeginEdit()
+            If Actions.SelectedIndices(0) = 0 Then
+                Actions.LabelEdit = True
+                Actions.SelectedItems(0).BeginEdit()
             Else
-                Main_ActionsMenu.Show(Main_Actions, New Drawing.Point(Main_Actions.SelectedItems(0).Bounds.Location.X, Main_Actions.SelectedItems(0).Bounds.Location.Y + Main_Actions.SelectedItems(0).Bounds.Height))
+                ActionsMenu.Show(Actions, New Drawing.Point(Actions.SelectedItems(0).Bounds.Location.X, Actions.SelectedItems(0).Bounds.Location.Y + Actions.SelectedItems(0).Bounds.Height))
             End If
-        ElseIf e.KeyCode = Keys.F2 And Not Main_Actions.SelectedIndices(0) = 0 Then
-            Main_Actions.LabelEdit = True
-            Main_Actions.SelectedItems(0).BeginEdit()
+        ElseIf e.KeyCode = Keys.F2 And Not Actions.SelectedIndices(0) = 0 Then
+            Actions.LabelEdit = True
+            Actions.SelectedItems(0).BeginEdit()
         End If
     End Sub
 
-    Private Sub Main_Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Main_Actions.MouseClick
-        If Main_Actions.SelectedItems.Count = 0 Then Exit Sub
+    Private Sub Actions_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Actions.MouseClick
+        If Actions.SelectedItems.Count = 0 Then Exit Sub
 
-        If Main_Actions.SelectedIndices(0) = 0 And e.Button = MouseButtons.Left Then
-            Main_Actions.LabelEdit = True
-            Main_Actions.SelectedItems(0).BeginEdit()
+        If Actions.SelectedIndices(0) = 0 And e.Button = MouseButtons.Left Then
+            Actions.LabelEdit = True
+            Actions.SelectedItems(0).BeginEdit()
         Else
-            Main_ActionsMenu.Show(Main_Actions, e.Location)
+            ActionsMenu.Show(Actions, e.Location)
         End If
     End Sub
 
-    Private Sub Main_Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Main_Actions.AfterLabelEdit
-        Main_Actions.LabelEdit = False
+    Private Sub Actions_AfterLabelEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) Handles Actions.AfterLabelEdit
+        Actions.LabelEdit = False
         If e.Label = "" OrElse e.Label.IndexOfAny(IO.Path.GetInvalidFileNameChars) >= 0 Then
             e.CancelEdit = True
             Exit Sub
@@ -126,33 +126,33 @@ Public Class MainForm
             Dim SettingsForm As New SettingsForm(e.Label, True)
             SettingsForm.ShowDialog()
         Else
-            If Not Profiles(Main_Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
+            If Not Profiles(Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
         End If
-        Main_ReloadConfigs()
+        ReloadConfigs()
     End Sub
 
-    Private Sub Main_Actions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Actions.SelectedIndexChanged
-        If Main_Actions.SelectedIndices.Count = 0 OrElse Main_Actions.SelectedIndices(0) = 0 Then
-            If Main_Actions.SelectedIndices.Count = 0 Then
-                Main_Display_Options("", True)
-            ElseIf Main_Actions.SelectedIndices(0) = 0 Then
-                Main_Display_Options(Translation.Translate("\NEW_PROFILE"), True)
+    Private Sub Actions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Actions.SelectedIndexChanged
+        If Actions.SelectedIndices.Count = 0 OrElse Actions.SelectedIndices(0) = 0 Then
+            If Actions.SelectedIndices.Count = 0 Then
+                Display_Options("", True)
+            ElseIf Actions.SelectedIndices(0) = 0 Then
+                Display_Options(Translation.Translate("\NEW_PROFILE"), True)
             End If
 
-            Main_ActionsMenu.Close()
+            ActionsMenu.Close()
             Exit Sub
         End If
 
-        Main_Display_Options(CurrentProfile, False)
+        Display_Options(CurrentProfile, False)
     End Sub
 
-    Private Sub Main_AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles Main_AboutLinkLabel.LinkClicked
+    Private Sub AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles AboutLinkLabel.LinkClicked
         Dim About As New AboutForm
         About.ShowDialog()
         If ReloadNeeded Then Me.Close()
     End Sub
 
-    Private Sub Main_ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles Main_ActionsMenu.Opening
+    Private Sub ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ActionsMenu.Opening
         Dim FileSize As Integer = If(IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)), CInt((New System.IO.FileInfo(ProgramConfig.GetLogPath(CurrentProfile))).Length / 1000), 0)
         ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag, FileSize)
     End Sub
@@ -161,7 +161,7 @@ Public Class MainForm
         If Not CheckValidity() Then Exit Sub
 
         Dim SyncForm As New SynchronizeForm(CurrentProfile, True, False)
-        Main_SetVisible(False) : SyncForm.StartSynchronization(True) : SyncForm.ShowDialog() : Main_SetVisible(True)
+        SetVisible(False) : SyncForm.StartSynchronization(True) : SyncForm.ShowDialog() : SetVisible(True)
         SyncForm.Dispose()
     End Sub
 
@@ -169,27 +169,27 @@ Public Class MainForm
         If Not CheckValidity() Then Exit Sub
 
         Dim SyncForm As New SynchronizeForm(CurrentProfile, False, False)
-        Main_SetVisible(False) : SyncForm.StartSynchronization(True) : SyncForm.ShowDialog() : Main_SetVisible(True)
+        SetVisible(False) : SyncForm.StartSynchronization(True) : SyncForm.ShowDialog() : SetVisible(True)
         SyncForm.Dispose()
     End Sub
 
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
         Dim SettingsForm As New SettingsForm(CurrentProfile, False)
         SettingsForm.ShowDialog()
-        Main_ReloadConfigs()
+        ReloadConfigs()
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
         If Interaction.ShowMsg(String.Format(Translation.Translate("\DELETE_PROFILE"), CurrentProfile), Translation.Translate("\CONFIRM_DELETION"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Profiles(CurrentProfile).DeleteConfigFile()
             Profiles(CurrentProfile) = Nothing
-            Main_Actions.Items.RemoveAt(Main_Actions.SelectedIndices(0))
+            Actions.Items.RemoveAt(Actions.SelectedIndices(0))
         End If
     End Sub
 
     Private Sub RenameMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenameMenuItem.Click
-        Main_Actions.LabelEdit = True
-        Main_Actions.SelectedItems(0).BeginEdit()
+        Actions.LabelEdit = True
+        Actions.SelectedItems(0).BeginEdit()
     End Sub
 
     Private Sub ViewLogMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewLogMenuItem.Click
@@ -201,14 +201,14 @@ Public Class MainForm
         Profiles(CurrentProfile).DeleteLogFile()
     End Sub
 
-    Private Sub Main_ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScheduleMenuItem.Click
+    Private Sub ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScheduleMenuItem.Click
         Dim SchedForm As New SchedulingForm(CurrentProfile)
         SchedForm.ShowDialog()
-        Main_ReloadConfigs()
+        ReloadConfigs()
         RedoSchedulerRegistration()
     End Sub
 
-    Private Sub Main_Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.Click
+    Private Sub Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.Click
         Interaction.StartProcess("http://synchronicity.sourceforge.net/contribute.html")
     End Sub
 
@@ -219,35 +219,35 @@ Public Class MainForm
     End Sub
 #End If
 
-    Private Sub Main_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseEnter
+    Private Sub Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.MouseEnter
         CType(sender, PictureBox).BackColor = Drawing.Color.LightGray
     End Sub
 
-    Private Sub Main_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Main_Donate.MouseLeave
+    Private Sub Donate_MouseLeave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.MouseLeave
         CType(sender, PictureBox).BackColor = Drawing.Color.White
     End Sub
 #End Region
 
 #Region " Functions and Routines "
-    Sub Main_SetVisible(ByVal _Visible As Boolean)
+    Sub SetVisible(ByVal _Visible As Boolean)
         If Me.IsDisposed Then Exit Sub
         Me.Visible = _Visible
     End Sub
 
-    Sub Main_ReloadConfigs()
+    Sub ReloadConfigs()
         If Me.IsDisposed Then Exit Sub
-        Dim CreateProfileItem As ListViewItem = Main_Actions.Items(0)
+        Dim CreateProfileItem As ListViewItem = Actions.Items(0)
 
         ReloadProfiles()
-        Main_Actions.Items.Clear()
-        Main_Actions.Items.Add(CreateProfileItem).Group = Main_Actions.Groups(0)
+        Actions.Items.Clear()
+        Actions.Items.Add(CreateProfileItem).Group = Actions.Groups(0)
 
         Dim Groups As New List(Of String)
         For Each ProfilePair As KeyValuePair(Of String, ProfileHandler) In Profiles
             Dim ProfileName As String = ProfilePair.Key
-            Dim NewItem As ListViewItem = Main_Actions.Items.Add(ProfileName)
+            Dim NewItem As ListViewItem = Actions.Items.Add(ProfileName)
 
-            NewItem.Group = Main_Actions.Groups(1)
+            NewItem.Group = Actions.Groups(1)
             NewItem.ImageIndex = CInt(Profiles(ProfileName).GetSetting(ConfigOptions.Method)) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
             NewItem.SubItems.Add(GetMethodName(ProfileName)).ForeColor = Drawing.Color.DarkGray
 
@@ -255,61 +255,61 @@ Public Class MainForm
             If GroupName IsNot Nothing AndAlso GroupName <> "" Then
                 If Not Groups.Contains(GroupName) Then
                     Groups.Add(GroupName)
-                    Main_Actions.Groups.Add(New ListViewGroup(GroupName, GroupName))
+                    Actions.Groups.Add(New ListViewGroup(GroupName, GroupName))
                 End If
 
-                NewItem.Group = Main_Actions.Groups.Item(GroupName)
+                NewItem.Group = Actions.Groups.Item(GroupName)
             End If
         Next
     End Sub
 
-    Sub Main_Display_Options(ByVal Name As String, ByVal Clear As Boolean)
-        Main_Name.Text = Name
+    Sub Display_Options(ByVal Name As String, ByVal Clear As Boolean)
+        ProfileName.Text = Name
 
-        Main_Method.Text = ""
-        Main_Source.Text = ""
-        Main_Destination.Text = ""
-        Main_LimitedCopy.Text = ""
-        Main_FileTypes.Text = ""
-        Main_Scheduling.Text = ""
-        Main_TimeOffset.Text = ""
+        Method.Text = ""
+        Source.Text = ""
+        Destination.Text = ""
+        LimitedCopy.Text = ""
+        FileTypes.Text = ""
+        Scheduling.Text = ""
+        TimeOffset.Text = ""
 
         If Clear Then Exit Sub
 
-        Main_Method.Text = GetMethodName(Name)
-        Main_Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
-        Main_Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
+        Method.Text = GetMethodName(Name)
+        Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
+        Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
 
-        Main_Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper)
+        Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper)
 
         Select Case Profiles(Name).Scheduler.Frequency
             Case ScheduleInfo.WEEKLY
                 Dim Day As String = Translation.Translate("\WEEK_DAYS", ";;;;;;").Split(";"c)(Profiles(Name).Scheduler.WeekDay)
-                Main_Scheduling.Text &= Day
+                Scheduling.Text &= Day
             Case ScheduleInfo.MONTHLY
-                Main_Scheduling.Text &= Profiles(Name).Scheduler.MonthDay
+                Scheduling.Text &= Profiles(Name).Scheduler.MonthDay
         End Select
 
         If Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
-            Main_Scheduling.Text = ""
+            Scheduling.Text = ""
         Else
-            Main_Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour.ToString.PadLeft(2, "0"c) & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute.ToString.PadLeft(2, "0"c)
+            Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour.ToString.PadLeft(2, "0"c) & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute.ToString.PadLeft(2, "0"c)
         End If
 
-        Main_TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
+        TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
 
         Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
             Case 0
-                Main_LimitedCopy.Text = Translation.Translate("\NO")
+                LimitedCopy.Text = Translation.Translate("\NO")
             Case 1, 2
-                Main_LimitedCopy.Text = Translation.Translate("\YES")
+                LimitedCopy.Text = Translation.Translate("\YES")
         End Select
 
         Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
             Case 1
-                Main_FileTypes.Text = Profiles(Name).GetSetting(ConfigOptions.IncludedTypes, "")
+                FileTypes.Text = Profiles(Name).GetSetting(ConfigOptions.IncludedTypes, "")
             Case 2
-                Main_FileTypes.Text = "-" & Profiles(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
+                FileTypes.Text = "-" & Profiles(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
         End Select
     End Sub
 
@@ -333,11 +333,11 @@ Public Class MainForm
     End Function
 
     Function CurrentProfile() As String
-        Return Main_Actions.SelectedItems(0).Text
+        Return Actions.SelectedItems(0).Text
     End Function
 
     Sub BuildIcons()
-        For Id As Integer = 0 To Main_SyncIcons.Images.Count - 2
+        For Id As Integer = 0 To SyncIcons.Images.Count - 2
             Dim NewImg As New Drawing.Bitmap(32, 32)
             Dim Painter As Drawing.Graphics = Drawing.Graphics.FromImage(NewImg)
 
@@ -346,8 +346,8 @@ Public Class MainForm
             Else
                 Painter.DrawImage(ScheduleMenuItem.Image, 9, 6, 16, 16)
             End If
-            Painter.DrawImageUnscaled(Main_SyncIcons.Images(Id), 0, 0)
-            Main_SyncIcons.Images.Add(NewImg)
+            Painter.DrawImageUnscaled(SyncIcons.Images(Id), 0, 0)
+            SyncIcons.Images.Add(NewImg)
         Next
     End Sub
 
