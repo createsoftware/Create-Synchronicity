@@ -78,7 +78,7 @@ Partial Class SettingsForm
         Me.ReplicateEmptyDirectoriesOption = New System.Windows.Forms.CheckBox()
         Me.PropagateUpdatesOption = New System.Windows.Forms.CheckBox()
         Me.ActionsPanel = New System.Windows.Forms.TableLayoutPanel()
-        Me.CancelButton = New System.Windows.Forms.Button()
+        Me.CancelBtn = New System.Windows.Forms.Button()
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.FolderBrowser = New System.Windows.Forms.FolderBrowserDialog()
         Me.AdvancedBox = New System.Windows.Forms.GroupBox()
@@ -597,7 +597,7 @@ Partial Class SettingsForm
         Me.ActionsPanel.ColumnCount = 2
         Me.ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.ActionsPanel.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.ActionsPanel.Controls.Add(Me.CancelButton, 1, 0)
+        Me.ActionsPanel.Controls.Add(Me.CancelBtn, 1, 0)
         Me.ActionsPanel.Controls.Add(Me.SaveButton, 0, 0)
         Me.ActionsPanel.Location = New System.Drawing.Point(512, 507)
         Me.ActionsPanel.Name = "ActionsPanel"
@@ -613,7 +613,7 @@ Partial Class SettingsForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.CancelBtn.Location = New System.Drawing.Point(103, 3)
-        Me.CancelBtn.Name = "CancelButton"
+        Me.CancelBtn.Name = "CancelBtn"
         Me.CancelBtn.Size = New System.Drawing.Size(94, 25)
         Me.CancelBtn.TabIndex = 1
         Me.CancelBtn.Text = "\CANCEL"
@@ -763,7 +763,7 @@ Partial Class SettingsForm
         Me.AcceptButton = Me.SaveButton
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.CancelButton
+        Me.CancelButton = Me.CancelBtn
         Me.ClientSize = New System.Drawing.Size(724, 550)
         Me.Controls.Add(Me.ActionsPanel)
         Me.Controls.Add(Me.AdvancedBox)
