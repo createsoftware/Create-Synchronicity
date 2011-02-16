@@ -14,6 +14,9 @@ Public Class MainForm
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
+#If CONFIG = "Linux" Then
+        Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
+#End If
 
         ' Code (largely inspired) by U.N. Owen
         Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(ConfigOptions.MainFormAttributes, String.Empty).Split(","))
@@ -28,9 +31,6 @@ Public Class MainForm
         End If
 
         ReloadNeeded = False
-
-        CurView = CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MainView, "0")) Mod Views.Length
-        Actions.View = Views(CurView)
 
         BuildIcons()
         Me.Icon = ProgramConfig.GetIcon()
@@ -54,6 +54,7 @@ Public Class MainForm
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ReloadConfigs()
         RedoSchedulerRegistration()
+        SetView(CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MainView, "0")))
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -76,9 +77,7 @@ Public Class MainForm
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If
                 Case Keys.L
-                    CurView = (CurView + 1) Mod Views.Length
-                    Actions.View = Views(CurView)
-                    Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+                    SetView(1)
             End Select
         End If
     End Sub
@@ -232,6 +231,16 @@ Public Class MainForm
     Sub SetVisible(ByVal _Visible As Boolean)
         If Me.IsDisposed Then Exit Sub
         Me.Visible = _Visible
+    End Sub
+
+    Sub SetView(ByVal Offset As Integer)
+        CurView = (CurView + Offset) Mod Views.Length
+#If CONFIG = "Linux" Then
+        CurView = If(CurView = 0, CurView + 1, CurView) 'Exclude tile view.
+#End If
+
+        Actions.View = Views(CurView)
+        Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
     End Sub
 
     Sub ReloadConfigs()

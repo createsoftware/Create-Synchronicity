@@ -35,6 +35,9 @@ Public Class SettingsForm
     Public Sub New(ByVal Name As String, ByVal _NewProfile As Boolean)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
+#If CONFIG = "Linux" Then
+        Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
+#End If
 
         ' Add any initialization after the InitializeComponent() call.
         Handler = New ProfileHandler(Name)
