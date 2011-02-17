@@ -44,6 +44,7 @@ Public Module ConfigOptions
     Public Const AutoUpdates As String = "Auto updates"
     Public Const MaxLogEntries As String = "Archived log entries"
     Public Const MainView As String = "Main view"
+    Public Const FontSize As String = "Font size"
     Public Const MainFormAttributes As String = "Window size and position"
     Public Const ExpertMode As String = "Expert mode"
     Public Const DiffProgram As String = "Diff program"

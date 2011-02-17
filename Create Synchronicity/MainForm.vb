@@ -49,12 +49,14 @@ Public Class MainForm
         Dim WindowAttributes As String = String.Format("{0},{1},{2},{3}", Me.Location.X, Me.Location.Y, Me.Size.Width, Me.Size.Height)
         ProgramConfig.SetProgramSetting(ConfigOptions.MainFormAttributes, WindowAttributes)
         ProgramConfig.SetProgramSetting(ConfigOptions.MainView, CurView)
+        ProgramConfig.SetProgramSetting(ConfigOptions.FontSize, Actions.Font.Size)
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ReloadConfigs()
         RedoSchedulerRegistration()
         SetView(CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MainView, "0")))
+        SetFont(CInt(ProgramConfig.GetProgramSetting(ConfigOptions.FontSize, Actions.Font.Size)))
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -78,6 +80,10 @@ Public Class MainForm
                     End If
                 Case Keys.L
                     SetView(1)
+                Case Keys.Add
+                    SetFont(Actions.Font.Size + 1)
+                Case (Keys.Subtract)
+                    SetFont(Actions.Font.Size - 1)
             End Select
         End If
     End Sub
@@ -241,6 +247,11 @@ Public Class MainForm
 
         Actions.View = Views(CurView)
         Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+    End Sub
+
+    Sub SetFont(ByVal Size As Integer)
+        Size = Math.Max(6.25, Math.Min(24.25, Size))
+        Actions.Font = New Drawing.Font(Actions.Font.Name, Size)
     End Sub
 
     Sub ReloadConfigs()
