@@ -8,10 +8,10 @@
 @echo Created by:   Clément Pit--Claudel.
 @echo Web site:     http://synchronicity.sourceforge.net.
 
-@set WEBROOT=..\..\..\..\..\Sites Web\Sourceforge\Synchronicity
-@set WEBPAGES=%WEBROOT%\pages
+@set LOCALROOT=..\..\..\..\..\Sites Web\Sourceforge\Synchronicity
+@set WEBPAGES=%LOCALROOT%\pages
 
-Xhtml2Latex.exe "%WEBPAGES%\help.php" "%WEBPAGES%\help.tex" "http://synchronicity.sourceforge.net/" "%WEBROOT%\\" /addroot
+Xhtml2Latex.exe "%WEBPAGES%\help.php" "%WEBPAGES%\help.tex" /webroot "http://synchronicity.sourceforge.net/" /localroot "%LOCALROOT%\\" /wrap
 
 copy "%WEBPAGES%\help.tex" "build\Create Synchronicity User Manual.tex"
 copy "%WEBPAGES%\help.pdf" "build\Create Synchronicity User Manual.pdf"
