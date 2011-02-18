@@ -8,7 +8,7 @@ Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
                     Dr. Beau Webber - Lab-Tools Ltd, John Lundy, William Cook,
                     Carl Almond, Timothy Wessels, Jim Ogden, Jim Maxwell, 
-                    Jim Lakusta
+                    Jim Lakusta, Doug Hall
 Patches:            U.N. Owen
 Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
                     Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
