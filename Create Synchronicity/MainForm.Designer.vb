@@ -98,6 +98,7 @@ Partial Class MainForm
         Me.Actions.Name = "Actions"
         Me.Actions.Size = New System.Drawing.Size(355, 262)
         Me.Actions.TabIndex = 0
+        Me.Actions.TileSize = New System.Drawing.Size(160, 40)
         Me.Actions.UseCompatibleStateImageBehavior = False
         Me.Actions.View = System.Windows.Forms.View.Tile
         '
@@ -316,7 +317,7 @@ Partial Class MainForm
         Me.ProfileName.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ProfileName.Font = New System.Drawing.Font("Verdana", 7.0!)
         Me.ProfileName.Location = New System.Drawing.Point(104, 1)
-        Me.ProfileName.Name = "ProfileName"
+        Me.ProfileName.Name = "Name"
         Me.ProfileName.Size = New System.Drawing.Size(79, 27)
         Me.ProfileName.TabIndex = 1
         Me.ProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
