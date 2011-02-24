@@ -8,7 +8,7 @@
 
 Public Class SettingsForm
     Dim Handler As ProfileHandler
-    Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record to events.
+    Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record events.
     Dim InhibitAutocheck As Boolean = False 'Record events, but don't treat them as user input.
     Dim AdvancedSelection As Boolean = False 'Controls recursive selection.
     Dim ClickedRightTreeView As Boolean = False
@@ -53,6 +53,7 @@ Public Class SettingsForm
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
         If Not NewProfile Then UpdateSettings(True)
+        CheckSettings()
         RightView.Sorted = True : LeftView.Sorted = True
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
@@ -65,28 +66,15 @@ Public Class SettingsForm
         Interaction.ShowToolTip(CType(sender, Control))
     End Sub
 
-    Private Sub FromTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FromTextBox.TextChanged
-        BlinkIfInvalidPath(FromTextBox, False)
-        DisableTrees()
-    End Sub
-
-    Private Sub ToTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToTextBox.TextChanged
-        BlinkIfInvalidPath(ToTextBox, CreateDestOption.Checked)
-        DisableTrees()
+    Private Sub To_FromTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FromTextBox.TextChanged, ToTextBox.TextChanged
+        CheckSettings()
     End Sub
 
     Private Sub CreateDestOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CreateDestOption.CheckedChanged
-        BlinkIfInvalidPath(ToTextBox, CreateDestOption.Checked)
         ReloadTrees(False, True)
+        CheckSettings()
     End Sub
 
-    Private Sub BlinkIfInvalidPath(ByVal PathBox As TextBox, ByVal ForceWhite As Boolean)
-        If PathBox.Text = "" Or ForceWhite OrElse IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
-            PathBox.BackColor = Drawing.Color.White
-        Else
-            PathBox.BackColor = Drawing.Color.LightPink
-        End If
-    End Sub
 
     Private Sub SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton.Click
         UpdateSettings(False)
@@ -119,25 +107,6 @@ Public Class SettingsForm
         End If
     End Sub
 
-    'Returns true iff the center button should blink
-    Private Function DisableTree(ByVal Btn As Button, ByVal Tree As TreeView, ByVal CurPath As String, ByVal PrevPath As String) As Boolean
-        CurPath = Cleanup(CurPath)
-        If CurPath <> PrevPath Then
-            Btn.Visible = True
-            Tree.Enabled = False
-        End If
-        Return CurPath <> PrevPath
-    End Function
-
-    Private Sub DisableTrees() 'Disable the trees which display irrelevant data.
-        BlinkBtn(DisableTree(LeftReloadButton, LeftView, FromTextBox.Text, PrevLeft) Or DisableTree(RightReloadButton, RightView, ToTextBox.Text, PrevRight))
-    End Sub
-
-    Private Sub BlinkBtn(ByVal Blink As Boolean)
-        SaveButton.Enabled = Not Blink
-        ReloadButton.BackColor = If(Blink, System.Drawing.Color.Orange, System.Drawing.SystemColors.Control)
-    End Sub
-
     Private Sub SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SwapButton.Click
         If Interaction.ShowMsg(Translation.Translate("\WARNING_SWAP"), "\WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
             Dim FromTextBox_Text As String = FromTextBox.Text 'TODO: Better swapping?
@@ -161,7 +130,7 @@ Public Class SettingsForm
 
     Private Sub View_AfterCheck(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles RightView.AfterCheck, LeftView.AfterCheck
         If ProcessingNodes Then Exit Sub
-        If Not InhibitAutocheck Then CheckNodeTree(e.Node.Checked, e.Node)
+        If Not InhibitAutocheck Then CheckNodeTree(e.Node.Checked, e.Node) 'NB: Expanding a node can lead here, but in this case e.Node has no children.
         If Not (OverAllCheckStatus(e.Node) = If(e.Node.Checked, 1, 0)) And e.Node.Nodes.Count > 0 Then e.Node.FirstNode.EnsureVisible()
     End Sub
 
@@ -195,7 +164,7 @@ Public Class SettingsForm
     Private Sub AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles LeftView.AfterExpand, RightView.AfterExpand
         ClickedRightTreeView = (CType(sender, Control).Name = "RightView")
         For Each Node As TreeNode In e.Node.Nodes
-            If Node.Nodes.Count <> 0 Then Continue For
+            If Node.Nodes.Count <> 0 Then Continue For 'Node already loaded
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath))
                     Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
@@ -241,8 +210,6 @@ Public Class SettingsForm
         End If
 
         'When the CheckBoxes' display is switched on, the checked property is not taken into account for the display.
-        'That is, if Node.Checked = True but TreeView.CheckBoxes = False, then when Checkboxes = true Node
-
         'Therefore, re-check the tree (if it has already been loaded)
         If RightView.CheckBoxes AndAlso RightView.Nodes.Count > 0 Then
             LoadCheckState(RightView, Handler.RightCheckedNodes) 'FIXME: InhibitAutoCheck?
@@ -259,6 +226,30 @@ Public Class SettingsForm
         IncludeExcludeLayoutPanel.Enabled = Not CopyAllFilesCheckBox.Checked
         IncludedTypesTextBox.Enabled = IncludeFilesOption.Checked
         ExcludedTypesTextBox.Enabled = ExcludeFilesOption.Checked
+    End Sub
+
+    Sub CheckSettings()
+        CheckPath(FromTextBox, False)
+        CheckPath(ToTextBox, CreateDestOption.Checked)
+
+        ToggleTree(PrevLeft, FromTextBox, LeftView, LeftReloadButton)
+        ToggleTree(PrevRight, ToTextBox, RightView, RightReloadButton)
+
+        SaveButton.Enabled = LeftView.Enabled And RightView.Enabled
+        ReloadButton.BackColor = If(SaveButton.Enabled, System.Drawing.SystemColors.Control, System.Drawing.Color.Orange)
+    End Sub
+
+    Sub ToggleTree(ByVal PrevPath As String, ByVal Box As TextBox, ByVal Tree As TreeView, ByVal Btn As Button)
+        Tree.Enabled = (Cleanup(Box.Text) = PrevPath)
+        Btn.Visible = Not Tree.Enabled
+    End Sub
+
+    Private Sub CheckPath(ByVal PathBox As TextBox, ByVal Force As Boolean)
+        If PathBox.Text = "" Or Force OrElse IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
+            PathBox.BackColor = Drawing.Color.White
+        Else
+            PathBox.BackColor = Drawing.Color.LightPink
+        End If
     End Sub
 
     Sub CheckSelectedNode(ByVal Checked As Boolean)
@@ -344,15 +335,11 @@ Public Class SettingsForm
         ReloadButton.Enabled = False
         SaveButton.Enabled = False
         Loading.Visible = True
-        InhibitAutocheck = True
 
         'Only reload fully if the user didn't input any text. Adding an extra trailing "\" for example will disable FullReload.
         Dim FullReload As Boolean = AllowFullReload And FromTextBox.Text = PrevLeft And ToTextBox.Text = PrevRight And LeftView.Enabled And RightView.Enabled
 
         Cleanup_Paths()
-        'FIXME: Check if this should really be removed
-        'LeftView.Enabled = True : RightView.Enabled = True 
-
         'Unless FullReload is true, and no path has changed, only the trees where paths have changed are reloaded.
         If FullReload Or PrevLeft <> FromTextBox.Text Then
             LoadTree(LeftView, FromTextBox.Text, Handler.LeftCheckedNodes)
@@ -361,23 +348,21 @@ Public Class SettingsForm
             LoadTree(RightView, ToTextBox.Text, Handler.RightCheckedNodes, CreateDestOption.Checked)
         End If
 
-        LeftReloadButton.Visible = Not LeftView.Enabled
-        RightReloadButton.Visible = Not RightView.Enabled
-        BlinkBtn(LeftReloadButton.Visible Or RightReloadButton.Visible)
-
-        InhibitAutocheck = False
         Loading.Visible = False
         ReloadButton.Enabled = True
 
-        PrevLeft = FromTextBox.Text
-        PrevRight = ToTextBox.Text
+        PrevLeft = If(LeftView.Enabled, FromTextBox.Text, "-1")
+        PrevRight = If(RightView.Enabled, ToTextBox.Text, "-1")
+
+        CheckSettings()
     End Sub
 
     Private Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, ByVal CheckedNodes As Dictionary(Of String, Boolean), Optional ByVal ForceLoad As Boolean = False)
         Tree.Nodes.Clear()
 
         Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
-        Tree.Enabled = OriginalPath <> "" AndAlso (ForceLoad OrElse IO.Directory.Exists(Path)) 'FIXME: Linux
+        Tree.Enabled = OriginalPath <> "" AndAlso (ForceLoad OrElse IO.Directory.Exists(Path))
+
         If Tree.Enabled Then
             Tree.BackColor = Drawing.Color.White
             Tree.Nodes.Add("")
@@ -389,26 +374,27 @@ Public Class SettingsForm
                         Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1)) 'FIXME: GetFileOrFolderName
                     Next
 
-                    Tree.Nodes(0).Expand()
+                    'No need to expand root here, since children were already added.
                     LoadCheckState(Tree, CheckedNodes)
+                    Tree.Nodes(0).Expand()
                 Catch Ex As Exception
-                    Tree.Nodes.Clear()
+                    Tree.Nodes.Clear() 'TODO: When does this happen?
                     Tree.Enabled = False
                 End Try
             End If
-        Else
-            Tree.BackColor = Drawing.Color.LightGray
         End If
+
+        If Not Tree.Enabled Then Tree.BackColor = Drawing.Color.LightGray
     End Sub
 
     Sub LoadCheckState(ByVal Tree As TreeView, ByVal CheckedNodes As Dictionary(Of String, Boolean))
         Dim BaseNode As TreeNode = Tree.Nodes(0)
-        'FIXME: Shouldn't be needed here, since it's already true anyway.
-        'InhibitAutocheck = True 
+        If CheckedNodes.Count = 0 Then CheckedNodes.Add("", True)
+        InhibitAutocheck = True
         For Each CheckedPath As KeyValuePair(Of String, Boolean) In CheckedNodes
             CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
         Next
-        'InhibitAutocheck = False
+        InhibitAutocheck = False
     End Sub
 
     Private Sub CheckAccordingToPath(ByVal BaseNode As TreeNode, ByRef Path As List(Of String), ByVal FullCheck As Boolean)

@@ -292,9 +292,11 @@ Partial Class SettingsForm
         '
         'LeftView
         '
+        Me.LeftView.BackColor = Drawing.Color.LightGray
         Me.LeftView.CheckBoxes = True
         Me.LeftView.ContextMenuStrip = Me.TreeViewMenuStrip
         Me.LeftView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LeftView.Enabled = False
         Me.LeftView.Location = New System.Drawing.Point(0, 0)
         Me.LeftView.Name = "LeftView"
         Me.LeftView.Size = New System.Drawing.Size(323, 121)
@@ -378,7 +380,9 @@ Partial Class SettingsForm
         '
         'RightView
         '
+        Me.RightView.BackColor = Drawing.Color.LightGray
         Me.RightView.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.RightView.Enabled = False
         Me.RightView.Location = New System.Drawing.Point(0, 0)
         Me.RightView.Name = "RightView"
         Me.RightView.Size = New System.Drawing.Size(324, 121)
