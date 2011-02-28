@@ -879,7 +879,7 @@ Public Class SynchronizeForm
             IO.File.Copy(SourceFile, DestFile, True)
         End If
 
-        If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then
+        If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then 'Updating attributes is needed.
 #If DEBUG Then
             Log.LogInfo("DST: """ & DestFile & """ has been copied with attributes " & IO.File.GetAttributes(DestFile) & " , now setting attributes to Normal before setting Last Write Time")
 #End If
@@ -887,6 +887,7 @@ Public Class SynchronizeForm
 #If DEBUG Then
             Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
 #End If
+            'TODO: Check if s/DestFile/SourceFile would change something (I guess it would)
             IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
         End If
 

@@ -44,6 +44,8 @@ Public Class GZipCompressor
                 End Select
             End Using
         End Using
+
+        IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(SourceFile))
     End Sub
 
     Sub DecompressFile(ByVal SourceFile As String, ByVal DestFile As String)
