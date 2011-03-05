@@ -876,6 +876,7 @@ Public Class SynchronizeForm
             Static GZipCompressor As Compressor = LoadCompressionDll()
             GZipCompressor.CompressFile(SourceFile, DestFile, Sub(Progress As Long) Status.BytesCopied += Progress) ', ByRef ContinueRunning As Boolean) 'ContinueRunning = Not [STOP]
         Else
+            Using TestForAccess As New IO.FileStream(SourceFile, IO.FileMode.Open, IO.FileAccess.Read, IO.FileShare.None) : End Using 'Checks whether the file can be accessed before trying to copy it. This line was added because if the file is only partially locked, CopyFileEx starts copying it, then fails on the way, and deletes the destination.
             IO.File.Copy(SourceFile, DestFile, True)
         End If
 
@@ -897,7 +898,7 @@ Public Class SynchronizeForm
         IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
 
         Status.CreatedFiles += 1
-        Status.BytesCopied += GetSize(SourceFile)
+        If Not Compression Then Status.BytesCopied += GetSize(SourceFile)
         If Handler.GetSetting(ConfigOptions.Checksum, "False") AndAlso Md5(SourceFile) <> Md5(DestFile) Then Throw New System.Security.Cryptography.CryptographicException("MD5 validation: failed.")
     End Sub
 #End Region
