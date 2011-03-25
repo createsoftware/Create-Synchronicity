@@ -9,10 +9,10 @@ estonian:8
 francais:0
 hebrew:24
 indonesian:5
-italian:4
-korean:5
+italian:0
+korean:4
 polish:5
 portuguese:5
 russian:8
-spanish:5
+spanish:4
 swedish:8
