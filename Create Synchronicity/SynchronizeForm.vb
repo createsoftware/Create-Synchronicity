@@ -100,9 +100,9 @@ Public Class SynchronizeForm
         ColumnSorter = New ListViewColumnSorter(3)
         PreviewList.ListViewItemSorter = ColumnSorter
 
-        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
-        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
-        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries), True)
+        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes, ""))
+        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes, ""))
+        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, ""), True)
 
         FullSyncThread = New Threading.Thread(AddressOf Synchronize)
         FirstSyncThread = New Threading.Thread(AddressOf Do_FirstStep)

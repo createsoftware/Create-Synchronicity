@@ -91,21 +91,42 @@ Public Class FileNamePattern
         Pattern = _Pattern
     End Sub
 
+    Private Shared Function IsBoxed(ByVal Frame As Char, ByRef Pattern As String) As Boolean
+        Return (Pattern.StartsWith(Frame) And Pattern.EndsWith(Frame) And Pattern.Length > 2)
+    End Function
+
+    Private Shared Function Unbox(ByVal Pattern As String) As String
+        Return Pattern.Substring(1, Pattern.Length - 2).ToLower ' ToLower: Careful on linux ; No need to check length, MatchesPattern has done so before.
+    End Function
+
     Shared Function GetPattern(ByVal Pattern As String, Optional ByVal IsFolder As Boolean = False) As FileNamePattern
-        If Pattern.StartsWith("""") And Pattern.EndsWith("""") Then 'Filename
-            Return New FileNamePattern(If(IsFolder, PatternType.FolderName, PatternType.FileName), Pattern.Substring(1, Pattern.Length - 2).ToLower)
-        ElseIf Pattern.StartsWith("/") And Pattern.EndsWith("/") Then 'Regex
-            Return New FileNamePattern(PatternType.Regex, Pattern.Substring(1, Pattern.Length - 2).ToLower)
+        If IsBoxed("""", Pattern) Then 'Filename
+            Return New FileNamePattern(If(IsFolder, PatternType.FolderName, PatternType.FileName), Unbox(Pattern))
+        ElseIf IsBoxed("/", Pattern) Then 'Regex
+            Return New FileNamePattern(PatternType.Regex, Unbox(Pattern))
         Else
             Return New FileNamePattern(PatternType.FileExt, Pattern.ToLower)
         End If
     End Function
 
-    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal Patterns As String(), Optional ByVal IsFolder As Boolean = False)
-        PatternsList = New List(Of FileNamePattern)
+    Private Shared Function SharpInclude(ByVal FileName As String) As String
+        Dim Path As String = ProgramConfig.ConfigRootDir & ConfigOptions.DirSep & FileName
+        Return If(IO.File.Exists(Path), My.Computer.FileSystem.ReadAllText(Path), FileName)
+    End Function
 
-        For Each Pattern As String In Patterns
-            If Not Pattern = "" Then PatternsList.Add(GetPattern(Pattern, IsFolder))
-        Next
+    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal PatternsString As String, Optional ByVal IsFolder As Boolean = False)
+        PatternsList = New List(Of FileNamePattern)
+        Dim Patterns As New List(Of String)(PatternsString.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
+
+        While Patterns.Count > 0 And Patterns.Count < 1024 'Prevent circular references
+            If IsBoxed(":", Patterns(0)) Then
+                Dim SubPatterns As String = SharpInclude(Unbox(Patterns(0)))
+                Patterns.AddRange(SubPatterns.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
+            Else
+                PatternsList.Add(GetPattern(Patterns(0), IsFolder))
+            End If
+
+            Patterns.RemoveAt(0)
+        End While
     End Sub
 End Class
