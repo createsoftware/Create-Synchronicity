@@ -541,7 +541,6 @@ Public Class SynchronizeForm
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
         Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
-        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
 
         Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
         Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
@@ -563,7 +562,7 @@ Public Class SynchronizeForm
 
         For Each Entry As SyncingItem In ListOfActions
             Try
-                Me.Invoke(LabelDelegate, New Object() {CurrentStep, Destination & Entry.Path})
+                Me.Invoke(LabelDelegate, New Object() {CurrentStep, If(Entry.Action = TypeOfAction.Delete, Source, Destination) & Entry.Path})
 
                 Select Case Entry.Type
                     Case TypeOfItem.File
