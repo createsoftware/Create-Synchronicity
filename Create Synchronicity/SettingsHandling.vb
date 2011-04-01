@@ -24,14 +24,13 @@ Public Module ConfigOptions
     Public Const LastRun As String = "Last run"
     Public Const CatchUpSync As String = "Catch up if missed"
     Public Const CompressionExt As String = "Compress"
-
-    'These settings are hidden settings, not automatically appended to config files.
-    'NOTE: Automatically create entry in config file when these settings are enabled.
     Public Const Group As String = "Group"
     Public Const CheckFileSize As String = "Check file size"
-    Public Const ExcludedFolders As String = "Excluded folder patterns"
     Public Const FuzzyDstCompensation As String = "Fuzzy DST compensation"
     Public Const Checksum As String = "Checksum"
+
+    'Next settings are hidden, not automatically appended to config files.
+    Public Const ExcludedFolders As String = "Excluded folder patterns"
     '</>
 
     Public Const Scheduling As String = "Scheduling"
@@ -192,8 +191,9 @@ NotInheritable Class ConfigHandler
         Return UserFilesRootDir
     End Function
 
-    Public Function GetProgramSetting(ByVal Key As String, ByVal DefaultVal As String) As String
-        Return If(ProgramSettings.ContainsKey(Key), ProgramSettings(Key), DefaultVal)
+    Public Function GetProgramSetting(Of T)(ByVal Key As String, ByVal DefaultVal As T) As T
+        Dim Val As String = ""
+        Return If(ProgramSettings.TryGetValue(Key, Val) AndAlso Not String.IsNullOrEmpty(Val), CType(CObj(Val), T), DefaultVal)
     End Function
 
     Public Sub SetProgramSetting(ByVal Key As String, ByVal Value As String)

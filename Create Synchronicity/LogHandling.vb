@@ -119,7 +119,7 @@ Class LogHandler
     End Sub
 
     Private Sub PutHTML(ByVal LogWriter As IO.StreamWriter, ByVal Line As String)
-        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(ConfigOptions.TextLogs, "False")) Then LogWriter.WriteLine(Line)
+        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then LogWriter.WriteLine(Line)
     End Sub
 
     Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, Optional ByVal SpecialMsg As String = Nothing)
@@ -148,7 +148,8 @@ Class LogHandler
             LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
 
             OpenHTMLHeaders(LogWriter)
-            For LogId As Integer = Math.Max(1, PreviousLogs.Count - CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MaxLogEntries, 7))) To PreviousLogs.Count - 1
+            Dim Archives As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MaxLogEntries, 7)
+            For LogId As Integer = Math.Max(1, PreviousLogs.Count - Archives) To PreviousLogs.Count - 1
                 LogWriter.WriteLine(PreviousLogs(LogId).ToString)
             Next
 

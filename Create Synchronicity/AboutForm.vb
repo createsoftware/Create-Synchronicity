@@ -32,7 +32,7 @@ Public Class AboutForm
 
         ProgramConfig.LoadProgramSettings()
         Translation.FillLanguageListBox(LanguagesList)
-        UpdatesOption.Checked = ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False")
+        UpdatesOption.Checked = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False)
 
 #If CONFIG = "Linux" Then
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
@@ -66,7 +66,7 @@ Public Class AboutForm
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         If LanguagesList.SelectedIndex <> -1 Then
             Dim SelectedLanguage As String = LanguagesList.SelectedItem.ToString.Split("-")(0).Trim
-            Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> SelectedLanguage
+            Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> SelectedLanguage
 
             ProgramConfig.SetProgramSetting(ConfigOptions.Language, SelectedLanguage)
 

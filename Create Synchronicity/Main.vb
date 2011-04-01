@@ -43,7 +43,7 @@
         InitializeForms()
 
         ' Look for updates
-        If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(ConfigOptions.AutoUpdates, "False") Then
+        If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False) Then
             Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start(True)
         End If
@@ -78,7 +78,7 @@
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler Then Blocker.Close()
         ConfigHandler.LogAppEvent("Program exited")
 
-#If DEBUG And 0 Then
+#If Debug And 0 Then
         VariousTests()
 #End If
     End Sub
@@ -324,6 +324,9 @@
         If Nothing Then MessageBox.Show("Nothing -> True")
         If Not Nothing Then MessageBox.Show("Nothing -> False")
         MessageBox.Show(CBool(Nothing))
+
+        MessageBox.Show(CType("", String) = "")
+        MessageBox.Show(CType(Nothing, String) = "")
     End Sub
 #End If
 End Module

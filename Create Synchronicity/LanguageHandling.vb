@@ -19,7 +19,7 @@ Friend Class LanguageHandler
         IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
 
         Strings = New Dictionary(Of String, String)
-        Dim DictFile As String = ProgramConfig.LanguageRootDir & ConfigOptions.DirSep & ProgramConfig.GetProgramSetting(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
+        Dim DictFile As String = ProgramConfig.LanguageRootDir & ConfigOptions.DirSep & ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.Language, ConfigOptions.DefaultLanguage) & ".lng"
 
         If Not IO.File.Exists(DictFile) Then DictFile = ProgramConfig.LanguageRootDir & ConfigOptions.DirSep & ConfigOptions.DefaultLanguage & ".lng"
         If Not IO.File.Exists(DictFile) Then
@@ -117,7 +117,7 @@ Friend Class LanguageHandler
         Dim SystemLanguageIndex As Integer = -1
         Dim ProgramLanguageIndex As Integer = -1
         Dim DefaultLanguageIndex As Integer = -1
-        Dim CurProgramLanguage As String = ProgramConfig.GetProgramSetting(ConfigOptions.Language, "")
+        Dim CurProgramLanguage As String = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.Language, "")
         Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
 
         LanguagesComboBox.Items.Clear()

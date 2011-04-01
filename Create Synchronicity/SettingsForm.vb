@@ -49,7 +49,7 @@ Public Class SettingsForm
         Translation.TranslateControl(ExpertMenu)
         LeftView.PathSeparator = ConfigOptions.DirSep
         RightView.PathSeparator = ConfigOptions.DirSep
-        MoreLabel.Visible = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
+        MoreLabel.Visible = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, False)
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
         If Not NewProfile Then UpdateSettings(True)

@@ -19,7 +19,7 @@ Public Class MainForm
 #End If
 
         ' Code (largely inspired) by U.N. Owen
-        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(ConfigOptions.MainFormAttributes, String.Empty).Split(","))
+        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, "").Split(","))
         If WindowSettings.Count = 4 AndAlso WindowSettings.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
             Try
                 Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
@@ -55,8 +55,8 @@ Public Class MainForm
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ReloadConfigs()
         RedoSchedulerRegistration()
-        SetView(CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MainView, "0")))
-        SetFont(CInt(ProgramConfig.GetProgramSetting(ConfigOptions.FontSize, Actions.Font.Size)))
+        SetView(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MainView, 0))
+        SetFont(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.FontSize, CInt(Actions.Font.Size)))
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
@@ -74,7 +74,7 @@ Public Class MainForm
                     Interaction.StartProcess(ProgramConfig.ConfigRootDir)
                 Case Keys.E
                     If e.Alt Then
-                        Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(ConfigOptions.ExpertMode, "False")
+                        Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, False)
                         ProgramConfig.SetProgramSetting(ConfigOptions.ExpertMode, Not EMEnabled)
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If

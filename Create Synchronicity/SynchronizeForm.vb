@@ -163,8 +163,8 @@ Public Class SynchronizeForm
             If e.KeyCode = Keys.L AndAlso Status.CurrentStep = -1 Then
                 Interaction.StartProcess(ProgramConfig.GetLogPath(Handler.ProfileName))
             ElseIf e.KeyCode = Keys.D And PreviewList.SelectedIndices.Count <> 0 Then
-                Dim DiffProgram As String = ProgramConfig.GetProgramSetting(ConfigOptions.DiffProgram, "")
-                Dim DiffArguments As String = ProgramConfig.GetProgramSetting(ConfigOptions.DiffArguments, "")
+                Dim DiffProgram As String = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.DiffProgram, "")
+                Dim DiffArguments As String = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.DiffArguments, "")
                 Dim NewFile As String = "", OldFile As String = ""
                 If Not GetPathFromSelectedItem(NewFile, OldFile) Then Exit Sub
                 Try
