@@ -185,8 +185,8 @@ Class LogHandler
                     PutFormatted(If(Record.Success, Translation.Translate("\SUCCEDED"), Translation.Translate("\FAILED")), New String() {Record.Item.FormatType(), Record.Item.FormatAction(), Record.Item.FormatDirection(Record.Side), Record.Item.Path}, LogWriter)
                 Next
                 PutHTML(LogWriter, "</table>")
-                PutHTML(LogWriter, "<table>")
 
+                PutHTML(LogWriter, "<table>")
                 For Each Err As ErrorItem In Errors
                     PutFormatted(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
                 Next
