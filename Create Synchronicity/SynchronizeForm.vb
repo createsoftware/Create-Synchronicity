@@ -22,25 +22,7 @@ Public Class SynchronizeForm
     Dim [STOP] As Boolean
     Dim Failed As Boolean : Dim FailureMsg As String
 
-    Structure Status
-        Dim Junk As Boolean
-        Shared StartTime As Date
-        Shared BytesCopied As Long
-        Shared FilesScanned As Long
-        Shared ActionsDone As Integer
-        Shared CreatedFiles As Integer
-        Shared CreatedFolders As Integer
-        Shared FilesToCreate As Integer
-        Shared FoldersToCreate As Integer
-        Shared DeletedFiles As Integer
-        Shared DeletedFolders As Integer
-        Shared FilesToDelete As Integer
-        Shared FoldersToDelete As Integer
-        Shared TotalActionsCount As Integer
-        Shared CurrentStep As Integer
-        Shared TimeElapsed As TimeSpan
-        Shared MillisecondsSpeed As Double
-    End Structure
+    Dim Status As StatStruct
 
     Dim ColumnSorter As ListViewColumnSorter
     Dim Preview As Boolean, PreviewFinished As Boolean
@@ -79,18 +61,6 @@ Public Class SynchronizeForm
         SyncBtn.Enabled = False
         SyncBtn.Visible = Preview
 
-        Status.BytesCopied = 0
-        Status.FilesScanned = 0
-        Status.ActionsDone = 0
-        Status.CreatedFiles = 0
-        Status.CreatedFolders = 0
-        Status.FilesToCreate = 0
-        Status.FoldersToCreate = 0
-        Status.DeletedFiles = 0
-        Status.DeletedFolders = 0
-        Status.FilesToDelete = 0
-        Status.FoldersToDelete = 0
-        Status.TotalActionsCount = 0
         Status.CurrentStep = 1
         Status.StartTime = Date.Now ' NOTE: This call should be useless; it however seems that when the messagebox.show method is called when a profile is not found, the syncingtimecounter starts ticking. This is not suitable, but until the cause is found there this call remains, for display consistency.
 
@@ -151,7 +121,7 @@ Public Class SynchronizeForm
                 FullSyncThread.Start()
             End If
         Else
-            Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), 0, 0, FailureMsg)
+            Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), New StatStruct, FailureMsg)
             EndAll()
         End If
 
@@ -418,7 +388,7 @@ Public Class SynchronizeForm
                 End If
 
                 SyncingTimeCounter.Stop()
-                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), Status.ActionsDone, Status.TotalActionsCount)
+                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), Status)
 
                 If ((Quiet And Not Me.Visible) Or NoStop) Then
                     Me.Close()

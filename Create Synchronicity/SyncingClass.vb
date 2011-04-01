@@ -6,6 +6,25 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Structure StatStruct
+    Dim StartTime As Date
+    Dim BytesCopied As Long
+    Dim FilesScanned As Long
+    Dim ActionsDone As Integer
+    Dim CreatedFiles As Integer
+    Dim CreatedFolders As Integer
+    Dim FilesToCreate As Integer
+    Dim FoldersToCreate As Integer
+    Dim DeletedFiles As Integer
+    Dim DeletedFolders As Integer
+    Dim FilesToDelete As Integer
+    Dim FoldersToDelete As Integer
+    Dim TotalActionsCount As Integer
+    Dim CurrentStep As Integer
+    Dim TimeElapsed As TimeSpan
+    Dim MillisecondsSpeed As Double
+End Structure
+
 Public Enum TypeOfItem As Integer
     File = 0
     Folder = 1

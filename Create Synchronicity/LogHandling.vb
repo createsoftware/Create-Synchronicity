@@ -123,7 +123,7 @@ Class LogHandler
         If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then LogWriter.WriteLine(Line)
     End Sub
 
-    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, ByVal Done As Integer, ByVal Total As Integer, Optional ByVal SpecialMsg As String = Nothing)
+    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, ByVal Status As StatStruct, Optional ByVal SpecialMsg As String = Nothing)
         If Disposed Then Exit Sub
         Disposed = True
 
@@ -168,7 +168,7 @@ Class LogHandler
                 PutHTML(LogWriter, "<br />")
                 LogWriter.WriteLine(String.Format("{0}: {1}", Translation.Translate("\RIGHT"), Right))
                 PutHTML(LogWriter, "<br />")
-                LogWriter.WriteLine(String.Format("{0} {1}/{2}", Translation.Translate("\DONE"), Done, Total))
+                LogWriter.WriteLine(String.Format("{0} {1}/{2}", Translation.Translate("\DONE"), Status.ActionsDone, Status.TotalActionsCount))
                 If SpecialMsg IsNot Nothing Then
                     PutHTML(LogWriter, "<br />")
                     LogWriter.WriteLine(SpecialMsg)
