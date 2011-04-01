@@ -106,16 +106,16 @@ Class LogHandler
     End Sub
 
     Private Sub PutFormatted(ByVal Title As String, ByVal Contents As String(), ByRef LogW As IO.StreamWriter)
-#If DEBUG Then
-        LogW.WriteLine(Title & "	" & String.Join("	", Contents))
-#Else
-        LogW.WriteLine("<tr>")
-        LogW.WriteLine("	<td>" & Title & "</td>")
-        For Each Cell As String In Contents
-            LogW.WriteLine("	<td>" & Cell & "</td>")
-        Next
-        LogW.WriteLine("</tr>")
-#End If
+        If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then
+            LogW.WriteLine(Title & "	" & String.Join("	", Contents))
+        Else
+            LogW.WriteLine("<tr>")
+            LogW.WriteLine("	<td>" & Title & "</td>")
+            For Each Cell As String In Contents
+                LogW.WriteLine("	<td>" & Cell & "</td>")
+            Next
+            LogW.WriteLine("</tr>")
+        End If
     End Sub
 
     Private Sub PutHTML(ByVal LogWriter As IO.StreamWriter, ByVal Line As String)
