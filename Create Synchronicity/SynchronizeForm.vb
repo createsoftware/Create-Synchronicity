@@ -151,7 +151,7 @@ Public Class SynchronizeForm
                 FullSyncThread.Start()
             End If
         Else
-            Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), FailureMsg)
+            Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), 0, 0, FailureMsg)
             EndAll()
         End If
 
@@ -418,7 +418,7 @@ Public Class SynchronizeForm
                 End If
 
                 SyncingTimeCounter.Stop()
-                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination))
+                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), Status.ActionsDone, Status.TotalActionsCount)
 
                 If ((Quiet And Not Me.Visible) Or NoStop) Then
                     Me.Close()
