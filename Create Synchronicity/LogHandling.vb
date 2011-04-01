@@ -152,7 +152,7 @@ Class LogHandler
             LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
 
             OpenHTMLHeaders(LogWriter)
-            For LogId As Integer = Archives.Count To Archives.Count - 1
+            For LogId As Integer = 0 To Archives.Count - 1
                 LogWriter.WriteLine(Archives(LogId).ToString)
             Next
 
