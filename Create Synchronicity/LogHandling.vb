@@ -131,15 +131,19 @@ Class LogHandler
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
             'Load the contents of the previous log, excluding the closing tags
-            Dim PreviousLogs As New List(Of Text.StringBuilder)
-            PreviousLogs.Add(New Text.StringBuilder())
+            Dim ArchivesCount As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MaxLogEntries, 7)
+            Dim Archives As New List(Of Text.StringBuilder)
+            Archives.Add(New Text.StringBuilder())
 
             If Not NewLog Then
                 Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
                 While Not LogReader.EndOfStream
                     Dim Line As String = LogReader.ReadLine()
-                    If Line.Contains("<h2>") Then PreviousLogs.Add(New Text.StringBuilder())
-                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then PreviousLogs(PreviousLogs.Count - 1).AppendLine(Line)
+                    If Line.Contains("<h2>") Then
+                        Archives.Add(New Text.StringBuilder())
+                        If Archives.Count > ArchivesCount Then Archives.RemoveAt(0) 'Don't store more than ConfigOptions.MaxLogEntries in memory
+                    End If
+                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then Archives(Archives.Count - 1).AppendLine(Line)
                 End While
                 LogReader.Close()
             End If
@@ -148,9 +152,8 @@ Class LogHandler
             LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
 
             OpenHTMLHeaders(LogWriter)
-            Dim Archives As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MaxLogEntries, 7)
-            For LogId As Integer = Math.Max(1, PreviousLogs.Count - Archives) To PreviousLogs.Count - 1
-                LogWriter.WriteLine(PreviousLogs(LogId).ToString)
+            For LogId As Integer = Archives.Count To Archives.Count - 1
+                LogWriter.WriteLine(Archives(LogId).ToString)
             Next
 
             Try
