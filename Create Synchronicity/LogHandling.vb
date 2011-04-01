@@ -65,41 +65,41 @@ Class LogHandler
 #End If
 
     Private Sub OpenHTMLHeaders(ByRef LogW As IO.StreamWriter)
-#If DEBUG Then
-        Exit Sub
-#End If
-        LogW.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">")
-        LogW.WriteLine("<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" encoding=""utf-8"">")
-        LogW.WriteLine("	<head>")
-        LogW.WriteLine("		<title>Create Synchronicity - Log for " & LogName & "</title>")
-        LogW.WriteLine("		<meta http-equiv=""Content-Type"" content=""text/html;charset=utf-8"" />")
-        LogW.WriteLine("		<style type=""text/css"">")
-        LogW.WriteLine("			body {")
-        LogW.WriteLine("				font-family: verdana, courier;")
-        LogW.WriteLine("				font-size: 0.8em;")
-        LogW.WriteLine("				margin: auto;")
-        LogW.WriteLine("				width: 60%;")
-        LogW.WriteLine("			}")
-        LogW.WriteLine("			table {")
-        LogW.WriteLine("				border-collapse: collapse;")
-        LogW.WriteLine("			    width: 100%;")
-        LogW.WriteLine("			}")
-        LogW.WriteLine("			table tr td:nth-child(5), table tr td:nth-child(2) {word-break: break-all;}")
-        LogW.WriteLine("			th, td {")
-        LogW.WriteLine("				border: solid grey;")
-        LogW.WriteLine("				border-width: 1px 0 0 0;")
-        LogW.WriteLine("				padding: 1em;")
-        LogW.WriteLine("			}")
-        LogW.WriteLine("		</style>")
-        LogW.WriteLine("	</head>")
-        LogW.WriteLine("	<body>")
+        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then
+            LogW.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">")
+            LogW.WriteLine("<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" encoding=""utf-8"">")
+            LogW.WriteLine("	<head>")
+            LogW.WriteLine("		<title>Create Synchronicity - Log for " & LogName & "</title>")
+            LogW.WriteLine("		<meta http-equiv=""Content-Type"" content=""text/html;charset=utf-8"" />")
+            LogW.WriteLine("		<style type=""text/css"">")
+            LogW.WriteLine("			body {")
+            LogW.WriteLine("				font-family: verdana, courier;")
+            LogW.WriteLine("				font-size: 0.8em;")
+            LogW.WriteLine("				margin: auto;")
+            LogW.WriteLine("				width: 80%;")
+            LogW.WriteLine("			}")
+            LogW.WriteLine("			table {")
+            LogW.WriteLine("				border-collapse: collapse;")
+            LogW.WriteLine("			    width: 100%;")
+            LogW.WriteLine("			}")
+            LogW.WriteLine("			table tr td {}")
+            LogW.WriteLine("			table tr td:nth-child(2+3n) {word-break: break-all;}")
+            LogW.WriteLine("			th, td {")
+            LogW.WriteLine("				min-width: 5em;")
+            LogW.WriteLine("				border: solid grey;")
+            LogW.WriteLine("				border-width: 1px 0 0 0;")
+            LogW.WriteLine("				padding: 1em;")
+            LogW.WriteLine("			}")
+            LogW.WriteLine("		</style>")
+            LogW.WriteLine("	</head>")
+            LogW.WriteLine("	<body>")
+        End If
+
         LogW.WriteLine(String.Format(Translation.Translate("\LOG_TITLE"), LogName))
     End Sub
 
     Private Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
-#If DEBUG Then
-        Exit Sub
-#End If
+        If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then Exit Sub
         LogW.WriteLine() : LogW.WriteLine() : LogW.WriteLine()
         LogW.WriteLine("	</body>")
         LogW.WriteLine("</html>")
@@ -143,7 +143,7 @@ Class LogHandler
                         Archives.Add(New Text.StringBuilder())
                         If Archives.Count > ArchivesCount Then Archives.RemoveAt(0) 'Don't store more than ConfigOptions.MaxLogEntries in memory
                     End If
-                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then Archives(Archives.Count - 1).AppendLine(Line)
+                    If Not Line.Contains("<h1>") And Not Line.Contains("</body>") And Not Line.Contains("</html>") Then Archives(Archives.Count - 1).AppendLine(Line)
                 End While
                 LogReader.Close()
             End If

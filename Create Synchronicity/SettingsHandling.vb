@@ -139,7 +139,7 @@ NotInheritable Class ConfigHandler
     End Function
 
     Public Function GetLogPath(ByVal Name As String) As String
-        Return LogRootDir & ConfigOptions.DirSep & Name & ".log" & If(ConfigOptions.Debug, "", ".html")
+        Return LogRootDir & ConfigOptions.DirSep & Name & ".log" & If(ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False), "", ".html")
     End Function
 
     Public Function GetUserFilesRootDir() As String 'Return the place were config files are stored
@@ -222,7 +222,7 @@ NotInheritable Class ConfigHandler
             Dim Pair As String() = Setting.Split(New Char() {":"c}, 2)
             If Pair.Length() < 2 Then Continue For
             If ProgramSettings.ContainsKey(Pair(0)) Then ProgramSettings.Remove(Pair(0))
-            ProgramSettings.Add(Pair(0), Pair(1))
+            ProgramSettings.Add(Pair(0).Trim, Pair(1).Trim)
         Next
 
         ProgramSettingsLoaded = True
