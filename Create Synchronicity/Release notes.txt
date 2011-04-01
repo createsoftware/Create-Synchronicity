@@ -30,6 +30,8 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Apr. 01, 2011 - NEW: Optional text-only logs.
+Apr. 01, 2011 - UPD: Rewrite part of the settings handling engine, enforcing stronger type checking.
 Mar. 05, 2011 - FIX: Check for partially locked files before copying.
 Feb. 13, 2011 - NEW: Copy integrity validation using md5 checksums.
 Feb. 13, 2011 - NEW: (Hidden setting) On-the-fly BZip2 compression.
