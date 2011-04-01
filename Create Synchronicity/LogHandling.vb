@@ -80,7 +80,7 @@ Class LogHandler
             LogW.WriteLine("			}")
             LogW.WriteLine("			table {")
             LogW.WriteLine("				border-collapse: collapse;")
-            LogW.WriteLine("			    width: 100%;")
+            LogW.WriteLine("				width: 100%;")
             LogW.WriteLine("			}")
             LogW.WriteLine("			table tr td {}")
             LogW.WriteLine("			table tr td:nth-child(2+3n) {word-break: break-all;}")
@@ -99,10 +99,12 @@ Class LogHandler
     End Sub
 
     Private Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
-        If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then Exit Sub
-        LogW.WriteLine() : LogW.WriteLine() : LogW.WriteLine()
-        LogW.WriteLine("	</body>")
-        LogW.WriteLine("</html>")
+        If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then
+            LogW.WriteLine()
+        Else
+            LogW.WriteLine("	</body>")
+            LogW.WriteLine("</html>")
+        End If
     End Sub
 
     Private Sub PutFormatted(ByVal Title As String, ByVal Contents As String(), ByRef LogW As IO.StreamWriter)
@@ -153,12 +155,12 @@ Class LogHandler
 
             OpenHTMLHeaders(LogWriter)
             For LogId As Integer = 0 To Archives.Count - 1
-                LogWriter.WriteLine(Archives(LogId).ToString)
+                LogWriter.Write(Archives(LogId).ToString)
             Next
 
             Try
                 'Log format: <h2>, then two <table>s (info, errors)
-                LogWriter.WriteLine("<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
+                LogWriter.WriteLine("<h2>" & Date.Now.ToString("g") & "</h2>")
 
                 PutHTML(LogWriter, "<p>")
                 LogWriter.WriteLine(String.Format("Create Synchronicity v{0}", Application.ProductVersion))
@@ -184,8 +186,6 @@ Class LogHandler
                 Next
                 PutHTML(LogWriter, "</table>")
 
-                LogWriter.WriteLine()
-
                 PutHTML(LogWriter, "<table>")
                 For Each Err As ErrorItem In Errors
                     PutFormatted(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
@@ -201,7 +201,6 @@ Class LogHandler
                 Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
 
             Finally
-                LogWriter.Flush()
                 LogWriter.Close()
             End Try
         Catch Ex As Exception
