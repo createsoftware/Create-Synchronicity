@@ -217,13 +217,6 @@ Public Class MainForm
         Interaction.StartProcess("http://synchronicity.sourceforge.net/contribute.html")
     End Sub
 
-#If 0 Then
-    Private Sub WarningIcon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles WarningIcon.Click
-        If IO.File.Exists(ProgramConfig.MessagesFile) Then
-        End If
-    End Sub
-#End If
-
     Private Sub Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.MouseEnter
         CType(sender, PictureBox).BackColor = Drawing.Color.LightGray
     End Sub
