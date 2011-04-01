@@ -118,8 +118,8 @@ Class LogHandler
 #End If
     End Sub
 
-    Private Sub PutHTML(ByRef LogW As IO.StreamWriter, ByVal Line As String)
-        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(ConfigOptions.TextLogs, "False")) Then LogW.WriteLine(Line)
+    Private Sub PutHTML(ByVal LogWriter As IO.StreamWriter, ByVal Line As String)
+        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(ConfigOptions.TextLogs, "False")) Then LogWriter.WriteLine(Line)
     End Sub
 
     Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, Optional ByVal SpecialMsg As String = Nothing)
@@ -127,38 +127,34 @@ Class LogHandler
         Disposed = True
 
         Try
-            Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
             Dim LogWriter As IO.StreamWriter
+            Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
-            If ConfigOptions.Debug Then
-                LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
-            Else
-                'Load the contents of the previous log, excluding the closing tags
-                Dim PreviousLogs As New List(Of Text.StringBuilder)
-                PreviousLogs.Add(New Text.StringBuilder())
+            'Load the contents of the previous log, excluding the closing tags
+            Dim PreviousLogs As New List(Of Text.StringBuilder)
+            PreviousLogs.Add(New Text.StringBuilder())
 
-                If Not NewLog Then
-                    Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
-                    While Not LogReader.EndOfStream
-                        Dim Line As String = LogReader.ReadLine()
-                        If Line.Contains("<h2>") Then PreviousLogs.Add(New Text.StringBuilder())
-                        If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then PreviousLogs(PreviousLogs.Count - 1).AppendLine(Line)
-                    End While
-                    LogReader.Close()
-                End If
-
-                'This initialization erases log contents.
-                LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
-
-                OpenHTMLHeaders(LogWriter)
-                For LogId As Integer = Math.Max(1, PreviousLogs.Count - CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MaxLogEntries, 7))) To PreviousLogs.Count - 1
-                    PutHTML(LogWriter, PreviousLogs(LogId).ToString)
-                Next
+            If Not NewLog Then
+                Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
+                While Not LogReader.EndOfStream
+                    Dim Line As String = LogReader.ReadLine()
+                    If Line.Contains("<h2>") Then PreviousLogs.Add(New Text.StringBuilder())
+                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then PreviousLogs(PreviousLogs.Count - 1).AppendLine(Line)
+                End While
+                LogReader.Close()
             End If
 
+            'This erases log contents.
+            LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
+
+            OpenHTMLHeaders(LogWriter)
+            For LogId As Integer = Math.Max(1, PreviousLogs.Count - CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MaxLogEntries, 7))) To PreviousLogs.Count - 1
+                LogWriter.WriteLine(PreviousLogs(LogId).ToString)
+            Next
+
             Try
-                ' Log format: <h2>, then two <table>s (info, errors)
-                PutHTML(LogWriter, "<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
+                'Log format: <h2>, then two <table>s (info, errors)
+                LogWriter.WriteLine("<h2>" & Microsoft.VisualBasic.DateAndTime.DateString & ", " & Microsoft.VisualBasic.DateAndTime.TimeString & "</h2>")
 
                 PutHTML(LogWriter, "<p>")
                 LogWriter.WriteLine(String.Format("Create Synchronicity v{0}", Application.ProductVersion))
@@ -184,6 +180,8 @@ Class LogHandler
                 Next
                 PutHTML(LogWriter, "</table>")
 
+                LogWriter.WriteLine()
+
                 PutHTML(LogWriter, "<table>")
                 For Each Err As ErrorItem In Errors
                     PutFormatted(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
@@ -201,7 +199,6 @@ Class LogHandler
             Finally
                 LogWriter.Flush()
                 LogWriter.Close()
-                LogWriter.Dispose()
             End Try
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
