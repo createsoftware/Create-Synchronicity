@@ -193,7 +193,14 @@ NotInheritable Class ConfigHandler
 
     Public Function GetProgramSetting(Of T)(ByVal Key As String, ByVal DefaultVal As T) As T
         Dim Val As String = ""
-        Return If(ProgramSettings.TryGetValue(Key, Val) AndAlso Not String.IsNullOrEmpty(Val), CType(CObj(Val), T), DefaultVal)
+        If ProgramSettings.TryGetValue(Key, Val) AndAlso Not String.IsNullOrEmpty(Val) Then
+            Try
+                Return CType(CObj(Val), T)
+            Catch
+                SetProgramSetting(Key, DefaultVal.ToString)
+            End Try
+        End If
+        Return DefaultVal
     End Function
 
     Public Sub SetProgramSetting(ByVal Key As String, ByVal Value As String)
