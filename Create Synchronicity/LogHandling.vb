@@ -119,9 +119,7 @@ Class LogHandler
     End Sub
 
     Private Sub PutHTML(ByRef LogW As IO.StreamWriter, ByVal Line As String)
-#If Not DEBUG Then
-        LogW.WriteLine(Line)
-#End If
+        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(ConfigOptions.TextLogs, "False")) Then LogW.WriteLine(Line)
     End Sub
 
     Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, Optional ByVal SpecialMsg As String = Nothing)
@@ -130,33 +128,33 @@ Class LogHandler
 
         Try
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
+            Dim LogWriter As IO.StreamWriter
 
-#If DEBUG Then
-            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
-#Else
-            'Load the contents of the previous log, excluding the closing tags
-            Dim PreviousLogs As New List(Of Text.StringBuilder)
-            PreviousLogs.Add(New Text.StringBuilder())
+            If ConfigOptions.Debug Then
+                LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), True)
+            Else
+                'Load the contents of the previous log, excluding the closing tags
+                Dim PreviousLogs As New List(Of Text.StringBuilder)
+                PreviousLogs.Add(New Text.StringBuilder())
 
-            If Not NewLog Then
-                Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
-                While Not LogReader.EndOfStream
-                    Dim Line As String = LogReader.ReadLine()
-                    If Line.Contains("<h2>") Then PreviousLogs.Add(New Text.StringBuilder())
-                    If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then PreviousLogs(PreviousLogs.Count - 1).AppendLine(Line)
-                End While
-                LogReader.Close()
-                LogReader.Dispose()
+                If Not NewLog Then
+                    Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
+                    While Not LogReader.EndOfStream
+                        Dim Line As String = LogReader.ReadLine()
+                        If Line.Contains("<h2>") Then PreviousLogs.Add(New Text.StringBuilder())
+                        If Not Line.Contains("</body>") And Not Line.Contains("</html>") Then PreviousLogs(PreviousLogs.Count - 1).AppendLine(Line)
+                    End While
+                    LogReader.Close()
+                End If
+
+                'This initialization erases log contents.
+                LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
+
+                OpenHTMLHeaders(LogWriter)
+                For LogId As Integer = Math.Max(1, PreviousLogs.Count - CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MaxLogEntries, 7))) To PreviousLogs.Count - 1
+                    PutHTML(LogWriter, PreviousLogs(LogId).ToString)
+                Next
             End If
-
-            'This initialization erases log contents, and should come after loading those.
-            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
-
-            OpenHTMLHeaders(LogWriter)
-            For LogId As Integer = Math.Max(1, PreviousLogs.Count - CInt(ProgramConfig.GetProgramSetting(ConfigOptions.MaxLogEntries, 7))) To PreviousLogs.Count - 1
-                PutHTML(LogWriter, PreviousLogs(LogId).ToString)
-            Next
-#End If
 
             Try
                 ' Log format: <h2>, then two <table>s (info, errors)

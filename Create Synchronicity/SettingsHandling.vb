@@ -49,7 +49,9 @@ Public Module ConfigOptions
     Public Const ExpertMode As String = "Expert mode"
     Public Const DiffProgram As String = "Diff program"
     Public Const DiffArguments As String = "Diff arguments"
+    Public Const TextLogs As String = "Text logs"
 
+    'Program files
     Public Const ConfigFolderName As String = "config"
     Public Const LogFolderName As String = "log"
     Public Const SettingsFileName As String = "mainconfig.ini"
@@ -138,11 +140,7 @@ NotInheritable Class ConfigHandler
     End Function
 
     Public Function GetLogPath(ByVal Name As String) As String
-#If DEBUG Then
-        Return LogRootDir & ConfigOptions.DirSep & Name & ".log"
-#Else
-        Return LogRootDir & ConfigOptions.DirSep & Name & ".log.html"
-#End If
+        Return LogRootDir & ConfigOptions.DirSep & Name & ".log" & If(ConfigOptions.Debug, "", ".html")
     End Function
 
     Public Function GetUserFilesRootDir() As String 'Return the place were config files are stored
