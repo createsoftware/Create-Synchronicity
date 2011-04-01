@@ -259,12 +259,12 @@ Public Class SynchronizeForm
 
     Function FormatSize(ByVal Size As Long) As String
         Select Case Size
-            Case Is >= 1024 * 1024 * 1024
-                Return Math.Round(Size / (1024 * 1024 * 1024), 2).ToString & " GB"
-            Case Is >= 1024 * 1024
-                Return Math.Round(Size / (1024 * 1024), 2).ToString & " MB"
-            Case Is >= 1024
-                Return Math.Round(Size / 1024, 2).ToString & " kB"
+            Case Is >= (1 << 30)
+                Return Math.Round(Size / (1 << 30), 2).ToString & " GB"
+            Case Is >= (1 << 20)
+                Return Math.Round(Size / (1 << 20), 2).ToString & " MB"
+            Case Is >= (1 << 10)
+                Return Math.Round(Size / (1 << 10), 2).ToString & " kB"
             Case Else
                 Return Math.Round(Size, 2).ToString & " B"
         End Select
