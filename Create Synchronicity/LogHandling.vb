@@ -84,7 +84,7 @@ Class LogHandler
         LogW.WriteLine("				border-collapse: collapse;")
         LogW.WriteLine("			    width: 100%;")
         LogW.WriteLine("			}")
-        LogW.WriteLine("			table tr td:nth-child(5) {word-break: break-all;}")
+        LogW.WriteLine("			table tr td:nth-child(5), table tr td:nth-child(2) {word-break: break-all;}")
         LogW.WriteLine("			th, td {")
         LogW.WriteLine("				border: solid grey;")
         LogW.WriteLine("				border-width: 1px 0 0 0;")
