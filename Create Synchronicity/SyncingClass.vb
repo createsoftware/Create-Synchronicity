@@ -110,7 +110,7 @@ Public Class FileNamePattern
         Pattern = _Pattern
     End Sub
 
-    Private Shared Function IsBoxed(ByVal Frame As Char, ByRef Pattern As String) As Boolean
+    Private Shared Function IsBoxed(ByVal Frame As Char, ByVal Pattern As String) As Boolean
         Return (Pattern.StartsWith(Frame) And Pattern.EndsWith(Frame) And Pattern.Length > 2)
     End Function
 
