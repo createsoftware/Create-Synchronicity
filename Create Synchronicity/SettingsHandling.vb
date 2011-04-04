@@ -740,7 +740,7 @@ Public Module Interaction
             Loaded = True
             AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.BallonClick
             Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
-            StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("Create_Synchronicity.create-synchronicity-icon-16x16.ico"))
+            StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("CS.create-synchronicity-icon-16x16.ico"))
         End If
     End Sub
 
