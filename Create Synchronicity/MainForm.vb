@@ -361,6 +361,9 @@ Public Class MainForm
             End If
             Painter.DrawImageUnscaled(SyncIcons.Images(Id), 0, 0)
             SyncIcons.Images.Add(NewImg)
+
+            NewImg.Dispose()
+            Painter.Dispose()
         Next
     End Sub
 

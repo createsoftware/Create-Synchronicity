@@ -118,13 +118,13 @@ Public Class FileNamePattern
         Return Pattern.Substring(1, Pattern.Length - 2).ToLower ' ToLower: Careful on linux ; No need to check length, MatchesPattern has done so before.
     End Function
 
-    Shared Function GetPattern(ByVal Pattern As String, Optional ByVal IsFolder As Boolean = False) As FileNamePattern
-        If IsBoxed("""", Pattern) Then 'Filename
-            Return New FileNamePattern(If(IsFolder, PatternType.FolderName, PatternType.FileName), Unbox(Pattern))
-        ElseIf IsBoxed("/", Pattern) Then 'Regex
-            Return New FileNamePattern(PatternType.Regex, Unbox(Pattern))
+    Shared Function GetPattern(ByVal Str As String, Optional ByVal IsFolder As Boolean = False) As FileNamePattern
+        If IsBoxed("""", Str) Then 'Filename
+            Return New FileNamePattern(If(IsFolder, PatternType.FolderName, PatternType.FileName), Unbox(Str))
+        ElseIf IsBoxed("/", Str) Then 'Regex
+            Return New FileNamePattern(PatternType.Regex, Unbox(Str))
         Else
-            Return New FileNamePattern(PatternType.FileExt, Pattern.ToLower)
+            Return New FileNamePattern(PatternType.FileExt, Str.ToLower)
         End If
     End Function
 
@@ -133,7 +133,7 @@ Public Class FileNamePattern
         Return If(IO.File.Exists(Path), My.Computer.FileSystem.ReadAllText(Path), FileName)
     End Function
 
-    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal PatternsStr As String, Optional ByVal IsFolder As Boolean = False)
+    Friend Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal PatternsStr As String, Optional ByVal IsFolder As Boolean = False)
         PatternsList = New List(Of FileNamePattern)
         Dim Patterns As New List(Of String)(PatternsStr.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
 

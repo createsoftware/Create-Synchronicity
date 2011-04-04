@@ -1,4 +1,6 @@
-﻿Module MessageLoop
+﻿<Assembly: CLSCompliant(True)> 
+
+Module MessageLoop
     Friend ReloadNeeded As Boolean
     Friend MainFormInstance As MainForm
     Friend Translation As LanguageHandler
@@ -236,7 +238,7 @@
             If Date.Compare(NextInQueue.NextRun, Date.Now) <= 0 Then
                 ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
-                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.Catchup)
+                Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.CatchUp)
                 If SyncForm.StartSynchronization(False) Then
                     ConfigHandler.LogAppEvent("Scheduler: " & NextInQueue.Name & " exited successfully.")
                     ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False, False))
