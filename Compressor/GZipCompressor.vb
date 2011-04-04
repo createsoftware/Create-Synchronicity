@@ -11,17 +11,17 @@ Imports ICSharpCode.SharpZipLib.GZip
 Imports ICSharpCode.SharpZipLib.Core
 
 Public Class GZipCompressor
-    Implements Create_Synchronicity.Compressor
+    Implements CS.Compressor
 
     Dim PreviousProgress As Long
-    Dim ProgressReporter As Create_Synchronicity.PluginCallback
+    Dim ProgressReporter As CS.PluginCallback
 
     Sub HandleProgress(ByVal Sender As Object, ByVal EventArgs As ProgressEventArgs)
         ProgressReporter(EventArgs.Processed - PreviousProgress)
         PreviousProgress = EventArgs.Processed
     End Sub
 
-    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByVal ReportCallback As Create_Synchronicity.PluginCallback) Implements Create_Synchronicity.Compressor.CompressFile
+    Sub CompressFile(ByVal SourceFile As String, ByVal DestFile As String, ByVal ReportCallback As CS.PluginCallback) Implements CS.Compressor.CompressFile
         PreviousProgress = 0
         ProgressReporter = ReportCallback
 

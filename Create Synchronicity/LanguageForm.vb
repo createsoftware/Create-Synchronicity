@@ -7,7 +7,7 @@
 #End If
 
         Me.Icon = ProgramConfig.GetIcon()
-        Translation.FillLanguageListBox(LanguagesList)
+        LanguageHandler.FillLanguageListBox(LanguagesList)
     End Sub
 
     Private Sub LanguageForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed

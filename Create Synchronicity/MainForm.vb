@@ -326,7 +326,7 @@ Public Class MainForm
         End Select
     End Sub
 
-    Function GetMethodName(ByVal Name As String) As String
+    Private Shared Function GetMethodName(ByVal Name As String) As String
         Select Case Profiles(Name).GetSetting(ConfigOptions.Method, "")
             Case "1"
                 Return Translation.Translate("\LR_INCREMENTAL")
@@ -337,7 +337,7 @@ Public Class MainForm
         End Select
     End Function
 
-    Function CheckValidity() As Boolean
+    Private Function CheckValidity() As Boolean
         If Not Profiles(CurrentProfile).ValidateConfigFile(True, True) Then
             Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\ERROR"), , MessageBoxIcon.Error)
             Return False

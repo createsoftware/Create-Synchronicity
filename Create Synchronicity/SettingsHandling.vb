@@ -106,7 +106,7 @@ NotInheritable Class ConfigHandler
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
-    Protected Sub New()
+    Public Sub New()
         LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
         ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
         LanguageRootDir = Application.StartupPath & ConfigOptions.DirSep & "languages"
@@ -768,19 +768,19 @@ Public Module Interaction
         StatusIcon.ShowBalloonTip(2000)
     End Sub
 
-    Public Sub ShowToolTip(ByVal sender As Control)
-        If TypeOf sender Is TreeView AndAlso Not CType(sender, TreeView).CheckBoxes Then Exit Sub
+    Public Sub ShowToolTip(ByVal Ctrl As Control)
+        If TypeOf Ctrl Is TreeView AndAlso Not DirectCast(Ctrl, TreeView).CheckBoxes Then Exit Sub
 
-        Dim Offset As Integer = If(TypeOf sender Is RadioButton Or TypeOf sender Is CheckBox, 12, 1)
-        Dim Pair As String() = sender.Tag.ToString.Replace("%s", sender.Text).Split(New Char() {";"c}, 2)
+        Dim Offset As Integer = If(TypeOf Ctrl Is RadioButton Or TypeOf Ctrl Is CheckBox, 12, 1)
+        Dim Pair As String() = Ctrl.Tag.ToString.Replace("%s", Ctrl.Text).Split(New Char() {";"c}, 2)
 
         Try
             If Pair.GetLength(0) = 1 Then
                 SharedToolTip.ToolTipTitle = ""
-                SharedToolTip.Show(Pair(0), sender, New Drawing.Point(0, sender.Height + Offset))
+                SharedToolTip.Show(Pair(0), Ctrl, New Drawing.Point(0, Ctrl.Height + Offset))
             ElseIf Pair.GetLength(0) > 1 Then
                 SharedToolTip.ToolTipTitle = Pair(0)
-                SharedToolTip.Show(Pair(1), sender, New Drawing.Point(0, sender.Height + Offset))
+                SharedToolTip.Show(Pair(1), Ctrl, New Drawing.Point(0, Ctrl.Height + Offset))
             End If
         Catch ex As Exception
             'See bug #3076129
@@ -827,6 +827,6 @@ Public Class ListViewColumnSorter
     End Sub
 
     Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements Collections.IComparer.Compare
-        Return If(Order = SortOrder.Ascending, 1, If(Order = SortOrder.Descending, -1, 0)) * ObjectCompare.Compare(CType(x, ListViewItem).SubItems(SortColumn).Text, CType(y, ListViewItem).SubItems(SortColumn).Text)
+        Return If(Order = SortOrder.Ascending, 1, If(Order = SortOrder.Descending, -1, 0)) * ObjectCompare.Compare(DirectCast(x, ListViewItem).SubItems(SortColumn).Text, DirectCast(y, ListViewItem).SubItems(SortColumn).Text)
     End Function
 End Class

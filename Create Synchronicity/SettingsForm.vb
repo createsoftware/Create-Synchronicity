@@ -10,7 +10,6 @@ Public Class SettingsForm
     Dim Handler As ProfileHandler
     Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record events.
     Dim InhibitAutocheck As Boolean = False 'Record events, but don't treat them as user input.
-    Dim AdvancedSelection As Boolean = False 'Controls recursive selection.
     Dim ClickedRightTreeView As Boolean = False
 
     Dim NewProfile As Boolean
@@ -222,13 +221,13 @@ Public Class SettingsForm
 #End Region
 
 #Region " Form and TreeView manipulation "
-    Sub Update_Form_Enabled_Components()
+    Private Sub Update_Form_Enabled_Components()
         IncludeExcludeLayoutPanel.Enabled = Not CopyAllFilesCheckBox.Checked
         IncludedTypesTextBox.Enabled = IncludeFilesOption.Checked
         ExcludedTypesTextBox.Enabled = ExcludeFilesOption.Checked
     End Sub
 
-    Sub CheckSettings()
+    Private Sub CheckSettings()
         CheckPath(FromTextBox, False)
         CheckPath(ToTextBox, CreateDestOption.Checked)
 
@@ -239,12 +238,12 @@ Public Class SettingsForm
         ReloadButton.BackColor = If(SaveButton.Enabled, System.Drawing.SystemColors.Control, System.Drawing.Color.Orange)
     End Sub
 
-    Sub ToggleTree(ByVal PrevPath As String, ByVal Box As TextBox, ByVal Tree As TreeView, ByVal Btn As Button)
+    Private Shared Sub ToggleTree(ByVal PrevPath As String, ByVal Box As TextBox, ByVal Tree As TreeView, ByVal Btn As Button)
         Tree.Enabled = (Cleanup(Box.Text) = PrevPath)
         Btn.Visible = Not Tree.Enabled
     End Sub
 
-    Private Sub CheckPath(ByVal PathBox As TextBox, ByVal Force As Boolean)
+    Private Shared Sub CheckPath(ByVal PathBox As TextBox, ByVal Force As Boolean)
         If PathBox.Text = "" Or Force OrElse IO.Directory.Exists(ProfileHandler.TranslatePath(PathBox.Text)) Then
             PathBox.BackColor = Drawing.Color.White
         Else
@@ -252,7 +251,7 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub CheckSelectedNode(ByVal Checked As Boolean)
+    Private Sub CheckSelectedNode(ByVal Checked As Boolean)
         InhibitAutocheck = True
         If ClickedRightTreeView Then
             RightView.SelectedNode.Checked = Checked
@@ -321,7 +320,7 @@ Public Class SettingsForm
         Return -1
     End Function
 
-    Sub SetRootPathDisplay(ByVal Show As Boolean)
+    Private Sub SetRootPathDisplay(ByVal Show As Boolean)
         If Show Then
             If Not FromTextBox.Text = "" And LeftView.Nodes.Count > 0 Then LeftView.Nodes(0).Text = FromTextBox.Text
             If Not ToTextBox.Text = "" And RightView.Nodes.Count > 0 Then RightView.Nodes(0).Text = ToTextBox.Text
@@ -331,7 +330,7 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Sub ReloadTrees(ByVal AllowFullReload As Boolean, Optional ByVal ForceRight As Boolean = False)
+    Private Sub ReloadTrees(ByVal AllowFullReload As Boolean, Optional ByVal ForceRight As Boolean = False)
         ReloadButton.Enabled = False
         SaveButton.Enabled = False
         Loading.Visible = True
@@ -387,7 +386,7 @@ Public Class SettingsForm
         If Not Tree.Enabled Then Tree.BackColor = Drawing.Color.LightGray
     End Sub
 
-    Sub LoadCheckState(ByVal Tree As TreeView, ByVal CheckedNodes As Dictionary(Of String, Boolean))
+    Private Sub LoadCheckState(ByVal Tree As TreeView, ByVal CheckedNodes As Dictionary(Of String, Boolean))
         Dim BaseNode As TreeNode = Tree.Nodes(0)
         If CheckedNodes.Count = 0 Then CheckedNodes.Add("", True)
         InhibitAutocheck = True
@@ -422,7 +421,7 @@ Public Class SettingsForm
 #End Region
 
 #Region " Settings Handling "
-    Sub UpdateSettings(ByVal LoadToForm As Boolean)
+    Private Sub UpdateSettings(ByVal LoadToForm As Boolean)
         Cleanup_Paths()
 
         'Careful: Using .ToString here would break the ByRef passing of the second argument.
@@ -489,7 +488,7 @@ Public Class SettingsForm
         End If
     End Sub
 
-    Private Function Cleanup(ByVal Path As String) As String
+    Private Shared Function Cleanup(ByVal Path As String) As String
 #If LINUX Then
         Return If(Path.Contains("/"), "/", "") & Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
 #Else
@@ -502,7 +501,7 @@ Public Class SettingsForm
         ToTextBox.Text = Cleanup(ToTextBox.Text)
     End Sub
 
-    Private Function GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
+    Private Shared Function GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
         Dim ListString As New System.Text.StringBuilder
         For Each Node As String In Table.Keys
             ListString.Append(Node).Append(";")

@@ -97,7 +97,7 @@ Class LogHandler
         LogW.WriteLine(String.Format(Translation.Translate("\LOG_TITLE"), LogName))
     End Sub
 
-    Private Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
+    Private Shared Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
         If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then
             LogW.WriteLine()
         Else
@@ -106,7 +106,7 @@ Class LogHandler
         End If
     End Sub
 
-    Private Sub PutFormatted(ByVal Title As String, ByVal Contents As String(), ByRef LogW As IO.StreamWriter)
+    Private Shared Sub PutFormatted(ByVal Title As String, ByVal Contents As String(), ByRef LogW As IO.StreamWriter)
         If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then
             LogW.WriteLine(Title & "	" & String.Join("	", Contents))
         Else
@@ -119,7 +119,7 @@ Class LogHandler
         End If
     End Sub
 
-    Private Sub PutHTML(ByVal LogWriter As IO.StreamWriter, ByVal Line As String)
+    Private Shared Sub PutHTML(ByVal LogWriter As IO.StreamWriter, ByVal Line As String)
         If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then LogWriter.WriteLine(Line)
     End Sub
 

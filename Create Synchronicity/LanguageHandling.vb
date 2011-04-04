@@ -67,15 +67,15 @@ Friend Class LanguageHandler
         TranslateControl(Ctrl.ContextMenuStrip)
 
         If TypeOf Ctrl Is ListView Then
-            For Each Group As ListViewGroup In CType(Ctrl, ListView).Groups
+            For Each Group As ListViewGroup In DirectCast(Ctrl, ListView).Groups
                 Group.Header = Translate(Group.Header)
             Next
 
-            For Each Column As ColumnHeader In CType(Ctrl, ListView).Columns
+            For Each Column As ColumnHeader In DirectCast(Ctrl, ListView).Columns
                 Column.Text = Translate(Column.Text)
             Next
 
-            For Each Item As ListViewItem In CType(Ctrl, ListView).Items
+            For Each Item As ListViewItem In DirectCast(Ctrl, ListView).Items
                 For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
                     SubItem.Text = Translate(SubItem.Text)
                     SubItem.Tag = Translate(SubItem.Tag, ";")
@@ -83,7 +83,7 @@ Friend Class LanguageHandler
             Next
 
         ElseIf TypeOf Ctrl Is ContextMenuStrip Then
-            For Each Item As ToolStripItem In CType(Ctrl, ContextMenuStrip).Items
+            For Each Item As ToolStripItem In DirectCast(Ctrl, ContextMenuStrip).Items
                 Item.Text = Translate(Item.Text)
                 Item.Tag = Translate(Item.Tag, ";")
             Next
@@ -96,7 +96,7 @@ Friend Class LanguageHandler
         Next
     End Sub
 
-    Public Sub FillLanguageListBox(ByVal LanguagesComboBox As ComboBox)
+    Public Shared Sub FillLanguageListBox(ByVal LanguagesComboBox As ComboBox)
         Dim LanguageProps As New Dictionary(Of String, LanguageHandler.LanguageInfo)
 
         If IO.File.Exists(ProgramConfig.LocalNamesFile) Then

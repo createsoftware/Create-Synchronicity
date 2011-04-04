@@ -7,7 +7,7 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class AboutForm
-    Private Sub SetLinkArea(ByVal Link As LinkLabel)
+    Private Shared Sub SetLinkArea(ByVal Link As LinkLabel)
         If Link.Text.IndexOf("\"c) = -1 Or Link.Text.IndexOf("/"c) = -1 Then Exit Sub
 
         Dim Area As New LinkArea
@@ -31,7 +31,7 @@ Public Class AboutForm
         SetLinkArea(VersionInfo)
 
         ProgramConfig.LoadProgramSettings()
-        Translation.FillLanguageListBox(LanguagesList)
+        LanguageHandler.FillLanguageListBox(LanguagesList)
         UpdatesOption.Checked = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False)
 
 #If CONFIG = "Linux" Then

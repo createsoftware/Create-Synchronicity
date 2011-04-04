@@ -45,7 +45,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean, Optional ByVal _Catchup As Boolean = False)
+    Public Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean, Optional ByVal _Catchup As Boolean = False)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -136,7 +136,7 @@ Public Class SynchronizeForm
                 Dim DiffProgram As String = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.DiffProgram, "")
                 Dim DiffArguments As String = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.DiffArguments, "")
                 Dim NewFile As String = "", OldFile As String = ""
-                If Not GetPathFromSelectedItem(NewFile, OldFile) Then Exit Sub
+                If Not SetPathFromSelectedItem(NewFile, OldFile) Then Exit Sub
                 Try
                     If DiffProgram <> "" AndAlso IO.File.Exists(OldFile) AndAlso IO.File.Exists(NewFile) Then Diagnostics.Process.Start(DiffProgram.Trim, DiffArguments.Replace("%o", OldFile).Replace("%n", NewFile))
                 Catch Ex As Exception
@@ -199,12 +199,12 @@ Public Class SynchronizeForm
 
     Private Sub PreviewList_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewList.DoubleClick
         Dim Source As String = "", Dest As String = ""
-        If Not GetPathFromSelectedItem(Source, Dest) Then Exit Sub
+        If Not SetPathFromSelectedItem(Source, Dest) Then Exit Sub
 
         If IO.File.Exists(Source) Or IO.Directory.Exists(Source) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, Source.Substring(0, Source.LastIndexOf(ConfigOptions.DirSep)), Source))
     End Sub
 
-    Function GetPathFromSelectedItem(ByRef Source As String, ByRef Dest As String) As Boolean
+    Private Function SetPathFromSelectedItem(ByRef Source As String, ByRef Dest As String) As Boolean
         If PreviewList.SelectedIndices.Count = 0 Then Return False
 
         Dim CurItem As ListViewItem = PreviewList.SelectedItems(0)
@@ -227,7 +227,7 @@ Public Class SynchronizeForm
         Return True
     End Function
 
-    Function FormatSize(ByVal Size As Long) As String
+    Private Shared Function FormatSize(ByVal Size As Long) As String
         Select Case Size
             Case Is >= (1 << 30)
                 Return Math.Round(Size / (1 << 30), 2).ToString & " GB"
@@ -240,7 +240,7 @@ Public Class SynchronizeForm
         End Select
     End Function
 
-    Sub UpdateStatuses()
+    Private Sub UpdateStatuses()
         Status.TimeElapsed = DateTime.Now - Status.StartTime
         ElapsedTime.Text = If(Status.TimeElapsed.Hours = 0, "", Status.TimeElapsed.Hours.ToString & "h, ") & If(Status.TimeElapsed.Minutes = 0, "", Status.TimeElapsed.Minutes.ToString & "m, ") & Status.TimeElapsed.Seconds.ToString & "s."
 
@@ -264,7 +264,7 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Processes interaction "
-    Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
+    Private Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
         Dim StatusText As String = Text
         If Text.Length > 30 Then
             StatusText = "..." & Text.Substring(Text.Length - 30, 30)
@@ -283,7 +283,7 @@ Public Class SynchronizeForm
         End Select
     End Sub
 
-    Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
         Select Case Id
             Case 1
                 If Step1ProgressBar.Value + Progress < Step1ProgressBar.Maximum Then Step1ProgressBar.Value += Progress
@@ -294,7 +294,7 @@ Public Class SynchronizeForm
         End Select
     End Sub
 
-    Sub SetMaxProgess(ByVal Id As Integer, ByVal MaxValue As Integer)
+    Private Sub SetMaxProgess(ByVal Id As Integer, ByVal MaxValue As Integer)
         Select Case Id
             Case 1
                 If MaxValue = -1 Then
@@ -323,7 +323,7 @@ Public Class SynchronizeForm
         End Select
     End Sub
 
-    Sub TaskDone(ByVal Id As Integer)
+    Private Sub TaskDone(ByVal Id As Integer)
         If Not Status.CurrentStep = Id Then Exit Sub 'Prevents infinite exit loop.
 
         Select Case Id
@@ -398,7 +398,7 @@ Public Class SynchronizeForm
         End Select
     End Sub
 
-    Sub UpdatePreviewList()
+    Private Sub UpdatePreviewList()
         PreviewList.Visible = True
 
         If Not PreviewList.Items.Count = 0 Then
@@ -448,13 +448,13 @@ Public Class SynchronizeForm
         Status.TotalActionsCount += 1
     End Sub
 
-    Sub LaunchTimer()
+    Private Sub LaunchTimer()
         Status.BytesCopied = 0
         Status.StartTime = DateTime.Now
         SyncingTimeCounter.Start()
     End Sub
 
-    Sub EndAll()
+    Private Sub EndAll()
         [STOP] = True
         FullSyncThread.Abort()
         FirstSyncThread.Abort() : SecondSyncThread.Abort()
@@ -463,12 +463,12 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Syncing code "
-    Sub Synchronize()
+    Private Sub Synchronize()
         Do_FirstStep()
         Do_SecondThirdStep()
     End Sub
 
-    Sub Do_FirstStep()
+    Private Sub Do_FirstStep()
         Dim Context As New SyncingAction
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
 
@@ -507,7 +507,7 @@ Public Class SynchronizeForm
         'NOTE: [to sysadmins] (March 13, 2010) -- Moved to FAQ
     End Sub
 
-    Sub Do_SecondThirdStep()
+    Private Sub Do_SecondThirdStep()
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
         Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
@@ -605,7 +605,7 @@ Public Class SynchronizeForm
         If Entry.Action <> TypeOfAction.Delete Then AddValidFile(Entry.Path & Suffix)
     End Sub
 
-    Sub AddValidFile(ByVal File As String)
+    Private Sub AddValidFile(ByVal File As String)
         If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower, Nothing)
     End Sub
 
@@ -633,15 +633,11 @@ Public Class SynchronizeForm
         Return ValidFiles.ContainsKey(File.ToLower)
     End Function
 
-    Sub RemoveFromSyncingList(ByVal Side As SideOfSource)
+    Private Sub RemoveFromSyncingList(ByVal Side As SideOfSource)
         ValidFiles.Remove(SyncingList(Side)(SyncingList(Side).Count - 1).Path)
         SyncingList(Side).RemoveAt(SyncingList(Side).Count - 1)
         SyncPreviewList(Side, -1)
     End Sub
-
-    Private Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'LATER: Should be optimized; IO.Path?
-        Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
-    End Function
 
     ' This procedure searches for changes in the source directory, in regards
     ' to the status of the destination directory.
@@ -804,7 +800,7 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Sub SyncPreviewList(ByVal Side As SideOfSource, ByVal Count As Integer)
+    Private Sub SyncPreviewList(ByVal Side As SideOfSource, ByVal Count As Integer)
         If Count > 0 Then
             AddPreviewItem(SyncingList(Side)(SyncingList(Side).Count - 1), Side)
         ElseIf Count < 0 Then
@@ -812,29 +808,7 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Function HasAcceptedFilename(ByVal Path As String) As Boolean
-        Try
-            Select Case Handler.GetSetting(ConfigOptions.Restrictions)
-                'LATER: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
-                Case "1"
-                    Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
-                Case "2"
-                    Return Not MatchesPattern(GetFileOrFolderName(Path), ExcludedPatterns)
-            End Select
-        Catch Ex As Exception
-#If DEBUG Then
-            Log.HandleError(Ex)
-#End If
-        End Try
-
-        Return True
-    End Function
-
-    Function HasAcceptedDirname(ByVal Path As String) As Boolean
-        Return Not MatchesPattern(Path, ExcludedDirPatterns)
-    End Function
-
-    Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
+    Private Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
 
         Dim Compression As Boolean = ShouldCompress(SourceFile)
@@ -884,59 +858,33 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Functions "
-    Private Function GetFileOrFolderName(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
+    Private Function HasAcceptedFilename(ByVal Path As String) As Boolean
+        Try
+            Select Case Handler.GetSetting(ConfigOptions.Restrictions)
+                'LATER: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
+                Case "1"
+                    Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
+                Case "2"
+                    Return Not MatchesPattern(GetFileOrFolderName(Path), ExcludedPatterns)
+            End Select
+        Catch Ex As Exception
+#If DEBUG Then
+            Log.HandleError(Ex)
+#End If
+        End Try
+
+        Return True
     End Function
 
-    Private Function GetExtension(ByVal File As String) As String
-        Return File.Substring(File.LastIndexOf("."c) + 1) 'Not used when dealing with a folder.
+    Private Function HasAcceptedDirname(ByVal Path As String) As Boolean
+        Return Not MatchesPattern(Path, ExcludedDirPatterns)
     End Function
 
-    Function GetSize(ByVal File As String) As Long
-        Return (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
-    End Function
-
-    Function ShouldCompress(ByVal File As String) As Boolean
+    Private Function ShouldCompress(ByVal File As String) As Boolean
         Return Handler.GetSetting(ConfigOptions.CompressionExt, "") <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 
-    Function LoadCompressionDll() As Compressor
-        Dim DLL As Reflection.Assembly = Reflection.Assembly.LoadFrom(ProgramConfig.CompressionDll)
-
-        For Each SubType As Type In DLL.GetTypes
-            If GetType(Compressor).IsAssignableFrom(SubType) Then Return CType(Activator.CreateInstance(SubType), Compressor)
-        Next
-
-        Throw New ArgumentException("Invalid DLL: " & ProgramConfig.CompressionDll)
-    End Function
-
-    Private Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
-        Dim Extension As String = GetExtension(PathOrFileName)
-
-        For Each Pattern As FileNamePattern In Patterns 'LINUX: Problem with IgnoreCase
-            Select Case Pattern.Type
-                Case FileNamePattern.PatternType.FileExt
-                    If String.Compare(Extension, Pattern.Pattern, True) = 0 Then Return True
-                Case FileNamePattern.PatternType.FileName
-                    If String.Compare(PathOrFileName, Pattern.Pattern, True) = 0 Then Return True
-                Case FileNamePattern.PatternType.FolderName
-                    If PathOrFileName.EndsWith(Pattern.Pattern, StringComparison.CurrentCultureIgnoreCase) Then Return True
-                Case FileNamePattern.PatternType.Regex
-                    If System.Text.RegularExpressions.Regex.IsMatch(PathOrFileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
-            End Select
-        Next
-
-        Return False
-    End Function
-
-    Function Md5(ByVal Path As String) As String
-        Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
-        Using DataStream As New IO.StreamReader(Path)
-            Return Convert.ToBase64String(CryptObject.ComputeHash(DataStream.BaseStream))
-        End Using
-    End Function
-
-    Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
+    Private Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
         If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
 
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
@@ -961,8 +909,62 @@ Public Class SynchronizeForm
 
         Return True
     End Function
+#End Region
 
-    Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
+#Region "Shared functions"
+    Private Shared Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'LATER: Should be optimized; IO.Path?
+        Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
+    End Function
+
+    Private Shared Function GetFileOrFolderName(ByVal Path As String) As String
+        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
+    End Function
+
+    Private Shared Function GetExtension(ByVal File As String) As String
+        Return File.Substring(File.LastIndexOf("."c) + 1) 'Not used when dealing with a folder.
+    End Function
+
+    Private Shared Function GetSize(ByVal File As String) As Long
+        Return (New System.IO.FileInfo(File)).Length 'Faster than My.Computer.FileSystem.GetFileInfo().Length (See FileLen_Speed_Test.vb)
+    End Function
+
+    Private Shared Function LoadCompressionDll() As Compressor
+        Dim DLL As Reflection.Assembly = Reflection.Assembly.LoadFrom(ProgramConfig.CompressionDll)
+
+        For Each SubType As Type In DLL.GetTypes
+            If GetType(Compressor).IsAssignableFrom(SubType) Then Return CType(Activator.CreateInstance(SubType), Compressor)
+        Next
+
+        Throw New ArgumentException("Invalid DLL: " & ProgramConfig.CompressionDll)
+    End Function
+
+    Private Shared Function MatchesPattern(ByVal PathOrFileName As String, ByRef Patterns As List(Of FileNamePattern)) As Boolean
+        Dim Extension As String = GetExtension(PathOrFileName)
+
+        For Each Pattern As FileNamePattern In Patterns 'LINUX: Problem with IgnoreCase
+            Select Case Pattern.Type
+                Case FileNamePattern.PatternType.FileExt
+                    If String.Compare(Extension, Pattern.Pattern, True) = 0 Then Return True
+                Case FileNamePattern.PatternType.FileName
+                    If String.Compare(PathOrFileName, Pattern.Pattern, True) = 0 Then Return True
+                Case FileNamePattern.PatternType.FolderName
+                    If PathOrFileName.EndsWith(Pattern.Pattern, StringComparison.CurrentCultureIgnoreCase) Then Return True
+                Case FileNamePattern.PatternType.Regex
+                    If System.Text.RegularExpressions.Regex.IsMatch(PathOrFileName, Pattern.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase) Then Return True
+            End Select
+        Next
+
+        Return False
+    End Function
+
+    Private Shared Function Md5(ByVal Path As String) As String
+        Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
+        Using DataStream As New IO.StreamReader(Path)
+            Return Convert.ToBase64String(CryptObject.ComputeHash(DataStream.BaseStream))
+        End Using
+    End Function
+
+    Private Shared Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
         'Return NTFSTime.AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))).AddMilliseconds(-NTFSTime.Millisecond)
         Return (New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second).AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))))
     End Function
