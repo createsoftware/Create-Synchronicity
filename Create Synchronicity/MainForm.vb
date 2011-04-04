@@ -139,16 +139,16 @@ Public Class MainForm
     Private Sub Actions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Actions.SelectedIndexChanged
         If Actions.SelectedIndices.Count = 0 OrElse Actions.SelectedIndices(0) = 0 Then
             If Actions.SelectedIndices.Count = 0 Then
-                Display_Options("", True)
+                LoadDetails("", True)
             ElseIf Actions.SelectedIndices(0) = 0 Then
-                Display_Options(Translation.Translate("\NEW_PROFILE"), True)
+                LoadDetails(Translation.Translate("\NEW_PROFILE"), True)
             End If
 
             ActionsMenu.Close()
             Exit Sub
         End If
 
-        Display_Options(CurrentProfile, False)
+        LoadDetails(CurrentProfile, False)
     End Sub
 
     Private Sub AboutLinkLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles AboutLinkLabel.LinkClicked
@@ -276,7 +276,7 @@ Public Class MainForm
         Next
     End Sub
 
-    Sub Display_Options(ByVal Name As String, ByVal Clear As Boolean)
+    Sub LoadDetails(ByVal Name As String, ByVal Clear As Boolean)
         ProfileName.Text = Name
 
         Method.Text = ""

@@ -31,12 +31,12 @@ Public Class SynchronizeForm
     Dim FirstSyncThread As Threading.Thread
     Dim SecondSyncThread As Threading.Thread
 
-    Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
-    Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
-    Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
-    Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
-    Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
-    Delegate Sub SetProgressCallBack(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
+    Private Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
+    Private Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
+    Private Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
+    Private Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
+    Private Delegate Sub SetProgressCallBack(ByVal Id As Integer, ByVal Progress As Integer)
 
     Friend Event OnFormClosedAfterSyncFinished()
 
@@ -509,7 +509,6 @@ Public Class SynchronizeForm
 
     Private Sub Do_SecondThirdStep()
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
-        Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
 
         Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
@@ -673,7 +672,7 @@ Public Class SynchronizeForm
 
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
-                Dim Suffix As String = If(ShouldCompress(SourceFile), Handler.GetSetting(ConfigOptions.CompressionExt, ""), "")
+                Dim Suffix As String = If(CompressionEnabled(), Handler.GetSetting(ConfigOptions.CompressionExt, ""), "")
                 Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix)
 
 #If DEBUG Then
@@ -811,7 +810,7 @@ Public Class SynchronizeForm
     Private Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
 
-        Dim Compression As Boolean = ShouldCompress(SourceFile)
+        Dim Compression As Boolean = CompressionEnabled()
         If Compression Then DestFile &= Handler.GetSetting(ConfigOptions.CompressionExt, "")
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
@@ -880,7 +879,7 @@ Public Class SynchronizeForm
         Return Not MatchesPattern(Path, ExcludedDirPatterns)
     End Function
 
-    Private Function ShouldCompress(ByVal File As String) As Boolean
+    Private Function CompressionEnabled() As Boolean
         Return Handler.GetSetting(ConfigOptions.CompressionExt, "") <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 

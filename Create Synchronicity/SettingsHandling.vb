@@ -334,7 +334,6 @@ NotInheritable Class ProfileHandler
 
     Function SaveConfigFile() As Boolean
         Try
-            Dim ConfigString As String = ""
             Dim FileWriter As New IO.StreamWriter(ProgramConfig.GetConfigPath(ProfileName))
 
             For Each Setting As KeyValuePair(Of String, String) In Configuration

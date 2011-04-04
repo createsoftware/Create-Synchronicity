@@ -133,9 +133,9 @@ Public Class FileNamePattern
         Return If(IO.File.Exists(Path), My.Computer.FileSystem.ReadAllText(Path), FileName)
     End Function
 
-    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal PatternsString As String, Optional ByVal IsFolder As Boolean = False)
+    Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal PatternsStr As String, Optional ByVal IsFolder As Boolean = False)
         PatternsList = New List(Of FileNamePattern)
-        Dim Patterns As New List(Of String)(PatternsString.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
+        Dim Patterns As New List(Of String)(PatternsStr.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
 
         While Patterns.Count > 0 And Patterns.Count < 1024 'Prevent circular references
             If IsBoxed(":", Patterns(0)) Then

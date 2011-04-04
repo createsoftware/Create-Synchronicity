@@ -85,14 +85,14 @@ Public Class SettingsForm
     End Sub
 
     Private Sub BrowseLButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BrowseLButton.Click
-        BrowseTo(Translation.Translate("\CHOOSE_SOURCE"), FromTextBox, LeftReloadButton, LeftView)
+        BrowseTo(Translation.Translate("\CHOOSE_SOURCE"), FromTextBox)
     End Sub
 
     Private Sub BrowseRButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BrowseRButton.Click
-        BrowseTo(Translation.Translate("\CHOOSE_DEST"), ToTextBox, RightReloadButton, RightView)
+        BrowseTo(Translation.Translate("\CHOOSE_DEST"), ToTextBox)
     End Sub
 
-    Private Sub BrowseTo(ByVal DialogMessage As String, ByRef TextboxField As TextBox, ByVal Btn As Button, ByVal Tree As TreeView)
+    Private Sub BrowseTo(ByVal DialogMessage As String, ByRef TextboxField As TextBox)
         FolderBrowser.Description = DialogMessage
         If Not TextboxField.Text = "" AndAlso IO.Directory.Exists(ProfileHandler.TranslatePath(TextboxField.Text)) Then
             FolderBrowser.SelectedPath = ProfileHandler.TranslatePath(TextboxField.Text)

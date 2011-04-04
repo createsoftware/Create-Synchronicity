@@ -121,7 +121,6 @@ Friend Class LanguageHandler
         Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
 
         LanguagesComboBox.Items.Clear()
-        Dim LanguageFiles As New List(Of String)
         For Each File As String In IO.Directory.GetFiles(ProgramConfig.LanguageRootDir, "*.lng")
             Dim EnglishLanguageName As String = IO.Path.GetFileNameWithoutExtension(File)
 
