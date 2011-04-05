@@ -41,11 +41,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.1.1196.0")> '#SVN-REV
-#If DEBUG Then
-<Assembly: AssemblyFileVersion("5.1.20110405.1196")>  '#SVN-REV
-#Else
+<Assembly: AssemblyVersion("5.1.1197.0")> '#SVN-REV
 <Assembly: AssemblyFileVersion("5.1.0.0")> 
-#End If
-
 <Assembly: NeutralResourcesLanguageAttribute("")> 

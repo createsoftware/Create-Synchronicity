@@ -664,7 +664,7 @@ Public Module Updates
             Dim LatestVersion As String = UpdateClient.DownloadString(If(CommandLine.RunAs = CommandLine.RunMode.Scheduler, "http://synchronicity.sourceforge.net/code/scheduler-version.txt", "http://synchronicity.sourceforge.net/code/version.txt"))
 
             If LatestVersion = "" Then Throw New Net.WebException()
-            If ((New Version(LatestVersion)) >= (New Version(Application.ProductVersion))) Then
+            If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Diagnostics.Process.Start("http://synchronicity.sourceforge.net/update.html")
                     If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
