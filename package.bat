@@ -16,13 +16,24 @@ mkdir build
 
 (echo Packaging log for r%REV% & date /t & time /t & echo.) > %LOG%
 
-echo (1/7) Building program (release)
+echo (*) Updating revision number
+(
+echo.
+echo -----
+cd "Create Synchronicity\My Project"
+move /Y AssemblyInfo.vb AssemblyInfo.vb.bak
+subwcrev.exe ..\..\..\ template.awk bump-rev.awk
+gawk -f bump-rev.awk AssemblyInfo.vb.bak > AssemblyInfo.vb
+cd ..\..
+) >> %LOG%
+
+echo (*) Building program (release)
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Release /Out %LOG%
 
-echo (2/7) Building program (debug)
+echo (*) Building program (debug)
 "C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe" "Create Synchronicity.sln" /Rebuild Debug /Out %LOG%
 
-echo (3/7) Building installer
+echo (*) Building installer
 (
 echo.
 echo -----
@@ -32,7 +43,7 @@ echo -----
 move Create_Synchronicity_Setup.exe "build\Create_Synchronicity_Setup-r%REV%.exe"
 ) >> %LOG%
 
-echo (4/7) Building zip files
+echo (*) Building zip files
 (
 echo.
 echo -----
@@ -50,7 +61,7 @@ cd "Create Synchronicity\bin\Linux"
 cd ..\..\..
 ) >> %LOG%
 
-echo (5/7) Creating current-build.txt
+echo (*) Creating current-build.txt
 (
 echo.
 echo -----
@@ -66,7 +77,7 @@ echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/
 echo "https://sourceforge.net/projects/synchronicity/files/Create Synchronicity/Unreleased (SVN Builds)/Create_Synchronicity-r%REV%-Extensions.zip/download"
 ) > build\current-build.txt
 
-echo (6/7) Uploading builds to frs.sourceforge.net and rev info to web.sourceforge.net
+echo (*) Uploading builds to frs.sourceforge.net and rev info to web.sourceforge.net
 (
 echo.
 echo -----
@@ -75,7 +86,7 @@ echo Uploading files via SCP.
 "C:\Program Files (x86)\PuTTY\pscp.exe" "build\Create_Synchronicity-r%REV%.zip" "build\Create_Synchronicity-r%REV%-DEBUG.zip" "build\Create_Synchronicity_Setup-r%REV%.exe" "build\Create_Synchronicity-r%REV%-Linux.zip" "build\Create_Synchronicity-r%REV%-Extensions.zip" "createsoftware,synchronicity@frs.sourceforge.net:/home/pfs/project/s/sy/synchronicity/Create Synchronicity/Unreleased (SVN Builds)"
 ) >> %LOG%
 
-echo (7/7) Building manual and uploading it to web.sourceforge.net.
+echo (*) Building manual and uploading it to web.sourceforge.net.
 (
 echo.
 echo -----
