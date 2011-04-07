@@ -30,6 +30,7 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+Apr. 07, 2011 - UPD: Better executable signining.
 Apr. 01, 2011 - NEW: Optional text-only logs.
 Apr. 01, 2011 - UPD: Rewrite part of the settings handling engine, enforcing stronger type checking.
 Mar. 05, 2011 - FIX: Check for partially locked files before copying.
