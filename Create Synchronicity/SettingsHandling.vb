@@ -384,7 +384,7 @@ NotInheritable Class ProfileHandler
         Next
 
         If Configuration.ContainsKey(ConfigOptions.CompressionExt) AndAlso Configuration(ConfigOptions.CompressionExt) <> "" Then
-            If Not (New List(Of String)(New String() {".gz", ".bz2"})).Contains(Configuration(ConfigOptions.CompressionExt)) Then
+            If Array.IndexOf({".gz", ".bz2"}, Configuration(ConfigOptions.CompressionExt)) < 0 Then
                 IsValid = False
                 InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ConfigOptions.CompressionExt)))
             End If
