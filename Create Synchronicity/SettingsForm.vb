@@ -166,7 +166,7 @@ Public Class SettingsForm
             If Node.Nodes.Count <> 0 Then Continue For 'Node already loaded
             Try
                 For Each Dir As String In IO.Directory.GetDirectories(ProfileHandler.TranslatePath(Node.FullPath))
-                    Dim NewNode As TreeNode = Node.Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1))
+                    Dim NewNode As TreeNode = Node.Nodes.Add(GetFileOrFolderName(Dir))
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
                 Next
@@ -370,7 +370,7 @@ Public Class SettingsForm
                 Try
                     For Each Dir As String In IO.Directory.GetDirectories(Path)
                         Application.DoEvents()
-                        Tree.Nodes(0).Nodes.Add(Dir.Substring(Dir.LastIndexOf(ConfigOptions.DirSep) + 1)) 'FIXME: GetFileOrFolderName
+                        Tree.Nodes(0).Nodes.Add(GetFileOrFolderName(Dir)) 'FIXME: GetFileOrFolderName
                     Next
 
                     'No need to expand root here, since children were already added.

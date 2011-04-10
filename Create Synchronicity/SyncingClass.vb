@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Structure StatStruct
+Structure StatusStruct
     Dim StartTime As Date
     Dim BytesCopied As Long
     Dim FilesScanned As Long
@@ -23,6 +23,10 @@ Structure StatStruct
     Dim CurrentStep As Integer
     Dim TimeElapsed As TimeSpan
     Dim MillisecondsSpeed As Double
+
+    Dim [STOP] As Boolean
+    Dim Failed As Boolean
+    Dim FailureMsg As String
 End Structure
 
 Public Enum TypeOfItem As Integer
@@ -149,3 +153,9 @@ Public Class FileNamePattern
         End While
     End Sub
 End Class
+
+Module FileHandling
+    Friend Function GetFileOrFolderName(ByVal Path As String) As String
+        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
+    End Function
+End Module

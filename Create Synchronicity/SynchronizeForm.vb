@@ -19,17 +19,15 @@ Public Class SynchronizeForm
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
     Dim NoStop As Boolean = CommandLine.NoStop
-    Dim [STOP] As Boolean
-    Dim Failed As Boolean : Dim FailureMsg As String
 
-    Dim Status As StatStruct
+    Dim Status As StatusStruct
 
     Dim ColumnSorter As ListViewColumnSorter
     Dim Preview As Boolean, PreviewFinished As Boolean
 
     Dim FullSyncThread As Threading.Thread
-    Dim FirstSyncThread As Threading.Thread
-    Dim SecondSyncThread As Threading.Thread
+    Dim ScanThread As Threading.Thread
+    Dim SyncThread As Threading.Thread
 
     Private Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
     Private Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
@@ -50,8 +48,7 @@ Public Class SynchronizeForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        [STOP] = False
-        Failed = False
+        Status.[STOP] = False
 
         Quiet = _Quiet
         Catchup = _Catchup
@@ -61,6 +58,7 @@ Public Class SynchronizeForm
         SyncBtn.Enabled = False
         SyncBtn.Visible = Preview
 
+        Status.Failed = False
         Status.CurrentStep = 1
         Status.StartTime = Date.Now ' NOTE: This call should be useless; it however seems that when the messagebox.show method is called when a profile is not found, the syncingtimecounter starts ticking. This is not suitable, but until the cause is found there this call remains, for display consistency.
 
@@ -74,9 +72,9 @@ Public Class SynchronizeForm
         FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes, ""))
         FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, ""), True)
 
-        FullSyncThread = New Threading.Thread(AddressOf Synchronize)
-        FirstSyncThread = New Threading.Thread(AddressOf Do_FirstStep)
-        SecondSyncThread = New Threading.Thread(AddressOf Do_SecondThirdStep)
+        FullSyncThread = New Threading.Thread(AddressOf FullSync)
+        ScanThread = New Threading.Thread(AddressOf Scan)
+        SyncThread = New Threading.Thread(AddressOf Sync)
 
         Me.CreateHandle()
         Translation.TranslateControl(Me)
@@ -107,22 +105,20 @@ Public Class SynchronizeForm
             If Not CalledShowModal Then Me.Visible = True 'Me.Show?
         End If
 
-        FailureMsg = ""
-        Dim IsValid As Boolean = Handler.ValidateConfigFile(False, True, Quiet, FailureMsg)
-        Failed = Not IsValid
+        Status.FailureMsg = ""
+        Dim IsValid As Boolean = Handler.ValidateConfigFile(False, True, Quiet, Status.FailureMsg)
+        Status.Failed = Not IsValid
 
         If IsValid Then
             'ProgramConfig.IncrementSyncsCount() 'TODO: Enable. Problem of concurrent savings of the main config file.
-            Handler.SetLastRun() 'TODO: Move to the end of the sync? 'Only set LastRun when the synchronization actually happens. But there would be a problem with the return value.
             If Preview Then
                 PreviewList.Items.Clear()
-                FirstSyncThread.Start()
+                ScanThread.Start()
             Else
                 FullSyncThread.Start()
             End If
         Else
-            Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), New StatStruct, FailureMsg)
-            EndAll()
+            EndAll() 'Also saves the log file.
         End If
 
         Return IsValid
@@ -170,7 +166,7 @@ Public Class SynchronizeForm
         SyncBtn.Visible = False
         StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(0)
 
-        SecondSyncThread.Start()
+        SyncThread.Start()
     End Sub
 
     Private Sub StatusIcon_Click(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -201,7 +197,7 @@ Public Class SynchronizeForm
         Dim Source As String = "", Dest As String = ""
         If Not SetPathFromSelectedItem(Source, Dest) Then Exit Sub
 
-        If IO.File.Exists(Source) Or IO.Directory.Exists(Source) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, Source.Substring(0, Source.LastIndexOf(ConfigOptions.DirSep)), Source))
+        If IO.File.Exists(Source) Or IO.Directory.Exists(Source) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, IO.Path.GetDirectoryName(Source), Source))
     End Sub
 
     Private Function SetPathFromSelectedItem(ByRef Source As String, ByRef Dest As String) As Boolean
@@ -355,7 +351,7 @@ Public Class SynchronizeForm
                 Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
                 UpdateStatuses()
-                If Log.Errors.Count > 0 Or Failed Then
+                If Log.Errors.Count > 0 Or Status.Failed Then
                     PreviewList.Visible = True
                     PreviewList.Items.Clear()
                     PreviewList.Columns.Clear()
@@ -377,8 +373,8 @@ Public Class SynchronizeForm
                     ErrorColumn.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
 
                     If Quiet Then 'TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
-                        If Failed Then
-                            Interaction.ShowBalloonTip(FailureMsg)
+                        If Status.Failed Then
+                            Interaction.ShowBalloonTip(Status.FailureMsg)
                         Else
                             Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                         End If
@@ -388,6 +384,7 @@ Public Class SynchronizeForm
                 End If
 
                 SyncingTimeCounter.Stop()
+                If Not Status.Failed Then Handler.SetLastRun() 'Set last run only if the profile hasn't failed, and has synced completely. 'TODO: What if user canceled?
                 Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), Status)
 
                 If ((Quiet And Not Me.Visible) Or NoStop) Then
@@ -408,7 +405,7 @@ Public Class SynchronizeForm
         End If
 
         PreviewFinished = True
-        If Not [STOP] Then SyncBtn.Enabled = True
+        If Not Status.[STOP] Then SyncBtn.Enabled = True
     End Sub
 
     Private Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
@@ -455,20 +452,20 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub EndAll()
-        [STOP] = True
+        Status.[STOP] = True
         FullSyncThread.Abort()
-        FirstSyncThread.Abort() : SecondSyncThread.Abort()
+        ScanThread.Abort() : SyncThread.Abort()
         TaskDone(1) : TaskDone(2) : TaskDone(3)
     End Sub
 #End Region
 
 #Region " Syncing code "
-    Private Sub Synchronize()
-        Do_FirstStep()
-        Do_SecondThirdStep()
+    Private Sub FullSync()
+        Scan()
+        Sync()
     End Sub
 
-    Private Sub Do_FirstStep()
+    Private Sub Scan()
         Dim Context As New SyncingAction
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
 
@@ -507,7 +504,7 @@ Public Class SynchronizeForm
         'NOTE: [to sysadmins] (March 13, 2010) -- Moved to FAQ
     End Sub
 
-    Private Sub Do_SecondThirdStep()
+    Private Sub Sync()
         Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
         Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
 
@@ -574,7 +571,7 @@ Public Class SynchronizeForm
                 Log.LogAction(Entry, Side, False) 'Side parameter is only used for logging purposes.
             End Try
 
-            If Not [STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
+            If Not Status.[STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
         Next
     End Sub
 
@@ -911,12 +908,8 @@ Public Class SynchronizeForm
 #End Region
 
 #Region "Shared functions"
-    Private Shared Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'LATER: Should be optimized; IO.Path?
+    Private Shared Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path?
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
-    End Function
-
-    Private Shared Function GetFileOrFolderName(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
     End Function
 
     Private Shared Function GetExtension(ByVal File As String) As String
