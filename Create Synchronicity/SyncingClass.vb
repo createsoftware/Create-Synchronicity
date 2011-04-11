@@ -10,17 +10,17 @@ Structure StatusStruct
     Dim StartTime As Date
     Dim BytesCopied As Long
     Dim FilesScanned As Long
-    Dim ActionsDone As Integer
-    Dim CreatedFiles As Integer
-    Dim CreatedFolders As Integer
-    Dim FilesToCreate As Integer
-    Dim FoldersToCreate As Integer
-    Dim DeletedFiles As Integer
-    Dim DeletedFolders As Integer
-    Dim FilesToDelete As Integer
-    Dim FoldersToDelete As Integer
-    Dim TotalActionsCount As Integer
-    Dim CurrentStep As Integer
+    Dim ActionsDone As Long
+    Dim CreatedFiles As Long
+    Dim CreatedFolders As Long
+    Dim FilesToCreate As Long
+    Dim FoldersToCreate As Long
+    Dim DeletedFiles As Long
+    Dim DeletedFolders As Long
+    Dim FilesToDelete As Long
+    Dim FoldersToDelete As Long
+    Dim TotalActionsCount As Long
+    Dim CurrentStep As Long
     Dim TimeElapsed As TimeSpan
     Dim MillisecondsSpeed As Double
 

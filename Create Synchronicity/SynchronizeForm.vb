@@ -238,7 +238,8 @@ Public Class SynchronizeForm
 
     Private Sub UpdateStatuses()
         Status.TimeElapsed = DateTime.Now - Status.StartTime
-        ElapsedTime.Text = If(Status.TimeElapsed.Hours = 0, "", Status.TimeElapsed.Hours.ToString & "h, ") & If(Status.TimeElapsed.Minutes = 0, "", Status.TimeElapsed.Minutes.ToString & "m, ") & Status.TimeElapsed.Seconds.ToString & "s."
+        Dim Hours As Integer = Math.Truncate(Status.TimeElapsed.TotalHours)
+        ElapsedTime.Text = If(Hours = 0, "", Hours & "h, ") & If(Status.TimeElapsed.Minutes = 0, "", Status.TimeElapsed.Minutes.ToString & "m, ") & Status.TimeElapsed.Seconds.ToString & "s."
 
         If Status.TimeElapsed.TotalMilliseconds = 0 Then Status.TimeElapsed = New System.TimeSpan(1)
 
@@ -700,7 +701,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status.FilesScanned += 1
-                'Status.BytesCopied += GetSize(SourceFile)
+                'Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
             Next
         Catch Ex As Exception
 #If DEBUG Then
