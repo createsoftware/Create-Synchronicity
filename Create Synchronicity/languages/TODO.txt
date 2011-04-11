@@ -12,7 +12,7 @@ indonesian:5
 italian:0
 korean:4
 polish:5
-portuguese:5
+portuguese:0
 russian:8
 spanish:4
 swedish:8
