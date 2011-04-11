@@ -1,5 +1,5 @@
 ﻿# Create Synchronicity German Language file
-# Translation by Florian Haag, with few additions by Jeanne Tourette
+# Translation by Florian Haag, with a few additions by Jeanne Tourette
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -154,8 +154,8 @@ CATCHUP_MISSED_BACKUPS_TAG=Gibt an, was passieren soll, wenn der Computer zum ge
 CATCHING_UP=Create Synchronicity holt "{0}" nach (zuletzt vor {1} Tag(en), {2} Stunde(n) ausgeführt ({3})).
 FOLDER_FAILED=Konnte den Ordner "{0}" nicht erzeugen ({1}).
 CREATE_DEST=Zielordner dynamisch erzeugen
-->UPDATE=Aktualisieren
-->MD5=
-->GROUP=
-->COMPARE_SIZE=
-->MORE=
+UPDATE=Aktualisieren
+MD5=Sicherung mit MD5-Prüfsumme überprüfen
+GROUP=Gruppe
+COMPARE_SIZE=Dateigröße vergleichen
+MORE=Mehr (für erfahrene Benutzer)

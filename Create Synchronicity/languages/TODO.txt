@@ -2,7 +2,7 @@ bulgarian:5
 chinese (simplified):4
 czech:8
 danish:5
-deutsch:5
+deutsch:0
 dutch:5
 english:0
 estonian:8
