@@ -236,18 +236,29 @@ Public Class SynchronizeForm
         End Select
     End Function
 
+    Private Function FormatTimespan(ByVal T As TimeSpan) As String
+        Dim Hours As Integer = Math.Truncate(T.TotalHours)
+        Return If(Hours = 0, "", Hours & "h, ") & If(T.Minutes = 0, "", T.Minutes.ToString & "m, ") & T.Seconds.ToString & "s"
+    End Function
+
     Private Sub UpdateStatuses()
         Status.TimeElapsed = DateTime.Now - Status.StartTime
-        Dim Hours As Integer = Math.Truncate(Status.TimeElapsed.TotalHours)
-        ElapsedTime.Text = If(Hours = 0, "", Hours & "h, ") & If(Status.TimeElapsed.Minutes = 0, "", Status.TimeElapsed.Minutes.ToString & "m, ") & Status.TimeElapsed.Seconds.ToString & "s."
+
+        Dim EstimateString As String = ""
+        If (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
+            Dim RemainingSeconds As Double = (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds
+            'RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
+            EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, RemainingSeconds)))
+        End If
+        ElapsedTime.Text = FormatTimespan(Status.TimeElapsed) & EstimateString
 
         If Status.TimeElapsed.TotalMilliseconds = 0 Then Status.TimeElapsed = New System.TimeSpan(1)
 
         If Status.CurrentStep = 1 Then
-            Speed.Text = Math.Round(Status.FilesScanned / (Status.TimeElapsed.TotalMilliseconds / 1000)).ToString & " files/s"
+            Speed.Text = Math.Round(Status.FilesScanned / Status.TimeElapsed.TotalSeconds).ToString & " files/s"
         Else
-            Status.MillisecondsSpeed = Status.BytesCopied / (Status.TimeElapsed.TotalMilliseconds / 1000)
-            Speed.Text = FormatSize(Status.MillisecondsSpeed) & "/s"
+            Status.Speed = Status.BytesCopied / Status.TimeElapsed.TotalSeconds
+            Speed.Text = FormatSize(Status.Speed) & "/s"
         End If
 
         If Not Status.CurrentStep = 1 Then
@@ -280,56 +291,39 @@ Public Class SynchronizeForm
         End Select
     End Sub
 
-    Private Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Function GetProgressBar(ByVal Id As Integer) As ProgressBar
         Select Case Id
             Case 1
-                If Step1ProgressBar.Value + Progress < Step1ProgressBar.Maximum Then Step1ProgressBar.Value += Progress
+                Return Step1ProgressBar
             Case 2
-                If Step2ProgressBar.Value + Progress < Step2ProgressBar.Maximum Then Step2ProgressBar.Value += Progress
-            Case 3
-                If Step3ProgressBar.Value + Progress < Step3ProgressBar.Maximum Then Step3ProgressBar.Value += Progress
+                Return Step2ProgressBar
+            Case Else
+                Return Step3ProgressBar
         End Select
+    End Function
+
+    Private Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
+        Dim CurBar As ProgressBar = GetProgressBar(Id)
+        If CurBar.Value + Progress < CurBar.Maximum Then CurBar.Value += Progress
     End Sub
 
-    Private Sub SetMaxProgess(ByVal Id As Integer, ByVal MaxValue As Integer)
-        Select Case Id
-            Case 1
-                If MaxValue = -1 Then
-                    Step1ProgressBar.Style = ProgressBarStyle.Marquee
-                Else
-                    Step1ProgressBar.Style = ProgressBarStyle.Blocks
-                    Step1ProgressBar.Value = 0
-                    Step1ProgressBar.Maximum = MaxValue
-                End If
-            Case 2
-                If MaxValue = -1 Then
-                    Step2ProgressBar.Style = ProgressBarStyle.Marquee
-                Else
-                    Step2ProgressBar.Style = ProgressBarStyle.Blocks
-                    Step2ProgressBar.Value = 0
-                    Step2ProgressBar.Maximum = MaxValue
-                End If
-            Case 3
-                If MaxValue = -1 Then
-                    Step3ProgressBar.Style = ProgressBarStyle.Marquee
-                Else
-                    Step3ProgressBar.Style = ProgressBarStyle.Blocks
-                    Step3ProgressBar.Value = 0
-                    Step3ProgressBar.Maximum = MaxValue
-                End If
-        End Select
+    Private Sub SetMaxProgess(ByVal Id As Integer, ByVal MaxValue As Integer, Optional ByVal Finished As Boolean = False) 'Careful: MaxValue is an Integer.
+        Dim CurBar As ProgressBar = GetProgressBar(Id)
+
+        CurBar.Style = ProgressBarStyle.Blocks
+        CurBar.Maximum = Math.Max(0, MaxValue)
+        CurBar.Value = If(Finished, MaxValue, 0)
     End Sub
 
     Private Sub TaskDone(ByVal Id As Integer)
         If Not Status.CurrentStep = Id Then Exit Sub 'Prevents infinite exit loop.
 
+        SetMaxProgess(Id, 100, True)
+        UpdateLabel(Id, Translation.Translate("\FINISHED"))
+
         Select Case Id
             Case 1
                 Status.CurrentStep = 2
-                UpdateLabel(1, Translation.Translate("\FINISHED"))
-                Step1ProgressBar.Maximum = 100
-                Step1ProgressBar.Value = Step1ProgressBar.Maximum
-                Step1ProgressBar.Style = ProgressBarStyle.Blocks
                 If Not PreviewFinished Then
                     UpdatePreviewList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
@@ -339,17 +333,9 @@ Public Class SynchronizeForm
 
             Case 2
                 Status.CurrentStep = 3
-                UpdateLabel(2, Translation.Translate("\FINISHED"))
-                Step2ProgressBar.Maximum = 100
-                Step2ProgressBar.Value = Step2ProgressBar.Maximum
-                Step2ProgressBar.Style = ProgressBarStyle.Blocks
 
             Case 3
                 Status.CurrentStep = -1 'Done.
-                UpdateLabel(3, Translation.Translate("\FINISHED"))
-                Step3ProgressBar.Maximum = 100
-                Step3ProgressBar.Value = Step3ProgressBar.Maximum
-                Step3ProgressBar.Style = ProgressBarStyle.Blocks
 
                 UpdateStatuses()
                 If Log.Errors.Count > 0 Or Status.Failed Then

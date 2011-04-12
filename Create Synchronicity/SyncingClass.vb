@@ -23,7 +23,7 @@ Structure StatusStruct
     Dim TotalActionsCount As Long
     Dim CurrentStep As Long
     Dim TimeElapsed As TimeSpan
-    Dim MillisecondsSpeed As Double
+    Dim Speed As Double
 
     Dim [STOP] As Boolean
     Dim Failed As Boolean
