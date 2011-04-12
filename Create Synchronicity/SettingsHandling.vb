@@ -31,6 +31,7 @@ Public Module ConfigOptions
 
     'Next settings are hidden, not automatically appended to config files.
     Public Const ExcludedFolders As String = "Excluded folder patterns"
+    Public Const Turbo As String = "Turbo mode"
     '</>
 
     Public Const Scheduling As String = "Scheduling"

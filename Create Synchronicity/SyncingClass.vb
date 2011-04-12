@@ -9,6 +9,7 @@
 Structure StatusStruct
     Dim StartTime As Date
     Dim BytesCopied As Long
+    Dim BytesScanned As Long
     Dim FilesScanned As Long
     Dim ActionsDone As Long
     Dim CreatedFiles As Long

@@ -701,7 +701,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status.FilesScanned += 1
-                'Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
+                If Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True) Then Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
             Next
         Catch Ex As Exception
 #If DEBUG Then
