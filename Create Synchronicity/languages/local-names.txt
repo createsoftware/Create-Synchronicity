@@ -7,6 +7,7 @@ english;english;en
 estonian;eesti;et
 francais;french;fr
 hebrew;עִבְרִית;he
+hungarian;magyar;hu
 indonesian;bahasa indonesia;id
 italian;italiano;it
 korean;한국어;ko

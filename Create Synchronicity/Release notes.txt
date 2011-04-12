@@ -2,7 +2,7 @@
 * Information
 Languages:          English, French, German, Portuguese, Italian, Spanish, 
                     Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
-                    Estonian, Korean
+                    Estonian, Korean, Hungarian
 Created on:         June 3, 2009
 Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
@@ -15,7 +15,7 @@ Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Roj
                     Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
                     John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
                     Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule,
-                    S.G.Park, Marco C., Marco Salvagno
+                    S.G.Park, Marco C., Marco Salvagno, Lajos Toldy
 
 * Technical information
 License:            GNU GPL v3 or later (see "COPYING")
@@ -32,6 +32,8 @@ NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modifica
 --------------------------
 
 -- Version 5.2 Beta (5.1.99) --
+Apr. 12, 2011 - NEW: !Hungarian translation, by Lajos Toldy. Köszönöm!
+Apr. 12, 2011 - NEW: (Hidden setting) Estimate remaining time.
 Apr. 07, 2011 - UPD: Better executable signining.
 Apr. 01, 2011 - NEW: Optional text-only logs.
 Apr. 01, 2011 - UPD: Rewrite part of the settings handling engine, enforcing stronger type checking.
