@@ -8,10 +8,11 @@ english:0
 estonian:8
 francais:0
 hebrew:24
+hungarian:0
 indonesian:5
 italian:0
 korean:4
-polish:5
+polish:0
 portuguese:0
 russian:8
 spanish:4
