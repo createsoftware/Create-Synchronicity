@@ -25,7 +25,7 @@ Structure StatusStruct
     Dim TimeElapsed As TimeSpan
     Dim Speed As Double
 
-    Dim [STOP] As Boolean
+    Dim Cancel As Boolean
     Dim Failed As Boolean
     Dim FailureMsg As String
 End Structure

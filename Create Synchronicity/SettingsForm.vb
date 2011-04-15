@@ -211,7 +211,7 @@ Public Class SettingsForm
         'When the CheckBoxes' display is switched on, the checked property is not taken into account for the display.
         'Therefore, re-check the tree (if it has already been loaded)
         If RightView.CheckBoxes AndAlso RightView.Nodes.Count > 0 Then
-            LoadCheckState(RightView, Handler.RightCheckedNodes) 'FIXME: InhibitAutoCheck?
+            LoadCheckState(RightView, Handler.RightCheckedNodes) 'InhibitAutoCheck? -> Enabled in LoadCheckState anyway.
         End If
     End Sub
 
@@ -370,7 +370,7 @@ Public Class SettingsForm
                 Try
                     For Each Dir As String In IO.Directory.GetDirectories(Path)
                         Application.DoEvents()
-                        Tree.Nodes(0).Nodes.Add(GetFileOrFolderName(Dir)) 'FIXME: GetFileOrFolderName
+                        Tree.Nodes(0).Nodes.Add(GetFileOrFolderName(Dir))
                     Next
 
                     'No need to expand root here, since children were already added.

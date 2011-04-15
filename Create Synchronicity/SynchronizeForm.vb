@@ -30,11 +30,11 @@ Public Class SynchronizeForm
     Dim SyncThread As Threading.Thread
 
     Private Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
-    Private Delegate Sub TaskDoneCallBack(ByVal Id As Integer)
-    Private Delegate Sub LabelCallBack(ByVal Id As Integer, ByVal Text As String)
-    Private Delegate Sub SetElapsedTimeCallBack(ByVal CurrentTimeSpan As TimeSpan)
-    Private Delegate Sub ProgressSetMaxCallBack(ByVal Id As Integer, ByVal Max As Integer)
-    Private Delegate Sub SetProgressCallBack(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Delegate Sub TaskDoneDelegate(ByVal Id As Integer)
+    Private Delegate Sub SetLabelDelegate(ByVal Id As Integer, ByVal Text As String)
+    Private Delegate Sub SetElapsedDelegate(ByVal CurrentTimeSpan As TimeSpan)
+    Private Delegate Sub SetMaxDelegate(ByVal Id As Integer, ByVal Max As Integer)
+    Private Delegate Sub IncrementDelegate(ByVal Id As Integer, ByVal Progress As Integer)
 
     Friend Event OnFormClosedAfterSyncFinished()
 
@@ -48,7 +48,7 @@ Public Class SynchronizeForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Status.[STOP] = False
+        Status.Cancel = False
 
         Quiet = _Quiet
         Catchup = _Catchup
@@ -118,7 +118,7 @@ Public Class SynchronizeForm
                 FullSyncThread.Start()
             End If
         Else
-            EndAll() 'Also saves the log file.
+            EndAll() 'Also saves the log file
         End If
 
         Return IsValid
@@ -302,12 +302,12 @@ Public Class SynchronizeForm
         End Select
     End Function
 
-    Private Sub SetProgess(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Sub Increment(ByVal Id As Integer, ByVal Progress As Integer)
         Dim CurBar As ProgressBar = GetProgressBar(Id)
         If CurBar.Value + Progress < CurBar.Maximum Then CurBar.Value += Progress
     End Sub
 
-    Private Sub SetMaxProgess(ByVal Id As Integer, ByVal MaxValue As Integer, Optional ByVal Finished As Boolean = False) 'Careful: MaxValue is an Integer.
+    Private Sub SetMax(ByVal Id As Integer, ByVal MaxValue As Integer, Optional ByVal Finished As Boolean = False) 'Careful: MaxValue is an Integer.
         Dim CurBar As ProgressBar = GetProgressBar(Id)
 
         CurBar.Style = ProgressBarStyle.Blocks
@@ -318,7 +318,7 @@ Public Class SynchronizeForm
     Private Sub TaskDone(ByVal Id As Integer)
         If Not Status.CurrentStep = Id Then Exit Sub 'Prevents infinite exit loop.
 
-        SetMaxProgess(Id, 100, True)
+        SetMax(Id, 100, True)
         UpdateLabel(Id, Translation.Translate("\FINISHED"))
 
         Select Case Id
@@ -371,10 +371,14 @@ Public Class SynchronizeForm
                 End If
 
                 SyncingTimeCounter.Stop()
-                If Not Status.Failed Then Handler.SetLastRun() 'Set last run only if the profile hasn't failed, and has synced completely. 'TODO: What if user canceled?
+                ' Set last run only if the profile hasn't failed, and has synced completely.
+                ' Checking for Status.Cancel allows to resync if eg. computer was stopped during sync.
+                ' EndAll() sets Status.Cancel to true, but if the sync completes successfully, this part executes before the call to EndAll 
+                If Not (Status.Failed Or Status.Cancel) Then Handler.SetLastRun() 
+
                 Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), Status)
 
-                If ((Quiet And Not Me.Visible) Or NoStop) Then
+                If (Quiet And Not Me.Visible) Or NoStop Then
                     Me.Close()
                 Else
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
@@ -392,7 +396,7 @@ Public Class SynchronizeForm
         End If
 
         PreviewFinished = True
-        If Not Status.[STOP] Then SyncBtn.Enabled = True
+        If Not Status.Cancel Then SyncBtn.Enabled = True
     End Sub
 
     Private Sub AddPreviewItem(ByRef Item As SyncingItem, ByVal Side As SideOfSource)
@@ -439,7 +443,7 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub EndAll()
-        Status.[STOP] = True
+        Status.Cancel = True
         FullSyncThread.Abort()
         ScanThread.Abort() : SyncThread.Abort()
         TaskDone(1) : TaskDone(2) : TaskDone(3)
@@ -454,7 +458,7 @@ Public Class SynchronizeForm
 
     Private Sub Scan()
         Dim Context As New SyncingAction
-        Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
+        Dim TaskDoneCallback As New TaskDoneDelegate(AddressOf TaskDone)
 
         'Pass 1: Create actions L->R for files/folder copy, and mark dest files that should be kept
         'Pass 2: Create actions R->L for files/folder copy/deletion, based on what was marked as ValidFile, aka based on what should be kept.
@@ -486,36 +490,36 @@ Public Class SynchronizeForm
                 Context.Action = TypeOfAction.Copy
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
-        Me.Invoke(TaskDoneDelegate, 1)
+        Me.Invoke(TaskDoneCallback, 1)
 
-        'NOTE: [to sysadmins] (March 13, 2010) -- Moved to FAQ
+        'NOTE: [to sysadmins] (March 13, 2010) --> Moved to FAQ (http://synchronicity.sourceforge.net/faq.html)
     End Sub
 
     Private Sub Sync()
-        Dim TaskDoneDelegate As New TaskDoneCallBack(AddressOf TaskDone)
-        Dim ProgessSetMaxCallBack As New ProgressSetMaxCallBack(AddressOf SetMaxProgess)
+        Dim TaskDoneCallback As New TaskDoneDelegate(AddressOf TaskDone)
+        Dim SetMaxCallback As New SetMaxDelegate(AddressOf SetMax)
 
         Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
         Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
 
         Me.Invoke(New Action(AddressOf LaunchTimer))
-        Me.Invoke(ProgessSetMaxCallBack, New Object() {2, SyncingList(SideOfSource.Left).Count})
+        Me.Invoke(SetMaxCallback, New Object() {2, SyncingList(SideOfSource.Left).Count})
         Do_Task(SideOfSource.Left, SyncingList(SideOfSource.Left), Left, Right, 2)
-        Me.Invoke(TaskDoneDelegate, 2)
+        Me.Invoke(TaskDoneCallback, 2)
 
-        Me.Invoke(ProgessSetMaxCallBack, New Object() {3, SyncingList(SideOfSource.Right).Count})
+        Me.Invoke(SetMaxCallback, New Object() {3, SyncingList(SideOfSource.Right).Count})
         Do_Task(SideOfSource.Right, SyncingList(SideOfSource.Right), Right, Left, 3)
-        Me.Invoke(TaskDoneDelegate, 3)
+        Me.Invoke(TaskDoneCallback, 3)
     End Sub
 
     '"Source" is "current side", with the corresponding side set to "Side"
     Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
-        Dim SetProgessDelegate As New SetProgressCallBack(AddressOf SetProgess)
-        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+        Dim IncrementCallback As New IncrementDelegate(AddressOf Increment)
+        Dim SetLabelCallback As New SetLabelDelegate(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
             Try
-                Me.Invoke(LabelDelegate, New Object() {CurrentStep, If(Entry.Action = TypeOfAction.Delete, Source, Destination) & Entry.Path})
+                Me.Invoke(SetLabelCallback, New Object() {CurrentStep, If(Entry.Action = TypeOfAction.Delete, Source, Destination) & Entry.Path})
 
                 Select Case Entry.Type
                     Case TypeOfItem.File
@@ -558,7 +562,7 @@ Public Class SynchronizeForm
                 Log.LogAction(Entry, Side, False) 'Side parameter is only used for logging purposes.
             End Try
 
-            If Not Status.[STOP] Then Me.Invoke(SetProgessDelegate, New Object() {CurrentStep, 1})
+            If Not Status.Cancel Then Me.Invoke(IncrementCallback, New Object() {CurrentStep, 1})
         Next
     End Sub
 
@@ -627,11 +631,11 @@ Public Class SynchronizeForm
     Private Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
-        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+        Dim SetLabelCallback As New SetLabelDelegate(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
-        Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
+        Me.Invoke(SetLabelCallback, New Object() {1, Src_FilePath})
 
         Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
         Dim EmptyDirectories As Boolean = (Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True")
@@ -730,7 +734,7 @@ Public Class SynchronizeForm
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
         'Here, Source is set to be the right folder, and dest to be the left folder
-        Dim LabelDelegate As New LabelCallBack(AddressOf UpdateLabel)
+        Dim LabelDelegate As New SetLabelDelegate(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
