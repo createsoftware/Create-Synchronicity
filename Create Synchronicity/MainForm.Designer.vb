@@ -73,6 +73,8 @@ Partial Class MainForm
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Donate = New System.Windows.Forms.PictureBox()
+        Me.ToolStripHeader = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HeaderSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.InfoPanel.SuspendLayout()
         Me.InfoLayout.SuspendLayout()
         Me.ActionsMenu.SuspendLayout()
@@ -317,7 +319,7 @@ Partial Class MainForm
         Me.ProfileName.Dock = System.Windows.Forms.DockStyle.Fill
         Me.ProfileName.Font = New System.Drawing.Font("Verdana", 7.0!)
         Me.ProfileName.Location = New System.Drawing.Point(104, 1)
-        Me.ProfileName.Name = "Name"
+        Me.ProfileName.Name = "ProfileName"
         Me.ProfileName.Size = New System.Drawing.Size(79, 27)
         Me.ProfileName.TabIndex = 1
         Me.ProfileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -440,15 +442,15 @@ Partial Class MainForm
         '
         'StatusIconMenu
         '
-        Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
+        Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripHeader, Me.HeaderSeparator, Me.ExitToolStripMenuItem})
         Me.StatusIconMenu.Name = "StatusIconMenu"
         Me.StatusIconMenu.ShowImageMargin = False
-        Me.StatusIconMenu.Size = New System.Drawing.Size(100, 26)
+        Me.StatusIconMenu.Size = New System.Drawing.Size(159, 76)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(99, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
         Me.ExitToolStripMenuItem.Text = "\CANCEL"
         '
         'Donate
@@ -462,6 +464,18 @@ Partial Class MainForm
         Me.Donate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.Donate.TabIndex = 3
         Me.Donate.TabStop = False
+        '
+        'ToolStripHeader
+        '
+        Me.ToolStripHeader.Enabled = False
+        Me.ToolStripHeader.Name = "ToolStripHeader"
+        Me.ToolStripHeader.Size = New System.Drawing.Size(158, 22)
+        Me.ToolStripHeader.Text = "Create Synchronicity"
+        '
+        'HeaderSeparator
+        '
+        Me.HeaderSeparator.Name = "HeaderSeparator"
+        Me.HeaderSeparator.Size = New System.Drawing.Size(155, 6)
         '
         'MainForm
         '
@@ -524,4 +538,6 @@ Partial Class MainForm
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RenameMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Donate As System.Windows.Forms.PictureBox
+    Friend WithEvents ToolStripHeader As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents HeaderSeparator As System.Windows.Forms.ToolStripSeparator
 End Class
