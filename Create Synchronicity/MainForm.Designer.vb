@@ -444,14 +444,24 @@ Partial Class MainForm
         '
         Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripHeader, Me.HeaderSeparator, Me.ExitToolStripMenuItem})
         Me.StatusIconMenu.Name = "StatusIconMenu"
-        Me.StatusIconMenu.ShowImageMargin = False
-        Me.StatusIconMenu.Size = New System.Drawing.Size(159, 76)
+        Me.StatusIconMenu.Size = New System.Drawing.Size(184, 76)
+        '
+        'ToolStripHeader
+        '
+        Me.ToolStripHeader.Name = "ToolStripHeader"
+        Me.ToolStripHeader.Size = New System.Drawing.Size(183, 22)
+        Me.ToolStripHeader.Text = "Create Synchronicity"
+        '
+        'HeaderSeparator
+        '
+        Me.HeaderSeparator.Name = "HeaderSeparator"
+        Me.HeaderSeparator.Size = New System.Drawing.Size(180, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
-        Me.ExitToolStripMenuItem.Text = "\CANCEL"
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.ExitToolStripMenuItem.Text = ""
         '
         'Donate
         '
@@ -464,18 +474,6 @@ Partial Class MainForm
         Me.Donate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.Donate.TabIndex = 3
         Me.Donate.TabStop = False
-        '
-        'ToolStripHeader
-        '
-        Me.ToolStripHeader.Enabled = False
-        Me.ToolStripHeader.Name = "ToolStripHeader"
-        Me.ToolStripHeader.Size = New System.Drawing.Size(158, 22)
-        Me.ToolStripHeader.Text = "Create Synchronicity"
-        '
-        'HeaderSeparator
-        '
-        Me.HeaderSeparator.Name = "HeaderSeparator"
-        Me.HeaderSeparator.Size = New System.Drawing.Size(155, 6)
         '
         'MainForm
         '
@@ -534,10 +532,10 @@ Partial Class MainForm
     Friend WithEvents Scheduling As System.Windows.Forms.Label
     Friend WithEvents SchedulingLabel As System.Windows.Forms.Label
     Friend WithEvents TimeOffsetLabel As System.Windows.Forms.Label
-    Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RenameMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Donate As System.Windows.Forms.PictureBox
     Friend WithEvents ToolStripHeader As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HeaderSeparator As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
 End Class

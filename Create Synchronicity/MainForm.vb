@@ -34,6 +34,8 @@ Public Class MainForm
 
         BuildIcons()
         Me.Icon = ProgramConfig.GetIcon()
+        Me.ExitToolStripMenuItem.Image = Me.DeleteToolStripMenuItem.Image
+        Me.ExitToolStripMenuItem.Text = Translation.Translate("\CANCEL_CLOSE").Split(";"c)(1)
 
         Translation.TranslateControl(Me)
         Translation.TranslateControl(Me.ActionsMenu)
@@ -89,8 +91,11 @@ Public Class MainForm
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
-        Me.Close()
-        Application.Exit()
+        ExitApp()
+    End Sub
+
+    Private Sub ToolStripHeader_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripHeader.Click
+        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/scheduler.html")
     End Sub
 
     Private Sub Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Actions.KeyDown

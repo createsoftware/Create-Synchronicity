@@ -91,7 +91,6 @@ Public Class SynchronizeForm
             Interaction.StatusIcon.ContextMenuStrip = Nothing
             AddHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
-            Interaction.LoadStatusIcon()
             Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
             Interaction.ShowStatusIcon()

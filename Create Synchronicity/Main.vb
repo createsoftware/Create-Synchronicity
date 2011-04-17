@@ -102,6 +102,7 @@ Module MessageLoop
 
         'Load status icon
         Interaction.LoadStatusIcon()
+        MainFormInstance.ToolStripHeader.Image = Interaction.StatusIcon.Icon.ToBitmap
         Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
 
         'Give updates a way to notify exit
