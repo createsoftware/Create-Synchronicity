@@ -94,9 +94,11 @@ Public Class MainForm
         ExitApp()
     End Sub
 
+#If 0 Then
     Private Sub ToolStripHeader_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripHeader.Click
         Diagnostics.Process.Start("http://synchronicity.sourceforge.net/scheduler.html")
     End Sub
+#End If
 
     Private Sub Actions_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Actions.KeyDown
         If Actions.SelectedItems.Count = 0 Then Exit Sub

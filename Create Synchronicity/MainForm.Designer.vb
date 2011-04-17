@@ -448,6 +448,7 @@ Partial Class MainForm
         '
         'ToolStripHeader
         '
+        Me.ToolStripHeader.Enabled = False
         Me.ToolStripHeader.Name = "ToolStripHeader"
         Me.ToolStripHeader.Size = New System.Drawing.Size(183, 22)
         Me.ToolStripHeader.Text = "Create Synchronicity"
@@ -461,7 +462,6 @@ Partial Class MainForm
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
-        Me.ExitToolStripMenuItem.Text = ""
         '
         'Donate
         '
