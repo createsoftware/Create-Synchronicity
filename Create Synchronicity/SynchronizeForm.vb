@@ -897,7 +897,7 @@ Public Class SynchronizeForm
     End Function
 #End Region
 
-#Region "Shared functions"
+#Region " Shared functions "
     Private Shared Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path?
         Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
     End Function
