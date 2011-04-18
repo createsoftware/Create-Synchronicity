@@ -64,7 +64,7 @@ Public Class MainForm
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
         If e.KeyCode = Keys.F1 Then
-            Interaction.StartProcess("http://synchronicity.sourceforge.net/help.html")
+            Interaction.StartProcess(ConfigOptions.Website & "help.html")
         ElseIf e.KeyCode = Keys.F5 Then
             ReloadConfigs()
         ElseIf e.Control Then
@@ -96,7 +96,7 @@ Public Class MainForm
 
 #If 0 Then
     Private Sub ToolStripHeader_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripHeader.Click
-        Diagnostics.Process.Start("http://synchronicity.sourceforge.net/scheduler.html")
+        Diagnostics.Process.Start(ConfigOptions.Website & "scheduler.html")
     End Sub
 #End If
 
@@ -221,7 +221,7 @@ Public Class MainForm
     End Sub
 
     Private Sub Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.Click
-        Interaction.StartProcess("http://synchronicity.sourceforge.net/contribute.html")
+        Interaction.StartProcess(ConfigOptions.Website & "contribute.html")
     End Sub
 
     Private Sub Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.MouseEnter

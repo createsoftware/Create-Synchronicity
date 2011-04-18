@@ -75,6 +75,8 @@ Public Module ConfigOptions
     Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
     Public Const RegistryBootKey As String = "Software\Microsoft\Windows\CurrentVersion\Run"
     Public Const RegistryRootedBootKey As String = "HKEY_CURRENT_USER\" & RegistryBootKey
+    Public Const Website As String = "http://synchronicity.sourceforge.net/"
+    Public Const UserWeb As String = "http://createsoftware.users.sourceforge.net/"
 End Module
 
 Structure SchedulerEntry
@@ -662,12 +664,18 @@ Public Module Updates
             UpdateClient.Proxy = System.Net.HttpWebRequest.DefaultWebProxy 'Tracker #2976549
             UpdateClient.Proxy.Credentials = Net.CredentialCache.DefaultCredentials
 #End If
-            Dim LatestVersion As String = UpdateClient.DownloadString(If(CommandLine.RunAs = CommandLine.RunMode.Scheduler, "http://synchronicity.sourceforge.net/code/scheduler-version.txt", "http://synchronicity.sourceforge.net/code/version.txt"))
+            Dim LatestVersion As String
+            Dim Url As String = ConfigOptions.Website & If(CommandLine.RunAs = CommandLine.RunMode.Scheduler, "code/scheduler-version.txt", "code/version.txt")
+            Dim SecondaryUrl As String = ConfigOptions.UserWeb & "code/synchronicity-version.txt"
+            Try
+                LatestVersion = UpdateClient.DownloadString(Url)
+            Catch ex As Net.WebException
+                LatestVersion = UpdateClient.DownloadString(SecondaryUrl)
+            End Try
 
-            If LatestVersion = "" Then Throw New Net.WebException()
-            If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
+             If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    Diagnostics.Process.Start("http://synchronicity.sourceforge.net/update.html")
+                    Diagnostics.Process.Start(ConfigOptions.Website & "update.html")
                     If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
                 End If
             Else

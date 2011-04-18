@@ -216,7 +216,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HelpLink.Click
-        Interaction.StartProcess("http://synchronicity.sourceforge.net/settings-help.html")
+        Interaction.StartProcess(ConfigOptions.Website & "settings-help.html")
     End Sub
 #End Region
 

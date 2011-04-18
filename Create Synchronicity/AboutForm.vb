@@ -39,11 +39,11 @@ Public Class AboutForm
     End Sub
 
     Private Sub LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToProductPage.LinkClicked
-        Interaction.StartProcess("http://synchronicity.sourceforge.net/")
+        Interaction.StartProcess(ConfigOptions.Website)
     End Sub
 
     Private Sub LinkToWebsite_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToWebsite.LinkClicked
-        Interaction.StartProcess("http://createsoftware.users.sourceforge.net/")
+        Interaction.StartProcess(ConfigOptions.UserWeb)
     End Sub
 
     Private Sub VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles VersionInfo.LinkClicked
