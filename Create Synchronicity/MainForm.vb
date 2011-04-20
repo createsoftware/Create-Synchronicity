@@ -268,11 +268,11 @@ Public Class MainForm
             Dim NewItem As ListViewItem = Actions.Items.Add(ProfileName)
 
             NewItem.Group = Actions.Groups(1)
-            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ConfigOptions.Method, 1) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
+            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ConfigOptions.Method, 0) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
             NewItem.SubItems.Add(GetMethodName(ProfileName)).ForeColor = Drawing.Color.DarkGray
 
-            Dim GroupName As String = Profiles(ProfileName).GetSetting(Of String)(ConfigOptions.Group)
-            If GroupName IsNot Nothing AndAlso GroupName <> "" Then
+            Dim GroupName As String = Profiles(ProfileName).GetSetting(Of String)(ConfigOptions.Group, "")
+            If GroupName <> "" Then
                 If Not Groups.Contains(GroupName) Then
                     Groups.Add(GroupName)
                     Actions.Groups.Add(New ListViewGroup(GroupName, GroupName))
@@ -327,14 +327,14 @@ Public Class MainForm
 
         Select Case Profiles(Name).GetSetting(Of Integer)(ConfigOptions.Restrictions, 0)
             Case 1
-                FileTypes.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.IncludedTypes)
+                FileTypes.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.IncludedTypes, "")
             Case 2
-                FileTypes.Text = "-" & Profiles(Name).GetSetting(Of String)(ConfigOptions.ExcludedTypes)
+                FileTypes.Text = "-" & Profiles(Name).GetSetting(Of String)(ConfigOptions.ExcludedTypes, "")
         End Select
     End Sub
 
     Private Shared Function GetMethodName(ByVal Name As String) As String
-        Select Case Profiles(Name).GetSetting(Of String)(ConfigOptions.Method)
+        Select Case Profiles(Name).GetSetting(Of String)(ConfigOptions.Method, "")
             Case "1"
                 Return Translation.Translate("\LR_INCREMENTAL")
             Case "2"

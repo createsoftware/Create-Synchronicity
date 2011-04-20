@@ -468,7 +468,7 @@ NotInheritable Class ProfileHandler
     End Function
 
     Sub LoadScheduler()
-        Dim Opts() As String = GetSetting(Of String)(ConfigOptions.Scheduling).Split(";"c)
+        Dim Opts() As String = GetSetting(Of String)(ConfigOptions.Scheduling, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
         Select Case Opts.GetLength(0)
             Case 0

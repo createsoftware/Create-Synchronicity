@@ -68,9 +68,9 @@ Public Class SynchronizeForm
         ColumnSorter = New ListViewColumnSorter(3)
         PreviewList.ListViewItemSorter = ColumnSorter
 
-        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(Of String)(ConfigOptions.IncludedTypes))
-        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(Of String)(ConfigOptions.ExcludedTypes))
-        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(Of String)(ConfigOptions.ExcludedFolders), True)
+        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(Of String)(ConfigOptions.IncludedTypes, ""))
+        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(Of String)(ConfigOptions.ExcludedTypes, ""))
+        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(Of String)(ConfigOptions.ExcludedFolders, ""), True)
 
         FullSyncThread = New Threading.Thread(AddressOf FullSync)
         ScanThread = New Threading.Thread(AddressOf Scan)
@@ -659,7 +659,7 @@ Public Class SynchronizeForm
 
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
-                Dim Suffix As String = If(CompressionEnabled(), Handler.GetSetting(Of String)(ConfigOptions.CompressionExt), "")
+                Dim Suffix As String = If(CompressionEnabled(), Handler.GetSetting(Of String)(ConfigOptions.CompressionExt, ""), "")
                 Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix)
 
 #If DEBUG Then
@@ -798,7 +798,7 @@ Public Class SynchronizeForm
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
 
         Dim Compression As Boolean = CompressionEnabled()
-        If Compression Then DestFile &= Handler.GetSetting(Of String)(ConfigOptions.CompressionExt)
+        If Compression Then DestFile &= Handler.GetSetting(Of String)(ConfigOptions.CompressionExt, "")
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
@@ -867,7 +867,7 @@ Public Class SynchronizeForm
     End Function
 
     Private Function CompressionEnabled() As Boolean
-        Return Handler.GetSetting(Of String)(ConfigOptions.CompressionExt) <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
+        Return Handler.GetSetting(Of String)(ConfigOptions.CompressionExt, "") <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 
     Private Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
