@@ -19,7 +19,7 @@ Public Class MainForm
 #End If
 
         ' Code (largely inspired) by U.N. Owen
-        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, "").Split(","))
+        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, "").Split(","c))
         If WindowSettings.Count = 4 AndAlso WindowSettings.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
             Try
                 Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
@@ -44,7 +44,7 @@ Public Class MainForm
         'Position the "About" label correctly
         Dim PreviousWidth As Integer = AboutLinkLabel.Width
         AboutLinkLabel.AutoSize = True
-        AboutLinkLabel.Location += New Drawing.Point(PreviousWidth - AboutLinkLabel.Width, 0)
+        AboutLinkLabel.Location += New Drawing.Size(PreviousWidth - AboutLinkLabel.Width, 0)
     End Sub
 
     Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -166,7 +166,7 @@ Public Class MainForm
 
     Private Sub ActionsMenu_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ActionsMenu.Opening
         Dim FileSize As Integer = If(IO.File.Exists(ProgramConfig.GetLogPath(CurrentProfile)), CInt((New System.IO.FileInfo(ProgramConfig.GetLogPath(CurrentProfile))).Length / 1000), 0)
-        ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag, FileSize)
+        ClearLogMenuItem.Text = String.Format(ClearLogMenuItem.Tag.ToString, FileSize)
     End Sub
 
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
@@ -249,7 +249,7 @@ Public Class MainForm
         Actions.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
     End Sub
 
-    Sub SetFont(ByVal Size As Integer)
+    Sub SetFont(ByVal Size As Single)
         Size = Math.Max(6.25, Math.Min(24.25, Size))
         Actions.Font = New Drawing.Font(Actions.Font.Name, Size)
     End Sub
@@ -268,10 +268,10 @@ Public Class MainForm
             Dim NewItem As ListViewItem = Actions.Items.Add(ProfileName)
 
             NewItem.Group = Actions.Groups(1)
-            NewItem.ImageIndex = CInt(Profiles(ProfileName).GetSetting(ConfigOptions.Method)) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
+            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ConfigOptions.Method, 1) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
             NewItem.SubItems.Add(GetMethodName(ProfileName)).ForeColor = Drawing.Color.DarkGray
 
-            Dim GroupName As String = Profiles(ProfileName).GetSetting(ConfigOptions.Group)
+            Dim GroupName As String = Profiles(ProfileName).GetSetting(Of String)(ConfigOptions.Group)
             If GroupName IsNot Nothing AndAlso GroupName <> "" Then
                 If Not Groups.Contains(GroupName) Then
                     Groups.Add(GroupName)
@@ -297,8 +297,8 @@ Public Class MainForm
         If Clear Then Exit Sub
 
         Method.Text = GetMethodName(Name)
-        Source.Text = Profiles(Name).GetSetting(ConfigOptions.Source)
-        Destination.Text = Profiles(Name).GetSetting(ConfigOptions.Destination)
+        Source.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Source)
+        Destination.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Destination)
 
         Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper)
 
@@ -316,25 +316,25 @@ Public Class MainForm
             Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour.ToString.PadLeft(2, "0"c) & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute.ToString.PadLeft(2, "0"c)
         End If
 
-        TimeOffset.Text = Profiles(Name).GetSetting(ConfigOptions.TimeOffset)
+        TimeOffset.Text = Profiles(Name).GetSetting(Of Integer)(ConfigOptions.TimeOffset).ToString
 
-        Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
+        Select Case Profiles(Name).GetSetting(Of Integer)(ConfigOptions.Restrictions, 0)
             Case 0
                 LimitedCopy.Text = Translation.Translate("\NO")
             Case 1, 2
                 LimitedCopy.Text = Translation.Translate("\YES")
         End Select
 
-        Select Case CInt(Profiles(Name).GetSetting(ConfigOptions.Restrictions, "0"))
+        Select Case Profiles(Name).GetSetting(Of Integer)(ConfigOptions.Restrictions, 0)
             Case 1
-                FileTypes.Text = Profiles(Name).GetSetting(ConfigOptions.IncludedTypes, "")
+                FileTypes.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.IncludedTypes)
             Case 2
-                FileTypes.Text = "-" & Profiles(Name).GetSetting(ConfigOptions.ExcludedTypes, "")
+                FileTypes.Text = "-" & Profiles(Name).GetSetting(Of String)(ConfigOptions.ExcludedTypes)
         End Select
     End Sub
 
     Private Shared Function GetMethodName(ByVal Name As String) As String
-        Select Case Profiles(Name).GetSetting(ConfigOptions.Method, "")
+        Select Case Profiles(Name).GetSetting(Of String)(ConfigOptions.Method)
             Case "1"
                 Return Translation.Translate("\LR_INCREMENTAL")
             Case "2"

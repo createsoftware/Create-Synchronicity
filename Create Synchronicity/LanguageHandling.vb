@@ -78,18 +78,18 @@ Friend Class LanguageHandler
             For Each Item As ListViewItem In DirectCast(Ctrl, ListView).Items
                 For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
                     SubItem.Text = Translate(SubItem.Text)
-                    SubItem.Tag = Translate(SubItem.Tag, ";")
+                    SubItem.Tag = Translate(SubItem.Tag.ToString, ";")
                 Next
             Next
 
         ElseIf TypeOf Ctrl Is ContextMenuStrip Then
             For Each Item As ToolStripItem In DirectCast(Ctrl, ContextMenuStrip).Items
                 Item.Text = Translate(Item.Text)
-                Item.Tag = Translate(Item.Tag, ";")
+                Item.Tag = Translate(Item.Tag.ToString, ";")
             Next
         End If
 
-        Ctrl.Tag = Translate(Ctrl.Tag, ";")
+        Ctrl.Tag = Translate(Ctrl.Tag.ToString, ";")
 
         For Each ChildCtrl As Control In Ctrl.Controls
             TranslateControl(ChildCtrl)

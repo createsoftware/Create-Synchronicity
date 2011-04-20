@@ -11,7 +11,7 @@
     End Sub
 
     Private Sub LanguageForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
-        If LanguagesList.SelectedIndex <> -1 Then ProgramConfig.SetProgramSetting(ConfigOptions.Language, LanguagesList.SelectedItem.ToString.Split("-")(0).Trim)
+        If LanguagesList.SelectedIndex <> -1 Then ProgramConfig.SetProgramSetting(ConfigOptions.Language, LanguagesList.SelectedItem.ToString.Split("-"c)(0).Trim)
     End Sub
 
     Private Sub OkBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OkBtn.Click

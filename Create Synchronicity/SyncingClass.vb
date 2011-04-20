@@ -124,9 +124,9 @@ Public Class FileNamePattern
     End Function
 
     Shared Function GetPattern(ByVal Str As String, Optional ByVal IsFolder As Boolean = False) As FileNamePattern
-        If IsBoxed("""", Str) Then 'Filename
+        If IsBoxed(""""c, Str) Then 'Filename
             Return New FileNamePattern(If(IsFolder, PatternType.FolderName, PatternType.FileName), Unbox(Str))
-        ElseIf IsBoxed("/", Str) Then 'Regex
+        ElseIf IsBoxed("/"c, Str) Then 'Regex
             Return New FileNamePattern(PatternType.Regex, Unbox(Str))
         Else
             Return New FileNamePattern(PatternType.FileExt, Str.ToLower)
@@ -143,7 +143,7 @@ Public Class FileNamePattern
         Dim Patterns As New List(Of String)(PatternsStr.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
 
         While Patterns.Count > 0 And Patterns.Count < 1024 'Prevent circular references
-            If IsBoxed(":", Patterns(0)) Then
+            If IsBoxed(":"c, Patterns(0)) Then
                 Dim SubPatterns As String = SharpInclude(Unbox(Patterns(0)))
                 Patterns.AddRange(SubPatterns.Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries))
             Else

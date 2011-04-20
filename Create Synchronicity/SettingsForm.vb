@@ -153,7 +153,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PropagateUpdatesOption.MouseEnter, StrictDateComparisonOption.MouseEnter
-        BottomDescLabel.Text = CType(sender, Control).Tag
+        BottomDescLabel.Text = CType(sender, Control).Tag.ToString
     End Sub
 
     Private Sub Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PropagateUpdatesOption.MouseLeave, StrictDateComparisonOption.MouseLeave
@@ -424,7 +424,7 @@ Public Class SettingsForm
     Private Sub UpdateSettings(ByVal LoadToForm As Boolean)
         Cleanup_Paths()
 
-        'Careful: Using .ToString here would break the ByRef passing of the second argument.
+        'Careful: Using .ToString here would break the ByRef passing of the second argument. Problem with Option strict.
         Handler.SetSetting(ConfigOptions.Source, FromTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.Destination, ToTextBox.Text, LoadToForm)
         Handler.SetSetting(ConfigOptions.IncludedTypes, IncludedTypesTextBox.Text, LoadToForm)
@@ -445,7 +445,7 @@ Public Class SettingsForm
         Dim Method As String = (If(LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
 
         If LoadToForm Then
-            Select Case Handler.GetSetting(ConfigOptions.Method)
+            Select Case Handler.GetSetting(Of String)(ConfigOptions.Method) 'TODO: Check type
                 Case "1"
                     LRIncrementalMethodOption.Checked = True
                 Case "2"
@@ -455,7 +455,7 @@ Public Class SettingsForm
             End Select
 
             CopyAllFilesCheckBox.Checked = False
-            Select Case Handler.GetSetting(ConfigOptions.Restrictions)
+            Select Case Handler.GetSetting(Of String)(ConfigOptions.Restrictions)
                 Case "1"
                     IncludeFilesOption.Checked = True
                 Case "2"
@@ -478,7 +478,7 @@ Public Class SettingsForm
             End If
 
             If RightView.Enabled Then
-                If RightView.CheckBoxes Or Handler.GetSetting(ConfigOptions.RightSubFolders) Is Nothing Then
+                If RightView.CheckBoxes Or Handler.GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then 'TODO: Check Is Nothing
                     Handler.RightCheckedNodes.Clear()
                     BuildCheckedNodesList(Handler.RightCheckedNodes, RightView.Nodes(0))
                     Handler.SetSetting(ConfigOptions.RightSubFolders, GetString(Handler.RightCheckedNodes))
@@ -492,7 +492,7 @@ Public Class SettingsForm
 #If LINUX Then
         Return If(Path.Contains("/"), "/", "") & Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
 #Else
-        Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "})
+        Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "c})
 #End If
     End Function
 

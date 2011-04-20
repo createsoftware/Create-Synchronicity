@@ -68,9 +68,9 @@ Public Class SynchronizeForm
         ColumnSorter = New ListViewColumnSorter(3)
         PreviewList.ListViewItemSorter = ColumnSorter
 
-        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(ConfigOptions.IncludedTypes, ""))
-        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(ConfigOptions.ExcludedTypes, ""))
-        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(ConfigOptions.ExcludedFolders, ""), True)
+        FileNamePattern.LoadPatternsList(IncludedPatterns, Handler.GetSetting(Of String)(ConfigOptions.IncludedTypes))
+        FileNamePattern.LoadPatternsList(ExcludedPatterns, Handler.GetSetting(Of String)(ConfigOptions.ExcludedTypes))
+        FileNamePattern.LoadPatternsList(ExcludedDirPatterns, Handler.GetSetting(Of String)(ConfigOptions.ExcludedFolders), True)
 
         FullSyncThread = New Threading.Thread(AddressOf FullSync)
         ScanThread = New Threading.Thread(AddressOf Scan)
@@ -79,7 +79,7 @@ Public Class SynchronizeForm
         Me.CreateHandle()
         Translation.TranslateControl(Me)
         Me.Icon = ProgramConfig.GetIcon()
-        Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
+        Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
     End Sub
 
     Function StartSynchronization(ByVal CalledShowModal As Boolean) As Boolean
@@ -206,8 +206,8 @@ Public Class SynchronizeForm
         If CurItem.Tag Is Nothing OrElse CurItem.SubItems.Count < 3 Then Return False
 
         Dim Left As String, Right As String
-        Left = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source)) & CurItem.SubItems(3).Text
-        Right = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination)) & CurItem.SubItems(3).Text
+        Left = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Source)) & CurItem.SubItems(3).Text
+        Right = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Destination)) & CurItem.SubItems(3).Text
 
         Select Case CurItem.Tag.ToString
             Case "LR"
@@ -222,7 +222,7 @@ Public Class SynchronizeForm
         Return True
     End Function
 
-    Private Shared Function FormatSize(ByVal Size As Long) As String
+    Private Shared Function FormatSize(ByVal Size As Double) As String
         Select Case Size
             Case Is >= (1 << 30)
                 Return Math.Round(Size / (1 << 30), 2).ToString & " GB"
@@ -236,7 +236,7 @@ Public Class SynchronizeForm
     End Function
 
     Private Function FormatTimespan(ByVal T As TimeSpan) As String
-        Dim Hours As Integer = Math.Truncate(T.TotalHours)
+        Dim Hours As Integer = CInt(Math.Truncate(T.TotalHours))
         Return If(Hours = 0, "", Hours & "h, ") & If(T.Minutes = 0, "", T.Minutes.ToString & "m, ") & T.Seconds.ToString & "s"
     End Function
 
@@ -247,7 +247,7 @@ Public Class SynchronizeForm
         If (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
             Dim RemainingSeconds As Double = (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds
             'RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
-            EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, RemainingSeconds)))
+            EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, CInt(RemainingSeconds))))
         End If
         ElapsedTime.Text = FormatTimespan(Status.TimeElapsed) & EstimateString
 
@@ -375,7 +375,7 @@ Public Class SynchronizeForm
                 ' EndAll() sets Status.Cancel to true, but if the sync completes successfully, this part executes before the call to EndAll 
                 If Not (Status.Failed Or Status.Cancel) Then Handler.SetLastRun() 
 
-                Log.SaveAndDispose(Handler.GetSetting(ConfigOptions.Source), Handler.GetSetting(ConfigOptions.Destination), Status)
+                Log.SaveAndDispose(Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination), Status)
 
                 If (Quiet And Not Me.Visible) Or NoStop Then
                     Me.Close()
@@ -468,8 +468,8 @@ Public Class SynchronizeForm
 
         ValidFiles.Clear()
 
-        Dim Source As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
-        Dim Destination As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
+        Dim Source As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Source))
+        Dim Destination As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Destination))
 
         Me.Invoke(New Action(AddressOf LaunchTimer))
         Context.Source = SideOfSource.Left
@@ -481,7 +481,7 @@ Public Class SynchronizeForm
         Context.Source = SideOfSource.Right
         Context.SourcePath = Destination
         Context.DestinationPath = Source
-        Select Case Handler.GetSetting(ConfigOptions.Method)
+        Select Case Handler.GetSetting(Of String)(ConfigOptions.Method)
             Case "0"
                 Context.Action = TypeOfAction.Delete
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
@@ -498,8 +498,8 @@ Public Class SynchronizeForm
         Dim TaskDoneCallback As New TaskDoneDelegate(AddressOf TaskDone)
         Dim SetMaxCallback As New SetMaxDelegate(AddressOf SetMax)
 
-        Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Source))
-        Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(ConfigOptions.Destination))
+        Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Source))
+        Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Destination))
 
         Me.Invoke(New Action(AddressOf LaunchTimer))
         Me.Invoke(SetMaxCallback, New Object() {2, SyncingList(SideOfSource.Left).Count})
@@ -535,7 +535,7 @@ Public Class SynchronizeForm
                         Select Case Entry.Action
                             Case TypeOfAction.Copy
                                 IO.Directory.CreateDirectory(Destination & Entry.Path)
-                                IO.Directory.SetCreationTimeUtc(Destination & Entry.Path, IO.Directory.GetCreationTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
+                                IO.Directory.SetCreationTimeUtc(Destination & Entry.Path, IO.Directory.GetCreationTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0)))
                                 Status.CreatedFolders += 1
                             Case TypeOfAction.Delete
                                 If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then
@@ -636,8 +636,8 @@ Public Class SynchronizeForm
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
         Me.Invoke(SetLabelCallback, New Object() {1, Src_FilePath})
 
-        Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
-        Dim EmptyDirectories As Boolean = (Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True")
+        Dim PropagateUpdates As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.PropagateUpdates, True)
+        Dim EmptyDirectories As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.ReplicateEmptyDirectories, False) 'TODO: Check default value
 
         Dim InitialCount As Integer
         Dim IsSingularity As Boolean
@@ -659,7 +659,7 @@ Public Class SynchronizeForm
 
         Try
             For Each SourceFile As String In IO.Directory.GetFiles(Src_FilePath)
-                Dim Suffix As String = If(CompressionEnabled(), Handler.GetSetting(ConfigOptions.CompressionExt, ""), "")
+                Dim Suffix As String = If(CompressionEnabled(), Handler.GetSetting(Of String)(ConfigOptions.CompressionExt), "")
                 Dim DestinationFile As String = CombinePathes(Dest_FilePath, IO.Path.GetFileName(SourceFile) & Suffix)
 
 #If DEBUG Then
@@ -739,8 +739,8 @@ Public Class SynchronizeForm
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
         Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
 
-        'Dim PropagateUpdates As Boolean = (Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "True")
-        'Dim EmptyDirectories As Boolean = (Handler.GetSetting(ConfigOptions.ReplicateEmptyDirectories, "False") = "True"
+        'Dim PropagateUpdates As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.PropagateUpdates, True)
+        'Dim EmptyDirectories As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.ReplicateEmptyDirectories, False)
 
 #If DEBUG Then
         Log.LogInfo(String.Format("=> Scanning folder ""{0}"" for files to delete.", Folder))
@@ -798,7 +798,7 @@ Public Class SynchronizeForm
         Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
 
         Dim Compression As Boolean = CompressionEnabled()
-        If Compression Then DestFile &= Handler.GetSetting(ConfigOptions.CompressionExt, "")
+        If Compression Then DestFile &= Handler.GetSetting(Of String)(ConfigOptions.CompressionExt)
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
@@ -820,7 +820,7 @@ Public Class SynchronizeForm
             End If
         End If
 
-        If Handler.GetSetting(ConfigOptions.TimeOffset, "0") <> "0" Then 'Updating attributes is needed.
+        If Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0) <> 0 Then 'Updating attributes is needed.
 #If DEBUG Then
             Log.LogInfo("DST: """ & DestFile & """ has been copied with attributes " & IO.File.GetAttributes(DestFile) & " , now setting attributes to Normal before setting Last Write Time")
 #End If
@@ -829,7 +829,7 @@ Public Class SynchronizeForm
             Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
 #End If
             'TODO: Check if s/DestFile/SourceFile would change something (I guess it would)
-            IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0")))
+            IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0)))
         End If
 
 #If DEBUG Then
@@ -839,14 +839,14 @@ Public Class SynchronizeForm
 
         Status.CreatedFiles += 1
         If Not Compression Then Status.BytesCopied += GetSize(SourceFile)
-        If Handler.GetSetting(ConfigOptions.Checksum, "False") AndAlso Md5(SourceFile) <> Md5(DestFile) Then Throw New System.Security.Cryptography.CryptographicException("MD5 validation: failed.")
+        If Handler.GetSetting(Of Boolean)(ConfigOptions.Checksum, False) AndAlso Md5(SourceFile) <> Md5(DestFile) Then Throw New System.Security.Cryptography.CryptographicException("MD5 validation: failed.")
     End Sub
 #End Region
 
 #Region " Functions "
     Private Function HasAcceptedFilename(ByVal Path As String) As Boolean
         Try
-            Select Case Handler.GetSetting(ConfigOptions.Restrictions)
+            Select Case Handler.GetSetting(Of String)(ConfigOptions.Restrictions) 'TODO: refine types.
                 'LATER: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
                 Case "1"
                     Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
@@ -867,31 +867,31 @@ Public Class SynchronizeForm
     End Function
 
     Private Function CompressionEnabled() As Boolean
-        Return Handler.GetSetting(ConfigOptions.CompressionExt, "") <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
+        Return Handler.GetSetting(Of String)(ConfigOptions.CompressionExt) <> "" 'AndAlso GetSize(File) > ConfigOptions.CompressionThreshold
     End Function
 
     Private Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
-        If Handler.GetSetting(ConfigOptions.PropagateUpdates, "True") = "False" Then Return False
+        If (Not Handler.GetSetting(Of Boolean)(ConfigOptions.PropagateUpdates, True)) Then Return False
 
-        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(ConfigOptions.TimeOffset, "0"))
+        Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0))
         Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Destination))
 
-        If Handler.GetSetting(ConfigOptions.FuzzyDstCompensation, "False") = "True" Then
+        If Handler.GetSetting(Of Boolean)(ConfigOptions.FuzzyDstCompensation, False) Then
             Dim HoursDiff As Integer = CInt((SourceFATTime - DestFATTime).TotalHours)
             If Math.Abs(HoursDiff) = 1 Then DestFATTime = DestFATTime.AddHours(HoursDiff)
         End If
 
         'User-enabled checks
-        If Handler.GetSetting(ConfigOptions.Checksum, "False") AndAlso Md5(Source) <> Md5(Destination) Then Return True
-        If Handler.GetSetting(ConfigOptions.CheckFileSize, "False") AndAlso GetSize(Source) <> GetSize(Destination) Then Return True
+        If Handler.GetSetting(Of Boolean)(ConfigOptions.Checksum, False) AndAlso Md5(Source) <> Md5(Destination) Then Return True
+        If Handler.GetSetting(Of Boolean)(ConfigOptions.CheckFileSize, False) AndAlso GetSize(Source) <> GetSize(Destination) Then Return True
 
-        If Handler.GetSetting(ConfigOptions.StrictDateComparison, "True") = "True" Then
+        If Handler.GetSetting(Of Boolean)(ConfigOptions.StrictDateComparison, True) Then
             If SourceFATTime = DestFATTime Then Return False
         Else
             If Math.Abs((SourceFATTime - DestFATTime).TotalSeconds) <= 4 Then Return False 'Note: NTFSToFATTime introduces additional fuzzyness (justifies the <= ('=')).
         End If
 
-        If SourceFATTime < DestFATTime And Handler.GetSetting(ConfigOptions.StrictMirror, "False") = "False" Then Return False
+        If SourceFATTime < DestFATTime AndAlso (Not Handler.GetSetting(Of Boolean)(ConfigOptions.StrictMirror, False)) Then Return False
 
         Return True
     End Function

@@ -200,7 +200,7 @@ NotInheritable Class ConfigHandler
             Try
                 Return CType(CObj(Val), T)
             Catch
-                SetProgramSetting(Key, DefaultVal.ToString)
+                SetProgramSetting(Key, DefaultVal.ToString) 'Couldn't convert the value to a proper format; resetting.
             End Try
         End If
         Return DefaultVal
@@ -294,7 +294,7 @@ NotInheritable Class ProfileHandler
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
-        If GetSetting(ConfigOptions.MayCreateDestination, "False") And GetSetting(ConfigOptions.RightSubFolders, Nothing) = Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*")
+        If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*") 'TODO: Check types (Nothing)
 
         PredicateConfigMatchingList = New Dictionary(Of String, String)
         PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
@@ -356,13 +356,13 @@ NotInheritable Class ProfileHandler
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
-        If Not IO.Directory.Exists(TranslatePath(GetSetting(ConfigOptions.Source))) Then
+        If Not IO.Directory.Exists(TranslatePath(GetSetting(Of String)(ConfigOptions.Source))) Then
             InvalidListing.Add(Translation.Translate("\INVALID_SOURCE"))
             IsValid = False
         End If
 
-        Dim Dest As String = TranslatePath(GetSetting(ConfigOptions.Destination))
-        Dim _MayCreateDest As Boolean = GetSetting(ConfigOptions.MayCreateDestination, "False")
+        Dim Dest As String = TranslatePath(GetSetting(Of String)(ConfigOptions.Destination))
+        Dim _MayCreateDest As Boolean = GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False)
         If _MayCreateDest And TryCreateDest Then
             Try
                 IO.Directory.CreateDirectory(Dest)
@@ -380,7 +380,7 @@ NotInheritable Class ProfileHandler
             If Not Configuration.ContainsKey(Pair.Key) Then
                 IsValid = False
                 InvalidListing.Add(String.Format(Translation.Translate("\SETTING_UNSET"), Pair.Key))
-            ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Pair.Key), Pair.Value) Then
+            ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Of String)(Pair.Key), Pair.Value) Then
                 IsValid = False
                 InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
             End If
@@ -407,12 +407,12 @@ NotInheritable Class ProfileHandler
             Return False
         Else
             If WarnUnrootedPaths Then
-                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(ConfigOptions.Source))) Then
-                    If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ConfigOptions.Source))) Then
+                    If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
 
-                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(ConfigOptions.Destination))) Then
-                    If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ConfigOptions.Destination))) Then
+                    If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
             End If
 
@@ -448,24 +448,33 @@ NotInheritable Class ProfileHandler
     Sub SetSetting(ByVal SettingName As String, ByRef SettingField As String, ByVal LoadSetting As Boolean)
         'Passes the current value as default answer.
         If LoadSetting Then
-            SettingField = GetSetting(SettingName, SettingField)
+            SettingField = GetSetting(SettingName, SettingField) 'COULDDO: More type safety here; the current call is GetSetting(Of String)
         Else
             Configuration(SettingName) = SettingField
         End If
     End Sub
 
-    Function GetSetting(ByVal SettingName As String, Optional ByRef DefaultVal As String = Nothing) As String
-        Return If(Configuration.ContainsKey(SettingName), Configuration(SettingName), DefaultVal)
+    'Byref!!? FIXME!
+    Function GetSetting(Of T)(ByVal Key As String, Optional ByVal DefaultVal As T = Nothing) As T
+        Dim Val As String = ""
+        If Configuration.TryGetValue(Key, Val) AndAlso Not String.IsNullOrEmpty(Val) Then
+            Try
+                Return CType(CObj(Val), T)
+            Catch
+                SetSetting(Key, DefaultVal.ToString) 'Couldn't convert the value to a proper format; resetting.
+            End Try
+        End If
+        Return DefaultVal
     End Function
 
     Sub LoadScheduler()
-        Dim Opts() As String = GetSetting(ConfigOptions.Scheduling, "").Split(";"c)
+        Dim Opts() As String = GetSetting(Of String)(ConfigOptions.Scheduling).Split(";"c)
 
         Select Case Opts.GetLength(0)
             Case 0
                 Scheduler = New ScheduleInfo(ScheduleInfo.NEVER)
             Case ConfigOptions.SchedulingSettingsCount
-                Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4))
+                Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4)) 'TODO check for parameters type.
             Case Else
                 Scheduler = New ScheduleInfo(ScheduleInfo.NEVER) 'NOTE: Wrong strings default to never
         End Select
@@ -548,7 +557,7 @@ NotInheritable Class ProfileHandler
 
     Public Function GetLastRun() As Date
         Try
-            Return CDate(GetSetting(ConfigOptions.LastRun, ScheduleInfo.DATE_NEVER.ToString))
+            Return GetSetting(Of Date)(ConfigOptions.LastRun, ScheduleInfo.DATE_NEVER) 'TODO: Check conversion
         Catch
             Return ScheduleInfo.DATE_NEVER
         End Try
@@ -576,10 +585,10 @@ Structure ScheduleInfo
     Public MonthDay As Integer
     Public Hour, Minute As Integer
 
-    Public Const NEVER = "never"
-    Public Const DAILY = "daily"
-    Public Const WEEKLY = "weekly"
-    Public Const MONTHLY = "monthly"
+    Public Const NEVER As String = "never"
+    Public Const DAILY As String = "daily"
+    Public Const WEEKLY As String = "weekly"
+    Public Const MONTHLY As String = "monthly"
 
     Public Shared ReadOnly DATE_NEVER As Date = Date.MaxValue
     Public Shared ReadOnly DATE_CATCHUP As Date = Date.MinValue
