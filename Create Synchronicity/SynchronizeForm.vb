@@ -34,7 +34,7 @@ Public Class SynchronizeForm
     Private Delegate Sub SetMaxDelegate(ByVal Id As Integer, ByVal Max As Integer)
     Private Delegate Sub IncrementDelegate(ByVal Id As Integer, ByVal Progress As Integer)
 
-    Friend Event OnFormClosedAfterSyncFinished()
+    Friend Event SyncFinished(ByVal Name As String, ByVal Completed As Boolean)
 
     'Not evaluating file size gives better performance (See FileLen_Speed_Test.vb for tests):
     'With size evaluation: 1'20, 46'', 36'', 35'', 31''
@@ -80,7 +80,7 @@ Public Class SynchronizeForm
         Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
     End Sub
 
-    Function StartSynchronization(ByVal CalledShowModal As Boolean) As Boolean
+    Sub StartSynchronization(ByVal CalledShowModal As Boolean)
         ProgramConfig.CanGoOn = False
 
         If Quiet Then
@@ -117,9 +117,7 @@ Public Class SynchronizeForm
         Else
             EndAll() 'Also saves the log file
         End If
-
-        Return IsValid
-    End Function
+    End Sub
 
     Private Sub SynchronizeForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         If e.Control Then
@@ -146,7 +144,7 @@ Public Class SynchronizeForm
         RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
         Interaction.StatusIcon.Text = Translation.Translate("\WAITING")
-        RaiseEvent OnFormClosedAfterSyncFinished()
+        RaiseEvent SyncFinished(Handler.ProfileName, Not (Status.Failed Or Status.Cancel))
     End Sub
 
     Private Sub CancelBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StopBtn.Click
@@ -371,7 +369,7 @@ Public Class SynchronizeForm
                 ' Set last run only if the profile hasn't failed, and has synced completely.
                 ' Checking for Status.Cancel allows to resync if eg. computer was stopped during sync.
                 ' EndAll() sets Status.Cancel to true, but if the sync completes successfully, this part executes before the call to EndAll 
-                If Not (Status.Failed Or Status.Cancel) Then Handler.SetLastRun() 
+                If Not (Status.Failed Or Status.Cancel) Then Handler.SetLastRun()
 
                 Log.SaveAndDispose(Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination), Status)
 

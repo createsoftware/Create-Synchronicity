@@ -204,7 +204,7 @@ Module MessageLoop
             Application.Exit()
         Else
             Dim SyncForm As New SynchronizeForm(ProfilesQueue(0), CommandLine.ShowPreview, CommandLine.Quiet)
-            AddHandler SyncForm.OnFormClosedAfterSyncFinished, Sub() MainFormInstance.ApplicationTimer.Start()
+            AddHandler SyncForm.SyncFinished, Sub(Name As String, Completed As Boolean) MainFormInstance.ApplicationTimer.Start()
             SyncForm.StartSynchronization(False)
             ProfilesQueue.RemoveAt(0)
         End If
@@ -240,13 +240,18 @@ Module MessageLoop
                 ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.CatchUp)
-                If SyncForm.StartSynchronization(False) Then
-                    ConfigHandler.LogAppEvent("Scheduler: " & NextInQueue.Name & " exited successfully.")
-                    ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Profiles(NextInQueue.Name).Scheduler.NextRun(), False, False))
-                Else
-                    ConfigHandler.LogAppEvent("Scheduler: " & NextInQueue.Name & " reported an error, will run again in 4 hours.")
-                    ScheduledProfiles.Add(New SchedulerEntry(NextInQueue.Name, Date.Now.AddHours(4), True, True))
-                End If
+                AddHandler SyncForm.SyncFinished, Sub(ProfileName As String, Completed As Boolean)
+                                                      If Completed Then ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " completed successfully.")
+                                                      If Not Profiles.ContainsKey(ProfileName) Then Exit Sub
+
+                                                      If Completed Then
+                                                          ScheduledProfiles.Add(New SchedulerEntry(ProfileName, Profiles(ProfileName).Scheduler.NextRun(), False, False))
+                                                      Else
+                                                          ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " reported an error, will run again in 4 hours.")
+                                                          ScheduledProfiles.Add(New SchedulerEntry(ProfileName, Date.Now.AddHours(4), True, True))
+                                                      End If
+                                                  End Sub
+                SyncForm.StartSynchronization(False)
                 ScheduledProfiles.RemoveAt(0)
             End If
         End If
@@ -333,6 +338,7 @@ Module MessageLoop
         If Nothing Then MessageBox.Show("Nothing -> True")
         If Not Nothing Then MessageBox.Show("Nothing -> False")
         MessageBox.Show(CBool(Nothing))
+        MessageBox.Show(CStr(Nothing))
 
         MessageBox.Show(CType("", String) = "")
         MessageBox.Show(CType(Nothing, String) = "")
