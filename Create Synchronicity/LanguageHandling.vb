@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Friend Class LanguageHandler
+Friend NotInheritable Class LanguageHandler
     Private Shared Singleton As LanguageHandler
 
     Structure LanguageInfo
@@ -14,7 +14,7 @@ Friend Class LanguageHandler
         Dim IsoLanguageName As String
     End Structure
 
-    Protected Sub New()
+    Private Sub New()
         ProgramConfig.LoadProgramSettings()
         IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
 
@@ -28,19 +28,17 @@ Friend Class LanguageHandler
             Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
 
             While Not Reader.EndOfStream()
-                Dim Line As String = Reader.ReadLine
+                Dim Line As String = Reader.ReadLine()
+                If Line.StartsWith("#") OrElse (Not Line.Contains("=")) Then Continue While
 
-                If Line.StartsWith("#") Then Continue While
-
-                Dim Pair() As String = Line.Split("="c)
-                If Pair.Length < 2 Then Continue While 'Invalid entry
-
+                Dim Pair() As String = Line.Split("=".ToCharArray(), 2)
                 Try
-                    If Pair(0).StartsWith("->") Then Pair(0) = Pair(0).Remove(0, "->".Length)
+                    If Pair(0).StartsWith("->") Then Pair(0) = Pair(0).Remove(0, 2)
                     Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Microsoft.VisualBasic.vbNewLine))
-                Catch Ex As Exception
+                Catch Ex As ArgumentException
+                    'Duplicate line
 #If DEBUG Then
-                    Interaction.ShowMsg("Invalid translation line: " & Line)
+                    Interaction.ShowMsg("Duplicate translation line: " & Line)
 #End If
                 End Try
             End While
