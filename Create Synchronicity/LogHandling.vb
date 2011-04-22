@@ -26,7 +26,7 @@ Structure LogItem
     End Sub
 End Structure
 
-Class LogHandler
+Friend NotInheritable Class LogHandler
     Dim LogName As String
     Public Errors As List(Of ErrorItem)
     Public Log As List(Of LogItem)
@@ -123,7 +123,7 @@ Class LogHandler
         If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then LogWriter.WriteLine(Line)
     End Sub
 
-    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, ByVal Status As StatusStruct)
+    Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, ByVal Status As StatusData)
         If Disposed Then Exit Sub
         Disposed = True
 
@@ -197,10 +197,8 @@ Class LogHandler
 
             Catch Ex As Threading.ThreadAbortException
                 Exit Sub
-
             Catch Ex As Exception
                 Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
-
             Finally
                 LogWriter.Close()
             End Try

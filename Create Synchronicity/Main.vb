@@ -135,7 +135,7 @@ Module MessageLoop
 
 #Region "Scheduling"
     Function SchedulerAlreadyRunning() As Boolean
-        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ConfigOptions.DirSep, "!"c).ToLower
+        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ConfigOptions.DirSep, "!"c).ToLower(Interaction.InvariantCulture)
 #If DEBUG Then
         ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
 #End If
@@ -215,7 +215,7 @@ Module MessageLoop
 
         If ScheduledProfiles Is Nothing Then
             ProgramConfig.CanGoOn = False 'Stop tick events from happening
-            MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval.
+            MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval. FIXME: Was it really needed? Isn't 2s fine?
             ScheduledProfiles = New List(Of SchedulerEntry)
 
             ConfigHandler.LogAppEvent("Scheduler: Started application timer.")
@@ -252,6 +252,11 @@ Module MessageLoop
         End If
     End Sub
 
+    Private Needle As String
+    Private Function EqualityPredicate(ByVal Item As SchedulerEntry) As Boolean
+        Return (Item.Name = Needle)
+    End Function
+
     Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of SchedulerEntry))
         ReloadProfiles() 'Needed! This allows to detect config changes.
 
@@ -282,7 +287,8 @@ Module MessageLoop
                 End If
                 '</catchup>
 
-                Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of SchedulerEntry)(Function(Item As SchedulerEntry) Item.Name = Name))
+                Needle = Name
+                Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of SchedulerEntry)(AddressOf EqualityPredicate))
                 If ProfileIndex <> -1 Then
                     Dim CurEntry As SchedulerEntry = ProfilesToRun(ProfileIndex)
 

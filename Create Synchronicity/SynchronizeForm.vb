@@ -20,8 +20,7 @@ Public Class SynchronizeForm
     Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
     Dim NoStop As Boolean = CommandLine.NoStop
 
-    Dim Status As StatusStruct
-
+    Dim Status As StatusData
     Dim ColumnSorter As ListViewColumnSorter
     Dim Preview As Boolean, PreviewFinished As Boolean
 
@@ -32,7 +31,6 @@ Public Class SynchronizeForm
     Private Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
     Private Delegate Sub TaskDoneDelegate(ByVal Id As Integer)
     Private Delegate Sub SetLabelDelegate(ByVal Id As Integer, ByVal Text As String)
-    Private Delegate Sub SetElapsedDelegate(ByVal CurrentTimeSpan As TimeSpan)
     Private Delegate Sub SetMaxDelegate(ByVal Id As Integer, ByVal Max As Integer)
     Private Delegate Sub IncrementDelegate(ByVal Id As Integer, ByVal Progress As Integer)
 
@@ -235,7 +233,7 @@ Public Class SynchronizeForm
         End Select
     End Function
 
-    Private Function FormatTimespan(ByVal T As TimeSpan) As String
+    Private Shared Function FormatTimespan(ByVal T As TimeSpan) As String
         Dim Hours As Integer = CInt(Math.Truncate(T.TotalHours))
         Return If(Hours = 0, "", Hours & "h, ") & If(T.Minutes = 0, "", T.Minutes.ToString & "m, ") & T.Seconds.ToString & "s"
     End Function
@@ -592,7 +590,7 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub AddValidFile(ByVal File As String)
-        If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower, Nothing)
+        If Not IsValidFile(File) Then ValidFiles.Add(File.ToLower(Interaction.InvariantCulture), Nothing)
     End Sub
 
     Private Sub AddValidAncestors(ByVal Folder As String)
@@ -612,11 +610,11 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub RemoveValidFile(ByVal File As String)
-        If IsValidFile(File) Then ValidFiles.Remove(File.ToLower)
+        If IsValidFile(File) Then ValidFiles.Remove(File.ToLower(Interaction.InvariantCulture))
     End Sub
 
     Private Function IsValidFile(ByVal File As String) As Boolean
-        Return ValidFiles.ContainsKey(File.ToLower)
+        Return ValidFiles.ContainsKey(File.ToLower(Interaction.InvariantCulture))
     End Function
 
     Private Sub RemoveFromSyncingList(ByVal Side As SideOfSource)

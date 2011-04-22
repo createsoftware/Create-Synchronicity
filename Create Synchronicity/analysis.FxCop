@@ -1,0 +1,1562 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded, Good, Noise" NewOnly="False" />
+   <Report Status="Active, Good, Noise" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="fr-FR" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <AssemblyReferenceDirectories>
+   <Directory>C:/Program Files/Paint.NET/</Directory>
+  </AssemblyReferenceDirectories>
+  <Target Name="$(ProjectDir)/bin/Debug/Create Synchronicity.exe" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Targets>
+   <Target Name="$(ProjectDir)/bin/Debug/Create Synchronicity.exe">
+    <Modules>
+     <Module Name="create synchronicity.exe">
+      <Namespaces>
+       <Namespace Name="CS">
+        <Types>
+         <Type Name="AboutForm">
+          <Members>
+           <Member Name="#About_Load(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'AboutForm.About_Load(Object, EventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Compressor">
+          <Messages>
+           <Message Id="I" TypeName="IdentifiersShouldHaveCorrectPrefix" Category="Microsoft.Naming" CheckId="CA1715" Created="2011-04-21 17:23:20Z" FixCategory="Breaking">
+            <Issue Name="Interface">
+             <Item>'Compressor'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#CompressFile(System.String,System.String,CS.PluginCallback)">
+            <Messages>
+             <Message Id="Dest" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'Compressor.CompressFile(String, String, PluginCallback)'</Item>
+               <Item>Dest</Item>
+               <Item>'DestFile'</Item>
+               <Item>dest</Item>
+              </Issue>
+             </Message>
+             <Message Id="Report" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'Compressor.CompressFile(String, String, PluginCallback)'</Item>
+               <Item>Report</Item>
+               <Item>'ReportProgress'</Item>
+               <Item>report</Item>
+              </Issue>
+             </Message>
+             <Message Id="Source" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'Compressor.CompressFile(String, String, PluginCallback)'</Item>
+               <Item>Source</Item>
+               <Item>'SourceFile'</Item>
+               <Item>source</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ConfigHandler">
+          <Members>
+           <Member Name="#GetIcon()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ConfigHandler.GetIcon()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetProgramSetting`1(System.String,!!0)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ConfigHandler.GetProgramSetting(Of T)(String, T)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetUserFilesRootDir()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ConfigHandler.GetUserFilesRootDir()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LogAppEvent(System.String)">
+            <Messages>
+             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'ConfigHandler.LogAppEvent(String)'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object, Object)'</Item>
+               <Item>'ConfigHandler.LogAppEvent(String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveProgramSettings()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ConfigHandler.SaveProgramSettings()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FileNamePattern">
+          <Members>
+           <Member Name="#IsBoxed(System.Char,System.String)">
+            <Messages>
+             <Message Id="System.String.EndsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.EndsWith(String)'</Item>
+               <Item>'FileNamePattern.IsBoxed(Char, String)'</Item>
+               <Item>'String.EndsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'FileNamePattern.IsBoxed(Char, String)'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Interaction">
+          <Members>
+           <Member Name="#ShowBalloonTip(System.String,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'Interaction.ShowBalloonTip(String, String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ShowMsg(System.String,System.String,System.Windows.Forms.MessageBoxButtons,System.Windows.Forms.MessageBoxIcon)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'Interaction.ShowMsg(String, String, MessageBoxButtons, MessageBoxIcon)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="SpecifyMessageBoxOptions" Category="Microsoft.Globalization" CheckId="CA1300" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'Interaction.ShowMsg(String, String, MessageBoxButtons, MessageBoxIcon)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ShowToolTip(System.Windows.Forms.Control)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2011-04-21 17:23:20Z">
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'TreeView'</Item>
+               <Item>'Interaction.ShowToolTip(Control)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'Interaction.ShowToolTip(Control)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#StartProcess(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'Interaction.StartProcess(String)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="LanguageHandler">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'LanguageHandler.New()'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'LanguageHandler.New()'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FillLanguageListBox(System.Windows.Forms.ComboBox)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'LanguageHandler.FillLanguageListBox(ComboBox)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object, Object)'</Item>
+               <Item>'LanguageHandler.FillLanguageListBox(ComboBox)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TranslateControl(System.Windows.Forms.Control)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2011-04-21 17:23:20Z">
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'ContextMenuStrip'</Item>
+               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'ListView'</Item>
+               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'ListView'</Item>
+               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'ListView'</Item>
+               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ListViewColumnSorter">
+          <Members>
+           <Member Name="#.ctor(System.Int32)">
+            <Messages>
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ListViewColumnSorter.New(Integer)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Column" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'ListViewColumnSorter.New(Integer)'</Item>
+               <Item>Column</Item>
+               <Item>'ColumnId'</Item>
+               <Item>column</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.Collections.CaseInsensitiveComparer.#ctor" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'CaseInsensitiveComparer.New()'</Item>
+               <Item>'ListViewColumnSorter.New(Integer)'</Item>
+               <Item>'CaseInsensitiveComparer.New(CultureInfo)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Order">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ListViewColumnSorter.Order'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SortColumn">
+            <Messages>
+             <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ListViewColumnSorter.SortColumn'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="LogHandler">
+          <Members>
+           <Member Name="#OpenHTMLHeaders(System.IO.StreamWriter&amp;)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'LogHandler.OpenHTMLHeaders(ByRef StreamWriter)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveAndDispose(System.String,System.String,CS.StatusData)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 20:35:30Z">
+              <Issue>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.DateTime.ToString(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 20:35:30Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString(String)'</Item>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'Date.ToString(String, IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 20:35:30Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 20:35:30Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 20:35:30Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object, Object)'</Item>
+               <Item>'LogHandler.SaveAndDispose(String, String, StatusData)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MainForm">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'MainForm.New()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ActionsMenu_Opening(System.Object,System.ComponentModel.CancelEventArgs)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'MainForm.ActionsMenu_Opening(Object, CancelEventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#DeleteToolStripMenuItem_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'MainForm.DeleteToolStripMenuItem_Click(Object, EventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadDetails(System.String,System.Boolean)">
+            <Messages>
+             <Message Id="Clear" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'MainForm.LoadDetails(String, Boolean)'</Item>
+               <Item>Clear</Item>
+               <Item>'Clear'</Item>
+               <Item>clear</Item>
+              </Issue>
+             </Message>
+             <Message Id="Name" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'MainForm.LoadDetails(String, Boolean)'</Item>
+               <Item>Name</Item>
+               <Item>'Name'</Item>
+               <Item>name</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'MainForm.LoadDetails(String, Boolean)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'MainForm.LoadDetails(String, Boolean)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'MainForm.LoadDetails(String, Boolean)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MainForm_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, ParamArray Object())'</Item>
+               <Item>'MainForm.MainForm_FormClosing(Object, FormClosingEventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetFont(System.Single)">
+            <Messages>
+             <Message Id="Size" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'MainForm.SetFont(Single)'</Item>
+               <Item>Size</Item>
+               <Item>'Size'</Item>
+               <Item>size</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetView(System.Int32)">
+            <Messages>
+             <Message Id="Offset" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'MainForm.SetView(Integer)'</Item>
+               <Item>Offset</Item>
+               <Item>'Offset'</Item>
+               <Item>offset</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetVisible(System.Boolean)">
+            <Messages>
+             <Message Id="Visible" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'MainForm.SetVisible(Boolean)'</Item>
+               <Item>Visible</Item>
+               <Item>'_Visible'</Item>
+               <Item>visible</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'MainForm.SetVisible(Boolean)'</Item>
+               <Item>'_Visible'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MessageLoop">
+          <Members>
+           <Member Name="#Main()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'MessageLoop.Main()'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, ParamArray Object())'</Item>
+               <Item>'MessageLoop.Main()'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RedoSchedulerRegistration()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'MessageLoop.RedoSchedulerRegistration()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'MessageLoop.RedoSchedulerRegistration()'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReloadProfilesScheduler(System.Collections.Generic.List`1&lt;CS.SchedulerEntry&gt;)">
+            <Messages>
+             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'MessageLoop.ReloadProfilesScheduler(List(Of SchedulerEntry))'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'MessageLoop.ReloadProfilesScheduler(List(Of SchedulerEntry))'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'MessageLoop.ReloadProfilesScheduler(List(Of SchedulerEntry))'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SchedulerAlreadyRunning()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'MessageLoop.SchedulerAlreadyRunning()'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Scheduling_Tick(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'MessageLoop.Scheduling_Tick(Object, EventArgs)'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'MessageLoop.Scheduling_Tick(Object, EventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PluginCallback">
+          <Messages>
+           <Message Id="Total" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+            <Issue Name="DelegateParameter">
+             <Item>'PluginCallback'</Item>
+             <Item>Total</Item>
+             <Item>'TotalBytes'</Item>
+             <Item>total</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ProfileHandler">
+          <Members>
+           <Member Name="#GetLastRun()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ProfileHandler.GetLastRun()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetSetting`1(System.String,!!0)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ProfileHandler.GetSetting(Of T)(String, T)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ListToString(System.Collections.Generic.List`1&lt;System.String&gt;,System.Char)">
+            <Messages>
+             <Message Id="System.String.EndsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.EndsWith(String)'</Item>
+               <Item>'ProfileHandler.ListToString(List(Of String), Char)'</Item>
+               <Item>'String.EndsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadConfigFile()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ProfileHandler.LoadConfigFile()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'ProfileHandler.LoadConfigFile()'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadSubFoldersList(System.String,System.Collections.Generic.Dictionary`2&lt;System.String,System.Boolean&gt;&amp;)">
+            <Messages>
+             <Message Id="System.String.EndsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.EndsWith(String)'</Item>
+               <Item>'ProfileHandler.LoadSubFoldersList(String, ByRef Dictionary(Of String, Boolean))'</Item>
+               <Item>'String.EndsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RenameProfile(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ProfileHandler.RenameProfile(String)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SaveConfigFile()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ProfileHandler.SaveConfigFile()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetLastRun()">
+            <Messages>
+             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'ProfileHandler.SetLastRun()'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TranslatePath_Inverse(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Inverse(String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TranslatePath_Unsafe(System.String)">
+            <Messages>
+             <Message Id="System.String.Compare(System.String,System.String,System.Boolean)" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'String.Compare(String, String, Boolean, CultureInfo)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.DateTime.ToString(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString(String)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'Date.ToString(String, IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Compare(System.String,System.String,System.Boolean)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'String.Compare(String, String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'ProfileHandler.TranslatePath_Unsafe(String)'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ValidateConfigFile(System.Boolean,System.Boolean,System.Boolean,System.String&amp;)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, ParamArray Object())'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SchedulingForm">
+          <Members>
+           <Member Name="#.ctor(System.String)">
+            <Messages>
+             <Message Id="Name" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SchedulingForm.New(String)'</Item>
+               <Item>Name</Item>
+               <Item>'Name'</Item>
+               <Item>name</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Save_Click(System.Object,System.EventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SchedulingForm.Save_Click(Object, EventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SettingsForm">
+          <Members>
+           <Member Name="#.ctor(System.String,System.Boolean)">
+            <Messages>
+             <Message Id="Name" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SettingsForm.New(String, Boolean)'</Item>
+               <Item>Name</Item>
+               <Item>'Name'</Item>
+               <Item>name</Item>
+              </Issue>
+             </Message>
+             <Message Id="New" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SettingsForm.New(String, Boolean)'</Item>
+               <Item>New</Item>
+               <Item>'_NewProfile'</Item>
+               <Item>new</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SettingsForm.New(String, Boolean)'</Item>
+               <Item>'_NewProfile'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AfterExpand(System.Object,System.Windows.Forms.TreeViewEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SettingsForm.AfterExpand(Object, TreeViewEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#BrowseTo(System.String,System.Windows.Forms.TextBox&amp;)">
+            <Messages>
+             <Message Id="System.String.StartsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.StartsWith(String)'</Item>
+               <Item>'SettingsForm.BrowseTo(String, ByRef TextBox)'</Item>
+               <Item>'String.StartsWith(String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#LoadTree(System.Windows.Forms.TreeView,System.String,System.Collections.Generic.Dictionary`2&lt;System.String,System.Boolean&gt;,System.Boolean)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SettingsForm.LoadTree(TreeView, String, Dictionary(Of String, Boolean), Boolean)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Settings_Load(System.Object,System.EventArgs)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SettingsForm.Settings_Load(Object, EventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UpdateSettings(System.Boolean)">
+            <Messages>
+             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'SettingsForm.UpdateSettings(Boolean)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'SettingsForm.UpdateSettings(Boolean)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SynchronizeForm">
+          <Members>
+           <Member Name="#.ctor(System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <Messages>
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="Catchup" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>Catchup</Item>
+               <Item>'_Catchup'</Item>
+               <Item>catchup</Item>
+              </Issue>
+             </Message>
+             <Message Id="Config" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>Config</Item>
+               <Item>'ConfigName'</Item>
+               <Item>config</Item>
+              </Issue>
+             </Message>
+             <Message Id="Display" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>Display</Item>
+               <Item>'DisplayPreview'</Item>
+               <Item>display</Item>
+              </Issue>
+             </Message>
+             <Message Id="Quiet" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>Quiet</Item>
+               <Item>'_Quiet'</Item>
+               <Item>quiet</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>'_Catchup'</Item>
+              </Issue>
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>'_Quiet'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object, Object)'</Item>
+               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AddValidAncestors(System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.AddValidAncestors(String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.AddValidAncestors(String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Do_Task(CS.SideOfSource,System.Collections.Generic.List`1&lt;CS.SyncingItem&gt;&amp;,System.String,System.String,System.Int32)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SynchronizeForm.Do_Task(SideOfSource, ByRef List(Of SyncingItem), String, String, Integer)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'SynchronizeForm.Do_Task(SideOfSource, ByRef List(Of SyncingItem), String, String, Integer)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FormatSize(System.Double)">
+            <Messages>
+             <Message Id="System.Double.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Double.ToString()'</Item>
+               <Item>'SynchronizeForm.FormatSize(Double)'</Item>
+               <Item>'Double.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Double.ToString()'</Item>
+               <Item>'SynchronizeForm.FormatSize(Double)'</Item>
+               <Item>'Double.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Double.ToString()'</Item>
+               <Item>'SynchronizeForm.FormatSize(Double)'</Item>
+               <Item>'Double.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Double.ToString()'</Item>
+               <Item>'SynchronizeForm.FormatSize(Double)'</Item>
+               <Item>'Double.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#FormatTimespan(System.TimeSpan)">
+            <Messages>
+             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'SynchronizeForm.FormatTimespan(TimeSpan)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'SynchronizeForm.FormatTimespan(TimeSpan)'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#HasAcceptedFilename(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SynchronizeForm.HasAcceptedFilename(String)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Init_Synchronization(System.Collections.Generic.Dictionary`2&lt;System.String,System.Boolean&gt;&amp;,CS.SyncingAction)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.Init_Synchronization(ByRef Dictionary(Of String, Boolean), SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#InitializeComponent()">
+            <Messages>
+             <Message TypeName="DoNotUseTimersThatPreventPowerStateChanges" Category="Microsoft.Mobility" CheckId="CA1601" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'Timer.Interval.Set(Integer)'</Item>
+               <Item>'SynchronizeForm.InitializeComponent()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#MatchesPattern(System.String,System.Collections.Generic.List`1&lt;CS.FileNamePattern&gt;&amp;)">
+            <Messages>
+             <Message Id="System.String.Compare(System.String,System.String,System.Boolean)" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'SynchronizeForm.MatchesPattern(String, ByRef List(Of FileNamePattern))'</Item>
+               <Item>'String.Compare(String, String, Boolean, CultureInfo)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'SynchronizeForm.MatchesPattern(String, ByRef List(Of FileNamePattern))'</Item>
+               <Item>'String.Compare(String, String, Boolean, CultureInfo)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Compare(System.String,System.String,System.Boolean)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'SynchronizeForm.MatchesPattern(String, ByRef List(Of FileNamePattern))'</Item>
+               <Item>'String.Compare(String, String, StringComparison)'</Item>
+              </Issue>
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'SynchronizeForm.MatchesPattern(String, ByRef List(Of FileNamePattern))'</Item>
+               <Item>'String.Compare(String, String, StringComparison)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SearchForChanges(System.String,System.Boolean,CS.SyncingAction)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForChanges(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SearchForCrap(System.String,System.Boolean,CS.SyncingAction)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SynchronizeForm.SearchForCrap(String, Boolean, SyncingAction)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue>
+               <Item>'SynchronizeForm.SearchForCrap(String, Boolean, SyncingAction)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForCrap(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForCrap(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForCrap(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'SynchronizeForm.SearchForCrap(String, Boolean, SyncingAction)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#StartSynchronization(System.Boolean)">
+            <Messages>
+             <Message Id="Called" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+              <Issue Name="MemberParameter">
+               <Item>'SynchronizeForm.StartSynchronization(Boolean)'</Item>
+               <Item>Called</Item>
+               <Item>'CalledShowModal'</Item>
+               <Item>called</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Date.ToString()'</Item>
+               <Item>'SynchronizeForm.StartSynchronization(Boolean)'</Item>
+               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.StartSynchronization(Boolean)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, ParamArray Object())'</Item>
+               <Item>'SynchronizeForm.StartSynchronization(Boolean)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SynchronizeForm_KeyDown(System.Object,System.Windows.Forms.KeyEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'SynchronizeForm.SynchronizeForm_KeyDown(Object, KeyEventArgs)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TaskDone(System.Int32)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.TaskDone(Integer)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.TaskDone(Integer)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UpdateLabel(System.Int32,System.String)">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.UpdateLabel(Integer, String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object, Object)'</Item>
+               <Item>'SynchronizeForm.UpdateLabel(Integer, String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object, Object)'</Item>
+               <Item>'SynchronizeForm.UpdateLabel(Integer, String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#UpdateStatuses()">
+            <Messages>
+             <Message Id="System.Double.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Double.ToString()'</Item>
+               <Item>'SynchronizeForm.UpdateStatuses()'</Item>
+               <Item>'Double.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'SynchronizeForm.UpdateStatuses()'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Updates">
+          <Members>
+           <Member Name="#CheckForUpdates(System.Boolean)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+              <Issue>
+               <Item>'Updates.CheckForUpdates(Boolean)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object, Object)'</Item>
+               <Item>'Updates.CheckForUpdates(Boolean)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Rules>
+   <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
+    <Resolution Name="Default">Replace method {0} with an overload that supplies all default arguments.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051">
+    <Resolution Name="Default">Because field {0} is visible outside of its declaring type, change its accessibility to private and add a property, with the same accessibility as the field has currently, to provide access to it.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotUseTimersThatPreventPowerStateChanges" Category="Microsoft.Mobility" CheckId="CA1601">
+    <Resolution Name="Default">Modify the call to {0} in method {1} to set the timer interval to a value that's greater than or equal to one second.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="DelegateParameter">In delegate {0}, correct the casing of '{1}' in parameter name {2} by changing it to '{3}'.</Resolution>
+    <Resolution Name="MemberParameter">In member {0}, correct the casing of '{1}' in parameter name {2} by changing it to '{3}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldHaveCorrectPrefix" Category="Microsoft.Naming" CheckId="CA1715">
+    <Resolution Name="Interface">Prefix interface name {0} with 'I'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707">
+    <Resolution Name="MemberParameter">In member {0}, remove the underscores from parameter name {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
+    <Resolution Name="IFormatProviderAlternateString">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify {3} as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify {4}.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyMessageBoxOptions" Category="Microsoft.Globalization" CheckId="CA1300">
+    <Resolution Name="Default">Change {0} to call the MessageBox.Show overload that specifies MessageBoxOptions, and make sure to set MessageBoxOptions.RightAlign and MessageBoxOptions.RtlReading if RightToLeft is set to RightToLeft.Yes on the parent control.</Resolution>
+   </Rule>
+   <Rule TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307">
+    <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, such as when sorting a list of items for display in a list box, specify 'StringComparison.CurrentCulture' or 'StringComparison.CurrentCultureIgnoreCase' as the 'StringComparison' parameter. If comparing case-insensitive identifiers, such as file paths, environment variables, or registry keys and values, specify 'StringComparison.OrdinalIgnoreCase'. Otherwise, if comparing case-sensitive identifiers, specify 'StringComparison.Ordinal'.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

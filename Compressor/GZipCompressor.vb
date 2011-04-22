@@ -10,7 +10,7 @@ Imports ICSharpCode.SharpZipLib.BZip2
 Imports ICSharpCode.SharpZipLib.GZip
 Imports ICSharpCode.SharpZipLib.Core
 
-Public Class GZipCompressor
+Public NotInheritable Class GZipCompressor
     Implements CS.Compressor
 
     Dim PreviousProgress As Long

@@ -438,7 +438,7 @@ Partial Class MainForm
         '
         'ApplicationTimer
         '
-        Me.ApplicationTimer.Interval = 10
+        Me.ApplicationTimer.Interval = 2000
         '
         'StatusIconMenu
         '

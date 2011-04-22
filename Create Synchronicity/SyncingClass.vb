@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Structure StatusStruct
+Structure StatusData
     Dim StartTime As Date
     Dim BytesCopied As Long
     Dim BytesScanned As Long
@@ -42,7 +42,7 @@ Public Enum TypeOfAction As Integer
 End Enum
 
 Public Enum SideOfSource As Integer
-    Left = -1
+    Left = 0
     Right = 1
 End Enum
 
@@ -99,7 +99,7 @@ Structure SyncingItem
     End Function
 End Structure
 
-Public Class FileNamePattern
+Friend NotInheritable Class FileNamePattern
     Public Enum PatternType
         FileExt
         FileName
@@ -115,12 +115,12 @@ Public Class FileNamePattern
         Pattern = _Pattern
     End Sub
 
-    Private Shared Function IsBoxed(ByVal Frame As Char, ByVal Pattern As String) As Boolean
-        Return (Pattern.StartsWith(Frame) And Pattern.EndsWith(Frame) And Pattern.Length > 2)
+    Private Shared Function IsBoxed(ByVal Frame As Char, ByVal Str As String) As Boolean
+        Return (Str.StartsWith(Frame) And Str.EndsWith(Frame) And Str.Length > 2)
     End Function
 
-    Private Shared Function Unbox(ByVal Pattern As String) As String
-        Return Pattern.Substring(1, Pattern.Length - 2).ToLower ' ToLower: Careful on linux ; No need to check length, MatchesPattern has done so before.
+    Private Shared Function Unbox(ByVal Str As String) As String
+        Return Str.Substring(1, Str.Length - 2).ToLower(Interaction.InvariantCulture) ' ToLower: Careful on linux ; No need to check length, MatchesPattern has done so before.
     End Function
 
     Shared Function GetPattern(ByVal Str As String, Optional ByVal IsFolder As Boolean = False) As FileNamePattern
@@ -129,7 +129,7 @@ Public Class FileNamePattern
         ElseIf IsBoxed("/"c, Str) Then 'Regex
             Return New FileNamePattern(PatternType.Regex, Unbox(Str))
         Else
-            Return New FileNamePattern(PatternType.FileExt, Str.ToLower)
+            Return New FileNamePattern(PatternType.FileExt, Str.ToLower(Interaction.InvariantCulture))
         End If
     End Function
 

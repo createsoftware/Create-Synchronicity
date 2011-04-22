@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Public Module ConfigOptions
+Friend Module ConfigOptions
     Public Const Source As String = "Source Directory"
     Public Const Destination As String = "Destination Directory"
     Public Const IncludedTypes As String = "Included Filetypes"
@@ -380,7 +380,7 @@ NotInheritable Class ProfileHandler
             If Not Configuration.ContainsKey(Pair.Key) Then
                 IsValid = False
                 InvalidListing.Add(String.Format(Translation.Translate("\SETTING_UNSET"), Pair.Key))
-            ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Of String)(Pair.Key), Pair.Value) Then
+            ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Of String)(Pair.Key, ""), Pair.Value) Then
                 IsValid = False
                 InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
             End If
@@ -546,7 +546,7 @@ NotInheritable Class ProfileHandler
 #End If
 
         ' Use a path-friendly version of the DATE constant.
-        Environment.SetEnvironmentVariable("MMMYYYY", Date.Today.ToString("MMMYYYY").ToLower)
+        Environment.SetEnvironmentVariable("MMMYYYY", Date.Today.ToString("MMMYYYY").ToLower(Interaction.InvariantCulture))
         Environment.SetEnvironmentVariable("DATE", Date.Today.ToShortDateString.Replace("/"c, "-"c))
         Environment.SetEnvironmentVariable("DAY", Date.Today.Day.ToString)
         Environment.SetEnvironmentVariable("MONTH", Date.Today.Month.ToString)
@@ -648,7 +648,7 @@ Structure ScheduleInfo
     End Function
 End Structure
 
-Public Module Updates
+Friend Module Updates
     Dim Parent As MainForm = Nothing 'Used for Application.Exit call.
 
     Public Sub SetParent(ByVal ParentForm As MainForm)
@@ -682,7 +682,7 @@ Public Module Updates
                 LatestVersion = UpdateClient.DownloadString(SecondaryUrl)
             End Try
 
-             If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
+            If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Diagnostics.Process.Start(ConfigOptions.Website & "update.html")
                     If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
@@ -747,7 +747,8 @@ Structure CommandLine
     End Sub
 End Structure
 
-Public Module Interaction
+Friend Module Interaction
+    Friend InvariantCulture As Globalization.CultureInfo = Globalization.CultureInfo.InvariantCulture
     Friend StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
     Private SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
 
@@ -830,7 +831,7 @@ Public Module Interaction
     End Sub
 End Module
 
-Public Class ListViewColumnSorter
+Public NotInheritable Class ListViewColumnSorter
     Implements System.Collections.IComparer
 
     Public Order As SortOrder

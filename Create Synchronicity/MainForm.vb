@@ -300,7 +300,7 @@ Public Class MainForm
         Source.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Source)
         Destination.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Destination)
 
-        Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper)
+        Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper(Interaction.InvariantCulture))
 
         Select Case Profiles(Name).Scheduler.Frequency
             Case ScheduleInfo.WEEKLY
@@ -374,7 +374,7 @@ Public Class MainForm
         Next
     End Sub
 
-    Public Delegate Sub ExitAppCallBack()
+    Friend Delegate Sub ExitAppCallBack()
     Public Sub ExitApp()
         Me.Close()
         Application.Exit()

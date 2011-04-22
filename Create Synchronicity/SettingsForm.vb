@@ -153,7 +153,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PropagateUpdatesOption.MouseEnter, StrictDateComparisonOption.MouseEnter
-        BottomDescLabel.Text = CType(sender, Control).Tag.ToString
+        BottomDescLabel.Text = CType(sender, Control).Tag
     End Sub
 
     Private Sub Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PropagateUpdatesOption.MouseLeave, StrictDateComparisonOption.MouseLeave
@@ -445,7 +445,7 @@ Public Class SettingsForm
         Dim Method As String = (If(LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
 
         If LoadToForm Then
-            Select Case Handler.GetSetting(Of String)(ConfigOptions.Method) 'TODO: Check type
+            Select Case Handler.GetSetting(Of String)(ConfigOptions.Method) 'TODO: Check type; FIXME: Handle "Nothing"
                 Case "1"
                     LRIncrementalMethodOption.Checked = True
                 Case "2"
