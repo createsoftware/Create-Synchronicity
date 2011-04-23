@@ -161,7 +161,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub AfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles LeftView.AfterExpand, RightView.AfterExpand
-        ClickedRightTreeView = (CType(sender, Control).Name = "RightView")
+        ClickedRightTreeView = (DirectCast(sender, Control).Name = "RightView")
         For Each Node As TreeNode In e.Node.Nodes
             If Node.Nodes.Count <> 0 Then Continue For 'Node already loaded
             Try

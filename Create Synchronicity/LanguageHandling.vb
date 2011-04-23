@@ -25,23 +25,23 @@ Friend NotInheritable Class LanguageHandler
         If Not IO.File.Exists(DictFile) Then
             Interaction.ShowMsg("No language file found!")
         Else
-            Dim Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
+            Using Reader As New IO.StreamReader(DictFile, Text.Encoding.UTF8)
+                While Not Reader.EndOfStream()
+                    Dim Line As String = Reader.ReadLine()
+                    If Line.StartsWith("#") OrElse (Not Line.Contains("=")) Then Continue While
 
-            While Not Reader.EndOfStream()
-                Dim Line As String = Reader.ReadLine()
-                If Line.StartsWith("#") OrElse (Not Line.Contains("=")) Then Continue While
-
-                Dim Pair() As String = Line.Split("=".ToCharArray(), 2)
-                Try
-                    If Pair(0).StartsWith("->") Then Pair(0) = Pair(0).Remove(0, 2)
-                    Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Microsoft.VisualBasic.vbNewLine))
-                Catch Ex As ArgumentException
-                    'Duplicate line
+                    Dim Pair() As String = Line.Split("=".ToCharArray(), 2)
+                    Try
+                        If Pair(0).StartsWith("->") Then Pair(0) = Pair(0).Remove(0, 2)
+                        Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Environment.NewLine))
+                    Catch Ex As ArgumentException
+                        'Duplicate line
 #If DEBUG Then
-                    Interaction.ShowMsg("Duplicate translation line: " & Line)
+                        Interaction.ShowMsg("Duplicate translation line: " & Line)
 #End If
-                End Try
-            End While
+                    End Try
+                End While
+            End Using
         End If
     End Sub
 
@@ -64,8 +64,9 @@ Friend NotInheritable Class LanguageHandler
         Ctrl.Text = Translate(Ctrl.Text)
         TranslateControl(Ctrl.ContextMenuStrip)
 
-        Dim List As ListView = TryCast(Ctrl, ListView)
-        If List IsNot Nothing Then
+        If TypeOf Ctrl Is ListView Then
+            Dim List As ListView = DirectCast(Ctrl, ListView)
+
             For Each Group As ListViewGroup In List.Groups
                 Group.Header = Translate(Group.Header)
             Next
@@ -82,8 +83,8 @@ Friend NotInheritable Class LanguageHandler
             Next
         End If
 
-        Dim ContextMenu As ContextMenuStrip = TryCast(Ctrl, ContextMenuStrip)
-        If ContextMenu IsNot Nothing Then
+        If TypeOf Ctrl Is ContextMenuStrip Then
+            Dim ContextMenu As ContextMenuStrip = DirectCast(Ctrl, ContextMenuStrip)
             For Each Item As ToolStripItem In ContextMenu.Items
                 Item.Text = Translate(Item.Text)
                 Item.Tag = Translate(Item.Tag, ";")
@@ -100,18 +101,16 @@ Friend NotInheritable Class LanguageHandler
         Dim LanguageProps As New Dictionary(Of String, LanguageHandler.LanguageInfo)
 
         If IO.File.Exists(ProgramConfig.LocalNamesFile) Then
-            Dim PropsReader As New IO.StreamReader(ProgramConfig.LocalNamesFile)
-
-            While Not PropsReader.EndOfStream
-                Dim CurLanguage() As String = PropsReader.ReadLine.Split(";".ToCharArray)
-                Try
-                    LanguageProps.Add(CurLanguage(0), New LanguageHandler.LanguageInfo With {.LocalName = CurLanguage(1), .IsoLanguageName = CurLanguage(2)})
-                Catch
-                    Interaction.ShowMsg("Invalid local-names file.")
-                End Try
-            End While
-
-            PropsReader.Close()
+            Using PropsReader As New IO.StreamReader(ProgramConfig.LocalNamesFile)
+                While Not PropsReader.EndOfStream
+                    Dim CurLanguage() As String = PropsReader.ReadLine.Split(";".ToCharArray, 3)
+                    Try
+                        LanguageProps.Add(CurLanguage(0), New LanguageHandler.LanguageInfo With {.LocalName = CurLanguage(1), .IsoLanguageName = CurLanguage(2)})
+                    Catch Ex As IndexOutOfRangeException
+                        Interaction.ShowMsg("Invalid local-names file.")
+                    End Try
+                End While
+            End Using
         End If
 
         Dim SystemLanguageIndex As Integer = -1

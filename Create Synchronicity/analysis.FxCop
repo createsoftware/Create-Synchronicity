@@ -403,6 +403,19 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="Main">
+          <Members>
+           <Member Name="#Main()">
+            <Messages>
+             <Message TypeName="SpecifyMessageBoxOptions" Category="Microsoft.Globalization" CheckId="CA1300" Created="2011-04-23 10:42:29Z">
+              <Issue>
+               <Item>'Main.Main()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="MainForm">
           <Members>
            <Member Name="#.ctor()">
@@ -523,18 +536,12 @@
            </Member>
            <Member Name="#SetVisible(System.Boolean)">
             <Messages>
-             <Message Id="Visible" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+             <Message Id="Status" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-23 10:42:29Z">
               <Issue Name="MemberParameter">
                <Item>'MainForm.SetVisible(Boolean)'</Item>
-               <Item>Visible</Item>
-               <Item>'_Visible'</Item>
-               <Item>visible</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2011-04-21 17:23:20Z">
-              <Issue Name="MemberParameter">
-               <Item>'MainForm.SetVisible(Boolean)'</Item>
-               <Item>'_Visible'</Item>
+               <Item>Status</Item>
+               <Item>'Status'</Item>
+               <Item>status</Item>
               </Issue>
              </Message>
             </Messages>

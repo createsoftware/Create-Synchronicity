@@ -234,9 +234,9 @@ Public Class MainForm
 #End Region
 
 #Region " Functions and Routines "
-    Sub SetVisible(ByVal _Visible As Boolean)
+    Sub SetVisible(ByVal Status As Boolean)
         If Me.IsDisposed Then Exit Sub
-        Me.Visible = _Visible
+        Me.Visible = Status
     End Sub
 
     Sub SetView(ByVal Offset As Integer)
@@ -361,16 +361,18 @@ Public Class MainForm
             Dim NewImg As New Drawing.Bitmap(32, 32)
             Dim Painter As Drawing.Graphics = Drawing.Graphics.FromImage(NewImg)
 
-            If Id < 2 Then
-                Painter.DrawImage(ScheduleMenuItem.Image, 0, 0, 16, 16) 'Not specifying the destination size makes everything blurry.
-            Else
-                Painter.DrawImage(ScheduleMenuItem.Image, 9, 6, 16, 16)
-            End If
-            Painter.DrawImageUnscaled(SyncIcons.Images(Id), 0, 0)
-            SyncIcons.Images.Add(NewImg)
-
-            NewImg.Dispose()
-            Painter.Dispose()
+            Try
+                If Id < 2 Then
+                    Painter.DrawImage(ScheduleMenuItem.Image, 0, 0, 16, 16) 'Not specifying the destination size makes everything blurry.
+                Else
+                    Painter.DrawImage(ScheduleMenuItem.Image, 9, 6, 16, 16)
+                End If
+                Painter.DrawImageUnscaled(SyncIcons.Images(Id), 0, 0)
+                SyncIcons.Images.Add(NewImg)
+            Finally
+                NewImg.Dispose()
+                Painter.Dispose()
+            End Try
         Next
     End Sub
 

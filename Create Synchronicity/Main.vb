@@ -14,12 +14,20 @@ Module Main
         ' Must come first
         Application.EnableVisualStyles()
 
-        MsgLoop = New MessageLoop
-        If Not MsgLoop.ExitNeeded Then Application.Run(MsgLoop)
+        Try
+            MsgLoop = New MessageLoop
+            If Not MsgLoop.ExitNeeded Then Application.Run(MsgLoop)
+        Catch Ex As Exception
+            If MessageBox.Show("A critical error has occured. Can we upload the error log? " & Environment.NewLine & "If not, you can copy this message using Ctrl+C and send it to createsoftware@users.sourceforge.net." & Environment.NewLine & "Here's what we would send:" & Environment.NewLine & Ex.ToString) Then
+
+            End If
+
+            Throw
+        End Try
     End Sub
 End Module
 
-Friend Class MessageLoop
+Friend NotInheritable Class MessageLoop
     Inherits ApplicationContext
     Public ExitNeeded As Boolean = False
 
@@ -138,7 +146,7 @@ Friend Class MessageLoop
 
     Shared Sub HandleFirstRun()
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
-            Application.Run(New LanguageForm)
+            Dim Lng As New LanguageForm : Lng.ShowDialog()
             Translation = LanguageHandler.GetSingleton(True)
         End If
 

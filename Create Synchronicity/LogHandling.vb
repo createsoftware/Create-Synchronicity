@@ -128,7 +128,6 @@ Friend NotInheritable Class LogHandler
         Disposed = True
 
         Try
-            Dim LogWriter As IO.StreamWriter
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
             'Load the contents of the previous log, excluding the closing tags
@@ -137,21 +136,20 @@ Friend NotInheritable Class LogHandler
             Archives.Add(New Text.StringBuilder())
 
             If Not NewLog Then
-                Dim LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
-                While Not LogReader.EndOfStream
-                    Dim Line As String = LogReader.ReadLine()
-                    If Line.Contains("<h2>") Then
-                        Archives.Add(New Text.StringBuilder())
-                        If Archives.Count > ArchivesCount Then Archives.RemoveAt(0) 'Don't store more than ConfigOptions.MaxLogEntries in memory
-                    End If
-                    If Not Line.Contains("<h1>") And Not Line.Contains("</body>") And Not Line.Contains("</html>") Then Archives(Archives.Count - 1).AppendLine(Line)
-                End While
-                LogReader.Close()
+                Using LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
+                    While Not LogReader.EndOfStream
+                        Dim Line As String = LogReader.ReadLine()
+                        If Line.Contains("<h2>") Then
+                            Archives.Add(New Text.StringBuilder())
+                            If Archives.Count > ArchivesCount Then Archives.RemoveAt(0) 'Don't store more than ConfigOptions.MaxLogEntries in memory
+                        End If
+                        If Not Line.Contains("<h1>") And Not Line.Contains("</body>") And Not Line.Contains("</html>") Then Archives(Archives.Count - 1).AppendLine(Line)
+                    End While
+                End Using
             End If
 
             'This erases log contents.
-            LogWriter = New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
-
+            Dim LogWriter As New IO.StreamWriter(ProgramConfig.GetLogPath(LogName), False, Text.Encoding.UTF8)
             OpenHTMLHeaders(LogWriter)
             For LogId As Integer = 0 To Archives.Count - 1
                 LogWriter.Write(Archives(LogId).ToString)
@@ -202,6 +200,7 @@ Friend NotInheritable Class LogHandler
             Finally
                 LogWriter.Close()
             End Try
+
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
         End Try

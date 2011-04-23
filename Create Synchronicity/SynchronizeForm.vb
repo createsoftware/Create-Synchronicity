@@ -29,10 +29,10 @@ Public Class SynchronizeForm
     Dim SyncThread As Threading.Thread
 
     Private Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
-    Private Delegate Sub TaskDoneDelegate(ByVal Id As Integer)
-    Private Delegate Sub SetLabelDelegate(ByVal Id As Integer, ByVal Text As String)
-    Private Delegate Sub SetMaxDelegate(ByVal Id As Integer, ByVal Max As Integer)
-    Private Delegate Sub IncrementDelegate(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Delegate Sub TaskDoneCall(ByVal Id As Integer)
+    Private Delegate Sub SetLabelCall(ByVal Id As Integer, ByVal Text As String)
+    Private Delegate Sub SetMaxCall(ByVal Id As Integer, ByVal Max As Integer)
+    Private Delegate Sub IncrementCall(ByVal Id As Integer, ByVal Progress As Integer)
 
     Friend Event SyncFinished(ByVal Name As String, ByVal Completed As Boolean)
 
@@ -453,7 +453,7 @@ Public Class SynchronizeForm
 
     Private Sub Scan()
         Dim Context As New SyncingAction
-        Dim TaskDoneCallback As New TaskDoneDelegate(AddressOf TaskDone)
+        Dim TaskDoneCallback As New TaskDoneCall(AddressOf TaskDone)
 
         'Pass 1: Create actions L->R for files/folder copy, and mark dest files that should be kept
         'Pass 2: Create actions R->L for files/folder copy/deletion, based on what was marked as ValidFile, aka based on what should be kept.
@@ -491,8 +491,8 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub Sync()
-        Dim TaskDoneCallback As New TaskDoneDelegate(AddressOf TaskDone)
-        Dim SetMaxCallback As New SetMaxDelegate(AddressOf SetMax)
+        Dim TaskDoneCallback As New TaskDoneCall(AddressOf TaskDone)
+        Dim SetMaxCallback As New SetMaxCall(AddressOf SetMax)
 
         Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Source))
         Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Destination))
@@ -509,8 +509,8 @@ Public Class SynchronizeForm
 
     '"Source" is "current side", with the corresponding side set to "Side"
     Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
-        Dim IncrementCallback As New IncrementDelegate(AddressOf Increment)
-        Dim SetLabelCallback As New SetLabelDelegate(AddressOf UpdateLabel)
+        Dim IncrementCallback As New IncrementCall(AddressOf Increment)
+        Dim SetLabelCallback As New SetLabelCall(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
             Try
@@ -626,7 +626,7 @@ Public Class SynchronizeForm
     Private Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
-        Dim SetLabelCallback As New SetLabelDelegate(AddressOf UpdateLabel)
+        Dim SetLabelCallback As New SetLabelCall(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
@@ -729,7 +729,7 @@ Public Class SynchronizeForm
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
         'Here, Source is set to be the right folder, and dest to be the left folder
-        Dim LabelDelegate As New SetLabelDelegate(AddressOf UpdateLabel)
+        Dim LabelDelegate As New SetLabelCall(AddressOf UpdateLabel)
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)

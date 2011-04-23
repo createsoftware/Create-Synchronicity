@@ -255,9 +255,9 @@ NotInheritable Class ConfigHandler
         If ConfigOptions.Debug Or CommandLine.Silent Or CommandLine.Log Then
             Static UniqueID As String = Guid.NewGuid().ToString
 
-            Dim AppLog As New IO.StreamWriter(Singleton.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
-            AppLog.WriteLine(String.Format("[{0}][{1}] {2}", UniqueID, Date.Now.ToString(), EventData))
-            AppLog.Close()
+            Using AppLog As New IO.StreamWriter(Singleton.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
+                AppLog.WriteLine(String.Format("[{0}][{1}] {2}", UniqueID, Date.Now.ToString(), EventData))
+            End Using
         End If
     End Sub
 
@@ -663,8 +663,8 @@ Friend Module Updates
             Exit Sub
         End If
 
+        Dim UpdateClient As New Net.WebClient
         Try
-            Dim UpdateClient As New Net.WebClient
             UpdateClient.Headers.Add("version", Application.ProductVersion)
 #If CONFIG = "Linux" Then
             UpdateClient.Headers.Add("os", "Linux")
@@ -700,6 +700,8 @@ Friend Module Updates
 #If DEBUG Then
             Interaction.ShowMsg(Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
 #End If
+        Finally
+            UpdateClient.Dispose()
         End Try
     End Sub
 End Module
@@ -711,15 +713,15 @@ Structure CommandLine
         Queue
     End Enum
 
-    Shared Help As Boolean = False
-    Shared Quiet As Boolean = False
+    Shared Help As Boolean '= False
+    Shared Quiet As Boolean '= False
     Shared TasksToRun As String = ""
-    Shared ShowPreview As Boolean = False
-    Shared RunAs As RunMode = RunMode.Normal
-    Shared Silent As Boolean = False
-    Shared Log As Boolean = False
-    Shared NoUpdates As Boolean = False
-    Shared NoStop As Boolean = False
+    Shared ShowPreview As Boolean '= False
+    Shared RunAs As RunMode '= RunMode.Normal
+    Shared Silent As Boolean '= False
+    Shared Log As Boolean '= False
+    Shared NoUpdates As Boolean '= False
+    Shared NoStop As Boolean '= False
 
     Shared Sub ReadArgs(ByVal ArgsList As List(Of String))
         If ArgsList.Count > 1 Then
@@ -740,7 +742,7 @@ Structure CommandLine
         End If
 
         If CommandLine.TasksToRun <> "" Then
-            CommandLine.RunAs = CommandLine.RunMode.Queue 'Mostly explicative
+            CommandLine.RunAs = CommandLine.RunMode.Queue
         ElseIf ArgsList.Contains("/scheduler") Then
             CommandLine.RunAs = CommandLine.RunMode.Scheduler
         End If
