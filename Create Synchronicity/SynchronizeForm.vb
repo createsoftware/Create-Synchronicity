@@ -36,7 +36,7 @@ Public Class SynchronizeForm
 
     Friend Event SyncFinished(ByVal Name As String, ByVal Completed As Boolean)
 
-    'Not evaluating file size gives better performance (See FileLen_Speed_Test.vb for tests):
+    'Not evaluating file size gives better performance (See speed-test.vb for tests):
     'With size evaluation: 1'20, 46'', 36'', 35'', 31''
     'Without:                    41'', 42'', 26'', 29''
 
@@ -233,7 +233,7 @@ Public Class SynchronizeForm
 
     Private Shared Function FormatTimespan(ByVal T As TimeSpan) As String
         Dim Hours As Integer = CInt(Math.Truncate(T.TotalHours))
-        Return If(Hours = 0, "", Hours & "h, ") & If(T.Minutes = 0, "", T.Minutes.ToString & "m, ") & T.Seconds.ToString & "s"
+        Return String.Concat(If(Hours = 0, "", Hours & "h, "), If(T.Minutes = 0, "", T.Minutes.ToString & "m, "), T.Seconds.ToString, "s")
     End Function
 
     Private Sub UpdateStatuses()
@@ -257,11 +257,11 @@ Public Class SynchronizeForm
         End If
 
         If Not Status.CurrentStep = 1 Then
-            Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
-            FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
-            FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate & " (" & FormatSize(Status.BytesCopied) & ")"
-            FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
-            FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate
+            Done.Text = String.Concat(Status.ActionsDone, "/", Status.TotalActionsCount)
+            FilesDeleted.Text = String.Concat(Status.DeletedFiles, "/", Status.FilesToDelete)
+            FilesCreated.Text = String.Concat(Status.CreatedFiles, "/", Status.FilesToCreate, " (", FormatSize(Status.BytesCopied), ")")
+            FoldersDeleted.Text = String.Concat(Status.DeletedFolders, "/", Status.FoldersToDelete)
+            FoldersCreated.Text = String.Concat(Status.CreatedFolders, "/", Status.FoldersToCreate)
         End If
     End Sub
 #End Region
@@ -477,11 +477,11 @@ Public Class SynchronizeForm
         Context.Source = SideOfSource.Right
         Context.SourcePath = Destination
         Context.DestinationPath = Source
-        Select Case Handler.GetSetting(Of String)(ConfigOptions.Method)
-            Case "0"
+        Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Method)
+            Case 0
                 Context.Action = TypeOfAction.Delete
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
-            Case "2"
+            Case 2
                 Context.Action = TypeOfAction.Copy
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
@@ -513,32 +513,35 @@ Public Class SynchronizeForm
         Dim SetLabelCallback As New SetLabelCall(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
+            Dim SourcePath As String = Source & Entry.Path
+            Dim DestPath As String = Destination & Entry.Path
+
             Try
-                Me.Invoke(SetLabelCallback, New Object() {CurrentStep, If(Entry.Action = TypeOfAction.Delete, Source, Destination) & Entry.Path})
+                Me.Invoke(SetLabelCallback, New Object() {CurrentStep, If(Entry.Action = TypeOfAction.Delete, SourcePath, DestPath)})
 
                 Select Case Entry.Type
                     Case TypeOfItem.File
                         Select Case Entry.Action
                             Case TypeOfAction.Copy
-                                CopyFile(Entry.Path, Source, Destination)
+                                CopyFile(SourcePath, DestPath)
                             Case TypeOfAction.Delete
-                                IO.File.SetAttributes(Source & Entry.Path, IO.FileAttributes.Normal)
-                                IO.File.Delete(Source & Entry.Path)
+                                IO.File.SetAttributes(SourcePath, IO.FileAttributes.Normal)
+                                IO.File.Delete(SourcePath)
                                 Status.DeletedFiles += 1
                         End Select
 
                     Case TypeOfItem.Folder
                         Select Case Entry.Action
                             Case TypeOfAction.Copy
-                                IO.Directory.CreateDirectory(Destination & Entry.Path)
-                                IO.Directory.SetCreationTimeUtc(Destination & Entry.Path, IO.Directory.GetCreationTimeUtc(Source & Entry.Path).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0)))
+                                IO.Directory.CreateDirectory(DestPath)
+                                IO.Directory.SetCreationTimeUtc(DestPath, IO.Directory.GetCreationTimeUtc(SourcePath).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0)))
                                 Status.CreatedFolders += 1
                             Case TypeOfAction.Delete
-                                If IO.Directory.GetFiles(Source & Entry.Path).GetLength(0) = 0 Then
+                                If IO.Directory.GetFiles(SourcePath).GetLength(0) = 0 Then
                                     Try
-                                        IO.Directory.Delete(Source & Entry.Path)
+                                        IO.Directory.Delete(SourcePath)
                                     Catch ex As Exception
-                                        Dim DirInfo As New IO.DirectoryInfo(Source & Entry.Path)
+                                        Dim DirInfo As New IO.DirectoryInfo(SourcePath)
                                         DirInfo.Attributes = IO.FileAttributes.Normal
                                         DirInfo.Delete()
                                     End Try
@@ -553,7 +556,7 @@ Public Class SynchronizeForm
                 Exit Sub
 
             Catch ex As Exception
-                Log.HandleError(ex, Source & Entry.Path)
+                Log.HandleError(ex, SourcePath)
                 Log.LogAction(Entry, Side, False) 'Side parameter is only used for logging purposes.
             End Try
 
@@ -633,7 +636,7 @@ Public Class SynchronizeForm
         Me.Invoke(SetLabelCallback, New Object() {1, Src_FilePath})
 
         Dim PropagateUpdates As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.PropagateUpdates, True)
-        Dim EmptyDirectories As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.ReplicateEmptyDirectories, False) 'TODO: Check default value
+        Dim EmptyDirectories As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.ReplicateEmptyDirectories, True)
 
         Dim InitialCount As Integer
         Dim IsSingularity As Boolean
@@ -790,9 +793,7 @@ Public Class SynchronizeForm
         End If
     End Sub
 
-    Private Sub CopyFile(ByVal Path As String, ByVal Source As String, ByVal Dest As String)
-        Dim SourceFile As String = Source & Path : Dim DestFile As String = Dest & Path 'TODO: CombinePathes?
-
+    Private Sub CopyFile(ByVal SourceFile As String, ByVal DestFile As String)
         Dim Compression As Boolean = CompressionEnabled()
         If Compression Then DestFile &= Handler.GetSetting(Of String)(ConfigOptions.CompressionExt, "")
 
@@ -822,14 +823,14 @@ Public Class SynchronizeForm
 #End If
             IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal) 'Tracker #2999436
 #If DEBUG Then
-            Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & Path & """, now setting last write time.")
+            Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & DestFile & """, now setting last write time.")
 #End If
             'TODO: Check if s/DestFile/SourceFile would change something (I guess it would)
             IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0)))
         End If
 
 #If DEBUG Then
-        Log.LogInfo("CopyFile: now setting attributes on """ & Path & """")
+        Log.LogInfo("CopyFile: now setting attributes on """ & DestFile & """")
 #End If
         IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
 
@@ -842,11 +843,11 @@ Public Class SynchronizeForm
 #Region " Functions "
     Private Function HasAcceptedFilename(ByVal Path As String) As Boolean
         Try
-            Select Case Handler.GetSetting(Of String)(ConfigOptions.Restrictions) 'TODO: refine types.
+            Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Restrictions)
                 'LATER: Add an option to allow for simultaneous inclusion and exclusion (useful because of regex patterns)
-                Case "1"
+                Case 1
                     Return MatchesPattern(GetFileOrFolderName(Path), IncludedPatterns)
-                Case "2"
+                Case 2
                     Return Not MatchesPattern(GetFileOrFolderName(Path), ExcludedPatterns)
             End Select
         Catch Ex As Exception
@@ -895,7 +896,7 @@ Public Class SynchronizeForm
 
 #Region " Shared functions "
     Private Shared Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path?
-        Return Dir.TrimEnd(IO.Path.DirectorySeparatorChar) & IO.Path.DirectorySeparatorChar & File.TrimStart(IO.Path.DirectorySeparatorChar)
+        Return String.Concat(Dir.TrimEnd(ConfigOptions.DirSep), ConfigOptions.DirSep, File.TrimStart(ConfigOptions.DirSep))
     End Function
 
     Private Shared Function GetExtension(ByVal File As String) As String

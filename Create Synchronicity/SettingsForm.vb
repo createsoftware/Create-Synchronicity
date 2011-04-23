@@ -6,6 +6,8 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Option Strict On
+
 Public Class SettingsForm
     Dim Handler As ProfileHandler
     Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record events.
@@ -153,7 +155,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub Bottom_Showtag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PropagateUpdatesOption.MouseEnter, StrictDateComparisonOption.MouseEnter
-        BottomDescLabel.Text = CType(sender, Control).Tag
+        BottomDescLabel.Text = CStr(CType(sender, Control).Tag)
     End Sub
 
     Private Sub Bottom_HideTag(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PropagateUpdatesOption.MouseLeave, StrictDateComparisonOption.MouseLeave
@@ -170,7 +172,7 @@ Public Class SettingsForm
                     NewNode.Checked = (Node.ToolTipText = "*" And Node.Checked)
                     NewNode.ToolTipText = Node.ToolTipText
                 Next
-            Catch Ex As Exception
+            Catch Ex As Exception 'Typically UnauthorizedAccess exceptions.
 #If DEBUG Then
                 Interaction.ShowMsg("Exception while loading tree: " & Ex.ToString)
 #End If
@@ -425,19 +427,19 @@ Public Class SettingsForm
         Cleanup_Paths()
 
         'Careful: Using .ToString here would break the ByRef passing of the second argument. Problem with Option strict.
-        Handler.SetSetting(ConfigOptions.Source, FromTextBox.Text, LoadToForm)
-        Handler.SetSetting(ConfigOptions.Destination, ToTextBox.Text, LoadToForm)
-        Handler.SetSetting(ConfigOptions.IncludedTypes, IncludedTypesTextBox.Text, LoadToForm)
-        Handler.SetSetting(ConfigOptions.ExcludedTypes, ExcludedTypesTextBox.Text, LoadToForm)
-        Handler.SetSetting(ConfigOptions.ReplicateEmptyDirectories, ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.MayCreateDestination, CreateDestOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.StrictDateComparison, StrictDateComparisonOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.PropagateUpdates, PropagateUpdatesOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.StrictMirror, StrictMirrorOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.TimeOffset, TimeOffset.Value, LoadToForm)
-        Handler.SetSetting(ConfigOptions.Checksum, ChecksumOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.CheckFileSize, CheckFileSizeOption.Checked, LoadToForm)
-        Handler.SetSetting(ConfigOptions.Group, GroupTextBox.Text, LoadToForm)
+        Handler.CopySetting(ConfigOptions.Source, FromTextBox.Text, LoadToForm)
+        Handler.CopySetting(ConfigOptions.Destination, ToTextBox.Text, LoadToForm)
+        Handler.CopySetting(ConfigOptions.IncludedTypes, IncludedTypesTextBox.Text, LoadToForm)
+        Handler.CopySetting(ConfigOptions.ExcludedTypes, ExcludedTypesTextBox.Text, LoadToForm)
+        Handler.CopySetting(ConfigOptions.ReplicateEmptyDirectories, ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.MayCreateDestination, CreateDestOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.StrictDateComparison, StrictDateComparisonOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.PropagateUpdates, PropagateUpdatesOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.StrictMirror, StrictMirrorOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.TimeOffset, TimeOffset.Value, LoadToForm)
+        Handler.CopySetting(ConfigOptions.Checksum, ChecksumOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.CheckFileSize, CheckFileSizeOption.Checked, LoadToForm)
+        Handler.CopySetting(ConfigOptions.Group, GroupTextBox.Text, LoadToForm)
         'Hidden settings are not added here
 
         'Note: Behaves correctly when no radio button is checked, although CopyAllFiles is unchecked.
@@ -445,20 +447,20 @@ Public Class SettingsForm
         Dim Method As String = (If(LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
 
         If LoadToForm Then
-            Select Case Handler.GetSetting(Of String)(ConfigOptions.Method) 'TODO: Check type; FIXME: Handle "Nothing"
-                Case "1"
+            Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Method)
+                Case 1
                     LRIncrementalMethodOption.Checked = True
-                Case "2"
+                Case 2
                     TwoWaysIncrementalMethodOption.Checked = True
                 Case Else
                     LRMirrorMethodOption.Checked = True
             End Select
 
             CopyAllFilesCheckBox.Checked = False
-            Select Case Handler.GetSetting(Of String)(ConfigOptions.Restrictions)
-                Case "1"
+            Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Restrictions)
+                Case 1
                     IncludeFilesOption.Checked = True
-                Case "2"
+                Case 2
                     ExcludeFilesOption.Checked = True
                 Case Else
                     CopyAllFilesCheckBox.Checked = True
@@ -478,7 +480,7 @@ Public Class SettingsForm
             End If
 
             If RightView.Enabled Then
-                If RightView.CheckBoxes Or Handler.GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then 'TODO: Check Is Nothing
+                If RightView.CheckBoxes Or Handler.GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then
                     Handler.RightCheckedNodes.Clear()
                     BuildCheckedNodesList(Handler.RightCheckedNodes, RightView.Nodes(0))
                     Handler.SetSetting(ConfigOptions.RightSubFolders, GetString(Handler.RightCheckedNodes))

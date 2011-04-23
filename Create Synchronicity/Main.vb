@@ -53,15 +53,15 @@ Friend NotInheritable Class MessageLoop
         CommandLine.ReadArgs(New List(Of String)(Environment.GetCommandLineArgs()))
 
         ' Start logging
-        ConfigHandler.LogAppEvent("Program started, configuration loaded")
-        ConfigHandler.LogAppEvent(String.Format("Profiles will be loaded from {0}.", ProgramConfig.ConfigRootDir))
+        ConfigHandler.LogAppEvent("Program started: " & Application.StartupPath)
+        ConfigHandler.LogAppEvent(String.Format("Profiles folder: {0}.", ProgramConfig.ConfigRootDir))
 #If DEBUG Then
         Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If
 
         ' Check if multiple instances are allowed.
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler AndAlso SchedulerAlreadyRunning() Then
-            ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
+            ConfigHandler.LogAppEvent("Scheduler already running; exiting.")
             ExitNeeded = True : Exit Sub
         Else
             AddHandler Me.ThreadExit, AddressOf MessageLoop_ThreadExit
@@ -84,7 +84,7 @@ Friend NotInheritable Class MessageLoop
         End If
 
         If CommandLine.Help Then
-            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles are loaded from ""{2}"".{0}{0}Available commands:{0}    /help,{0}    /scheduler,{0}    /log,{0}    [/preview] [/quiet|/silent] /run ""ProfileName1|ProfileName2|ProfileName3[|...]""{0}{0}License information: See ""Release notes.txt"".{0}{0}Help: See {3}help.html.{0}{0}You can help this software! See {3}contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir, ConfigOptions.Website), "Help!")
+            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles folder: ""{2}"".{0}{0}Available commands: see manual.{0}{0}License information: See ""Release notes.txt"".{0}{0}Full manual: See {3}help.html.{0}{0}You can help this software! See {3}contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir, ConfigOptions.Website), "Help!")
         Else
             If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                 Interaction.ShowStatusIcon()
@@ -269,7 +269,7 @@ Friend NotInheritable Class MessageLoop
     Private Sub Scheduling_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If ScheduledProfiles Is Nothing Then
             ProgramConfig.CanGoOn = False 'Stop tick events from happening
-            MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval. FIXME: Was it really needed? Isn't 2s fine?
+            MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval.
             ScheduledProfiles = New List(Of SchedulerEntry)
 
             ConfigHandler.LogAppEvent("Scheduler: Started application timer.")

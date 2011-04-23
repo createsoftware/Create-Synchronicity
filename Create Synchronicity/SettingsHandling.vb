@@ -445,16 +445,15 @@ NotInheritable Class ProfileHandler
         Configuration(SettingName) = Value
     End Sub
 
-    Sub SetSetting(ByVal SettingName As String, ByRef SettingField As String, ByVal LoadSetting As Boolean)
+    Sub CopySetting(Of T)(ByVal SettingName As String, ByRef SettingField As T, ByVal LoadSetting As Boolean)
         'Passes the current value as default answer.
         If LoadSetting Then
-            SettingField = GetSetting(SettingName, SettingField) 'COULDDO: More type safety here; the current call is GetSetting(Of String)
+            SettingField = GetSetting(Of T)(SettingName, SettingField)
         Else
-            Configuration(SettingName) = SettingField
+            Configuration(SettingName) = If(SettingField IsNot Nothing, SettingField.ToString, Nothing)
         End If
     End Sub
 
-    'Byref!!? FIXME!
     Function GetSetting(Of T)(ByVal Key As String, Optional ByVal DefaultVal As T = Nothing) As T
         Dim Val As String = ""
         If Configuration.TryGetValue(Key, Val) AndAlso Not String.IsNullOrEmpty(Val) Then
@@ -606,17 +605,17 @@ Structure ScheduleInfo
         MonthDay = _MonthDay
     End Sub
 
-    Function GetInterval(Optional ByVal Multiplicator As Integer = 1) As TimeSpan 'LATER: Suppress multiplier.
+    Function GetInterval() As TimeSpan
         Dim Interval As TimeSpan
         Dim Today As Date = Date.Today
 
         Select Case Frequency
             Case DAILY
-                Interval = New TimeSpan(Multiplicator * 1, 0, 0, 0)
+                Interval = New TimeSpan(1, 0, 0, 0)
             Case WEEKLY
-                Interval = New TimeSpan(Multiplicator * 7, 0, 0, 0)
+                Interval = New TimeSpan(7, 0, 0, 0)
             Case MONTHLY
-                Interval = Today.AddMonths(Multiplicator * 1) - Today
+                Interval = Today.AddMonths(1) - Today
             Case Else
                 Interval = New TimeSpan(0)
         End Select

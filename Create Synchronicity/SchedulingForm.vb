@@ -49,7 +49,7 @@ Public Class SchedulingForm
                 End Select
         End Select
 
-        Handler.SetSetting(ConfigOptions.CatchUpSync, Catchup.Checked, True)
+        Handler.CopySetting(ConfigOptions.CatchUpSync, Catchup.Checked, True)
     End Sub
 
     Private Sub Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save.Click
