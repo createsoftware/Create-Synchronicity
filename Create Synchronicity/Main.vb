@@ -1,19 +1,34 @@
 ﻿<Assembly: CLSCompliant(True)> 
 
-Module MessageLoop
-    Friend ReloadNeeded As Boolean
-    Friend MainFormInstance As MainForm
+Module Main
     Friend Translation As LanguageHandler
     Friend ProgramConfig As ConfigHandler
     Friend Profiles As Dictionary(Of String, ProfileHandler)
+    Friend ReloadNeeded As Boolean
+    Friend MainFormInstance As MainForm
 
-    Private Blocker As Threading.Mutex = Nothing
+    Friend MsgLoop As MessageLoop
 
-#Region "Main program loop & first run"
     <STAThread()> _
     Sub Main()
         ' Must come first
         Application.EnableVisualStyles()
+
+        MsgLoop = New MessageLoop
+        If Not MsgLoop.ExitNeeded Then Application.Run(MsgLoop)
+    End Sub
+End Module
+
+Friend Class MessageLoop
+    Inherits ApplicationContext
+    Public ExitNeeded As Boolean = False
+
+    Private Blocker As Threading.Mutex = Nothing
+    Dim ScheduledProfiles As List(Of SchedulerEntry) = Nothing
+
+#Region "Main program loop & first run"
+    Sub New()
+        MyBase.New()
 
         ' Initialize ProgramConfig, Translation 
         InitializeSharedObjects()
@@ -31,7 +46,9 @@ Module MessageLoop
         ' Check if multiple instances are allowed.
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler AndAlso SchedulerAlreadyRunning() Then
             ConfigHandler.LogAppEvent("Scheduler already runnning from " & Application.ExecutablePath)
-            Exit Sub
+            ExitNeeded = True : Exit Sub
+        Else
+            AddHandler Me.ThreadExit, AddressOf MessageLoop_ThreadExit
         End If
 
         ' Setup settings
@@ -57,21 +74,21 @@ Module MessageLoop
                 Interaction.ShowStatusIcon()
 
                 If CommandLine.RunAs = CommandLine.RunMode.Queue Then
-                    AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf ProcessProfilesQueue
+                    AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf StartQueue
                 ElseIf CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf Scheduling_Tick
                 End If
-
                 MainFormInstance.ApplicationTimer.Start()
-                Application.Run() 'This call won't exit until Application.Exit is called from elsewhere.
-                Interaction.HideStatusIcon()
             Else
-                Do
-                    If ReloadNeeded Then MainFormInstance = New MainForm
-                    Application.Run(MainFormInstance)
-                Loop While ReloadNeeded
+                AddHandler MainFormInstance.FormClosed, AddressOf ReloadMainForm
+                MainFormInstance.Show()
             End If
         End If
+    End Sub
+
+    Private Sub MessageLoop_ThreadExit(ByVal sender As Object, ByVal e As System.EventArgs)
+        ExitNeeded = True
+        Interaction.HideStatusIcon()
 
         ' Save last window information. Don't overwrite config file if running in scheduler mode.
         If Not CommandLine.RunAs = CommandLine.RunMode.Scheduler Then ProgramConfig.SaveProgramSettings()
@@ -85,7 +102,17 @@ Module MessageLoop
 #End If
     End Sub
 
-    Sub InitializeSharedObjects()
+    Private Sub ReloadMainForm(ByVal sender As Object, ByVal e As FormClosedEventArgs)
+        If ReloadNeeded Then
+            MainFormInstance = New MainForm
+            AddHandler MainFormInstance.FormClosed, AddressOf Me.ReloadMainForm
+            MainFormInstance.Show()
+        Else
+            Application.Exit()
+        End If
+    End Sub
+
+    Shared Sub InitializeSharedObjects()
         ' Load program configuration
         ProgramConfig = ConfigHandler.GetSingleton
         Translation = LanguageHandler.GetSingleton
@@ -96,7 +123,7 @@ Module MessageLoop
         IO.Directory.CreateDirectory(ProgramConfig.LanguageRootDir)
     End Sub
 
-    Sub InitializeForms()
+    Shared Sub InitializeForms()
         ' Create MainForm
         MainFormInstance = New MainForm()
 
@@ -109,7 +136,7 @@ Module MessageLoop
         Updates.SetParent(MainFormInstance) 'Using a callback is really needed.
     End Sub
 
-    Sub HandleFirstRun()
+    Shared Sub HandleFirstRun()
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
             Application.Run(New LanguageForm)
             Translation = LanguageHandler.GetSingleton(True)
@@ -123,7 +150,7 @@ Module MessageLoop
         ProgramConfig.SaveProgramSettings()
     End Sub
 
-    Sub ReloadProfiles()
+    Shared Sub ReloadProfiles()
         Profiles = New Dictionary(Of String, ProfileHandler)
 
         For Each ConfigFile As String In IO.Directory.GetFiles(ProgramConfig.ConfigRootDir, "*.sync")
@@ -134,7 +161,7 @@ Module MessageLoop
 #End Region
 
 #Region "Scheduling"
-    Function SchedulerAlreadyRunning() As Boolean
+    Private Function SchedulerAlreadyRunning() As Boolean
         Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ConfigOptions.DirSep, "!"c).ToLower(Interaction.InvariantCulture)
 #If DEBUG Then
         ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
@@ -152,7 +179,7 @@ Module MessageLoop
         Return (Not Blocker.WaitOne(0, False))
     End Function
 
-    Sub RedoSchedulerRegistration()
+    Shared Sub RedoSchedulerRegistration()
         Dim NeedToRunAtBootTime As Boolean = False
         For Each Profile As ProfileHandler In Profiles.Values
             NeedToRunAtBootTime = NeedToRunAtBootTime Or (Profile.Scheduler.Frequency <> ScheduleInfo.NEVER)
@@ -175,21 +202,23 @@ Module MessageLoop
         End Try
     End Sub
 
-    Sub ProcessProfilesQueue(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub StartQueue(ByVal sender As System.Object, ByVal e As System.EventArgs)
         MainFormInstance.ApplicationTimer.Stop()
-        MainFormInstance.ApplicationTimer.Interval = 2000 'Leave two seconds between each queued profile
+        ProcessProfilesQueue()
+    End Sub
 
-        Static ProfilesQueue As List(Of String) = Nothing
+    Private Sub ProcessProfilesQueue()
+        Static ProfilesQueue As Queue(Of String) = Nothing
 
         If ProfilesQueue Is Nothing Then
-            ProfilesQueue = New List(Of String)
+            ProfilesQueue = New Queue(Of String)
 
             ConfigHandler.LogAppEvent("Profiles queue: Queue created.")
             For Each Profile As String In CommandLine.TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
                 If Profiles.ContainsKey(Profile) Then
                     If Profiles(Profile).ValidateConfigFile() Then
                         ConfigHandler.LogAppEvent("Profiles queue: Registered profile " & Profile)
-                        ProfilesQueue.Add(Profile)
+                        ProfilesQueue.Enqueue(Profile)
                     Else
                         Interaction.ShowMsg(Translation.Translate("\INVALID_CONFIG"), Translation.Translate("\INVALID_CMD"), , MessageBoxIcon.Error)
                     End If
@@ -203,16 +232,25 @@ Module MessageLoop
             ConfigHandler.LogAppEvent("Profiles queue: Synced all profiles.")
             Application.Exit()
         Else
-            Dim SyncForm As New SynchronizeForm(ProfilesQueue(0), CommandLine.ShowPreview, CommandLine.Quiet)
-            AddHandler SyncForm.SyncFinished, Sub(Name As String, Completed As Boolean) MainFormInstance.ApplicationTimer.Start()
+            Dim SyncForm As New SynchronizeForm(ProfilesQueue.Dequeue(), CommandLine.ShowPreview, CommandLine.Quiet)
+            AddHandler SyncForm.SyncFinished, Sub(Name As String, Completed As Boolean) ProcessProfilesQueue()
             SyncForm.StartSynchronization(False)
-            ProfilesQueue.RemoveAt(0)
+        End If
+    End Sub
+
+    Private Sub ScheduledProfileCompleted(ByVal ProfileName As String, ByVal Completed As Boolean) 'FIXME: Test this
+        If Completed Then ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " completed successfully.")
+        If Not Profiles.ContainsKey(ProfileName) Then Exit Sub
+
+        If Completed Then
+            ScheduledProfiles.Add(New SchedulerEntry(ProfileName, Profiles(ProfileName).Scheduler.NextRun(), False, False))
+        Else
+            ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " reported an error, will run again in 4 hours.")
+            ScheduledProfiles.Add(New SchedulerEntry(ProfileName, Date.Now.AddHours(4), True, True))
         End If
     End Sub
 
     Private Sub Scheduling_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Static ScheduledProfiles As List(Of SchedulerEntry) = Nothing
-
         If ScheduledProfiles Is Nothing Then
             ProgramConfig.CanGoOn = False 'Stop tick events from happening
             MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval. FIXME: Was it really needed? Isn't 2s fine?
@@ -240,19 +278,9 @@ Module MessageLoop
                 ConfigHandler.LogAppEvent("Scheduler: Launching " & NextInQueue.Name)
 
                 Dim SyncForm As New SynchronizeForm(NextInQueue.Name, False, True, NextInQueue.CatchUp)
-                AddHandler SyncForm.SyncFinished, Sub(ProfileName As String, Completed As Boolean)
-                                                      If Completed Then ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " completed successfully.")
-                                                      If Not Profiles.ContainsKey(ProfileName) Then Exit Sub
-
-                                                      If Completed Then
-                                                          ScheduledProfiles.Add(New SchedulerEntry(ProfileName, Profiles(ProfileName).Scheduler.NextRun(), False, False))
-                                                      Else
-                                                          ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " reported an error, will run again in 4 hours.")
-                                                          ScheduledProfiles.Add(New SchedulerEntry(ProfileName, Date.Now.AddHours(4), True, True))
-                                                      End If
-                                                  End Sub
-                SyncForm.StartSynchronization(False)
+                AddHandler SyncForm.SyncFinished, AddressOf ScheduledProfileCompleted
                 ScheduledProfiles.RemoveAt(0)
+                SyncForm.StartSynchronization(False)
             End If
         End If
     End Sub
@@ -344,4 +372,4 @@ Module MessageLoop
         MessageBox.Show(CType(Nothing, String) = "")
     End Sub
 #End If
-End Module
+End Class

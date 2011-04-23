@@ -56,7 +56,7 @@ Public Class MainForm
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ReloadConfigs()
-        RedoSchedulerRegistration()
+        MessageLoop.RedoSchedulerRegistration()
         SetView(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MainView, 0))
         SetFont(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.FontSize, CInt(Actions.Font.Size)))
     End Sub
@@ -217,7 +217,7 @@ Public Class MainForm
         Dim SchedForm As New SchedulingForm(CurrentProfile)
         SchedForm.ShowDialog()
         ReloadConfigs()
-        RedoSchedulerRegistration()
+        MessageLoop.RedoSchedulerRegistration()
     End Sub
 
     Private Sub Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.Click
@@ -258,7 +258,7 @@ Public Class MainForm
         If Me.IsDisposed Then Exit Sub
         Dim CreateProfileItem As ListViewItem = Actions.Items(0)
 
-        ReloadProfiles()
+        MessageLoop.ReloadProfiles()
         Actions.Items.Clear()
         Actions.Items.Add(CreateProfileItem).Group = Actions.Groups(0)
 
