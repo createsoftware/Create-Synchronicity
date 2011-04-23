@@ -18,10 +18,10 @@ Module Main
             MsgLoop = New MessageLoop
             If Not MsgLoop.ExitNeeded Then Application.Run(MsgLoop)
         Catch Ex As Exception
-            If MessageBox.Show("A critical error has occured. Can we upload the error log? " & Environment.NewLine & "If not, you can copy this message using Ctrl+C and send it to createsoftware@users.sourceforge.net." & Environment.NewLine & "Here's what we would send:" & Environment.NewLine & Ex.ToString) Then
-
+            If MessageBox.Show("A critical error has occured. Can we upload the error log? " & Environment.NewLine & "If not, you can copy this message using Ctrl+C and send it to createsoftware@users.sourceforge.net." & Environment.NewLine & "Here's what we would send:" & Environment.NewLine & Environment.NewLine & Ex.ToString) Then
+                Dim ReportingClient As New Net.WebClient
+                MessageBox.Show(ReportingClient.UploadString(Website & "error.html", Ex.ToString))
             End If
-
             Throw
         End Try
     End Sub

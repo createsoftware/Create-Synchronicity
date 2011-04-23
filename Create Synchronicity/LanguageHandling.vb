@@ -103,7 +103,7 @@ Friend NotInheritable Class LanguageHandler
         If IO.File.Exists(ProgramConfig.LocalNamesFile) Then
             Using PropsReader As New IO.StreamReader(ProgramConfig.LocalNamesFile)
                 While Not PropsReader.EndOfStream
-                    Dim CurLanguage() As String = PropsReader.ReadLine.Split(";".ToCharArray, 3)
+                    Dim CurLanguage() As String = PropsReader.ReadLine.Split(";".ToCharArray)
                     Try
                         LanguageProps.Add(CurLanguage(0), New LanguageHandler.LanguageInfo With {.LocalName = CurLanguage(1), .IsoLanguageName = CurLanguage(2)})
                     Catch Ex As IndexOutOfRangeException
