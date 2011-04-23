@@ -229,14 +229,6 @@
            </Member>
            <Member Name="#ShowToolTip(System.Windows.Forms.Control)">
             <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2011-04-21 17:23:20Z">
-              <Issue Name="Parameter">
-               <Item>'Ctrl'</Item>
-               <Item>'TreeView'</Item>
-               <Item>'Interaction.ShowToolTip(Control)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
               <Issue>
                <Item>'Interaction.ShowToolTip(Control)'</Item>
@@ -294,47 +286,12 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#TranslateControl(System.Windows.Forms.Control)">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2011-04-21 17:23:20Z">
-              <Issue Name="Parameter">
-               <Item>'Ctrl'</Item>
-               <Item>'ContextMenuStrip'</Item>
-               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-              <Issue Name="Parameter">
-               <Item>'Ctrl'</Item>
-               <Item>'ListView'</Item>
-               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-              <Issue Name="Parameter">
-               <Item>'Ctrl'</Item>
-               <Item>'ListView'</Item>
-               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-              <Issue Name="Parameter">
-               <Item>'Ctrl'</Item>
-               <Item>'ListView'</Item>
-               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
-               <Item>castclass</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="ListViewColumnSorter">
           <Members>
            <Member Name="#.ctor(System.Int32)">
             <Messages>
-             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Created="2011-04-21 17:23:20Z">
-              <Issue>
-               <Item>'ListViewColumnSorter.New(Integer)'</Item>
-              </Issue>
-             </Message>
              <Message Id="Column" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
               <Issue Name="MemberParameter">
                <Item>'ListViewColumnSorter.New(Integer)'</Item>
@@ -586,21 +543,21 @@
          </Type>
          <Type Name="MessageLoop">
           <Members>
-           <Member Name="#Main()">
+           <Member Name="#.ctor()">
             <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-23 06:37:13Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object)'</Item>
-               <Item>'MessageLoop.Main()'</Item>
+               <Item>'MessageLoop.New()'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
              </Message>
-             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-23 06:37:13Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, ParamArray Object())'</Item>
-               <Item>'MessageLoop.Main()'</Item>
+               <Item>'MessageLoop.New()'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
@@ -1063,11 +1020,6 @@
           <Members>
            <Member Name="#.ctor(System.String,System.Boolean,System.Boolean,System.Boolean)">
             <Messages>
-             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Created="2011-04-21 17:23:20Z">
-              <Issue>
-               <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
-              </Issue>
-             </Message>
              <Message Id="Catchup" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
               <Issue Name="MemberParameter">
                <Item>'SynchronizeForm.New(String, Boolean, Boolean, Boolean)'</Item>
@@ -1520,12 +1472,6 @@
    </Target>
   </Targets>
   <Rules>
-   <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
-    <Resolution Name="Default">Replace method {0} with an overload that supplies all default arguments.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
-    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
-   </Rule>
    <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
     <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
    </Rule>

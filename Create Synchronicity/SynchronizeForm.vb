@@ -41,7 +41,7 @@ Public Class SynchronizeForm
     'Without:                    41'', 42'', 26'', 29''
 
 #Region " Events "
-    Public Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean, Optional ByVal _Catchup As Boolean = False)
+    Public Sub New(ByVal ConfigName As String, ByVal DisplayPreview As Boolean, ByVal _Quiet As Boolean, ByVal _Catchup As Boolean)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 

@@ -232,7 +232,7 @@ Friend Class MessageLoop
             ConfigHandler.LogAppEvent("Profiles queue: Synced all profiles.")
             Application.Exit()
         Else
-            Dim SyncForm As New SynchronizeForm(ProfilesQueue.Dequeue(), CommandLine.ShowPreview, CommandLine.Quiet)
+            Dim SyncForm As New SynchronizeForm(ProfilesQueue.Dequeue(), CommandLine.ShowPreview, CommandLine.Quiet, False)
             AddHandler SyncForm.SyncFinished, Sub(Name As String, Completed As Boolean) ProcessProfilesQueue()
             SyncForm.StartSynchronization(False)
         End If

@@ -172,7 +172,7 @@ Public Class MainForm
     Private Sub PreviewMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreviewMenuItem.Click
         If Not CheckValidity() Then Exit Sub
 
-        Dim SyncForm As New SynchronizeForm(CurrentProfile, True, False)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, True, False, False)
         SetVisible(False) : SyncForm.StartSynchronization(True) : SyncForm.ShowDialog() : SetVisible(True)
         SyncForm.Dispose()
     End Sub
@@ -180,7 +180,7 @@ Public Class MainForm
     Private Sub SynchronizeMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SynchronizeMenuItem.Click
         If Not CheckValidity() Then Exit Sub
 
-        Dim SyncForm As New SynchronizeForm(CurrentProfile, False, False)
+        Dim SyncForm As New SynchronizeForm(CurrentProfile, False, False, False)
         SetVisible(False) : SyncForm.StartSynchronization(True) : SyncForm.ShowDialog() : SetVisible(True)
         SyncForm.Dispose()
     End Sub

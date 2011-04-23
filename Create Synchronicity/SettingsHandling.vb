@@ -787,7 +787,8 @@ Friend Module Interaction
     End Sub
 
     Public Sub ShowToolTip(ByVal Ctrl As Control)
-        If TypeOf Ctrl Is TreeView AndAlso Not DirectCast(Ctrl, TreeView).CheckBoxes Then Exit Sub
+        Dim T As TreeView = TryCast(Ctrl, TreeView)
+        If T IsNot Nothing AndAlso Not T.CheckBoxes Then Exit Sub
 
         Dim Offset As Integer = If(TypeOf Ctrl Is RadioButton Or TypeOf Ctrl Is CheckBox, 12, 1)
         Dim Pair As String() = Ctrl.Tag.ToString.Replace("%s", Ctrl.Text).Split(New Char() {";"c}, 2)
@@ -838,7 +839,7 @@ Public NotInheritable Class ListViewColumnSorter
     Public SortColumn As Integer
     Private ObjectCompare As Collections.CaseInsensitiveComparer
 
-    Public Sub New(Optional ByVal ColumnId As Integer = 0)
+    Public Sub New(ByVal ColumnId As Integer)
         SortColumn = ColumnId
         Order = SortOrder.Ascending
         ObjectCompare = New Collections.CaseInsensitiveComparer()

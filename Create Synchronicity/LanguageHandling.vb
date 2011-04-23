@@ -64,31 +64,33 @@ Friend NotInheritable Class LanguageHandler
         Ctrl.Text = Translate(Ctrl.Text)
         TranslateControl(Ctrl.ContextMenuStrip)
 
-        If TypeOf Ctrl Is ListView Then
-            For Each Group As ListViewGroup In DirectCast(Ctrl, ListView).Groups
+        Dim List As ListView = TryCast(Ctrl, ListView)
+        If List IsNot Nothing Then
+            For Each Group As ListViewGroup In List.Groups
                 Group.Header = Translate(Group.Header)
             Next
 
-            For Each Column As ColumnHeader In DirectCast(Ctrl, ListView).Columns
+            For Each Column As ColumnHeader In List.Columns
                 Column.Text = Translate(Column.Text)
             Next
 
-            For Each Item As ListViewItem In DirectCast(Ctrl, ListView).Items
+            For Each Item As ListViewItem In List.Items
                 For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
                     SubItem.Text = Translate(SubItem.Text)
                     SubItem.Tag = Translate(SubItem.Tag, ";")
                 Next
             Next
+        End If
 
-        ElseIf TypeOf Ctrl Is ContextMenuStrip Then
-            For Each Item As ToolStripItem In DirectCast(Ctrl, ContextMenuStrip).Items
+        Dim ContextMenu As ContextMenuStrip = TryCast(Ctrl, ContextMenuStrip)
+        If ContextMenu IsNot Nothing Then
+            For Each Item As ToolStripItem In ContextMenu.Items
                 Item.Text = Translate(Item.Text)
                 Item.Tag = Translate(Item.Tag, ";")
             Next
         End If
 
         Ctrl.Tag = Translate(Ctrl.Tag, ";")
-
         For Each ChildCtrl As Control In Ctrl.Controls
             TranslateControl(ChildCtrl)
         Next
