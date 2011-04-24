@@ -324,13 +324,12 @@ NotInheritable Class ProfileHandler
 
     Function SaveConfigFile() As Boolean
         Try
-            Dim FileWriter As New IO.StreamWriter(ProgramConfig.GetConfigPath(ProfileName))
+            Using FileWriter As New IO.StreamWriter(ProgramConfig.GetConfigPath(ProfileName))
+                For Each Setting As KeyValuePair(Of String, String) In Configuration
+                    FileWriter.WriteLine(Setting.Key & ":" & Setting.Value)
+                Next
+            End Using
 
-            For Each Setting As KeyValuePair(Of String, String) In Configuration
-                FileWriter.WriteLine(Setting.Key & ":" & Setting.Value)
-            Next
-
-            FileWriter.Close()
             Return True
         Catch Ex As Exception
             ConfigHandler.LogAppEvent("Unable to save config file for " & ProfileName & Environment.NewLine & Ex.ToString)
@@ -749,12 +748,8 @@ Friend Module Interaction
         Return Msg.Replace(Environment.NewLine, " // ")
     End Function
 
-    Public Sub ShowStatusIcon()
-        StatusIcon.Visible = Not CommandLine.Silent
-    End Sub
-
-    Public Sub HideStatusIcon()
-        StatusIcon.Visible = False
+    Public Sub ToggleStatusIcon(ByVal Status As Boolean)
+        StatusIcon.Visible = Status And (Not CommandLine.Silent)
     End Sub
 
     Public Sub ShowBalloonTip(ByVal Msg As String, Optional ByVal File As String = "")

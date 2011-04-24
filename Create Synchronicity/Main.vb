@@ -87,7 +87,7 @@ Friend NotInheritable Class MessageLoop
             Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles folder: ""{2}"".{0}{0}Available commands: see manual.{0}{0}License information: See ""Release notes.txt"".{0}{0}Full manual: See {3}help.html.{0}{0}You can help this software! See {3}contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir, ConfigOptions.Website), "Help!")
         Else
             If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-                Interaction.ShowStatusIcon()
+                Interaction.ToggleStatusIcon(True)
 
                 If CommandLine.RunAs = CommandLine.RunMode.Queue Then
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf StartQueue
@@ -104,7 +104,7 @@ Friend NotInheritable Class MessageLoop
 
     Private Sub MessageLoop_ThreadExit(ByVal sender As Object, ByVal e As System.EventArgs)
         ExitNeeded = True
-        Interaction.HideStatusIcon()
+        Interaction.ToggleStatusIcon(False)
 
         ' Save last window information. Don't overwrite config file if running in scheduler mode.
         If Not CommandLine.RunAs = CommandLine.RunMode.Scheduler Then ProgramConfig.SaveProgramSettings()

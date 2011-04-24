@@ -91,7 +91,7 @@ Public Class SynchronizeForm
 
             Interaction.StatusIcon.Text = Translation.Translate("\RUNNING")
 
-            Interaction.ShowStatusIcon()
+            Interaction.ToggleStatusIcon(True)
             If Catchup Then
                 Dim LastRun As Date = Handler.GetLastRun()
                 Interaction.ShowBalloonTip(String.Format(Translation.Translate("\CATCHING_UP"), Handler.ProfileName, (Date.Now - LastRun).Days, (Date.Now - LastRun).Hours, LastRun.ToString))
