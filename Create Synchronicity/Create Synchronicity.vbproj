@@ -115,6 +115,7 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
     <WarningsAsErrors>
     </WarningsAsErrors>
+    <DefineConstants>LINUX=True</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

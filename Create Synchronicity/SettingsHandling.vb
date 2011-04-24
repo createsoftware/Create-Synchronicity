@@ -222,7 +222,7 @@ NotInheritable Class ConfigHandler
         Dim ConfigString As String = My.Computer.FileSystem.ReadAllText(MainConfigFile)
         Dim ConfigArray As New List(Of String)(ConfigString.Split(";"c))
         For Each Setting As String In ConfigArray
-            Dim Pair As String() = Setting.Split(New Char() {":"c}, 2)
+            Dim Pair As String() = Setting.Split(":".ToCharArray, 2)
             If Pair.Length() < 2 Then Continue For
             If ProgramSettings.ContainsKey(Pair(0)) Then ProgramSettings.Remove(Pair(0))
             ProgramSettings.Add(Pair(0).Trim, Pair(1).Trim)
@@ -522,7 +522,7 @@ NotInheritable Class ProfileHandler
 #If CONFIG <> "Linux" Then
         Dim Label As String, RelativePath As String
         If Path.StartsWith("""") Or Path.StartsWith(":") Then
-            Dim ClosingPos As Integer = Path.LastIndexOfAny(New Char() {""""c, ":"c})
+            Dim ClosingPos As Integer = Path.LastIndexOfAny(""":".ToCharArray)
             If ClosingPos = 0 Then Return "" 'LINUX: Currently returns "" (aka linux root) if no closing op is found.
 
             Label = Path.Substring(1, ClosingPos - 1)
@@ -789,17 +789,18 @@ Friend Module Interaction
         If T IsNot Nothing AndAlso Not T.CheckBoxes Then Exit Sub
 
         Dim Offset As Integer = If(TypeOf Ctrl Is RadioButton Or TypeOf Ctrl Is CheckBox, 12, 1)
-        Dim Pair As String() = Ctrl.Tag.ToString.Replace("%s", Ctrl.Text).Split(New Char() {";"c}, 2)
+        Dim Pair As String() = Ctrl.Tag.ToString.Replace("%s", Ctrl.Text).Split(";".ToCharArray, 2)
 
         Try
+            Dim Pos As New Drawing.Point(0, Ctrl.Height + Offset)
             If Pair.GetLength(0) = 1 Then
                 SharedToolTip.ToolTipTitle = ""
-                SharedToolTip.Show(Pair(0), Ctrl, New Drawing.Point(0, Ctrl.Height + Offset))
+                SharedToolTip.Show(Pair(0), Ctrl, Pos)
             ElseIf Pair.GetLength(0) > 1 Then
                 SharedToolTip.ToolTipTitle = Pair(0)
-                SharedToolTip.Show(Pair(1), Ctrl, New Drawing.Point(0, Ctrl.Height + Offset))
+                SharedToolTip.Show(Pair(1), Ctrl, Pos)
             End If
-        Catch ex As Exception
+        Catch ex As InvalidOperationException
             'See bug #3076129
         End Try
     End Sub
