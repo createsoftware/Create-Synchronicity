@@ -172,8 +172,9 @@ NotInheritable Class ConfigHandler
             Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
 
             Try
-                IO.File.Create(Folder & ConfigOptions.DirSep & "write-permissions").Close()
-                IO.File.Delete(Folder & ConfigOptions.DirSep & "write-permissions")
+                Dim TestPath As String = Folder & ConfigOptions.DirSep & "write-permissions"
+                IO.File.Create(TestPath).Close()
+                IO.File.Delete(TestPath)
             Catch
                 Writable = False
             End Try
