@@ -290,24 +290,13 @@ NotInheritable Class ProfileHandler
     Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
 
-    Private PredicateConfigMatchingList As Dictionary(Of String, String)
+    'NOTE: Only vital settings should be checked for correctness, since the config will be rejected if a mismatch occurs.
+    Private Shared ReadOnly RequiredSettings As New List(Of String)() From {ConfigOptions.Source, ConfigOptions.Destination, ConfigOptions.ExcludedTypes, ConfigOptions.IncludedTypes, ConfigOptions.LeftSubFolders, ConfigOptions.RightSubFolders, ConfigOptions.Method, ConfigOptions.Restrictions, ConfigOptions.ReplicateEmptyDirectories}
 
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
         If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*") 'TODO: Check types (Nothing)
-
-        PredicateConfigMatchingList = New Dictionary(Of String, String)
-        PredicateConfigMatchingList.Add(ConfigOptions.Source, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.Destination, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.ExcludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
-        PredicateConfigMatchingList.Add(ConfigOptions.IncludedTypes, "(([a-zA-Z0-9]+;)*[a-zA-Z0-9])?")
-        PredicateConfigMatchingList.Add(ConfigOptions.LeftSubFolders, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.RightSubFolders, ".*")
-        PredicateConfigMatchingList.Add(ConfigOptions.Method, "[012]")
-        PredicateConfigMatchingList.Add(ConfigOptions.Restrictions, "[012]")
-        PredicateConfigMatchingList.Add(ConfigOptions.ReplicateEmptyDirectories, "True|False")
-        'NOTE: Only vital settings should be checked for correctness, since the config will be rejected if a mismatch occurs.
     End Sub
 
     Function LoadConfigFile() As Boolean
@@ -375,13 +364,10 @@ NotInheritable Class ProfileHandler
             IsValid = False
         End If
 
-        For Each Pair As KeyValuePair(Of String, String) In PredicateConfigMatchingList
-            If Not Configuration.ContainsKey(Pair.Key) Then
+        For Each Key As String In RequiredSettings
+            If Not Configuration.ContainsKey(Key) Then
                 IsValid = False
-                InvalidListing.Add(String.Format(Translation.Translate("\SETTING_UNSET"), Pair.Key))
-            ElseIf Not System.Text.RegularExpressions.Regex.IsMatch(GetSetting(Of String)(Pair.Key, ""), Pair.Value) Then
-                IsValid = False
-                InvalidListing.Add(String.Format(Translation.Translate("\INVALID_SETTING"), Pair.Key))
+                InvalidListing.Add(String.Format(Translation.Translate("\SETTING_UNSET"), Key))
             End If
         Next
 
@@ -476,7 +462,7 @@ NotInheritable Class ProfileHandler
     End Sub
 
     Sub SaveScheduler()
-        SetSetting(ConfigOptions.Scheduling, Scheduler.Frequency.ToString & ";" & Scheduler.WeekDay & ";" & Scheduler.MonthDay & ";" & Scheduler.Hour & ";" & Scheduler.Minute)
+        SetSetting(ConfigOptions.Scheduling, String.Join(";", New String() {Scheduler.Frequency.ToString, Scheduler.WeekDay, Scheduler.MonthDay, Scheduler.Hour, Scheduler.Minute}))
     End Sub
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))

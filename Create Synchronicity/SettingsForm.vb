@@ -506,7 +506,7 @@ Public Class SettingsForm
     Private Shared Function GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
         Dim ListString As New System.Text.StringBuilder
         For Each Node As String In Table.Keys
-            ListString.Append(Node).Append(";")
+            ListString.Append(Node).Append(";") 'Must end with a ";"
         Next
         Return ListString.ToString
     End Function
