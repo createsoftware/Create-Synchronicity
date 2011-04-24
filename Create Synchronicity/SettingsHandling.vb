@@ -291,7 +291,7 @@ NotInheritable Class ProfileHandler
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
 
     'NOTE: Only vital settings should be checked for correctness, since the config will be rejected if a mismatch occurs.
-    Private Shared ReadOnly RequiredSettings As New List(Of String)() From {ConfigOptions.Source, ConfigOptions.Destination, ConfigOptions.ExcludedTypes, ConfigOptions.IncludedTypes, ConfigOptions.LeftSubFolders, ConfigOptions.RightSubFolders, ConfigOptions.Method, ConfigOptions.Restrictions, ConfigOptions.ReplicateEmptyDirectories}
+    Private Shared ReadOnly RequiredSettings() As String = {ConfigOptions.Source, ConfigOptions.Destination, ConfigOptions.ExcludedTypes, ConfigOptions.IncludedTypes, ConfigOptions.LeftSubFolders, ConfigOptions.RightSubFolders, ConfigOptions.Method, ConfigOptions.Restrictions, ConfigOptions.ReplicateEmptyDirectories}
 
     Public Sub New(ByVal Name As String)
         ProfileName = Name
