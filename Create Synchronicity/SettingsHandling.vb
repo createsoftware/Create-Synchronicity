@@ -822,9 +822,9 @@ Friend Module Interaction
         If Not CurrentFileToOpen = "" Then StartProcess(CurrentFileToOpen)
     End Sub
 
-    Public Sub StartProcess(ByVal Address As String)
+    Public Sub StartProcess(ByVal Address As String, Optional ByVal Args As String = "")
         Try
-            Diagnostics.Process.Start(Address)
+            Diagnostics.Process.Start(Address, Args)
         Catch
         End Try
     End Sub
