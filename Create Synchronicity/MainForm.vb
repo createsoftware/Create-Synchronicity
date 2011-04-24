@@ -97,7 +97,7 @@ Public Class MainForm
 
 #If 0 Then
     Private Sub ToolStripHeader_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripHeader.Click
-        Diagnostics.Process.Start(ConfigOptions.Website & "scheduler.html")
+        Interaction.StartProcess(ConfigOptions.Website & "scheduler.html")
     End Sub
 #End If
 

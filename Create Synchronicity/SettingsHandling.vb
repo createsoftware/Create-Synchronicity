@@ -680,7 +680,7 @@ Friend Module Updates
 
             If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    Diagnostics.Process.Start(ConfigOptions.Website & "update.html")
+                    Interaction.StartProcess(ConfigOptions.Website & "update.html")
                     If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
                 End If
             Else

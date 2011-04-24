@@ -129,7 +129,7 @@ Public Class SynchronizeForm
                 Dim NewFile As String = "", OldFile As String = ""
                 If Not SetPathFromSelectedItem(NewFile, OldFile) Then Exit Sub
                 Try
-                    If DiffProgram <> "" AndAlso IO.File.Exists(OldFile) AndAlso IO.File.Exists(NewFile) Then Diagnostics.Process.Start(DiffProgram.Trim, DiffArguments.Replace("%o", OldFile).Replace("%n", NewFile))
+                    If DiffProgram <> "" AndAlso IO.File.Exists(OldFile) AndAlso IO.File.Exists(NewFile) Then Interaction.StartProcess(DiffProgram.Trim, DiffArguments.Replace("%o", OldFile).Replace("%n", NewFile))
                 Catch Ex As Exception
                     Interaction.ShowMsg("Error loading diff: " & Ex.ToString)
                 End Try
