@@ -32,6 +32,11 @@ NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modifica
 --------------------------
 
 -- Version 5.2 Beta (5.1.99) --
+Apr. 24, 2011 - UPD: Improved settings parsing.
+Apr. 24, 2011 - NEW: Canceling a catching up, or shutting down while catching up, does not mark the profile as caught up.
+Apr. 24, 2011 - UPD: Better exception handling.
+Apr. 23, 2011 - UPD: Reworked threading system.
+Apr. 23, 2011 - NEW: Improved error reporting.
 Apr. 12, 2011 - NEW: !Hungarian translation, by Lajos Toldy. Köszönöm!
 Apr. 12, 2011 - NEW: (Hidden setting) Estimate remaining time.
 Apr. 07, 2011 - UPD: Better executable signining.
