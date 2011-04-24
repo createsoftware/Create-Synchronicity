@@ -301,21 +301,20 @@ NotInheritable Class ProfileHandler
 
     Function LoadConfigFile() As Boolean
         If Not IO.File.Exists(ProgramConfig.GetConfigPath(ProfileName)) Then Return False
-        Dim FileReader As New IO.StreamReader(ProgramConfig.GetConfigPath(ProfileName))
 
         Configuration.Clear()
-        While Not FileReader.EndOfStream
-            Dim ConfigLine As String = ""
-            Try
-                ConfigLine = FileReader.ReadLine()
-                Dim Param() As String = ConfigLine.Split(":".ToCharArray, 2)
-                If Not Configuration.ContainsKey(Param(0)) Then Configuration.Add(Param(0), Param(1))
-            Catch ex As Exception
-                Interaction.ShowMsg(String.Format(Translation.Translate("\INVALID_SETTING"), ConfigLine))
-            End Try
-        End While
-
-        FileReader.Close()
+        Using FileReader As New IO.StreamReader(ProgramConfig.GetConfigPath(ProfileName))
+            While Not FileReader.EndOfStream
+                Dim ConfigLine As String = ""
+                Try
+                    ConfigLine = FileReader.ReadLine()
+                    Dim Param() As String = ConfigLine.Split(":".ToCharArray, 2)
+                    If Not Configuration.ContainsKey(Param(0)) Then Configuration.Add(Param(0), Param(1))
+                Catch ex As Exception
+                    Interaction.ShowMsg(String.Format(Translation.Translate("\INVALID_SETTING"), ConfigLine))
+                End Try
+            End While
+        End Using
 
         LoadScheduler()
         LoadSubFoldersList(ConfigOptions.LeftSubFolders, LeftCheckedNodes)
