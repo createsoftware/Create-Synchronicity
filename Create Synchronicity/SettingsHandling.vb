@@ -305,7 +305,7 @@ NotInheritable Class ProfileHandler
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
-            Dim ConfigLine As String = """"
+            Dim ConfigLine As String = ""
             Try
                 ConfigLine = FileReader.ReadLine()
                 Dim Param() As String = ConfigLine.Split(":".ToCharArray, 2)
