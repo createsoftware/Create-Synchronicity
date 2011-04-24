@@ -235,7 +235,7 @@ NotInheritable Class ConfigHandler
         Dim ConfigString As String = ""
 
         For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
-            ConfigString = ConfigString & Setting.Key & ":" & Setting.Value & ";"
+            ConfigString = String.Concat(ConfigString, Setting.Key, ":", Setting.Value, ";")
         Next
 
         Try
@@ -315,13 +315,11 @@ NotInheritable Class ProfileHandler
 
         Configuration.Clear()
         While Not FileReader.EndOfStream
-            Dim ConfigLine As String = ""
+            Dim ConfigLine As String = """"
             Try
                 ConfigLine = FileReader.ReadLine()
-                Dim ColonIndex As Integer = ConfigLine.IndexOf(":"c)
-                Dim Key As String = ConfigLine.Substring(0, ColonIndex)
-                Dim Value As String = ConfigLine.Substring(ColonIndex + 1)
-                If Not Configuration.ContainsKey(Key) Then Configuration.Add(Key, Value)
+                Dim Param() As String = ConfigLine.Split(":".ToCharArray, 2)
+                If Not Configuration.ContainsKey(Param(0)) Then Configuration.Add(Param(0), Param(1))
             Catch ex As Exception
                 Interaction.ShowMsg(String.Format(Translation.Translate("\INVALID_SETTING"), ConfigLine))
             End Try
@@ -598,8 +596,8 @@ Structure ScheduleInfo
 
     Private Function Str2Freq(ByVal Str As String) As Freq
         Try
-            Return CType([Enum].Parse(GetType(Freq), Str, False), Freq)
-        Catch ex As ArgumentException
+            Return CType([Enum].Parse(GetType(Freq), Str, True), Freq)
+        Catch Ex As ArgumentException
             Return Freq.Never
         End Try
     End Function
