@@ -54,13 +54,16 @@ Public Class SettingsForm
 
         'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
         If Not NewProfile Then UpdateSettings(True)
-        CheckSettings()
-        RightView.Sorted = True : LeftView.Sorted = True
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
 
+    Private Sub SettingsForm_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        ReloadTrees(True) 'Delays loading, which can take a lot of time.
+        RightView.Sorted = True : LeftView.Sorted = True
+    End Sub
+
     Private Sub CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CopyAllFilesCheckBox.CheckedChanged, IncludeFilesOption.CheckedChanged, ExcludeFilesOption.CheckedChanged
-        Update_Form_Enabled_Components()
+        SwitchControls()
     End Sub
 
     Private Sub To_FromTextBox_KeyDown(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles FromTextBox.KeyDown, ToTextBox.KeyDown
@@ -72,10 +75,8 @@ Public Class SettingsForm
     End Sub
 
     Private Sub CreateDestOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CreateDestOption.CheckedChanged
-        ReloadTrees(False, True)
-        CheckSettings()
+        ReloadTrees(False, True) 'ReloadTrees calls CheckSettings on its own.
     End Sub
-
 
     Private Sub SaveButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveButton.Click
         UpdateSettings(False)
@@ -220,10 +221,18 @@ Public Class SettingsForm
     Private Sub HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HelpLink.Click
         Interaction.StartProcess(ConfigOptions.Website & "settings-help.html")
     End Sub
+
+    Private Sub MoreLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MoreLabel.MouseClick
+        ExpertMenu.Show(MoreLabel, e.Location)
+    End Sub
+
+    Private Sub GroupTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupTextBox.TextChanged
+        GroupOption.Checked = GroupTextBox.Text <> ""
+    End Sub
 #End Region
 
 #Region " Form and TreeView manipulation "
-    Private Sub Update_Form_Enabled_Components()
+    Private Sub SwitchControls()
         IncludeExcludeLayoutPanel.Enabled = Not CopyAllFilesCheckBox.Checked
         IncludedTypesTextBox.Enabled = IncludeFilesOption.Checked
         ExcludedTypesTextBox.Enabled = ExcludeFilesOption.Checked
@@ -466,8 +475,7 @@ Public Class SettingsForm
                     CopyAllFilesCheckBox.Checked = True
             End Select
 
-            ReloadTrees(True)
-            Update_Form_Enabled_Components()
+            SwitchControls()
         Else
             Handler.SetSetting(ConfigOptions.Method, Method)
             Handler.SetSetting(ConfigOptions.Restrictions, Restrictions)
@@ -511,12 +519,4 @@ Public Class SettingsForm
         Return ListString.ToString
     End Function
 #End Region
-
-    Private Sub MoreLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MoreLabel.MouseClick
-        ExpertMenu.Show(MoreLabel, e.Location)
-    End Sub
-
-    Private Sub GroupTextBox_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupTextBox.TextChanged
-        GroupOption.Checked = GroupTextBox.Text <> ""
-    End Sub
 End Class

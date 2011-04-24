@@ -292,7 +292,7 @@ Partial Class SettingsForm
         '
         'LeftView
         '
-        Me.LeftView.BackColor = Drawing.Color.LightGray
+        Me.LeftView.BackColor = System.Drawing.Color.LightGray
         Me.LeftView.CheckBoxes = True
         Me.LeftView.ContextMenuStrip = Me.TreeViewMenuStrip
         Me.LeftView.Dock = System.Windows.Forms.DockStyle.Fill
@@ -380,7 +380,7 @@ Partial Class SettingsForm
         '
         'RightView
         '
-        Me.RightView.BackColor = Drawing.Color.LightGray
+        Me.RightView.BackColor = System.Drawing.Color.LightGray
         Me.RightView.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RightView.Enabled = False
         Me.RightView.Location = New System.Drawing.Point(0, 0)
