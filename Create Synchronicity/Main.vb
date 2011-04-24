@@ -198,8 +198,8 @@ Friend NotInheritable Class MessageLoop
     Shared Sub RedoSchedulerRegistration()
         Dim NeedToRunAtBootTime As Boolean = False
         For Each Profile As ProfileHandler In Profiles.Values
-            NeedToRunAtBootTime = NeedToRunAtBootTime Or (Profile.Scheduler.Frequency <> ScheduleInfo.NEVER)
-            If Profile.Scheduler.Frequency <> ScheduleInfo.NEVER Then ConfigHandler.LogAppEvent(String.Format("Profile {0} requires the scheduler to run.", Profile.ProfileName))
+            NeedToRunAtBootTime = NeedToRunAtBootTime Or (Profile.Scheduler.Frequency <> ScheduleInfo.Freq.Never)
+            If Profile.Scheduler.Frequency <> ScheduleInfo.Freq.Never Then ConfigHandler.LogAppEvent(String.Format("Profile {0} requires the scheduler to run.", Profile.ProfileName))
         Next
 
         Try
@@ -314,7 +314,7 @@ Friend NotInheritable Class MessageLoop
             Dim Handler As ProfileHandler = Profile.Value
             Static OneDay As TimeSpan = New TimeSpan(1, 0, 0, 0)
 
-            If Handler.Scheduler.Frequency <> ScheduleInfo.NEVER Then
+            If Handler.Scheduler.Frequency <> ScheduleInfo.Freq.Never Then
                 Dim NewEntry As New SchedulerEntry(Name, Handler.Scheduler.NextRun(), False, False)
 
                 'Logic of this function:
@@ -358,7 +358,7 @@ Friend NotInheritable Class MessageLoop
 
         'Remove deleted or disabled profiles
         For ProfileIndex As Integer = ProfilesToRun.Count - 1 To 0 Step -1
-            If Not Profiles.ContainsKey(ProfilesToRun(ProfileIndex).Name) OrElse Profiles(ProfilesToRun(ProfileIndex).Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
+            If Not Profiles.ContainsKey(ProfilesToRun(ProfileIndex).Name) OrElse Profiles(ProfilesToRun(ProfileIndex).Name).Scheduler.Frequency = ScheduleInfo.Freq.Never Then
                 ProfilesToRun.RemoveAt(ProfileIndex)
             End If
         Next

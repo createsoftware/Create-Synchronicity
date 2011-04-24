@@ -20,15 +20,16 @@ Public Class MainForm
 
         ' Code (largely inspired) by U.N. Owen
         Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, "").Split(","c))
-        If WindowSettings.Count = 4 AndAlso WindowSettings.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
-            Try
-                Me.Location = New Drawing.Point(WindowSettings(0), WindowSettings(1))
-                Me.Size = New Drawing.Point(WindowSettings(2), WindowSettings(3))
+        Try
+            Dim Values As New List(Of Integer) : WindowSettings.ForEach(Sub(Elem) Values.Add(CInt(Elem)))
+            If Values.Count = 4 AndAlso Values.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
+                Me.Location = New Drawing.Point(Values(0), Values(1))
+                Me.Size = New Drawing.Size(Values(2), Values(3))
                 Me.StartPosition = FormStartPosition.Manual
-            Catch
-                ' If any string->integer conversion fails (due to invalid syntax), then Me.StartPosition will have remained unchanged.
-            End Try
-        End If
+            End If
+        Catch
+            ' If any string->integer conversion fails (due to invalid syntax), then Me.StartPosition will have remained unchanged.
+        End Try
 
         ReloadNeeded = False
 
@@ -268,7 +269,7 @@ Public Class MainForm
             Dim NewItem As ListViewItem = Actions.Items.Add(ProfileName)
 
             NewItem.Group = Actions.Groups(1)
-            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ConfigOptions.Method, 0) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.NEVER, 0, 4)
+            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ConfigOptions.Method, 0) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.Freq.Never, 0, 4)
             NewItem.SubItems.Add(GetMethodName(ProfileName)).ForeColor = Drawing.Color.DarkGray
 
             Dim GroupName As String = Profiles(ProfileName).GetSetting(Of String)(ConfigOptions.Group, "")
@@ -300,17 +301,17 @@ Public Class MainForm
         Source.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Source)
         Destination.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Destination)
 
-        Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToUpper(Interaction.InvariantCulture))
+        Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToString.ToUpper(Interaction.InvariantCulture))
 
         Select Case Profiles(Name).Scheduler.Frequency
-            Case ScheduleInfo.WEEKLY
+            Case ScheduleInfo.Freq.Weekly
                 Dim Day As String = Translation.Translate("\WEEK_DAYS", ";;;;;;").Split(";"c)(Profiles(Name).Scheduler.WeekDay)
                 Scheduling.Text &= Day
-            Case ScheduleInfo.MONTHLY
+            Case ScheduleInfo.Freq.Monthly
                 Scheduling.Text &= Profiles(Name).Scheduler.MonthDay
         End Select
 
-        If Profiles(Name).Scheduler.Frequency = ScheduleInfo.NEVER Then
+        If Profiles(Name).Scheduler.Frequency = ScheduleInfo.Freq.Never Then
             Scheduling.Text = ""
         Else
             Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour.ToString.PadLeft(2, "0"c) & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute.ToString.PadLeft(2, "0"c)

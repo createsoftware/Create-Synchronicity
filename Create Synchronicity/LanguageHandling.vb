@@ -78,7 +78,7 @@ Friend NotInheritable Class LanguageHandler
             For Each Item As ListViewItem In List.Items
                 For Each SubItem As ListViewItem.ListViewSubItem In Item.SubItems
                     SubItem.Text = Translate(SubItem.Text)
-                    SubItem.Tag = Translate(SubItem.Tag, ";")
+                    SubItem.Tag = Translate(CStr(SubItem.Tag), ";")
                 Next
             Next
         End If
@@ -87,11 +87,11 @@ Friend NotInheritable Class LanguageHandler
             Dim ContextMenu As ContextMenuStrip = DirectCast(Ctrl, ContextMenuStrip)
             For Each Item As ToolStripItem In ContextMenu.Items
                 Item.Text = Translate(Item.Text)
-                Item.Tag = Translate(Item.Tag, ";")
+                Item.Tag = Translate(CStr(Item.Tag), ";")
             Next
         End If
 
-        Ctrl.Tag = Translate(Ctrl.Tag, ";")
+        Ctrl.Tag = Translate(CStr(Ctrl.Tag), ";")
         For Each ChildCtrl As Control In Ctrl.Controls
             TranslateControl(ChildCtrl)
         Next

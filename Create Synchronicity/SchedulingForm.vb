@@ -32,18 +32,18 @@ Public Class SchedulingForm
     Sub LoadToForm()
         Enable.Checked = True
         Select Case Handler.Scheduler.Frequency
-            Case ScheduleInfo.NEVER
+            Case ScheduleInfo.Freq.Never
                 Enable.Checked = False
             Case Else
                 Time.Value = New Date(2011, 1, 1, Handler.Scheduler.Hour, Handler.Scheduler.Minute, 0)
 
                 Select Case Handler.Scheduler.Frequency
-                    Case ScheduleInfo.DAILY
+                    Case ScheduleInfo.Freq.Daily
                         DailyBtn.Checked = True
-                    Case ScheduleInfo.WEEKLY
+                    Case ScheduleInfo.Freq.Weekly
                         WeeklyBtn.Checked = True
                         WeekDay.SelectedIndex = Handler.Scheduler.WeekDay
-                    Case ScheduleInfo.MONTHLY
+                    Case ScheduleInfo.Freq.Monthly
                         MonthlyBtn.Checked = True
                         MonthDay.Value = Handler.Scheduler.MonthDay
                 End Select
@@ -57,13 +57,13 @@ Public Class SchedulingForm
             ConfigHandler.RegisterBoot()
 
             If Not Enable.Checked Then
-                Handler.Scheduler.Frequency = ScheduleInfo.NEVER
+                Handler.Scheduler.Frequency = ScheduleInfo.Freq.Never
             Else
                 Handler.Scheduler.Hour = Time.Value.Hour
                 Handler.Scheduler.Minute = Time.Value.Minute
                 Handler.Scheduler.WeekDay = WeekDay.SelectedIndex
-                Handler.Scheduler.MonthDay = MonthDay.Value
-                Handler.Scheduler.Frequency = If(DailyBtn.Checked, ScheduleInfo.DAILY, If(WeeklyBtn.Checked, ScheduleInfo.WEEKLY, ScheduleInfo.MONTHLY))
+                Handler.Scheduler.MonthDay = CInt(MonthDay.Value)
+                Handler.Scheduler.Frequency = If(DailyBtn.Checked, ScheduleInfo.Freq.Daily, If(WeeklyBtn.Checked, ScheduleInfo.Freq.Weekly, ScheduleInfo.Freq.Monthly))
             End If
 
             Handler.SetSetting(ConfigOptions.CatchUpSync, Catchup.Checked)

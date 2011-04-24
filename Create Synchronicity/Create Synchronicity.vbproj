@@ -48,7 +48,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>41999,42016</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
   </PropertyGroup>
@@ -60,7 +60,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>41999,42016</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
     <WarningsAsErrors>
     </WarningsAsErrors>
     <DefineConstants>LINUX=False</DefineConstants>
@@ -70,7 +70,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <NoWarn>41999,42016</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
     <DebugType>Full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>
@@ -82,7 +82,7 @@
     <DefineConstants>
     </DefineConstants>
     <Optimize>true</Optimize>
-    <NoWarn>41999,42016</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
     <DebugType>None</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>
@@ -93,7 +93,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Linux\</OutputPath>
-    <NoWarn>41999,42016</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
@@ -107,7 +107,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Linux\</OutputPath>
-    <NoWarn>41999,42016</NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
     <DebugType>Full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>

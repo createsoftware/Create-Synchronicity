@@ -469,18 +469,15 @@ NotInheritable Class ProfileHandler
     Sub LoadScheduler()
         Dim Opts() As String = GetSetting(Of String)(ConfigOptions.Scheduling, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
-        Select Case Opts.GetLength(0)
-            Case 0
-                Scheduler = New ScheduleInfo(ScheduleInfo.NEVER)
-            Case ConfigOptions.SchedulingSettingsCount
-                Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4)) 'TODO check for parameters type.
-            Case Else
-                Scheduler = New ScheduleInfo(ScheduleInfo.NEVER) 'NOTE: Wrong strings default to never
-        End Select
+        If Opts.GetLength(0) = ConfigOptions.SchedulingSettingsCount Then
+            Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4)) 'TODO check for parameters type.
+        Else
+            Scheduler = New ScheduleInfo(ScheduleInfo.Freq.Never, 0, 0, 0, 0) 'NOTE: Wrong strings default to never
+        End If
     End Sub
 
     Sub SaveScheduler()
-        SetSetting(ConfigOptions.Scheduling, Scheduler.Frequency & ";" & Scheduler.WeekDay & ";" & Scheduler.MonthDay & ";" & Scheduler.Hour & ";" & Scheduler.Minute)
+        SetSetting(ConfigOptions.Scheduling, Scheduler.Frequency.ToString & ";" & Scheduler.WeekDay & ";" & Scheduler.MonthDay & ";" & Scheduler.Hour & ";" & Scheduler.Minute)
     End Sub
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
@@ -578,45 +575,45 @@ NotInheritable Class ProfileHandler
 End Class
 
 Structure ScheduleInfo
-    Public Frequency As String
+    Enum Freq
+        Never
+        Daily
+        Weekly
+        Monthly
+    End Enum
 
-    Public WeekDay As Integer 'Sunday = 0
-    Public MonthDay As Integer
-    Public Hour, Minute As Integer
-
-    Public Const NEVER As String = "never"
-    Public Const DAILY As String = "daily"
-    Public Const WEEKLY As String = "weekly"
-    Public Const MONTHLY As String = "monthly"
+    Public Frequency As Freq
+    Public WeekDay, MonthDay, Hour, Minute As Integer 'Sunday = 0
 
     Public Shared ReadOnly DATE_NEVER As Date = Date.MaxValue
     Public Shared ReadOnly DATE_CATCHUP As Date = Date.MinValue
 
-    Sub New(ByVal _Frequency As String)
-        Frequency = _Frequency
-    End Sub
-
-    Sub New(ByVal _Frequency As String, ByVal _WeekDay As Integer, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
-        Frequency = _Frequency
-
+    Sub New(ByVal Frq As String, ByVal _WeekDay As Integer, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
         Hour = _Hour
         Minute = _Minute
         WeekDay = _WeekDay
         MonthDay = _MonthDay
+        Frequency = Str2Freq(Frq)
     End Sub
+
+    Private Function Str2Freq(ByVal Str As String) As Freq
+        Try
+            Return CType([Enum].Parse(GetType(Freq), Str, False), Freq)
+        Catch ex As ArgumentException
+            Return Freq.Never
+        End Try
+    End Function
 
     Function GetInterval() As TimeSpan
         Dim Interval As TimeSpan
-        Dim Today As Date = Date.Today
-
         Select Case Frequency
-            Case DAILY
+            Case Freq.Daily
                 Interval = New TimeSpan(1, 0, 0, 0)
-            Case WEEKLY
+            Case Freq.Weekly
                 Interval = New TimeSpan(7, 0, 0, 0)
-            Case MONTHLY
-                Interval = Today.AddMonths(1) - Today
-            Case Else
+            Case Freq.Monthly
+                Interval = Date.Today.AddMonths(1) - Date.Today
+            Case Freq.Never
                 Interval = New TimeSpan(0)
         End Select
 
@@ -631,11 +628,11 @@ Structure ScheduleInfo
         Dim Interval As TimeSpan = GetInterval()
 
         Select Case Frequency
-            Case DAILY
+            Case Freq.Daily
                 RunAt = Today.AddHours(Hour).AddMinutes(Minute)
-            Case WEEKLY
+            Case Freq.Weekly
                 RunAt = Today.AddDays(WeekDay - Today.DayOfWeek).AddHours(Hour).AddMinutes(Minute)
-            Case MONTHLY
+            Case Freq.Monthly
                 RunAt = Today.AddDays(MonthDay - Today.Day).AddHours(Hour).AddMinutes(Minute)
             Case Else
                 Return DATE_NEVER
