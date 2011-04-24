@@ -78,6 +78,10 @@ Public Class SynchronizeForm
         Translation.TranslateControl(Me)
         Me.Icon = ProgramConfig.GetIcon()
         Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
+
+#If LINUX Then
+        Step1ProgressBar.MarqueeAnimationSpeed = 500
+#End If
     End Sub
 
     Sub StartSynchronization(ByVal CalledShowModal As Boolean)
@@ -240,7 +244,7 @@ Public Class SynchronizeForm
         Status.TimeElapsed = DateTime.Now - Status.StartTime
 
         Dim EstimateString As String = ""
-        If (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
+        If Status.CurrentStep = 2 And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
             Dim RemainingSeconds As Double = (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds
             'RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
             EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, CInt(RemainingSeconds))))
@@ -695,7 +699,7 @@ Public Class SynchronizeForm
 #If DEBUG Then
             Log.HandleError(Ex)
 #End If
-            'Error with entering the folder
+            'Error with entering the folder || Thread aborted.
         End Try
 
         If Recursive Then
