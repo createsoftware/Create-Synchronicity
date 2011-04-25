@@ -6,6 +6,8 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
+Option Strict On
+
 Public Class SynchronizeForm
     Dim Log As LogHandler
     Dim Handler As ProfileHandler
@@ -904,7 +906,7 @@ Public Class SynchronizeForm
     End Function
 
     Private Function IsSymLink(ByVal SubFolder As String) As Boolean
-        If IO.File.GetAttributes(SubFolder) And IO.FileAttributes.ReparsePoint = IO.FileAttributes.ReparsePoint Then
+        If (IO.File.GetAttributes(SubFolder) And IO.FileAttributes.ReparsePoint) <> 0 Then
             Log.LogInfo(String.Format("Symlink detected: {0}; not following.", SubFolder))
             Return True
         End If
