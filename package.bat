@@ -20,11 +20,11 @@ echo (*) Updating revision number
 (
 echo.
 echo -----
-cd "Create Synchronicity\My Project"
-move /Y AssemblyInfo.vb AssemblyInfo.vb.bak
-subwcrev.exe ..\..\..\ template.awk bump-rev.awk
-gawk -f bump-rev.awk AssemblyInfo.vb.bak > AssemblyInfo.vb
-cd ..\..
+cd "Create Synchronicity"
+copy AssemblyInfo.vb AssemblyInfo.template
+subwcrev.exe ..\..\..\ AssemblyInfo.template AssemblyInfo.vb
+del AssemblyInfo.template
+cd ..
 ) >> %LOG%
 
 echo (*) Building program (release)
