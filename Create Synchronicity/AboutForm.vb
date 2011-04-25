@@ -20,7 +20,7 @@ Public Class AboutForm
 
     Private Sub About_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
-        VersionInfo.Text = VersionInfo.Text.Replace("%version%", String.Format("{0} (r{1})", Application.ProductVersion.TrimEnd(".0".ToCharArray), My.Application.Info.Version.Build))
+        VersionInfo.Text = VersionInfo.Text.Replace("%version%", String.Format("{0} (r{1})", Application.ProductVersion.TrimEnd(".0".ToCharArray), "$WCREV$"))
 
         SetLinkArea(BugReport)
         SetLinkArea(ContactLink)

@@ -135,7 +135,7 @@ Friend NotInheritable Class FileNamePattern
 
     Private Shared Function SharpInclude(ByVal FileName As String) As String
         Dim Path As String = ProgramConfig.ConfigRootDir & ConfigOptions.DirSep & FileName
-        Return If(IO.File.Exists(Path), My.Computer.FileSystem.ReadAllText(Path), FileName)
+        Return If(IO.File.Exists(Path), IO.File.ReadAllText(Path), FileName)
     End Function
 
     Friend Shared Sub LoadPatternsList(ByRef PatternsList As List(Of FileNamePattern), ByVal PatternsStr As String, Optional ByVal IsFolder As Boolean = False)

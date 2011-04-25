@@ -208,9 +208,9 @@ Friend NotInheritable Class MessageLoop
                 ConfigHandler.LogAppEvent("Registered program in startup list, trying to start scheduler")
                 If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler /noupdates" & If(CommandLine.Log, " /log", ""))
             Else
-                If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
+                If Microsoft.Win32.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")
-                    My.Computer.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
+                    Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
                 End If
             End If
         Catch Ex As Exception

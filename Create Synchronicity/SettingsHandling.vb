@@ -220,7 +220,7 @@ NotInheritable Class ConfigHandler
             Exit Sub
         End If
 
-        Dim ConfigString As String = My.Computer.FileSystem.ReadAllText(MainConfigFile)
+        Dim ConfigString As String = IO.File.ReadAllText(MainConfigFile)
         Dim ConfigArray As New List(Of String)(ConfigString.Split(";"c))
         For Each Setting As String In ConfigArray
             Dim Pair As String() = Setting.Split(":".ToCharArray, 2)
@@ -239,7 +239,7 @@ NotInheritable Class ConfigHandler
         Next
 
         Try
-            My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigStrB.ToString, False)
+            IO.File.WriteAllText(MainConfigFile, ConfigStrB.ToString) 'IO.File.WriteAllText overwrites the file.
         Catch
 #If DEBUG Then
         Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
@@ -262,9 +262,9 @@ NotInheritable Class ConfigHandler
     End Sub
 
     Public Shared Sub RegisterBoot()
-        If My.Computer.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) Is Nothing Then
+        If Microsoft.Win32.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) Is Nothing Then
             ConfigHandler.LogAppEvent("Registering program in startup list")
-            My.Computer.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
+            Microsoft.Win32.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
         End If
     End Sub
 
@@ -654,7 +654,7 @@ Friend Module Updates
             If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Interaction.StartProcess(ConfigOptions.Website & "update.html")
-                    If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainForm.ExitApp))
+                    If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainFormInstance.ExitApp))
                 End If
             Else
                 If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)

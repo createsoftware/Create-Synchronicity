@@ -146,7 +146,7 @@ Public Class SynchronizeForm
     Private Sub SynchronizeForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         EndAll()
         ProgramConfig.CanGoOn = True
-        Interaction.StatusIcon.ContextMenuStrip = MainForm.StatusIconMenu
+        Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
         RemoveHandler Interaction.StatusIcon.Click, AddressOf StatusIcon_Click
 
         Interaction.StatusIcon.Text = Translation.Translate("\WAITING")
@@ -198,7 +198,7 @@ Public Class SynchronizeForm
         Dim Source As String = "", Dest As String = ""
         If Not SetPathFromSelectedItem(Source, Dest) Then Exit Sub
 
-        If IO.File.Exists(Source) Or IO.Directory.Exists(Source) Then Interaction.StartProcess(If(My.Computer.Keyboard.CtrlKeyDown, IO.Path.GetDirectoryName(Source), Source))
+        If IO.File.Exists(Source) Or IO.Directory.Exists(Source) Then Interaction.StartProcess(If((Control.ModifierKeys And Keys.Control) = Keys.Control, IO.Path.GetDirectoryName(Source), Source))
     End Sub
 
     Private Function SetPathFromSelectedItem(ByRef Source As String, ByRef Dest As String) As Boolean
