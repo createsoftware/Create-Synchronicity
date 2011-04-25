@@ -511,7 +511,7 @@ Public Class SettingsForm
         ToTextBox.Text = Cleanup(ToTextBox.Text)
     End Sub
 
-    Private Shared Function GetString(ByRef Table As Dictionary(Of String, Boolean)) As String
+    Private Shared Function GetString(ByRef Table As Dictionary(Of String, Boolean)) As String 'LATER: Refactor
         Dim ListString As New System.Text.StringBuilder
         For Each Node As String In Table.Keys
             ListString.Append(Node).Append(";") 'Must end with a ";"

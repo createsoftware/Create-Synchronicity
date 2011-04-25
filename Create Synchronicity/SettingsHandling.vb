@@ -233,19 +233,19 @@ NotInheritable Class ConfigHandler
     End Sub
 
     Public Sub SaveProgramSettings()
-        Dim ConfigString As String = ""
+            Dim ConfigString As String = ""
 
-        For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
-            ConfigString = String.Concat(ConfigString, Setting.Key, ":", Setting.Value, ";")
-        Next
+            For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
+                ConfigString &= Setting.Key & ":" & Setting.Value & ";"
+            Next
 
-        Try
-            My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
-        Catch
+            Try
+                My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
+            Catch
 #If DEBUG Then
-            Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
+                Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
 #End If
-        End Try
+            End Try
     End Sub
 
     Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
@@ -382,7 +382,7 @@ NotInheritable Class ProfileHandler
         End If
 
         If Not IsValid Then
-            Dim ErrorsList As String = ListToString(InvalidListing, Microsoft.VisualBasic.vbNewLine.ToCharArray()(0))
+            Dim ErrorsList As String = String.Join(Environment.NewLine, InvalidListing.ToArray)
             Dim ErrMsg As String = String.Format("{0} - {1}{2}{3}", ProfileName, Translation.Translate("\INVALID_CONFIG"), Environment.NewLine, ErrorsList)
 
             If Not FailureMsg Is Nothing Then FailureMsg = ErrMsg
@@ -391,11 +391,11 @@ NotInheritable Class ProfileHandler
         Else
             If WarnUnrootedPaths Then
                 If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ConfigOptions.Source))) Then
-                    If Interaction.ShowMsg(Translation.Translate("\LEFT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                    If Interaction.ShowMsg(String.Format(Translation.Translate("\LEFT_UNROOTED"), IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
 
                 If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ConfigOptions.Destination))) Then
-                    If Interaction.ShowMsg(Translation.Translate("\RIGHT_UNROOTED").Replace("%s", IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                    If Interaction.ShowMsg(String.Format(Translation.Translate("\RIGHT_UNROOTED"), IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
             End If
 
@@ -546,15 +546,6 @@ NotInheritable Class ProfileHandler
         SetSetting(ConfigOptions.LastRun, Date.Now.ToString)
         SaveConfigFile()
     End Sub
-
-    Private Shared Function ListToString(ByVal StrList As List(Of String), ByVal Separator As Char) As String
-        Dim ReturnStr As String = ""
-        For Each Str As String In StrList
-            ReturnStr &= Str & Separator
-        Next
-        If ReturnStr.EndsWith(Separator) Then ReturnStr = ReturnStr.Substring(0, ReturnStr.Length - 1)
-        Return ReturnStr
-    End Function
 End Class
 
 Structure ScheduleInfo
@@ -675,9 +666,9 @@ Friend Module Updates
             Interaction.ShowMsg(Ex.ToString)
 #End If
         Catch Ex As Exception
-            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
+            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Environment.NewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
 #If DEBUG Then
-            Interaction.ShowMsg(Ex.Message & Microsoft.VisualBasic.vbNewLine & Ex.StackTrace)
+            Interaction.ShowMsg(Ex.Message & Environment.NewLine & Ex.StackTrace)
 #End If
         Finally
             UpdateClient.Dispose()
@@ -768,7 +759,7 @@ Friend Module Interaction
         If T IsNot Nothing AndAlso Not T.CheckBoxes Then Exit Sub
 
         Dim Offset As Integer = If(TypeOf Ctrl Is RadioButton Or TypeOf Ctrl Is CheckBox, 12, 1)
-        Dim Pair As String() = Ctrl.Tag.ToString.Replace("%s", Ctrl.Text).Split(";".ToCharArray, 2)
+        Dim Pair As String() = String.Format(CStr(Ctrl.Tag), Ctrl.Text).Split(";".ToCharArray, 2)
 
         Try
             Dim Pos As New Drawing.Point(0, Ctrl.Height + Offset)

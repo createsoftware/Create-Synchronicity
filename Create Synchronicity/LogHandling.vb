@@ -187,7 +187,7 @@ Friend NotInheritable Class LogHandler
 
                 PutHTML(LogWriter, "<table>")
                 For Each Err As ErrorItem In Errors
-                    PutFormatted(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Microsoft.VisualBasic.vbNewLine, "\n")}, LogWriter)
+                    PutFormatted(Translation.Translate("\ERROR"), New String() {Err.Details, Err.Ex.Message, Err.Ex.StackTrace.Replace(Environment.NewLine, "\n")}, LogWriter)
                 Next
                 PutHTML(LogWriter, "</table>")
 
@@ -196,13 +196,13 @@ Friend NotInheritable Class LogHandler
             Catch Ex As Threading.ThreadAbortException
                 Exit Sub
             Catch Ex As Exception
-                Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
+                Interaction.ShowMsg(Translation.Translate("\LOGFILE_WRITE_ERROR") & Environment.NewLine & Ex.Message & Environment.NewLine & Environment.NewLine & Ex.ToString)
             Finally
                 LogWriter.Close()
             End Try
 
         Catch Ex As Exception
-            Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Microsoft.VisualBasic.vbNewLine & Ex.Message & Microsoft.VisualBasic.vbNewLine & Microsoft.VisualBasic.vbNewLine & Ex.ToString)
+            Interaction.ShowMsg(Translation.Translate("\LOGFILE_OPEN_ERROR") & Environment.NewLine & Ex.Message & Environment.NewLine & Environment.NewLine & Ex.ToString)
         End Try
     End Sub
 End Class

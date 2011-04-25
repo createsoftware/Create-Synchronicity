@@ -239,11 +239,11 @@ Public Class SynchronizeForm
 
     Private Shared Function FormatTimespan(ByVal T As TimeSpan) As String
         Dim Hours As Integer = CInt(Math.Truncate(T.TotalHours))
-        Return String.Concat(If(Hours = 0, "", Hours & "h, "), If(T.Minutes = 0, "", T.Minutes.ToString & "m, "), T.Seconds.ToString, "s")
+        Return If(Hours = 0, "", Hours & "h, ") & If(T.Minutes = 0, "", T.Minutes.ToString & "m, ") & T.Seconds.ToString & "s"
     End Function
 
     Private Sub UpdateStatuses()
-        Status.TimeElapsed = DateTime.Now - Status.StartTime
+        Status.TimeElapsed = (DateTime.Now - Status.StartTime) + New TimeSpan(1000000) ' ie +0.1s
 
         Dim EstimateString As String = ""
         If Status.CurrentStep = 2 And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
@@ -253,8 +253,6 @@ Public Class SynchronizeForm
         End If
         ElapsedTime.Text = FormatTimespan(Status.TimeElapsed) & EstimateString
 
-        If Status.TimeElapsed.TotalMilliseconds = 0 Then Status.TimeElapsed = New System.TimeSpan(1)
-
         If Status.CurrentStep = 1 Then
             Speed.Text = Math.Round(Status.FilesScanned / Status.TimeElapsed.TotalSeconds).ToString & " files/s"
         Else
@@ -263,11 +261,11 @@ Public Class SynchronizeForm
         End If
 
         If Not Status.CurrentStep = 1 Then
-            Done.Text = String.Concat(Status.ActionsDone, "/", Status.TotalActionsCount)
-            FilesDeleted.Text = String.Concat(Status.DeletedFiles, "/", Status.FilesToDelete)
-            FilesCreated.Text = String.Concat(Status.CreatedFiles, "/", Status.FilesToCreate, " (", FormatSize(Status.BytesCopied), ")")
-            FoldersDeleted.Text = String.Concat(Status.DeletedFolders, "/", Status.FoldersToDelete)
-            FoldersCreated.Text = String.Concat(Status.CreatedFolders, "/", Status.FoldersToCreate)
+            Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
+            FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
+            FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate & " (" & FormatSize(Status.BytesCopied) & ")"
+            FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
+            FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate
         End If
     End Sub
 #End Region
@@ -916,7 +914,7 @@ Public Class SynchronizeForm
 
 #Region " Shared functions "
     Private Shared Function CombinePathes(ByVal Dir As String, ByVal File As String) As String 'COULDDO: Should be optimized; IO.Path?
-        Return String.Concat(Dir.TrimEnd(ConfigOptions.DirSep), ConfigOptions.DirSep, File.TrimStart(ConfigOptions.DirSep))
+        Return Dir.TrimEnd(ConfigOptions.DirSep) & ConfigOptions.DirSep & File.TrimStart(ConfigOptions.DirSep)
     End Function
 
     Private Shared Function GetExtension(ByVal File As String) As String
