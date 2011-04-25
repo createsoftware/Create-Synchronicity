@@ -233,19 +233,18 @@ NotInheritable Class ConfigHandler
     End Sub
 
     Public Sub SaveProgramSettings()
-            Dim ConfigString As String = ""
+        Dim ConfigStrB As New Text.StringBuilder
+        For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
+            ConfigStrB.Append(Setting.Key).Append(":").Append(Setting.Value).Append(";")
+        Next
 
-            For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
-                ConfigString &= Setting.Key & ":" & Setting.Value & ";"
-            Next
-
-            Try
-                My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigString, False)
-            Catch
+        Try
+            My.Computer.FileSystem.WriteAllText(MainConfigFile, ConfigStrB.ToString, False)
+        Catch
 #If DEBUG Then
-                Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
+        Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
 #End If
-            End Try
+        End Try
     End Sub
 
     Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
