@@ -80,7 +80,7 @@ Public Class SynchronizeForm
         Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
 
 #If LINUX Then
-        Step1ProgressBar.MarqueeAnimationSpeed = 500
+        Step1ProgressBar.MarqueeAnimationSpeed = 5000
 #End If
     End Sub
 
@@ -705,6 +705,9 @@ Public Class SynchronizeForm
         If Recursive Then
             Try
                 For Each SubFolder As String In IO.Directory.GetDirectories(Src_FilePath)
+#If LINUX Then
+                    If IsSymLink(SubFolder) Then Continue For
+#End If
                     SearchForChanges(SubFolder.Substring(Context.SourcePath.Length), True, Context)
                 Next
             Catch Ex As Exception
@@ -771,6 +774,9 @@ Public Class SynchronizeForm
         If Recursive Then
             Try
                 For Each SubFolder As String In IO.Directory.GetDirectories(Src_FilePath)
+#If LINUX Then
+                    If IsSymLink(SubFolder) Then Continue For
+#End If
                     SearchForCrap(SubFolder.Substring(Context.SourcePath.Length), True, Context)
                 Next
             Catch Ex As Exception
@@ -895,6 +901,14 @@ Public Class SynchronizeForm
         If SourceFATTime < DestFATTime AndAlso (Not Handler.GetSetting(Of Boolean)(ConfigOptions.StrictMirror, False)) Then Return False
 
         Return True
+    End Function
+
+    Private Function IsSymLink(ByVal SubFolder As String) As Boolean
+        If IO.File.GetAttributes(SubFolder) And IO.FileAttributes.ReparsePoint = IO.FileAttributes.ReparsePoint Then
+            Log.LogInfo(String.Format("Symlink detected: {0}; not following.", SubFolder))
+            Return True
+        End If
+        Return False
     End Function
 #End Region
 
