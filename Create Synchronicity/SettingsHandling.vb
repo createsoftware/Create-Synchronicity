@@ -235,7 +235,7 @@ NotInheritable Class ConfigHandler
     Public Sub SaveProgramSettings()
         Dim ConfigStrB As New Text.StringBuilder
         For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
-            ConfigStrB.Append(Setting.Key).Append(":").Append(Setting.Value).Append(";")
+            ConfigStrB.AppendFormat("{0}:{1};", Setting.Key, Setting.Value)
         Next
 
         Try
