@@ -903,6 +903,7 @@ Public Class SynchronizeForm
         Return True
     End Function
 
+#If LINUX Then
     Private Function IsSymLink(ByVal SubFolder As String) As Boolean
         If (IO.File.GetAttributes(SubFolder) And IO.FileAttributes.ReparsePoint) <> 0 Then
             Log.LogInfo(String.Format("Symlink detected: {0}; not following.", SubFolder))
@@ -910,6 +911,7 @@ Public Class SynchronizeForm
         End If
         Return False
     End Function
+#End If
 #End Region
 
 #Region " Shared functions "
