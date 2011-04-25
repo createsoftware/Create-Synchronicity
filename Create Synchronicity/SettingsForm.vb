@@ -500,7 +500,7 @@ Public Class SettingsForm
 
     Private Shared Function Cleanup(ByVal Path As String) As String
 #If LINUX Then
-        Return If(Path.Contains("/"), "/", "") & Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "c})
+        Return If(Path.Contains("/"), "/", "") & Path.Trim(New Char() {ConfigOptions.DirSep, " "c})
 #Else
         Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "c})
 #End If
