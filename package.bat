@@ -21,9 +21,7 @@ echo (*) Updating revision number
 echo.
 echo -----
 cd "Create Synchronicity"
-copy SettingsHandling.vb SettingsHandling.template
-subwcrev.exe ..\.. SettingsHandling.template SettingsHandling.vb
-del SettingsHandling.template
+subwcrev.exe ..\.. Revision.template.vb Revision.vb
 cd ..
 ) >> %LOG%
 
