@@ -229,19 +229,22 @@
            </Member>
            <Member Name="#ShowToolTip(System.Windows.Forms.Control)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
-              <Issue>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-25 22:10:24Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
                <Item>'Interaction.ShowToolTip(Control)'</Item>
-               <Item>'Exception'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
              </Message>
             </Messages>
            </Member>
-           <Member Name="#StartProcess(System.String)">
+           <Member Name="#StartProcess(System.String,System.String)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-25 22:10:24Z">
               <Issue>
-               <Item>'Interaction.StartProcess(String)'</Item>
+               <Item>'Interaction.StartProcess(String, String)'</Item>
                <Item>'Exception'</Item>
               </Issue>
              </Message>
@@ -269,12 +272,6 @@
            </Member>
            <Member Name="#FillLanguageListBox(System.Windows.Forms.ComboBox)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
-              <Issue>
-               <Item>'LanguageHandler.FillLanguageListBox(ComboBox)'</Item>
-               <Item>'Exception'</Item>
-              </Issue>
-             </Message>
              <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object, Object, Object)'</Item>
@@ -282,6 +279,24 @@
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#TranslateControl(System.Windows.Forms.Control)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2011-04-25 22:10:24Z">
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'ContextMenuStrip'</Item>
+               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Issue Name="Parameter">
+               <Item>'Ctrl'</Item>
+               <Item>'ListView'</Item>
+               <Item>'LanguageHandler.TranslateControl(Control)'</Item>
+               <Item>castclass</Item>
               </Issue>
              </Message>
             </Messages>
@@ -408,6 +423,12 @@
            <Member Name="#Main()">
             <Messages>
              <Message TypeName="SpecifyMessageBoxOptions" Category="Microsoft.Globalization" CheckId="CA1300" Created="2011-04-23 10:42:29Z">
+              <Issue>
+               <Item>'Main.Main()'</Item>
+              </Issue>
+              <Issue>
+               <Item>'Main.Main()'</Item>
+              </Issue>
               <Issue>
                <Item>'Main.Main()'</Item>
               </Issue>
@@ -689,17 +710,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#ListToString(System.Collections.Generic.List`1&lt;System.String&gt;,System.Char)">
-            <Messages>
-             <Message Id="System.String.EndsWith(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-21 17:23:20Z">
-              <Issue>
-               <Item>'String.EndsWith(String)'</Item>
-               <Item>'ProfileHandler.ListToString(List(Of String), Char)'</Item>
-               <Item>'String.EndsWith(String, StringComparison)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#LoadConfigFile()">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
@@ -880,6 +890,13 @@
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
              </Message>
              <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
               <Issue Name="IFormatProviderAlternateString">
@@ -897,6 +914,19 @@
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ScheduleInfo">
+          <Members>
+           <Member Name="#Str2Freq(System.String)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2011-04-25 22:10:24Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ScheduleInfo.Str2Freq(String)'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -1479,6 +1509,9 @@
    </Target>
   </Targets>
   <Rules>
+   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   </Rule>
    <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
     <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
    </Rule>
@@ -1497,6 +1530,9 @@
    </Rule>
    <Rule TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707">
     <Resolution Name="MemberParameter">In member {0}, remove the underscores from parameter name {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
    </Rule>
    <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
     <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>

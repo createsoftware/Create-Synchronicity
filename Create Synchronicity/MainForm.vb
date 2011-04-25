@@ -7,7 +7,7 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Public Class MainForm
-    Dim CurView As Integer = 0
+    Dim CurView As Integer
     Dim Views() As View = New View() {View.Tile, View.Details, View.LargeIcon}
 
 #Region " Events "

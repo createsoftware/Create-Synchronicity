@@ -570,7 +570,7 @@ Structure ScheduleInfo
         Frequency = Str2Freq(Frq)
     End Sub
 
-    Private Function Str2Freq(ByVal Str As String) As Freq
+    Private Shared Function Str2Freq(ByVal Str As String) As Freq
         Try
             Return CType([Enum].Parse(GetType(Freq), Str, True), Freq)
         Catch Ex As ArgumentException
