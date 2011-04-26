@@ -48,8 +48,6 @@ Public Class SynchronizeForm
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        Status.Cancel = False
-
         Quiet = _Quiet
         Catchup = _Catchup
         Preview = DisplayPreview
@@ -59,7 +57,8 @@ Public Class SynchronizeForm
         SyncBtn.Visible = Preview
 
         Status.Failed = False
-        Status.CurrentStep = 1
+        Status.Cancel = False
+        Status.CurrentStep = StatusData.SyncStep.Scan
         Status.StartTime = Date.Now ' NOTE: This call should be useless; it however seems that when the messagebox.show method is called when a profile is not found, the syncingtimecounter starts ticking. This is not suitable, but until the cause is found there this call remains, for display consistency.
 
         Log = New LogHandler(ConfigName)
@@ -128,7 +127,7 @@ Public Class SynchronizeForm
 
     Private Sub SynchronizeForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         If e.Control Then
-            If e.KeyCode = Keys.L AndAlso Status.CurrentStep = -1 Then
+            If e.KeyCode = Keys.L AndAlso Status.CurrentStep = StatusData.SyncStep.Done Then
                 Interaction.StartProcess(ProgramConfig.GetLogPath(Handler.ProfileName))
             ElseIf e.KeyCode = Keys.D And PreviewList.SelectedIndices.Count <> 0 Then
                 Dim DiffProgram As String = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.DiffProgram, "")
@@ -247,21 +246,19 @@ Public Class SynchronizeForm
         Status.TimeElapsed = (DateTime.Now - Status.StartTime) + New TimeSpan(1000000) ' ie +0.1s
 
         Dim EstimateString As String = ""
-        If Status.CurrentStep = 2 And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
+        If Status.CurrentStep = StatusData.SyncStep.SyncLR And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
             Dim RemainingSeconds As Double = (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds
             'RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
             EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, CInt(RemainingSeconds))))
         End If
         ElapsedTime.Text = FormatTimespan(Status.TimeElapsed) & EstimateString
 
-        If Status.CurrentStep = 1 Then
+        If Status.CurrentStep = StatusData.SyncStep.Scan Then
             Speed.Text = Math.Round(Status.FilesScanned / Status.TimeElapsed.TotalSeconds).ToString & " files/s"
         Else
             Status.Speed = Status.BytesCopied / Status.TimeElapsed.TotalSeconds
             Speed.Text = FormatSize(Status.Speed) & "/s"
-        End If
 
-        If Not Status.CurrentStep = 1 Then
             Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
             FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
             FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate & " (" & FormatSize(Status.BytesCopied) & ")"
@@ -323,7 +320,7 @@ Public Class SynchronizeForm
 
         Select Case Id
             Case 1
-                Status.CurrentStep = 2
+                Status.CurrentStep = StatusData.SyncStep.SyncLR
                 If Not PreviewFinished Then
                     UpdatePreviewList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
@@ -332,10 +329,10 @@ Public Class SynchronizeForm
                 SyncingTimer.Stop()
 
             Case 2
-                Status.CurrentStep = 3
+                Status.CurrentStep = StatusData.SyncStep.SyncRL
 
             Case 3
-                Status.CurrentStep = -1 'Done.
+                Status.CurrentStep = StatusData.SyncStep.Done
 
                 UpdateStatuses()
                 If Log.Errors.Count > 0 Or Status.Failed Then
@@ -443,7 +440,7 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub EndAll()
-        Status.Cancel = True
+        Status.Cancel = Status.Cancel Or (Status.CurrentStep <> StatusData.SyncStep.Done)
         FullSyncThread.Abort()
         ScanThread.Abort() : SyncThread.Abort()
         TaskDone(1) : TaskDone(2) : TaskDone(3)

@@ -7,6 +7,13 @@
 'Web site:		http://synchronicity.sourceforge.net.
 
 Structure StatusData
+    Enum SyncStep
+        Done = 0
+        Scan = 1
+        SyncLR = 2
+        SyncRL = 3
+    End Enum
+
     Dim StartTime As Date
     Dim BytesCopied As Long
     Dim BytesScanned As Long
@@ -21,7 +28,7 @@ Structure StatusData
     Dim FilesToDelete As Long
     Dim FoldersToDelete As Long
     Dim TotalActionsCount As Long
-    Dim CurrentStep As Long
+    Dim CurrentStep As SyncStep
     Dim TimeElapsed As TimeSpan
     Dim Speed As Double
 
