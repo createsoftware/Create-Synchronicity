@@ -835,7 +835,7 @@ Public Class SynchronizeForm
 #If DEBUG Then
             Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & DestFile & """, now setting last write time.")
 #End If
-            'TODO: Check if s/DestFile/SourceFile would change something (I guess it would)
+            'Reading must happen through IO.File.GetLastWriteTimeUtc(DestFile), because it is possible that after the copy IO.File.GetLastWriteTimeUtc(SourceFile) !=  IO.File.GetLastWriteTimeUtc(DestFile) (even by one hour)
             IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(Of Integer)(ConfigOptions.TimeOffset, 0)))
         End If
 

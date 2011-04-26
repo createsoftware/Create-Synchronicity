@@ -202,14 +202,14 @@ NotInheritable Class ConfigHandler
             Try
                 Return CType(CObj(Val), T)
             Catch
-                SetProgramSetting(Key, DefaultVal.ToString) 'Couldn't convert the value to a proper format; resetting.
+                SetProgramSetting(Of T)(Key, DefaultVal) 'Couldn't convert the value to a proper format; resetting.
             End Try
         End If
         Return DefaultVal
     End Function
 
-    Public Sub SetProgramSetting(ByVal Key As String, ByVal Value As String)
-        ProgramSettings(Key) = Value
+    Public Sub SetProgramSetting(Of T)(ByVal Key As String, ByVal Value As T)
+        ProgramSettings(Key) = Value.ToString
     End Sub
 
     Public Sub LoadProgramSettings()
@@ -278,7 +278,7 @@ NotInheritable Class ConfigHandler
         Catch
             Count = 0
         End Try
-        SetProgramSetting(ConfigOptions.SyncsCount, Count + 1)
+        SetProgramSetting(Of Integer)(ConfigOptions.SyncsCount, Count + 1)
     End Sub
 #End If
 End Class
@@ -296,7 +296,7 @@ NotInheritable Class ProfileHandler
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
-        If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(ConfigOptions.RightSubFolders, "*") 'TODO: Check types (Nothing)
+        If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(Of String)(ConfigOptions.RightSubFolders, "*") 'TODO: Check types (Nothing)
     End Sub
 
     Function LoadConfigFile() As Boolean
@@ -424,8 +424,8 @@ NotInheritable Class ProfileHandler
         IO.File.Delete(ProgramConfig.GetLogPath(ProfileName))
     End Sub
 
-    Sub SetSetting(ByVal SettingName As String, ByVal Value As String)
-        Configuration(SettingName) = Value
+    Sub SetSetting(Of T)(ByVal SettingName As String, ByVal Value As T)
+        Configuration(SettingName) = Value.ToString
     End Sub
 
     Sub CopySetting(Of T)(ByVal SettingName As String, ByRef SettingField As T, ByVal LoadSetting As Boolean)
@@ -443,7 +443,7 @@ NotInheritable Class ProfileHandler
             Try
                 Return CType(CObj(Val), T)
             Catch
-                SetSetting(Key, DefaultVal.ToString) 'Couldn't convert the value to a proper format; resetting.
+                SetSetting(Of T)(Key, DefaultVal) 'Couldn't convert the value to a proper format; resetting.
             End Try
         End If
         Return DefaultVal
@@ -455,12 +455,12 @@ NotInheritable Class ProfileHandler
         If Opts.GetLength(0) = ConfigOptions.SchedulingSettingsCount Then
             Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4)) 'TODO check for parameters type.
         Else
-            Scheduler = New ScheduleInfo(ScheduleInfo.Freq.Never, 0, 0, 0, 0) 'NOTE: Wrong strings default to never
+            Scheduler = New ScheduleInfo() With {.Frequency = ScheduleInfo.Freq.Never} 'NOTE: Wrong strings default to never
         End If
     End Sub
 
     Sub SaveScheduler()
-        SetSetting(ConfigOptions.Scheduling, String.Join(";", New String() {Scheduler.Frequency.ToString, Scheduler.WeekDay, Scheduler.MonthDay, Scheduler.Hour, Scheduler.Minute}))
+        SetSetting(Of String)(ConfigOptions.Scheduling, String.Join(";", New String() {Scheduler.Frequency.ToString, Scheduler.WeekDay.ToString, Scheduler.MonthDay.ToString, Scheduler.Hour.ToString, Scheduler.Minute.ToString}))
     End Sub
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
@@ -543,7 +543,7 @@ NotInheritable Class ProfileHandler
     End Function
 
     Public Sub SetLastRun()
-        SetSetting(ConfigOptions.LastRun, Date.Now.ToString)
+        SetSetting(Of Date)(ConfigOptions.LastRun, Date.Now)
         SaveConfigFile()
     End Sub
 End Class
@@ -562,12 +562,16 @@ Structure ScheduleInfo
     Public Shared ReadOnly DATE_NEVER As Date = Date.MaxValue
     Public Shared ReadOnly DATE_CATCHUP As Date = Date.MinValue
 
-    Sub New(ByVal Frq As String, ByVal _WeekDay As Integer, ByVal _MonthDay As Integer, ByVal _Hour As Integer, ByVal _Minute As Integer)
-        Hour = _Hour
-        Minute = _Minute
-        WeekDay = _WeekDay
-        MonthDay = _MonthDay
-        Frequency = Str2Freq(Frq)
+    Sub New(ByVal Frq As String, ByVal _WeekDay As String, ByVal _MonthDay As String, ByVal _Hour As String, ByVal _Minute As String)
+        Try
+            Hour = CInt(_Hour)
+            Minute = CInt(_Minute)
+            WeekDay = CInt(_WeekDay)
+            MonthDay = CInt(_MonthDay)
+            Frequency = Str2Freq(Frq)
+        Catch Ex As FormatException
+        Catch Ex As OverflowException
+        End Try
     End Sub
 
     Private Shared Function Str2Freq(ByVal Str As String) As Freq
@@ -619,20 +623,11 @@ Structure ScheduleInfo
 End Structure
 
 Friend Module Updates
-    Dim Parent As MainForm = Nothing 'Used for Application.Exit call.
-
-    Public Sub SetParent(ByVal ParentForm As MainForm)
-        Parent = ParentForm
+    Public Sub SilentCheck()
+        CheckForUpdates(True)
     End Sub
 
     Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
-        If Parent Is Nothing Then
-#If DEBUG Then
-            Interaction.ShowMsg("No parent specified for update thread.")
-#End If
-            Exit Sub
-        End If
-
         Dim UpdateClient As New Net.WebClient
         Try
             UpdateClient.Headers.Add("version", Application.ProductVersion)
@@ -655,7 +650,7 @@ Friend Module Updates
             If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Interaction.StartProcess(ConfigOptions.Website & "update.html")
-                    If ProgramConfig.CanGoOn Then Parent.Invoke(New MainForm.ExitAppCallBack(AddressOf MainFormInstance.ExitApp))
+                    If ProgramConfig.CanGoOn Then MainFormInstance.Invoke(Sub() Application.Exit())
                 End If
             Else
                 If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
@@ -806,15 +801,18 @@ Public NotInheritable Class ListViewColumnSorter
 
     Public Order As SortOrder
     Public SortColumn As Integer
-    Private ObjectCompare As Collections.CaseInsensitiveComparer
 
     Public Sub New(ByVal ColumnId As Integer)
         SortColumn = ColumnId
         Order = SortOrder.Ascending
-        ObjectCompare = New Collections.CaseInsensitiveComparer()
     End Sub
 
     Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements Collections.IComparer.Compare
-        Return If(Order = SortOrder.Ascending, 1, If(Order = SortOrder.Descending, -1, 0)) * ObjectCompare.Compare(DirectCast(x, ListViewItem).SubItems(SortColumn).Text, DirectCast(y, ListViewItem).SubItems(SortColumn).Text)
+        Dim xl As ListViewItem = DirectCast(x, ListViewItem), yl As ListViewItem = DirectCast(y, ListViewItem)
+        If xl.SubItems.Count <= SortColumn Or yl.SubItems.Count <= SortColumn Then
+            Return 0
+        Else
+            Return If(Order = SortOrder.Ascending, 1, -1) * String.Compare(xl.SubItems(SortColumn).Text, yl.SubItems(SortColumn).Text, True)
+        End If
     End Function
 End Class

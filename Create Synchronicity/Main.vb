@@ -79,8 +79,8 @@ Friend NotInheritable Class MessageLoop
 
         ' Look for updates
         If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False) Then
-            Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
-            UpdateThread.Start(True)
+            Dim UpdateThread As New Threading.Thread(AddressOf Updates.SilentCheck)
+            UpdateThread.Start()
         End If
 
         If CommandLine.Help Then
@@ -147,9 +147,6 @@ Friend NotInheritable Class MessageLoop
         Interaction.LoadStatusIcon()
         MainFormInstance.ToolStripHeader.Image = Interaction.StatusIcon.Icon.ToBitmap
         Interaction.StatusIcon.ContextMenuStrip = MainFormInstance.StatusIconMenu
-
-        'Give updates a way to notify exit
-        Updates.SetParent(MainFormInstance) 'Using a callback is really needed.
     End Sub
 
     Shared Sub HandleFirstRun()
@@ -160,7 +157,7 @@ Friend NotInheritable Class MessageLoop
 
         If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
             Dim AutoUpdates As Boolean = If(Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes, True, False)
-            ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, AutoUpdates.ToString)
+            ProgramConfig.SetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, AutoUpdates)
         End If
 
         ProgramConfig.SaveProgramSettings()

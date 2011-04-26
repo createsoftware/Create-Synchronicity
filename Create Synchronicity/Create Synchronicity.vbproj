@@ -15,7 +15,7 @@
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
     <OptionInfer>Off</OptionInfer>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -48,9 +48,9 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>None</DebugType>
@@ -60,9 +60,9 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <DefineConstants>LINUX=False</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -70,51 +70,52 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>Full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <DefineConstants>_MYTYPE="Empty"</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>_MYTYPE="Empty"</DefineConstants>
     <Optimize>true</Optimize>
-    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>None</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Linux\</OutputPath>
-    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux|x86'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Linux\</OutputPath>
-    <NoWarn>41999,42016,42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>Full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <WarningsAsErrors>
-    </WarningsAsErrors>
-    <DefineConstants>LINUX=True</DefineConstants>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <DefineConstants>LINUX=True,_MYTYPE="Empty"</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

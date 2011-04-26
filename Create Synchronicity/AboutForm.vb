@@ -67,7 +67,7 @@ Public Class AboutForm
             Dim SelectedLanguage As String = LanguagesList.SelectedItem.ToString.Split("-"c)(0).Trim
             Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> SelectedLanguage
 
-            ProgramConfig.SetProgramSetting(ConfigOptions.Language, SelectedLanguage)
+            ProgramConfig.SetProgramSetting(Of String)(ConfigOptions.Language, SelectedLanguage)
 
             If LanguageChanged Then
                 ReloadNeeded = True
@@ -75,7 +75,7 @@ Public Class AboutForm
             End If
         End If
 
-        ProgramConfig.SetProgramSetting(ConfigOptions.AutoUpdates, UpdatesOption.Checked)
+        ProgramConfig.SetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, UpdatesOption.Checked)
         ProgramConfig.SaveProgramSettings()
     End Sub
 End Class

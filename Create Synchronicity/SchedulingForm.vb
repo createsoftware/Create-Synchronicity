@@ -66,7 +66,7 @@ Public Class SchedulingForm
                 Handler.Scheduler.Frequency = If(DailyBtn.Checked, ScheduleInfo.Freq.Daily, If(WeeklyBtn.Checked, ScheduleInfo.Freq.Weekly, ScheduleInfo.Freq.Monthly))
             End If
 
-            Handler.SetSetting(ConfigOptions.CatchUpSync, Catchup.Checked)
+            Handler.SetSetting(Of Boolean)(ConfigOptions.CatchUpSync, Catchup.Checked)
 
             Handler.SaveScheduler()
             Handler.SaveConfigFile()

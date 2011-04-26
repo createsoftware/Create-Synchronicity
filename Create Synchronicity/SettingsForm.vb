@@ -52,13 +52,12 @@ Public Class SettingsForm
         RightView.PathSeparator = ConfigOptions.DirSep
         MoreLabel.Visible = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, False)
 
-        'TODO: Find a way to avoid delays. Trees should be loaded in background (there already is a waiting indicator).
         If Not NewProfile Then UpdateSettings(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
 
     Private Sub SettingsForm_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        ReloadTrees(True) 'Delays loading, which can take a lot of time.
+        ReloadTrees(True) 'Loading happens after showing the form.
         RightView.Sorted = True : LeftView.Sorted = True
     End Sub
 
@@ -452,8 +451,8 @@ Public Class SettingsForm
         'Hidden settings are not added here
 
         'Note: Behaves correctly when no radio button is checked, although CopyAllFiles is unchecked.
-        Dim Restrictions As String = (If(CopyAllFilesCheckBox.Checked, 0, 1) * (If(IncludeFilesOption.Checked, 1, 0) + 2 * If(ExcludeFilesOption.Checked, 1, 0))).ToString
-        Dim Method As String = (If(LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2).ToString
+        Dim Restrictions As Integer = (If(CopyAllFilesCheckBox.Checked, 0, 1) * (If(IncludeFilesOption.Checked, 1, 0) + 2 * If(ExcludeFilesOption.Checked, 1, 0)))
+        Dim Method As Integer = (If(LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2)
 
         If LoadToForm Then
             Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Method)
@@ -477,21 +476,21 @@ Public Class SettingsForm
 
             SwitchControls()
         Else
-            Handler.SetSetting(ConfigOptions.Method, Method)
-            Handler.SetSetting(ConfigOptions.Restrictions, Restrictions)
+            Handler.SetSetting(Of Integer)(ConfigOptions.Method, Method)
+            Handler.SetSetting(Of Integer)(ConfigOptions.Restrictions, Restrictions)
 
             SetRootPathDisplay(False)
             If LeftView.Enabled Then
                 Handler.LeftCheckedNodes.Clear()
                 BuildCheckedNodesList(Handler.LeftCheckedNodes, LeftView.Nodes(0))
-                Handler.SetSetting(ConfigOptions.LeftSubFolders, GetString(Handler.LeftCheckedNodes))
+                Handler.SetSetting(Of String)(ConfigOptions.LeftSubFolders, GetString(Handler.LeftCheckedNodes))
             End If
 
             If RightView.Enabled Then
                 If RightView.CheckBoxes Or Handler.GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then
                     Handler.RightCheckedNodes.Clear()
                     BuildCheckedNodesList(Handler.RightCheckedNodes, RightView.Nodes(0))
-                    Handler.SetSetting(ConfigOptions.RightSubFolders, GetString(Handler.RightCheckedNodes))
+                    Handler.SetSetting(Of String)(ConfigOptions.RightSubFolders, GetString(Handler.RightCheckedNodes))
                 End If
             End If
             SetRootPathDisplay(True)

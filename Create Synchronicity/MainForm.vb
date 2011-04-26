@@ -50,9 +50,9 @@ Public Class MainForm
 
     Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Dim WindowAttributes As String = String.Format("{0},{1},{2},{3}", Me.Location.X, Me.Location.Y, Me.Size.Width, Me.Size.Height)
-        ProgramConfig.SetProgramSetting(ConfigOptions.MainFormAttributes, WindowAttributes)
-        ProgramConfig.SetProgramSetting(ConfigOptions.MainView, CurView)
-        ProgramConfig.SetProgramSetting(ConfigOptions.FontSize, Actions.Font.Size)
+        ProgramConfig.SetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, WindowAttributes)
+        ProgramConfig.SetProgramSetting(Of Integer)(ConfigOptions.MainView, CurView)
+        ProgramConfig.SetProgramSetting(Of Single)(ConfigOptions.FontSize, Actions.Font.Size)
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -78,7 +78,7 @@ Public Class MainForm
                 Case Keys.E
                     If e.Alt Then
                         Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, False)
-                        ProgramConfig.SetProgramSetting(ConfigOptions.ExpertMode, Not EMEnabled)
+                        ProgramConfig.SetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, Not EMEnabled)
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If
                 Case Keys.L
@@ -92,7 +92,7 @@ Public Class MainForm
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
-        ExitApp()
+        Application.Exit()
     End Sub
 
 #If 0 Then
@@ -251,7 +251,7 @@ Public Class MainForm
     End Sub
 
     Sub SetFont(ByVal Size As Single)
-        Size = Math.Max(6.25, Math.Min(24.25, Size))
+        Size = CSng(Math.Max(6.25, Math.Min(24.25, Size)))
         Actions.Font = New Drawing.Font(Actions.Font.Name, Size)
     End Sub
 
@@ -375,12 +375,6 @@ Public Class MainForm
                 Painter.Dispose()
             End Try
         Next
-    End Sub
-
-    Friend Delegate Sub ExitAppCallBack()
-    Public Sub ExitApp()
-        Me.Close()
-        Application.Exit()
     End Sub
 #End Region
 End Class
