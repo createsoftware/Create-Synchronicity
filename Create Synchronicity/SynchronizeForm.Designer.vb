@@ -72,7 +72,7 @@ Partial Class SynchronizeForm
         Me.DirectionColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.PathColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SyncingIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.SyncingTimeCounter = New System.Windows.Forms.Timer(Me.components)
+        Me.SyncingTimer = New System.Windows.Forms.Timer(Me.components)
         Me.MainLayoutPanel.SuspendLayout()
         Me.Step3LayoutPanel.SuspendLayout()
         Me.Step3_ProgressLayout.SuspendLayout()
@@ -561,8 +561,8 @@ Partial Class SynchronizeForm
         '
         'SyncingTimeCounter
         '
-        Me.SyncingTimeCounter.Enabled = True
-        Me.SyncingTimeCounter.Interval = 50
+        Me.SyncingTimer.Enabled = True
+        Me.SyncingTimer.Interval = 50
         '
         'SynchronizeForm
         '
@@ -629,7 +629,7 @@ Partial Class SynchronizeForm
     Friend WithEvents FilesCreated As System.Windows.Forms.Label
     Friend WithEvents FoldersCreatedLabel As System.Windows.Forms.Label
     Friend WithEvents SyncingIcons As System.Windows.Forms.ImageList
-    Friend WithEvents SyncingTimeCounter As System.Windows.Forms.Timer
+    Friend WithEvents SyncingTimer As System.Windows.Forms.Timer
     Friend WithEvents FoldersDeleted As System.Windows.Forms.Label
     Friend WithEvents FoldersDeletedLabel As System.Windows.Forms.Label
     Friend WithEvents FilesDeletedLabel As System.Windows.Forms.Label

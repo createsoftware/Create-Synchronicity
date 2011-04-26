@@ -83,6 +83,7 @@ Public Class SynchronizeForm
 
 #If LINUX Then
         Step1ProgressBar.MarqueeAnimationSpeed = 5000
+        SyncingTimer.Interval = 1000
 #End If
     End Sub
 
@@ -179,7 +180,7 @@ Public Class SynchronizeForm
         If Me.WindowState = FormWindowState.Minimized And Quiet Then Me.Visible = False
     End Sub
 
-    Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimeCounter.Tick
+    Private Sub SyncingTimeCounter_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SyncingTimer.Tick
         UpdateStatuses()
     End Sub
 
@@ -328,7 +329,7 @@ Public Class SynchronizeForm
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
                 UpdateStatuses()
-                SyncingTimeCounter.Stop()
+                SyncingTimer.Stop()
 
             Case 2
                 Status.CurrentStep = 3
@@ -369,7 +370,7 @@ Public Class SynchronizeForm
                     If Quiet Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                 End If
 
-                SyncingTimeCounter.Stop()
+                SyncingTimer.Stop()
                 ' Set last run only if the profile hasn't failed, and has synced completely.
                 ' Checking for Status.Cancel allows to resync if eg. computer was stopped during sync.
                 ' EndAll() sets Status.Cancel to true, but if the sync completes successfully, this part executes before the call to EndAll 
@@ -438,7 +439,7 @@ Public Class SynchronizeForm
     Private Sub LaunchTimer()
         Status.BytesCopied = 0
         Status.StartTime = DateTime.Now
-        SyncingTimeCounter.Start()
+        SyncingTimer.Start()
     End Sub
 
     Private Sub EndAll()
