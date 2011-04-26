@@ -315,11 +315,22 @@
                <Item>column</Item>
               </Issue>
              </Message>
-             <Message Id="System.Collections.CaseInsensitiveComparer.#ctor" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2011-04-21 17:23:20Z">
+            </Messages>
+           </Member>
+           <Member Name="#Compare(System.Object,System.Object)">
+            <Messages>
+             <Message Id="System.String.Compare(System.String,System.String,System.Boolean)" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Created="2011-04-26 09:02:01Z">
               <Issue>
-               <Item>'CaseInsensitiveComparer.New()'</Item>
-               <Item>'ListViewColumnSorter.New(Integer)'</Item>
-               <Item>'CaseInsensitiveComparer.New(CultureInfo)'</Item>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'ListViewColumnSorter.Compare(Object, Object)'</Item>
+               <Item>'String.Compare(String, String, Boolean, CultureInfo)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="System.String.Compare(System.String,System.String,System.Boolean)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Created="2011-04-26 09:02:01Z">
+              <Issue>
+               <Item>'String.Compare(String, String, Boolean)'</Item>
+               <Item>'ListViewColumnSorter.Compare(Object, Object)'</Item>
+               <Item>'String.Compare(String, String, StringComparison)'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -760,13 +771,34 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#SetLastRun()">
+           <Member Name="#SaveScheduler()">
             <Messages>
-             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-26 09:02:01Z">
               <Issue Name="IFormatProviderAlternateString">
-               <Item>'Date.ToString()'</Item>
-               <Item>'ProfileHandler.SetLastRun()'</Item>
-               <Item>'Date.ToString(IFormatProvider)'</Item>
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.SaveScheduler()'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.SaveScheduler()'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.SaveScheduler()'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'Integer.ToString()'</Item>
+               <Item>'ProfileHandler.SaveScheduler()'</Item>
+               <Item>'Integer.ToString(IFormatProvider)'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
@@ -920,19 +952,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ScheduleInfo">
-          <Members>
-           <Member Name="#Str2Freq(System.String)">
-            <Messages>
-             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2011-04-25 22:10:24Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>'ScheduleInfo.Str2Freq(String)'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="SchedulingForm">
           <Members>
            <Member Name="#.ctor(System.String)">
@@ -1025,26 +1044,6 @@
                <Item>'String.Format(String, Object)'</Item>
                <Item>'SettingsForm.Settings_Load(Object, EventArgs)'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
-               <Item>'CultureInfo.CurrentCulture()'</Item>
-               <Item>'CultureInfo.InvariantCulture()'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#UpdateSettings(System.Boolean)">
-            <Messages>
-             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
-              <Issue Name="IFormatProviderAlternateString">
-               <Item>'Integer.ToString()'</Item>
-               <Item>'SettingsForm.UpdateSettings(Boolean)'</Item>
-               <Item>'Integer.ToString(IFormatProvider)'</Item>
-               <Item>'CultureInfo.CurrentCulture()'</Item>
-               <Item>'CultureInfo.InvariantCulture()'</Item>
-              </Issue>
-              <Issue Name="IFormatProviderAlternateString">
-               <Item>'Integer.ToString()'</Item>
-               <Item>'SettingsForm.UpdateSettings(Boolean)'</Item>
-               <Item>'Integer.ToString(IFormatProvider)'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
@@ -1530,9 +1529,6 @@
    </Rule>
    <Rule TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707">
     <Resolution Name="MemberParameter">In member {0}, remove the underscores from parameter name {1}.</Resolution>
-   </Rule>
-   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
-    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
    </Rule>
    <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
     <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>

@@ -58,11 +58,12 @@ Friend NotInheritable Class LogHandler
         Log.Add(New LogItem(Item, Side, Success))
     End Sub
 
-#If DEBUG Then
+    <Diagnostics.Conditional("Debug")>
     Sub LogInfo(ByVal Info As String)
+#If DEBUG Then
         DebugInfo.Add(Info)
-    End Sub
 #End If
+    End Sub
 
     Private Sub OpenHTMLHeaders(ByRef LogW As IO.StreamWriter)
         If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then

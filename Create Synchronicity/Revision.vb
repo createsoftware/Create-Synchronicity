@@ -1,3 +1,3 @@
 ﻿Module Revision
-    Public Const Build As String = "1259"
+    Public Const Build As String = "1260"
 End Module
