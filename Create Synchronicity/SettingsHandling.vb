@@ -252,7 +252,9 @@ NotInheritable Class ConfigHandler
 
     <Diagnostics.Conditional("Debug")>
     Public Shared Sub LogDebugEvent(ByVal EventData As String)
+#If DEBUG Then
         LogAppEvent(EventData)
+#End If
     End Sub
 
     Public Shared Sub LogAppEvent(ByVal EventData As String)
@@ -775,7 +777,9 @@ Friend Module Interaction
 
     <Diagnostics.Conditional("Debug")>
     Public Sub ShowDebug(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.Warning)
+#If DEBUG Then
         ShowMsg(Text, Caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
+#End If
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
