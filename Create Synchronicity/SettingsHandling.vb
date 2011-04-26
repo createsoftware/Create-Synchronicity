@@ -242,15 +242,18 @@ NotInheritable Class ConfigHandler
         Try
             IO.File.WriteAllText(MainConfigFile, ConfigStrB.ToString) 'IO.File.WriteAllText overwrites the file.
         Catch
-#If DEBUG Then
-        Interaction.ShowMsg("Unable to save main config file.", , , MessageBoxIcon.Error)
-#End If
+            Interaction.ShowDebug("Unable to save main config file.", , MessageBoxIcon.Error)
         End Try
     End Sub
 
     Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
         Return ProgramSettings.ContainsKey(Setting)
     End Function
+
+    <Diagnostics.Conditional("Debug")>
+    Public Shared Sub LogDebugEvent(ByVal EventData As String)
+        LogAppEvent(EventData)
+    End Sub
 
     Public Shared Sub LogAppEvent(ByVal EventData As String)
         If ConfigOptions.Debug Or CommandLine.Silent Or CommandLine.Log Then
@@ -657,14 +660,10 @@ Friend Module Updates
             End If
         Catch Ex As InvalidOperationException
             'Some form couldn't close properly because of thread accesses
-#If DEBUG Then
-            Interaction.ShowMsg(Ex.ToString)
-#End If
+            Interaction.ShowDebug(Ex.ToString)
         Catch Ex As Exception
             Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Environment.NewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
-#If DEBUG Then
-            Interaction.ShowMsg(Ex.Message & Environment.NewLine & Ex.StackTrace)
-#End If
+            Interaction.ShowDebug(Ex.Message & Environment.NewLine & Ex.StackTrace)
         Finally
             UpdateClient.Dispose()
         End Try
@@ -772,6 +771,11 @@ Friend Module Interaction
 
     Public Sub HideToolTip(ByVal sender As Control)
         SharedToolTip.Hide(sender)
+    End Sub
+
+    <Diagnostics.Conditional("Debug")>
+    Public Sub ShowDebug(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.Warning)
+        ShowMsg(Text, Caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
     End Sub
 
     Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult

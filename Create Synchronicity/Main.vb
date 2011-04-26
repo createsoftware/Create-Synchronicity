@@ -55,9 +55,7 @@ Friend NotInheritable Class MessageLoop
         ' Start logging
         ConfigHandler.LogAppEvent("Program started: " & Application.StartupPath)
         ConfigHandler.LogAppEvent(String.Format("Profiles folder: {0}.", ProgramConfig.ConfigRootDir))
-#If DEBUG Then
-        Interaction.ShowMsg(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
-#End If
+        Interaction.ShowDebug(Translation.Translate("\DEBUG_WARNING"), Translation.Translate("\DEBUG_MODE"))
 
         ' Check if multiple instances are allowed.
         If CommandLine.RunAs = CommandLine.RunMode.Scheduler AndAlso SchedulerAlreadyRunning() Then
@@ -176,16 +174,12 @@ Friend NotInheritable Class MessageLoop
 #Region "Scheduling"
     Private Function SchedulerAlreadyRunning() As Boolean
         Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ConfigOptions.DirSep, "!"c).ToLower(Interaction.InvariantCulture)
-#If DEBUG Then
-        ConfigHandler.LogAppEvent(String.Format("Trying to register mutex ""{0}""", MutexName))
-#End If
+        ConfigHandler.LogDebugEvent(String.Format("Registering mutex: ""{0}""", MutexName))
 
         Try
             Blocker = New Threading.Mutex(False, MutexName)
         Catch Ex As Threading.AbandonedMutexException
-#If DEBUG Then
-            ConfigHandler.LogAppEvent("Abandoned mutex detected")
-#End If
+            ConfigHandler.LogDebugEvent("Abandoned mutex detected")
             Return False
         End Try
 

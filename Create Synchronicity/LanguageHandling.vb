@@ -35,10 +35,7 @@ Friend NotInheritable Class LanguageHandler
                         If Pair(0).StartsWith("->") Then Pair(0) = Pair(0).Remove(0, 2)
                         Strings.Add("\" & Pair(0), Pair(1).Replace("\n", Environment.NewLine))
                     Catch Ex As ArgumentException
-                        'Duplicate line
-#If DEBUG Then
-                        Interaction.ShowMsg("Duplicate translation line: " & Line)
-#End If
+                        Interaction.ShowDebug("Duplicate line in translation: " & Line)
                     End Try
                 End While
             End Using
