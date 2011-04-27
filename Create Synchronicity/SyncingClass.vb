@@ -141,7 +141,7 @@ Friend NotInheritable Class FileNamePattern
     End Function
 
     Private Shared Function SharpInclude(ByVal FileName As String) As String
-        Dim Path As String = ProgramConfig.ConfigRootDir & ConfigOptions.DirSep & FileName
+        Dim Path As String = ProgramConfig.ConfigRootDir & ProgramSetting.DirSep & FileName
         Return If(IO.File.Exists(Path), IO.File.ReadAllText(Path), FileName)
     End Function
 
@@ -164,6 +164,6 @@ End Class
 
 Module FileHandling
     Friend Function GetFileOrFolderName(ByVal Path As String) As String
-        Return Path.Substring(Path.LastIndexOf(ConfigOptions.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
+        Return Path.Substring(Path.LastIndexOf(ProgramSetting.DirSep) + 1) 'IO.Path.* -> Bad because of separate file/folder handling.
     End Function
 End Module

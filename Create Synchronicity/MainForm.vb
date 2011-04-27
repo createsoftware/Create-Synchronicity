@@ -19,7 +19,7 @@ Public Class MainForm
 #End If
 
         ' Code (largely inspired) by U.N. Owen
-        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, "").Split(","c))
+        Dim WindowSettings As New List(Of String)(ProgramConfig.GetProgramSetting(Of String)(ProgramSetting.MainFormAttributes, "").Split(","c))
         Try
             Dim Values As New List(Of Integer) : WindowSettings.ForEach(Sub(Elem) Values.Add(CInt(Elem)))
             If Values.Count = 4 AndAlso Values.TrueForAll(Function(Value As Integer) Value > 0 And Value < 5000) Then
@@ -50,22 +50,22 @@ Public Class MainForm
 
     Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Dim WindowAttributes As String = String.Format("{0},{1},{2},{3}", Me.Location.X, Me.Location.Y, Me.Size.Width, Me.Size.Height)
-        ProgramConfig.SetProgramSetting(Of String)(ConfigOptions.MainFormAttributes, WindowAttributes)
-        ProgramConfig.SetProgramSetting(Of Integer)(ConfigOptions.MainView, CurView)
-        ProgramConfig.SetProgramSetting(Of Single)(ConfigOptions.FontSize, Actions.Font.Size)
+        ProgramConfig.SetProgramSetting(Of String)(ProgramSetting.MainFormAttributes, WindowAttributes)
+        ProgramConfig.SetProgramSetting(Of Integer)(ProgramSetting.MainView, CurView)
+        ProgramConfig.SetProgramSetting(Of Single)(ProgramSetting.FontSize, Actions.Font.Size)
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         ReloadProfilesList()
         MessageLoop.RedoSchedulerRegistration()
-        SetView(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MainView, 0))
-        SetFont(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.FontSize, CInt(Actions.Font.Size)))
+        SetView(ProgramConfig.GetProgramSetting(Of Integer)(ProgramSetting.MainView, 0))
+        SetFont(ProgramConfig.GetProgramSetting(Of Integer)(ProgramSetting.FontSize, CInt(Actions.Font.Size)))
     End Sub
 
     Private Sub MainForm_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
         'Requires PreviewKeys to be set to true to work, otherwise the form won't catch the keypress.
         If e.KeyCode = Keys.F1 Then
-            Interaction.StartProcess(ConfigOptions.Website & "help.html")
+            Interaction.StartProcess(ProgramSetting.Website & "help.html")
         ElseIf e.KeyCode = Keys.F5 Then
             ReloadProfilesList()
         ElseIf e.Control Then
@@ -77,8 +77,8 @@ Public Class MainForm
                     Interaction.StartProcess(ProgramConfig.ConfigRootDir)
                 Case Keys.E
                     If e.Alt Then
-                        Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, False)
-                        ProgramConfig.SetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, Not EMEnabled)
+                        Dim EMEnabled As Boolean = ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.ExpertMode, False)
+                        ProgramConfig.SetProgramSetting(Of Boolean)(ProgramSetting.ExpertMode, Not EMEnabled)
                         Interaction.ShowMsg("Expert mode " & If(EMEnabled, "disabled", "enabled") & "!")
                     End If
                 Case Keys.L
@@ -223,7 +223,7 @@ Public Class MainForm
     End Sub
 
     Private Sub Donate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.Click
-        Interaction.StartProcess(ConfigOptions.Website & "contribute.html")
+        Interaction.StartProcess(ProgramSetting.Website & "contribute.html")
     End Sub
 
     Private Sub Donate_MouseEnter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Donate.MouseEnter
@@ -270,10 +270,10 @@ Public Class MainForm
             Dim NewItem As ListViewItem = Actions.Items.Add(ProfileName)
 
             NewItem.Group = Actions.Groups(1)
-            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ConfigOptions.Method, 0) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.Freq.Never, 0, 4)
+            NewItem.ImageIndex = Profiles(ProfileName).GetSetting(Of Integer)(ProfileSetting.Method, 0) + If(ProfilePair.Value.Scheduler.Frequency = ScheduleInfo.Freq.Never, 0, 4)
             NewItem.SubItems.Add(GetMethodName(ProfileName)).ForeColor = Drawing.Color.DarkGray
 
-            Dim GroupName As String = Profiles(ProfileName).GetSetting(Of String)(ConfigOptions.Group, "")
+            Dim GroupName As String = Profiles(ProfileName).GetSetting(Of String)(ProfileSetting.Group, "")
             If GroupName <> "" Then
                 If Not Groups.Contains(GroupName) Then
                     Groups.Add(GroupName)
@@ -302,8 +302,8 @@ Public Class MainForm
         If Clear Then Exit Sub
 
         Method.Text = GetMethodName(Name)
-        Source.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Source)
-        Destination.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.Destination)
+        Source.Text = Profiles(Name).GetSetting(Of String)(ProfileSetting.Source)
+        Destination.Text = Profiles(Name).GetSetting(Of String)(ProfileSetting.Destination)
 
         Scheduling.Text = Translation.Translate("\" & Profiles(Name).Scheduler.Frequency.ToString.ToUpper(Interaction.InvariantCulture))
 
@@ -321,25 +321,25 @@ Public Class MainForm
             Scheduling.Text &= ", " & Profiles(Name).Scheduler.Hour.ToString.PadLeft(2, "0"c) & Translation.Translate("\H_M_SEP") & Profiles(Name).Scheduler.Minute.ToString.PadLeft(2, "0"c)
         End If
 
-        TimeOffset.Text = Profiles(Name).GetSetting(Of Integer)(ConfigOptions.TimeOffset).ToString
+        TimeOffset.Text = Profiles(Name).GetSetting(Of Integer)(ProfileSetting.TimeOffset).ToString
 
-        Select Case Profiles(Name).GetSetting(Of Integer)(ConfigOptions.Restrictions, 0)
+        Select Case Profiles(Name).GetSetting(Of Integer)(ProfileSetting.Restrictions, 0)
             Case 0
                 LimitedCopy.Text = Translation.Translate("\NO")
             Case 1, 2
                 LimitedCopy.Text = Translation.Translate("\YES")
         End Select
 
-        Select Case Profiles(Name).GetSetting(Of Integer)(ConfigOptions.Restrictions, 0)
+        Select Case Profiles(Name).GetSetting(Of Integer)(ProfileSetting.Restrictions, 0)
             Case 1
-                FileTypes.Text = Profiles(Name).GetSetting(Of String)(ConfigOptions.IncludedTypes, "")
+                FileTypes.Text = Profiles(Name).GetSetting(Of String)(ProfileSetting.IncludedTypes, "")
             Case 2
-                FileTypes.Text = "-" & Profiles(Name).GetSetting(Of String)(ConfigOptions.ExcludedTypes, "")
+                FileTypes.Text = "-" & Profiles(Name).GetSetting(Of String)(ProfileSetting.ExcludedTypes, "")
         End Select
     End Sub
 
     Private Shared Function GetMethodName(ByVal Name As String) As String
-        Select Case Profiles(Name).GetSetting(Of String)(ConfigOptions.Method, "")
+        Select Case Profiles(Name).GetSetting(Of String)(ProfileSetting.Method, "")
             Case "1"
                 Return Translation.Translate("\LR_INCREMENTAL")
             Case "2"

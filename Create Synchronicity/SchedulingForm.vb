@@ -49,7 +49,7 @@ Public Class SchedulingForm
                 End Select
         End Select
 
-        Handler.CopySetting(ConfigOptions.CatchUpSync, Catchup.Checked, True)
+        Handler.CopySetting(ProfileSetting.CatchUpSync, Catchup.Checked, True)
     End Sub
 
     Private Sub Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save.Click
@@ -66,7 +66,7 @@ Public Class SchedulingForm
                 Handler.Scheduler.Frequency = If(DailyBtn.Checked, ScheduleInfo.Freq.Daily, If(WeeklyBtn.Checked, ScheduleInfo.Freq.Weekly, ScheduleInfo.Freq.Monthly))
             End If
 
-            Handler.SetSetting(Of Boolean)(ConfigOptions.CatchUpSync, Catchup.Checked)
+            Handler.SetSetting(Of Boolean)(ProfileSetting.CatchUpSync, Catchup.Checked)
 
             Handler.SaveScheduler()
             Handler.SaveConfigFile()

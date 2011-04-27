@@ -6,7 +6,7 @@
 'Created by:	Clément Pit--Claudel.
 'Web site:		http://synchronicity.sourceforge.net.
 
-Friend Module ConfigOptions
+Friend Module ProfileSetting
     Public Const Source As String = "Source Directory"
     Public Const Destination As String = "Destination Directory"
     Public Const IncludedTypes As String = "Included Filetypes"
@@ -36,251 +36,7 @@ Friend Module ConfigOptions
 
     Public Const Scheduling As String = "Scheduling"
     Public Const SchedulingSettingsCount As Integer = 5 'Frequency;WeekDay;MonthDay;Hour;Minute
-
-    'Main program settings
-    Public Const Language As String = "Language"
-    Public Const DefaultLanguage As String = "english"
-    'Public Const SyncsCount As String = "Syncs count" 'LATER: Problem with concurrent savings of the config file.
-    Public Const AutoUpdates As String = "Auto updates"
-    Public Const MaxLogEntries As String = "Archived log entries"
-    Public Const MainView As String = "Main view"
-    Public Const FontSize As String = "Font size"
-    Public Const MainFormAttributes As String = "Window size and position"
-    Public Const ExpertMode As String = "Expert mode"
-    Public Const DiffProgram As String = "Diff program"
-    Public Const DiffArguments As String = "Diff arguments"
-    Public Const TextLogs As String = "Text logs"
-
-    'Program files
-    Public Const ConfigFolderName As String = "config"
-    Public Const LogFolderName As String = "log"
-    Public Const SettingsFileName As String = "mainconfig.ini"
-    Public Const AppLogName As String = "app.log"
-    Public Const DllName As String = "compress.dll"
-    'Public CompressionThreshold As Integer = 0 'Better not filter at all
-
-    Public Const EnqueuingSeparator As Char = "|"c
-#If CONFIG = "Linux" Then
-    Public Const DirSep As Char = "/"c
-#Else
-    Public Const DirSep As Char = "\"c
-#End If
-
-#If DEBUG Then
-    Public Const Debug As Boolean = True
-#Else
-    Public Const Debug As Boolean = False
-#End If
-
-    Public Const RegistryBootVal As String = "Create Synchronicity - Scheduler"
-    Public Const RegistryBootKey As String = "Software\Microsoft\Windows\CurrentVersion\Run"
-    Public Const RegistryRootedBootKey As String = "HKEY_CURRENT_USER\" & RegistryBootKey
-
-    Public Const Website As String = "http://synchronicity.sourceforge.net/"
-    Public Const UserWeb As String = "http://createsoftware.users.sourceforge.net/"
 End Module
-
-Structure SchedulerEntry
-    Dim Name As String
-    Dim NextRun As Date
-    Dim CatchUp As Boolean
-    Dim HasFailed As Boolean
-
-    Sub New(ByVal _Name As String, ByVal _NextRun As Date, ByVal _Catchup As Boolean, ByVal _HasFailed As Boolean)
-        Name = _Name
-        NextRun = _NextRun
-        CatchUp = _Catchup
-        HasFailed = _HasFailed
-    End Sub
-End Structure
-
-NotInheritable Class ConfigHandler
-    Private Shared Singleton As ConfigHandler
-
-    Public LogRootDir As String
-    Public ConfigRootDir As String
-    Public LanguageRootDir As String
-
-    Public CompressionDll As String
-    Public LocalNamesFile As String
-    Public MainConfigFile As String
-
-    Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode only, queuing uses callbacks).
-
-    Friend Icon As Drawing.Icon
-    Dim ProgramSettingsLoaded As Boolean = False
-    Dim ProgramSettings As New Dictionary(Of String, String)
-
-    Private Sub New()
-        LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
-        ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
-        LanguageRootDir = Application.StartupPath & ConfigOptions.DirSep & "languages"
-
-        LocalNamesFile = LanguageRootDir & ConfigOptions.DirSep & "local-names.txt"
-        MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
-        CompressionDll = Application.StartupPath & ConfigOptions.DirSep & ConfigOptions.DllName
-
-        Try
-            Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
-        Catch
-            Icon = Drawing.Icon.FromHandle((New Drawing.Bitmap(32, 32)).GetHicon)
-        End Try
-    End Sub
-
-    Public Shared Function GetSingleton() As ConfigHandler
-        If Singleton Is Nothing Then Singleton = New ConfigHandler()
-        Return Singleton
-    End Function
-
-    Public Function GetConfigPath(ByVal Name As String) As String
-        Return ConfigRootDir & ConfigOptions.DirSep & Name & ".sync"
-    End Function
-
-    Public Function GetLogPath(ByVal Name As String) As String
-        Return LogRootDir & ConfigOptions.DirSep & Name & ".log" & If(ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False), "", ".html")
-    End Function
-
-    Public Function GetUserFilesRootDir() As String 'Return the place were config files are stored
-        Static UserFilesRootDir As String = ""
-        If Not UserFilesRootDir = "" Then Return UserFilesRootDir
-
-        Dim UserPath As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & ConfigOptions.DirSep & "Create Software" & ConfigOptions.DirSep & "Create Synchronicity" & ConfigOptions.DirSep
-
-        'http://support.microsoft.com/default.aspx?scid=kb;EN-US;326549
-        Dim WriteNeededFiles As New List(Of String)
-        Dim WriteNeededFolders As New List(Of String)
-        Dim PotentialWriteNeededFolders As String() = {Application.StartupPath & ConfigOptions.DirSep & LogFolderName, Application.StartupPath & ConfigOptions.DirSep & ConfigFolderName}
-
-        WriteNeededFolders.Add(Application.StartupPath)
-        For Each Folder As String In PotentialWriteNeededFolders
-            If IO.Directory.Exists(Folder) Then
-                WriteNeededFolders.Add(Folder)
-                WriteNeededFiles.AddRange(IO.Directory.GetFiles(Folder))
-            End If
-        Next
-
-        Dim Writable As Boolean = True
-        Dim ProgramPathExists As Boolean = IO.Directory.Exists(Application.StartupPath & ConfigOptions.DirSep & ConfigFolderName)
-
-        For Each Folder As String In WriteNeededFolders
-            Dim FolderInfo As New IO.DirectoryInfo(Folder)
-            Writable = Writable And (Not (FolderInfo.Attributes And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
-
-            Try
-                Dim TestPath As String = Folder & ConfigOptions.DirSep & "write-permissions"
-                IO.File.Create(TestPath).Close()
-                IO.File.Delete(TestPath)
-            Catch
-                Writable = False
-            End Try
-        Next
-        For Each File As String In WriteNeededFiles
-            Writable = Writable And (Not (IO.File.GetAttributes(File) And IO.FileAttributes.ReadOnly) = IO.FileAttributes.ReadOnly)
-        Next
-
-        ' When a user folder exists, and no config folder exists in the install dir, use the user's folder.
-        If Writable And (ProgramPathExists Or Not IO.Directory.Exists(UserPath)) Then
-            UserFilesRootDir = Application.StartupPath & ConfigOptions.DirSep
-        Else
-            'Not translated, since it happens before loading translation files
-            If ProgramPathExists Then Interaction.ShowMsg("Create Synchronicity cannot write to your installation directory, although it contains configuration files. Your Application Data folder will therefore be used instead.", "Information", , MessageBoxIcon.Information)
-            UserFilesRootDir = UserPath
-        End If
-
-        Return UserFilesRootDir
-    End Function
-
-    Public Function GetProgramSetting(Of T)(ByVal Key As String, ByVal DefaultVal As T) As T
-        Dim Val As String = ""
-        If ProgramSettings.TryGetValue(Key, Val) AndAlso Not String.IsNullOrEmpty(Val) Then
-            Try
-                Return CType(CObj(Val), T)
-            Catch
-                SetProgramSetting(Of T)(Key, DefaultVal) 'Couldn't convert the value to a proper format; resetting.
-            End Try
-        End If
-        Return DefaultVal
-    End Function
-
-    Public Sub SetProgramSetting(Of T)(ByVal Key As String, ByVal Value As T)
-        ProgramSettings(Key) = Value.ToString
-    End Sub
-
-    Public Sub LoadProgramSettings()
-        If ProgramSettingsLoaded Then Exit Sub
-
-        IO.Directory.CreateDirectory(ConfigRootDir)
-        If Not IO.File.Exists(MainConfigFile) Then
-            IO.File.Create(MainConfigFile).Close()
-            Exit Sub
-        End If
-
-        Dim ConfigString As String = IO.File.ReadAllText(MainConfigFile)
-        Dim ConfigArray As New List(Of String)(ConfigString.Split(";"c))
-        For Each Setting As String In ConfigArray
-            Dim Pair As String() = Setting.Split(":".ToCharArray, 2)
-            If Pair.Length() < 2 Then Continue For
-            If ProgramSettings.ContainsKey(Pair(0)) Then ProgramSettings.Remove(Pair(0))
-            ProgramSettings.Add(Pair(0).Trim, Pair(1).Trim)
-        Next
-
-        ProgramSettingsLoaded = True
-    End Sub
-
-    Public Sub SaveProgramSettings()
-        Dim ConfigStrB As New Text.StringBuilder
-        For Each Setting As KeyValuePair(Of String, String) In ProgramSettings
-            ConfigStrB.AppendFormat("{0}:{1};", Setting.Key, Setting.Value)
-        Next
-
-        Try
-            IO.File.WriteAllText(MainConfigFile, ConfigStrB.ToString) 'IO.File.WriteAllText overwrites the file.
-        Catch
-            Interaction.ShowDebug("Unable to save main config file.", , MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    Public Function ProgramSettingsSet(ByVal Setting As String) As Boolean
-        Return ProgramSettings.ContainsKey(Setting)
-    End Function
-
-    <Diagnostics.Conditional("Debug")>
-    Public Shared Sub LogDebugEvent(ByVal EventData As String)
-#If DEBUG Then
-        LogAppEvent(EventData)
-#End If
-    End Sub
-
-    Public Shared Sub LogAppEvent(ByVal EventData As String)
-        If ConfigOptions.Debug Or CommandLine.Silent Or CommandLine.Log Then
-            Static UniqueID As String = Guid.NewGuid().ToString
-
-            Using AppLog As New IO.StreamWriter(Singleton.GetUserFilesRootDir() & ConfigOptions.AppLogName, True)
-                AppLog.WriteLine(String.Format("[{0}][{1}] {2}", UniqueID, Date.Now.ToString(), EventData))
-            End Using
-        End If
-    End Sub
-
-    Public Shared Sub RegisterBoot()
-        If Microsoft.Win32.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) Is Nothing Then
-            ConfigHandler.LogAppEvent("Registering program in startup list")
-            Microsoft.Win32.Registry.SetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Application.ExecutablePath & " /scheduler")
-        End If
-    End Sub
-
-#If 0 Then
-    ' This method requires saving mainconfig.ini, thus overwriting customizations made when the scheduler was running. Problem.
-    Public Sub IncrementSyncsCount()
-        Dim Count As Integer
-        Try
-            Count = GetProgramSetting(ConfigOptions.SyncsCount, "0")
-        Catch
-            Count = 0
-        End Try
-        SetProgramSetting(Of Integer)(ConfigOptions.SyncsCount, Count + 1)
-    End Sub
-#End If
-End Class
 
 NotInheritable Class ProfileHandler
     Public ProfileName As String
@@ -290,12 +46,12 @@ NotInheritable Class ProfileHandler
     Public RightCheckedNodes As New Dictionary(Of String, Boolean)
 
     'NOTE: Only vital settings should be checked for correctness, since the config will be rejected if a mismatch occurs.
-    Private Shared ReadOnly RequiredSettings() As String = {ConfigOptions.Source, ConfigOptions.Destination, ConfigOptions.ExcludedTypes, ConfigOptions.IncludedTypes, ConfigOptions.LeftSubFolders, ConfigOptions.RightSubFolders, ConfigOptions.Method, ConfigOptions.Restrictions, ConfigOptions.ReplicateEmptyDirectories}
+    Private Shared ReadOnly RequiredSettings() As String = {ProfileSetting.Source, ProfileSetting.Destination, ProfileSetting.ExcludedTypes, ProfileSetting.IncludedTypes, ProfileSetting.LeftSubFolders, ProfileSetting.RightSubFolders, ProfileSetting.Method, ProfileSetting.Restrictions, ProfileSetting.ReplicateEmptyDirectories}
 
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
-        If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(Of String)(ConfigOptions.RightSubFolders, "*")
+        If GetSetting(Of Boolean)(ProfileSetting.MayCreateDestination, False) And GetSetting(Of String)(ProfileSetting.RightSubFolders) Is Nothing Then SetSetting(Of String)(ProfileSetting.RightSubFolders, "*")
     End Sub
 
     Function LoadConfigFile() As Boolean
@@ -316,8 +72,8 @@ NotInheritable Class ProfileHandler
         End Using
 
         LoadScheduler()
-        LoadSubFoldersList(ConfigOptions.LeftSubFolders, LeftCheckedNodes)
-        LoadSubFoldersList(ConfigOptions.RightSubFolders, RightCheckedNodes)
+        LoadSubFoldersList(ProfileSetting.LeftSubFolders, LeftCheckedNodes)
+        LoadSubFoldersList(ProfileSetting.RightSubFolders, RightCheckedNodes)
         Return True
     End Function
 
@@ -341,13 +97,13 @@ NotInheritable Class ProfileHandler
         Dim IsValid As Boolean = True
         Dim InvalidListing As New List(Of String)
 
-        If Not IO.Directory.Exists(TranslatePath(GetSetting(Of String)(ConfigOptions.Source))) Then
+        If Not IO.Directory.Exists(TranslatePath(GetSetting(Of String)(ProfileSetting.Source))) Then
             InvalidListing.Add(Translation.Translate("\INVALID_SOURCE"))
             IsValid = False
         End If
 
-        Dim Dest As String = TranslatePath(GetSetting(Of String)(ConfigOptions.Destination))
-        Dim _MayCreateDest As Boolean = GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False)
+        Dim Dest As String = TranslatePath(GetSetting(Of String)(ProfileSetting.Destination))
+        Dim _MayCreateDest As Boolean = GetSetting(Of Boolean)(ProfileSetting.MayCreateDestination, False)
         If _MayCreateDest And TryCreateDest Then
             Try
                 IO.Directory.CreateDirectory(Dest)
@@ -368,10 +124,10 @@ NotInheritable Class ProfileHandler
             End If
         Next
 
-        If Configuration.ContainsKey(ConfigOptions.CompressionExt) AndAlso Configuration(ConfigOptions.CompressionExt) <> "" Then
-            If Array.IndexOf({".gz", ".bz2"}, Configuration(ConfigOptions.CompressionExt)) < 0 Then
+        If Configuration.ContainsKey(ProfileSetting.CompressionExt) AndAlso Configuration(ProfileSetting.CompressionExt) <> "" Then
+            If Array.IndexOf({".gz", ".bz2"}, Configuration(ProfileSetting.CompressionExt)) < 0 Then
                 IsValid = False
-                InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ConfigOptions.CompressionExt)))
+                InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ProfileSetting.CompressionExt)))
             End If
 
             If Not IO.File.Exists(ProgramConfig.CompressionDll) Then
@@ -389,12 +145,12 @@ NotInheritable Class ProfileHandler
             Return False
         Else
             If WarnUnrootedPaths Then
-                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ConfigOptions.Source))) Then
-                    If Interaction.ShowMsg(String.Format(Translation.Translate("\LEFT_UNROOTED"), IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ProfileSetting.Source))) Then
+                    If Interaction.ShowMsg(String.Format(Translation.Translate("\LEFT_UNROOTED"), IO.Path.GetFullPath(GetSetting(Of String)(ProfileSetting.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
 
-                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ConfigOptions.Destination))) Then
-                    If Interaction.ShowMsg(String.Format(Translation.Translate("\RIGHT_UNROOTED"), IO.Path.GetFullPath(GetSetting(Of String)(ConfigOptions.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
+                If Not IO.Path.IsPathRooted(TranslatePath(GetSetting(Of String)(ProfileSetting.Destination))) Then
+                    If Interaction.ShowMsg(String.Format(Translation.Translate("\RIGHT_UNROOTED"), IO.Path.GetFullPath(GetSetting(Of String)(ProfileSetting.Source))), , MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Return False
                 End If
             End If
 
@@ -449,9 +205,9 @@ NotInheritable Class ProfileHandler
     End Function
 
     Sub LoadScheduler()
-        Dim Opts() As String = GetSetting(Of String)(ConfigOptions.Scheduling, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries)
+        Dim Opts() As String = GetSetting(Of String)(ProfileSetting.Scheduling, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
-        If Opts.GetLength(0) = ConfigOptions.SchedulingSettingsCount Then
+        If Opts.GetLength(0) = ProfileSetting.SchedulingSettingsCount Then
             Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4)) 'TODO check for parameters type.
         Else
             Scheduler = New ScheduleInfo() With {.Frequency = ScheduleInfo.Freq.Never} 'NOTE: Wrong strings default to never
@@ -459,7 +215,7 @@ NotInheritable Class ProfileHandler
     End Sub
 
     Sub SaveScheduler()
-        SetSetting(Of String)(ConfigOptions.Scheduling, String.Join(";", New String() {Scheduler.Frequency.ToString, Scheduler.WeekDay.ToString, Scheduler.MonthDay.ToString, Scheduler.Hour.ToString, Scheduler.Minute.ToString}))
+        SetSetting(Of String)(ProfileSetting.Scheduling, String.Join(";", New String() {Scheduler.Frequency.ToString, Scheduler.WeekDay.ToString, Scheduler.MonthDay.ToString, Scheduler.Hour.ToString, Scheduler.Minute.ToString}))
     End Sub
 
     Sub LoadSubFoldersList(ByVal ConfigLine As String, ByRef Subfolders As Dictionary(Of String, Boolean))
@@ -479,7 +235,7 @@ NotInheritable Class ProfileHandler
     End Sub
 
     Public Shared Function TranslatePath(ByVal Path As String) As String
-        Return TranslatePath_Unsafe(Path).TrimEnd(ConfigOptions.DirSep) 'Careful with Linux root
+        Return TranslatePath_Unsafe(Path).TrimEnd(ProgramSetting.DirSep) 'Careful with Linux root
         'This part is just for the extra safety, since a fix is also included in TranslatePath_Unsafe.
         'Prevents a very annoying bug, where the presence of a slash at the end of the base directory would confuse the engine (#3052979)
     End Function
@@ -491,7 +247,7 @@ NotInheritable Class ProfileHandler
             For Each Drive As IO.DriveInfo In IO.DriveInfo.GetDrives
                 If Drive.Name(0) = Path(0) Then Label = Drive.VolumeLabel
             Next
-            If Label <> "" Then Return String.Format("""{0}""\{1}", Label, Path.Substring(2).Trim(ConfigOptions.DirSep)).TrimEnd(ConfigOptions.DirSep)
+            If Label <> "" Then Return String.Format("""{0}""\{1}", Label, Path.Substring(2).Trim(ProgramSetting.DirSep)).TrimEnd(ProgramSetting.DirSep)
         End If
 #End If
 
@@ -515,7 +271,7 @@ NotInheritable Class ProfileHandler
                     'The drive's name ends with a "\". If RelativePath = "", then TrimEnd on the RelativePath won't do anything.
                     'This is the line why this function is called unsafe, but it's been made safe anyway: dirty code that get fixed later on crosses me. The point is that a source/destination path should *never* end with a DirSep, otherwise the system gets confused as to what is a relative path and what is the base path.
                     If Not Drive.Name(0) = "A"c AndAlso Drive.IsReady AndAlso String.Compare(Drive.VolumeLabel, Label, True) = 0 Then
-                        Translated_Path = (Drive.Name & RelativePath.TrimStart(ConfigOptions.DirSep)).TrimEnd(ConfigOptions.DirSep) 'Bug #3052979
+                        Translated_Path = (Drive.Name & RelativePath.TrimStart(ProgramSetting.DirSep)).TrimEnd(ProgramSetting.DirSep) 'Bug #3052979
                         Exit For
                     End If
                 Next
@@ -535,17 +291,31 @@ NotInheritable Class ProfileHandler
 
     Public Function GetLastRun() As Date
         Try
-            Return GetSetting(Of Date)(ConfigOptions.LastRun, ScheduleInfo.DATE_NEVER) 'TODO: Check conversion
+            Return GetSetting(Of Date)(ProfileSetting.LastRun, ScheduleInfo.DATE_NEVER) 'TODO: Check conversion
         Catch
             Return ScheduleInfo.DATE_NEVER
         End Try
     End Function
 
     Public Sub SetLastRun()
-        SetSetting(Of Date)(ConfigOptions.LastRun, Date.Now)
+        SetSetting(Of Date)(ProfileSetting.LastRun, Date.Now)
         SaveConfigFile()
     End Sub
 End Class
+
+Structure SchedulerEntry
+    Dim Name As String
+    Dim NextRun As Date
+    Dim CatchUp As Boolean
+    Dim HasFailed As Boolean
+
+    Sub New(ByVal _Name As String, ByVal _NextRun As Date, ByVal _Catchup As Boolean, ByVal _HasFailed As Boolean)
+        Name = _Name
+        NextRun = _NextRun
+        CatchUp = _Catchup
+        HasFailed = _HasFailed
+    End Sub
+End Structure
 
 Structure ScheduleInfo
     Enum Freq
@@ -620,197 +390,3 @@ Structure ScheduleInfo
         Return RunAt
     End Function
 End Structure
-
-Friend Module Updates
-    Public Sub CheckForUpdates(Optional ByVal RoutineCheck As Boolean = True)
-        Dim UpdateClient As New Net.WebClient
-        Try
-            UpdateClient.Headers.Add("version", Application.ProductVersion)
-#If CONFIG = "Linux" Then
-            UpdateClient.Headers.Add("os", "Linux")
-#Else
-            UpdateClient.UseDefaultCredentials = True 'Needed? -- Does no harm
-            UpdateClient.Proxy = System.Net.HttpWebRequest.DefaultWebProxy 'Tracker #2976549
-            UpdateClient.Proxy.Credentials = Net.CredentialCache.DefaultCredentials
-#End If
-            Dim LatestVersion As String
-            Dim Url As String = ConfigOptions.Website & If(CommandLine.RunAs = CommandLine.RunMode.Scheduler, "code/scheduler-version.txt", "code/version.txt")
-            Dim SecondaryUrl As String = ConfigOptions.UserWeb & "code/synchronicity-version.txt"
-            Try
-                LatestVersion = UpdateClient.DownloadString(Url)
-            Catch ex As Net.WebException
-                LatestVersion = UpdateClient.DownloadString(SecondaryUrl)
-            End Try
-
-            If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
-                If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                    Interaction.StartProcess(ConfigOptions.Website & "update.html")
-                    If ProgramConfig.CanGoOn Then MainFormInstance.Invoke(New Action(AddressOf Application.Exit))
-                End If
-            Else
-                If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)
-            End If
-        Catch Ex As InvalidOperationException
-            'Some form couldn't close properly because of thread accesses
-            Interaction.ShowDebug(Ex.ToString)
-        Catch Ex As Exception
-            Interaction.ShowMsg(Translation.Translate("\UPDATE_ERROR") & Environment.NewLine & Ex.Message, Translation.Translate("\UPDATE_ERROR_TITLE"), , MessageBoxIcon.Error)
-            Interaction.ShowDebug(Ex.Message & Environment.NewLine & Ex.StackTrace)
-        Finally
-            UpdateClient.Dispose()
-        End Try
-    End Sub
-End Module
-
-Structure CommandLine
-    Enum RunMode
-        Normal
-        Scheduler
-        Queue
-    End Enum
-
-    Shared Help As Boolean '= False
-    Shared Quiet As Boolean '= False
-    Shared TasksToRun As String = ""
-    Shared ShowPreview As Boolean '= False
-    Shared RunAs As RunMode '= RunMode.Normal
-    Shared Silent As Boolean '= False
-    Shared Log As Boolean '= False
-    Shared NoUpdates As Boolean '= False
-    Shared NoStop As Boolean '= False
-
-    Shared Sub ReadArgs(ByVal ArgsList As List(Of String))
-        If ArgsList.Count > 1 Then
-            CommandLine.Help = ArgsList.Contains("/help")
-            CommandLine.Quiet = ArgsList.Contains("/quiet")
-            CommandLine.ShowPreview = ArgsList.Contains("/preview")
-            CommandLine.Silent = ArgsList.Contains("/silent")
-            CommandLine.Log = ArgsList.Contains("/log")
-            CommandLine.NoUpdates = ArgsList.Contains("/noupdates")
-            CommandLine.NoStop = ArgsList.Contains("/nostop")
-
-            CommandLine.Quiet = CommandLine.Quiet Or CommandLine.Silent
-
-            Dim RunArgIndex As Integer = ArgsList.IndexOf("/run")
-            If RunArgIndex <> -1 AndAlso RunArgIndex + 1 < ArgsList.Count Then
-                CommandLine.TasksToRun = ArgsList(RunArgIndex + 1)
-            End If
-        End If
-
-        If CommandLine.TasksToRun <> "" Then
-            CommandLine.RunAs = CommandLine.RunMode.Queue
-        ElseIf ArgsList.Contains("/scheduler") Then
-            CommandLine.RunAs = CommandLine.RunMode.Scheduler
-        End If
-    End Sub
-End Structure
-
-Friend Module Interaction
-    Friend InvariantCulture As Globalization.CultureInfo = Globalization.CultureInfo.InvariantCulture
-    Friend StatusIcon As NotifyIcon = New NotifyIcon() With {.BalloonTipTitle = "Create Synchronicity", .BalloonTipIcon = ToolTipIcon.Info}
-    Private SharedToolTip As ToolTip = New ToolTip() With {.UseFading = False, .UseAnimation = False, .ToolTipIcon = ToolTipIcon.Info}
-
-    Public Sub LoadStatusIcon()
-        Static Loaded As Boolean = False
-
-        If Not Loaded Then
-            Loaded = True
-            AddHandler StatusIcon.BalloonTipClicked, AddressOf Interaction.BallonClick
-            Dim Assembly As System.Reflection.Assembly = System.Reflection.Assembly.GetExecutingAssembly()
-            StatusIcon.Icon = New Drawing.Icon(Assembly.GetManifestResourceStream("CS.create-synchronicity-icon-16x16.ico"))
-        End If
-    End Sub
-
-    Private Function RemoveNewLines(ByVal Msg As String) As String
-        Return Msg.Replace(Environment.NewLine, " // ")
-    End Function
-
-    Public Sub ToggleStatusIcon(ByVal Status As Boolean)
-        StatusIcon.Visible = Status And (Not CommandLine.Silent)
-    End Sub
-
-    Public Sub ShowBalloonTip(ByVal Msg As String, Optional ByVal File As String = "")
-        If CommandLine.Silent Or Not StatusIcon.Visible Then
-            ConfigHandler.LogAppEvent(String.Format("Interaction: Balloon tip discarded. The message was ""{0}"".", RemoveNewLines(Msg)))
-            Exit Sub
-        End If
-
-        CurrentFileToOpen = File
-        StatusIcon.BalloonTipText = Msg
-        StatusIcon.ShowBalloonTip(2000)
-    End Sub
-
-    Public Sub ShowToolTip(ByVal Ctrl As Control)
-        Dim T As TreeView = TryCast(Ctrl, TreeView)
-        If T IsNot Nothing AndAlso Not T.CheckBoxes Then Exit Sub
-
-        Dim Offset As Integer = If(TypeOf Ctrl Is RadioButton Or TypeOf Ctrl Is CheckBox, 12, 1)
-        Dim Pair As String() = String.Format(CStr(Ctrl.Tag), Ctrl.Text).Split(";".ToCharArray, 2)
-
-        Try
-            Dim Pos As New Drawing.Point(0, Ctrl.Height + Offset)
-            If Pair.GetLength(0) = 1 Then
-                SharedToolTip.ToolTipTitle = ""
-                SharedToolTip.Show(Pair(0), Ctrl, Pos)
-            ElseIf Pair.GetLength(0) > 1 Then
-                SharedToolTip.ToolTipTitle = Pair(0)
-                SharedToolTip.Show(Pair(1), Ctrl, Pos)
-            End If
-        Catch ex As InvalidOperationException
-            'See bug #3076129
-        End Try
-    End Sub
-
-    Public Sub HideToolTip(ByVal sender As Control)
-        SharedToolTip.Hide(sender)
-    End Sub
-
-    <Diagnostics.Conditional("Debug")>
-    Public Sub ShowDebug(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.Warning)
-#If DEBUG Then
-        ShowMsg(Text, Caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
-#End If
-    End Sub
-
-    Public Function ShowMsg(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Buttons As MessageBoxButtons = MessageBoxButtons.OK, Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.None) As DialogResult
-        If CommandLine.Silent Then
-            ConfigHandler.LogAppEvent(String.Format("Interaction: Message Box discarded with default answer. The message was ""{0}"", and the caption was ""{1}"".", RemoveNewLines(Text), RemoveNewLines(Caption)))
-            Return DialogResult.OK
-        End If
-
-        Return MessageBox.Show(Text, Caption, Buttons, Icon)
-    End Function
-
-    Private CurrentFileToOpen As String = ""
-    Private Sub BallonClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        If Not CurrentFileToOpen = "" Then StartProcess(CurrentFileToOpen)
-    End Sub
-
-    Public Sub StartProcess(ByVal Address As String, Optional ByVal Args As String = "")
-        Try
-            Diagnostics.Process.Start(Address, Args)
-        Catch
-        End Try
-    End Sub
-End Module
-
-Public NotInheritable Class ListViewColumnSorter
-    Implements System.Collections.IComparer
-
-    Public Order As SortOrder
-    Public SortColumn As Integer
-
-    Public Sub New(ByVal ColumnId As Integer)
-        SortColumn = ColumnId
-        Order = SortOrder.Ascending
-    End Sub
-
-    Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements Collections.IComparer.Compare
-        Dim xl As ListViewItem = DirectCast(x, ListViewItem), yl As ListViewItem = DirectCast(y, ListViewItem)
-        If xl.SubItems.Count <= SortColumn Or yl.SubItems.Count <= SortColumn Then
-            Return 0
-        Else
-            Return If(Order = SortOrder.Ascending, 1, -1) * String.Compare(xl.SubItems(SortColumn).Text, yl.SubItems(SortColumn).Text, True)
-        End If
-    End Function
-End Class

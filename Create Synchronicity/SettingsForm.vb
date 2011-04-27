@@ -48,9 +48,9 @@ Public Class SettingsForm
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Translation.TranslateControl(Me)
         Translation.TranslateControl(ExpertMenu)
-        LeftView.PathSeparator = ConfigOptions.DirSep
-        RightView.PathSeparator = ConfigOptions.DirSep
-        MoreLabel.Visible = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.ExpertMode, False)
+        LeftView.PathSeparator = ProgramSetting.DirSep
+        RightView.PathSeparator = ProgramSetting.DirSep
+        MoreLabel.Visible = ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.ExpertMode, False)
 
         If Not NewProfile Then UpdateSettings(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
@@ -218,7 +218,7 @@ Public Class SettingsForm
     End Sub
 
     Private Sub HelpLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles HelpLink.Click
-        Interaction.StartProcess(ConfigOptions.Website & "settings-help.html")
+        Interaction.StartProcess(ProgramSetting.Website & "settings-help.html")
     End Sub
 
     Private Sub MoreLabel_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MoreLabel.MouseClick
@@ -369,7 +369,7 @@ Public Class SettingsForm
     Private Sub LoadTree(ByVal Tree As TreeView, ByVal OriginalPath As String, ByVal CheckedNodes As Dictionary(Of String, Boolean), Optional ByVal ForceLoad As Boolean = False)
         Tree.Nodes.Clear()
 
-        Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ConfigOptions.DirSep
+        Dim Path As String = ProfileHandler.TranslatePath(OriginalPath) & ProgramSetting.DirSep
         Tree.Enabled = OriginalPath <> "" AndAlso (ForceLoad OrElse IO.Directory.Exists(Path))
 
         If Tree.Enabled Then
@@ -401,7 +401,7 @@ Public Class SettingsForm
         If CheckedNodes.Count = 0 Then CheckedNodes.Add("", True)
         InhibitAutocheck = True
         For Each CheckedPath As KeyValuePair(Of String, Boolean) In CheckedNodes
-            CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ConfigOptions.DirSep)), CheckedPath.Value)
+            CheckAccordingToPath(BaseNode, New List(Of String)(CheckedPath.Key.Split(ProgramSetting.DirSep)), CheckedPath.Value)
         Next
         InhibitAutocheck = False
     End Sub
@@ -435,19 +435,19 @@ Public Class SettingsForm
         Cleanup_Paths()
 
         'Careful: Using .ToString here would break the ByRef passing of the second argument. Problem with Option strict.
-        Handler.CopySetting(ConfigOptions.Source, FromTextBox.Text, LoadToForm)
-        Handler.CopySetting(ConfigOptions.Destination, ToTextBox.Text, LoadToForm)
-        Handler.CopySetting(ConfigOptions.IncludedTypes, IncludedTypesTextBox.Text, LoadToForm)
-        Handler.CopySetting(ConfigOptions.ExcludedTypes, ExcludedTypesTextBox.Text, LoadToForm)
-        Handler.CopySetting(ConfigOptions.ReplicateEmptyDirectories, ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.MayCreateDestination, CreateDestOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.StrictDateComparison, StrictDateComparisonOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.PropagateUpdates, PropagateUpdatesOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.StrictMirror, StrictMirrorOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.TimeOffset, TimeOffset.Value, LoadToForm)
-        Handler.CopySetting(ConfigOptions.Checksum, ChecksumOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.CheckFileSize, CheckFileSizeOption.Checked, LoadToForm)
-        Handler.CopySetting(ConfigOptions.Group, GroupTextBox.Text, LoadToForm)
+        Handler.CopySetting(ProfileSetting.Source, FromTextBox.Text, LoadToForm)
+        Handler.CopySetting(ProfileSetting.Destination, ToTextBox.Text, LoadToForm)
+        Handler.CopySetting(ProfileSetting.IncludedTypes, IncludedTypesTextBox.Text, LoadToForm)
+        Handler.CopySetting(ProfileSetting.ExcludedTypes, ExcludedTypesTextBox.Text, LoadToForm)
+        Handler.CopySetting(ProfileSetting.ReplicateEmptyDirectories, ReplicateEmptyDirectoriesOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.MayCreateDestination, CreateDestOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.StrictDateComparison, StrictDateComparisonOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.PropagateUpdates, PropagateUpdatesOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.StrictMirror, StrictMirrorOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.TimeOffset, TimeOffset.Value, LoadToForm)
+        Handler.CopySetting(ProfileSetting.Checksum, ChecksumOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.CheckFileSize, CheckFileSizeOption.Checked, LoadToForm)
+        Handler.CopySetting(ProfileSetting.Group, GroupTextBox.Text, LoadToForm)
         'Hidden settings are not added here
 
         'Note: Behaves correctly when no radio button is checked, although CopyAllFiles is unchecked.
@@ -455,7 +455,7 @@ Public Class SettingsForm
         Dim Method As Integer = (If(LRIncrementalMethodOption.Checked, 1, 0) * 1 + If(TwoWaysIncrementalMethodOption.Checked, 1, 0) * 2)
 
         If LoadToForm Then
-            Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Method)
+            Select Case Handler.GetSetting(Of Integer)(ProfileSetting.Method)
                 Case 1
                     LRIncrementalMethodOption.Checked = True
                 Case 2
@@ -465,7 +465,7 @@ Public Class SettingsForm
             End Select
 
             CopyAllFilesCheckBox.Checked = False
-            Select Case Handler.GetSetting(Of Integer)(ConfigOptions.Restrictions)
+            Select Case Handler.GetSetting(Of Integer)(ProfileSetting.Restrictions)
                 Case 1
                     IncludeFilesOption.Checked = True
                 Case 2
@@ -476,21 +476,21 @@ Public Class SettingsForm
 
             SwitchControls()
         Else
-            Handler.SetSetting(Of Integer)(ConfigOptions.Method, Method)
-            Handler.SetSetting(Of Integer)(ConfigOptions.Restrictions, Restrictions)
+            Handler.SetSetting(Of Integer)(ProfileSetting.Method, Method)
+            Handler.SetSetting(Of Integer)(ProfileSetting.Restrictions, Restrictions)
 
             SetRootPathDisplay(False)
             If LeftView.Enabled Then
                 Handler.LeftCheckedNodes.Clear()
                 BuildCheckedNodesList(Handler.LeftCheckedNodes, LeftView.Nodes(0))
-                Handler.SetSetting(Of String)(ConfigOptions.LeftSubFolders, GetString(Handler.LeftCheckedNodes))
+                Handler.SetSetting(Of String)(ProfileSetting.LeftSubFolders, GetString(Handler.LeftCheckedNodes))
             End If
 
             If RightView.Enabled Then
-                If RightView.CheckBoxes Or Handler.GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then
+                If RightView.CheckBoxes Or Handler.GetSetting(Of String)(ProfileSetting.RightSubFolders) Is Nothing Then
                     Handler.RightCheckedNodes.Clear()
                     BuildCheckedNodesList(Handler.RightCheckedNodes, RightView.Nodes(0))
-                    Handler.SetSetting(Of String)(ConfigOptions.RightSubFolders, GetString(Handler.RightCheckedNodes))
+                    Handler.SetSetting(Of String)(ProfileSetting.RightSubFolders, GetString(Handler.RightCheckedNodes))
                 End If
             End If
             SetRootPathDisplay(True)
@@ -501,7 +501,7 @@ Public Class SettingsForm
 #If LINUX Then
         Return If(Path.Contains("/"), "/", "") & Path.Trim(New Char() {ConfigOptions.DirSep, " "c})
 #Else
-        Return Path.TrimEnd(New Char() {ConfigOptions.DirSep, " "c})
+        Return Path.TrimEnd(New Char() {ProgramSetting.DirSep, " "c})
 #End If
     End Function
 

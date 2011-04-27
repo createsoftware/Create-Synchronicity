@@ -69,7 +69,7 @@ Friend NotInheritable Class MessageLoop
         ' Setup settings
         ReloadProfiles()
         ProgramConfig.LoadProgramSettings()
-        If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+        If Not ProgramConfig.ProgramSettingsSet(ProgramSetting.AutoUpdates) Or Not ProgramConfig.ProgramSettingsSet(ProgramSetting.Language) Then
             HandleFirstRun()
         End If
 
@@ -77,13 +77,13 @@ Friend NotInheritable Class MessageLoop
         InitializeForms()
 
         ' Look for updates
-        If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False) Then
+        If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.AutoUpdates, False) Then
             Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start()
         End If
 
         If CommandLine.Help Then
-            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles folder: ""{2}"".{0}{0}Available commands: see manual.{0}{0}License information: See ""Release notes.txt"".{0}{0}Full manual: See {3}help.html.{0}{0}You can help this software! See {3}contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir, ConfigOptions.Website), "Help!")
+            Interaction.ShowMsg(String.Format("Create Synchronicity, version {1}.{0}{0}Profiles folder: ""{2}"".{0}{0}Available commands: see manual.{0}{0}License information: See ""Release notes.txt"".{0}{0}Full manual: See {3}help.html.{0}{0}You can help this software! See {3}contribute.html.{0}{0}Happy syncing!", Environment.NewLine, Application.ProductVersion, ProgramConfig.ConfigRootDir, ProgramSetting.Website), "Help!")
         Else
             If CommandLine.RunAs = CommandLine.RunMode.Queue Or CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
                 Interaction.ToggleStatusIcon(True)
@@ -149,14 +149,14 @@ Friend NotInheritable Class MessageLoop
     End Sub
 
     Shared Sub HandleFirstRun()
-        If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.Language) Then
+        If Not ProgramConfig.ProgramSettingsSet(ProgramSetting.Language) Then
             Dim Lng As New LanguageForm : Lng.ShowDialog()
             Translation = LanguageHandler.GetSingleton(True)
         End If
 
-        If Not ProgramConfig.ProgramSettingsSet(ConfigOptions.AutoUpdates) Then
+        If Not ProgramConfig.ProgramSettingsSet(ProgramSetting.AutoUpdates) Then
             Dim AutoUpdates As Boolean = If(Interaction.ShowMsg(Translation.Translate("\WELCOME_MSG"), Translation.Translate("\FIRST_RUN"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes, True, False)
-            ProgramConfig.SetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, AutoUpdates)
+            ProgramConfig.SetProgramSetting(Of Boolean)(ProgramSetting.AutoUpdates, AutoUpdates)
         End If
 
         ProgramConfig.SaveProgramSettings()
@@ -174,7 +174,7 @@ Friend NotInheritable Class MessageLoop
 
 #Region "Scheduling"
     Private Function SchedulerAlreadyRunning() As Boolean
-        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ConfigOptions.DirSep, "!"c).ToLower(Interaction.InvariantCulture)
+        Dim MutexName As String = "[[Create Synchronicity scheduler]] " & Application.ExecutablePath.Replace(ProgramSetting.DirSep, "!"c).ToLower(Interaction.InvariantCulture)
         ConfigHandler.LogDebugEvent(String.Format("Registering mutex: ""{0}""", MutexName))
 
         Try
@@ -200,9 +200,9 @@ Friend NotInheritable Class MessageLoop
                 ConfigHandler.LogAppEvent("Registered program in startup list, trying to start scheduler")
                 If CommandLine.RunAs = CommandLine.RunMode.Normal Then Diagnostics.Process.Start(Application.ExecutablePath, "/scheduler /noupdates" & If(CommandLine.Log, " /log", ""))
             Else
-                If Microsoft.Win32.Registry.GetValue(ConfigOptions.RegistryRootedBootKey, ConfigOptions.RegistryBootVal, Nothing) IsNot Nothing Then
+                If Microsoft.Win32.Registry.GetValue(ProgramSetting.RegistryRootedBootKey, ProgramSetting.RegistryBootVal, Nothing) IsNot Nothing Then
                     ConfigHandler.LogAppEvent("Unregistering program from startup list")
-                    Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ConfigOptions.RegistryBootKey, True).DeleteValue(ConfigOptions.RegistryBootVal)
+                    Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ProgramSetting.RegistryBootKey, True).DeleteValue(ProgramSetting.RegistryBootVal)
                 End If
             End If
         Catch Ex As Exception
@@ -222,7 +222,7 @@ Friend NotInheritable Class MessageLoop
             ProfilesQueue = New Queue(Of String)
 
             ConfigHandler.LogAppEvent("Profiles queue: Queue created.")
-            For Each Profile As String In CommandLine.TasksToRun.Split(ConfigOptions.EnqueuingSeparator)
+            For Each Profile As String In CommandLine.TasksToRun.Split(ProgramSetting.EnqueuingSeparator)
                 If Profiles.ContainsKey(Profile) Then
                     If Profiles(Profile).ValidateConfigFile() Then
                         ConfigHandler.LogAppEvent("Profiles queue: Registered profile " & Profile)
@@ -321,7 +321,7 @@ Friend NotInheritable Class MessageLoop
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
                 'LATER: Customizable time span?
-                If Handler.GetSetting(Of Boolean)(ConfigOptions.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > Handler.Scheduler.GetInterval() + OneDay Then
+                If Handler.GetSetting(Of Boolean)(ProfileSetting.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > Handler.Scheduler.GetInterval() + OneDay Then
                     ConfigHandler.LogAppEvent("Scheduler: Profile " & Name & " was last executed on " & LastRun.ToString & ", marked for catching up.")
                     NewEntry.NextRun = ScheduleInfo.DATE_CATCHUP
                     NewEntry.CatchUp = True

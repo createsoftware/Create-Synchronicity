@@ -66,7 +66,7 @@ Friend NotInheritable Class LogHandler
     End Sub
 
     Private Sub OpenHTMLHeaders(ByRef LogW As IO.StreamWriter)
-        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then
+        If Not (ProgramSetting.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.TextLogs, False)) Then
             LogW.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">")
             LogW.WriteLine("<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" encoding=""utf-8"">")
             LogW.WriteLine("	<head>")
@@ -99,7 +99,7 @@ Friend NotInheritable Class LogHandler
     End Sub
 
     Private Shared Sub CloseHTMLHeaders(ByRef LogW As IO.StreamWriter)
-        If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then
+        If ProgramSetting.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.TextLogs, False) Then
             LogW.WriteLine()
         Else
             LogW.WriteLine("	</body>")
@@ -108,7 +108,7 @@ Friend NotInheritable Class LogHandler
     End Sub
 
     Private Shared Sub PutFormatted(ByVal Title As String, ByVal Contents As String(), ByRef LogW As IO.StreamWriter)
-        If ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False) Then
+        If ProgramSetting.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.TextLogs, False) Then
             LogW.WriteLine(Title & "	" & String.Join("	", Contents))
         Else
             LogW.WriteLine("<tr>")
@@ -121,7 +121,7 @@ Friend NotInheritable Class LogHandler
     End Sub
 
     Private Shared Sub PutHTML(ByVal LogWriter As IO.StreamWriter, ByVal Line As String)
-        If Not (ConfigOptions.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.TextLogs, False)) Then LogWriter.WriteLine(Line)
+        If Not (ProgramSetting.Debug Or ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.TextLogs, False)) Then LogWriter.WriteLine(Line)
     End Sub
 
     Sub SaveAndDispose(ByVal Left As String, ByVal Right As String, ByVal Status As StatusData)
@@ -132,7 +132,7 @@ Friend NotInheritable Class LogHandler
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
             'Load the contents of the previous log, excluding the closing tags
-            Dim ArchivesCount As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MaxLogEntries, 7)
+            Dim ArchivesCount As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ProgramSetting.MaxLogEntries, 7)
             Dim Archives As New List(Of Text.StringBuilder)
             Archives.Add(New Text.StringBuilder())
 

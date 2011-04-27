@@ -31,7 +31,7 @@ Public Class AboutForm
 
         ProgramConfig.LoadProgramSettings()
         LanguageHandler.FillLanguageListBox(LanguagesList)
-        UpdatesOption.Checked = ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False)
+        UpdatesOption.Checked = ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.AutoUpdates, False)
 
 #If CONFIG = "Linux" Then
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
@@ -39,11 +39,11 @@ Public Class AboutForm
     End Sub
 
     Private Sub LinkToProductPage_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToProductPage.LinkClicked
-        Interaction.StartProcess(ConfigOptions.Website)
+        Interaction.StartProcess(ProgramSetting.Website)
     End Sub
 
     Private Sub LinkToWebsite_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkToWebsite.LinkClicked
-        Interaction.StartProcess(ConfigOptions.UserWeb)
+        Interaction.StartProcess(ProgramSetting.UserWeb)
     End Sub
 
     Private Sub VersionInfo_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles VersionInfo.LinkClicked
@@ -65,9 +65,9 @@ Public Class AboutForm
     Private Sub AboutForm_FormClosed(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
         If LanguagesList.SelectedIndex <> -1 Then
             Dim SelectedLanguage As String = LanguagesList.SelectedItem.ToString.Split("-"c)(0).Trim
-            Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(Of String)(ConfigOptions.Language, ConfigOptions.DefaultLanguage) <> SelectedLanguage
+            Dim LanguageChanged As Boolean = ProgramConfig.GetProgramSetting(Of String)(ProgramSetting.Language, ProgramSetting.DefaultLanguage) <> SelectedLanguage
 
-            ProgramConfig.SetProgramSetting(Of String)(ConfigOptions.Language, SelectedLanguage)
+            ProgramConfig.SetProgramSetting(Of String)(ProgramSetting.Language, SelectedLanguage)
 
             If LanguageChanged Then
                 ReloadNeeded = True
@@ -75,7 +75,7 @@ Public Class AboutForm
             End If
         End If
 
-        ProgramConfig.SetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, UpdatesOption.Checked)
+        ProgramConfig.SetProgramSetting(Of Boolean)(ProgramSetting.AutoUpdates, UpdatesOption.Checked)
         ProgramConfig.SaveProgramSettings()
     End Sub
 End Class
