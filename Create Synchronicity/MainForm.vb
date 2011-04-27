@@ -34,7 +34,7 @@ Public Class MainForm
         ReloadNeeded = False
 
         BuildIcons()
-        Me.Icon = ProgramConfig.GetIcon()
+        Me.Icon = ProgramConfig.Icon
         Me.ExitToolStripMenuItem.Image = Me.DeleteToolStripMenuItem.Image
         Me.ExitToolStripMenuItem.Text = Translation.Translate("\CANCEL_CLOSE").Split(";"c)(1)
 
@@ -56,7 +56,7 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        ReloadConfigs()
+        ReloadProfilesList()
         MessageLoop.RedoSchedulerRegistration()
         SetView(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.MainView, 0))
         SetFont(ProgramConfig.GetProgramSetting(Of Integer)(ConfigOptions.FontSize, CInt(Actions.Font.Size)))
@@ -67,7 +67,7 @@ Public Class MainForm
         If e.KeyCode = Keys.F1 Then
             Interaction.StartProcess(ConfigOptions.Website & "help.html")
         ElseIf e.KeyCode = Keys.F5 Then
-            ReloadConfigs()
+            ReloadProfilesList()
         ElseIf e.Control Then
             Select Case e.KeyCode
                 Case Keys.N
@@ -141,7 +141,7 @@ Public Class MainForm
         Else
             If Not Profiles(Actions.Items(e.Item).Text).RenameProfile(e.Label) Then e.CancelEdit = True
         End If
-        ReloadConfigs()
+        ReloadProfilesList()
     End Sub
 
     Private Sub Actions_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Actions.SelectedIndexChanged
@@ -189,7 +189,7 @@ Public Class MainForm
     Private Sub ChangeSettingsMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeSettingsMenuItem.Click
         Dim SettingsForm As New SettingsForm(CurrentProfile, False)
         SettingsForm.ShowDialog()
-        ReloadConfigs()
+        ReloadProfilesList()
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
@@ -197,6 +197,7 @@ Public Class MainForm
             Profiles(CurrentProfile).DeleteConfigFile()
             Profiles(CurrentProfile) = Nothing
             Actions.Items.RemoveAt(Actions.SelectedIndices(0))
+            TipsLabel.Visible = (Actions.Items.Count = 1)
         End If
     End Sub
 
@@ -217,7 +218,7 @@ Public Class MainForm
     Private Sub ScheduleMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ScheduleMenuItem.Click
         Dim SchedForm As New SchedulingForm(CurrentProfile)
         SchedForm.ShowDialog()
-        ReloadConfigs()
+        ReloadProfilesList()
         MessageLoop.RedoSchedulerRegistration()
     End Sub
 
@@ -255,7 +256,7 @@ Public Class MainForm
         Actions.Font = New Drawing.Font(Actions.Font.Name, Size)
     End Sub
 
-    Sub ReloadConfigs()
+    Sub ReloadProfilesList()
         If Me.IsDisposed Then Exit Sub
         Dim CreateProfileItem As ListViewItem = Actions.Items(0)
 
@@ -282,6 +283,9 @@ Public Class MainForm
                 NewItem.Group = Actions.Groups.Item(GroupName)
             End If
         Next
+
+        TipsLabel.Visible = (Profiles.Count = 0 And TipsLabel.Text <> "")
+        TipsLabel.Text = String.Format(TipsLabel.Text, Translation.Translate("\NEW_PROFILE_LABEL"))
     End Sub
 
     Sub LoadDetails(ByVal Name As String, ByVal Clear As Boolean)

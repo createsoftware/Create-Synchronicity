@@ -107,10 +107,11 @@ NotInheritable Class ConfigHandler
 
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode only, queuing uses callbacks).
 
+    Friend Icon As Drawing.Icon
     Dim ProgramSettingsLoaded As Boolean = False
     Dim ProgramSettings As New Dictionary(Of String, String)
 
-    Public Sub New()
+    Private Sub New()
         LogRootDir = GetUserFilesRootDir() & ConfigOptions.LogFolderName
         ConfigRootDir = GetUserFilesRootDir() & ConfigOptions.ConfigFolderName
         LanguageRootDir = Application.StartupPath & ConfigOptions.DirSep & "languages"
@@ -118,6 +119,12 @@ NotInheritable Class ConfigHandler
         LocalNamesFile = LanguageRootDir & ConfigOptions.DirSep & "local-names.txt"
         MainConfigFile = ConfigRootDir & ConfigOptions.DirSep & ConfigOptions.SettingsFileName
         CompressionDll = Application.StartupPath & ConfigOptions.DirSep & ConfigOptions.DllName
+
+        Try
+            Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
+        Catch
+            Icon = Drawing.Icon.FromHandle((New Drawing.Bitmap(32, 32)).GetHicon)
+        End Try
     End Sub
 
     Public Shared Function GetSingleton() As ConfigHandler
@@ -127,19 +134,6 @@ NotInheritable Class ConfigHandler
 
     Public Function GetConfigPath(ByVal Name As String) As String
         Return ConfigRootDir & ConfigOptions.DirSep & Name & ".sync"
-    End Function
-
-    Public Function GetIcon() As Drawing.Icon
-        Static Icon As Drawing.Icon
-        If Icon Is Nothing Then
-            Try
-                Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
-            Catch
-                Icon = Drawing.Icon.FromHandle((New Drawing.Bitmap(32, 32)).GetHicon)
-            End Try
-        End If
-
-        Return Icon
     End Function
 
     Public Function GetLogPath(ByVal Name As String) As String
@@ -628,11 +622,7 @@ Structure ScheduleInfo
 End Structure
 
 Friend Module Updates
-    Public Sub SilentCheck()
-        CheckForUpdates(True)
-    End Sub
-
-    Public Sub CheckForUpdates(ByVal RoutineCheck As Boolean)
+    Public Sub CheckForUpdates(Optional ByVal RoutineCheck As Boolean = True)
         Dim UpdateClient As New Net.WebClient
         Try
             UpdateClient.Headers.Add("version", Application.ProductVersion)
@@ -655,7 +645,7 @@ Friend Module Updates
             If ((New Version(LatestVersion)) > (New Version(Application.ProductVersion))) Then
                 If Interaction.ShowMsg(String.Format(Translation.Translate("\UPDATE_MSG"), Application.ProductVersion, LatestVersion), Translation.Translate("\UPDATE_TITLE"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                     Interaction.StartProcess(ConfigOptions.Website & "update.html")
-                    If ProgramConfig.CanGoOn Then MainFormInstance.Invoke(Sub() Application.Exit())
+                    If ProgramConfig.CanGoOn Then MainFormInstance.Invoke(New Action(AddressOf Application.Exit))
                 End If
             Else
                 If Not RoutineCheck Then Interaction.ShowMsg(Translation.Translate("\NO_UPDATES"), , , MessageBoxIcon.Information)

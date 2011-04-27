@@ -6,7 +6,7 @@
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.Sizable
 #End If
 
-        Me.Icon = ProgramConfig.GetIcon()
+        Me.Icon = ProgramConfig.Icon
         LanguageHandler.FillLanguageListBox(LanguagesList)
     End Sub
 

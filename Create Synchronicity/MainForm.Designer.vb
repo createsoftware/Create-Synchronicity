@@ -71,10 +71,11 @@ Partial Class MainForm
         Me.AboutLinkLabel = New System.Windows.Forms.LinkLabel()
         Me.ApplicationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.StatusIconMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Donate = New System.Windows.Forms.PictureBox()
         Me.ToolStripHeader = New System.Windows.Forms.ToolStripMenuItem()
         Me.HeaderSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Donate = New System.Windows.Forms.PictureBox()
+        Me.TipsLabel = New System.Windows.Forms.Label()
         Me.InfoPanel.SuspendLayout()
         Me.InfoLayout.SuspendLayout()
         Me.ActionsMenu.SuspendLayout()
@@ -475,11 +476,25 @@ Partial Class MainForm
         Me.Donate.TabIndex = 3
         Me.Donate.TabStop = False
         '
+        'TipsLabel
+        '
+        Me.TipsLabel.BackColor = System.Drawing.Color.White
+        Me.TipsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TipsLabel.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.TipsLabel.Location = New System.Drawing.Point(0, 234)
+        Me.TipsLabel.Name = "TipsLabel"
+        Me.TipsLabel.Size = New System.Drawing.Size(355, 28)
+        Me.TipsLabel.TabIndex = 4
+        Me.TipsLabel.Text = "\NO_PROFILES"
+        Me.TipsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.TipsLabel.Visible = False
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(355, 422)
+        Me.Controls.Add(Me.TipsLabel)
         Me.Controls.Add(Me.AboutLinkLabel)
         Me.Controls.Add(Me.Donate)
         Me.Controls.Add(Me.Actions)
@@ -538,4 +553,5 @@ Partial Class MainForm
     Friend WithEvents ToolStripHeader As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HeaderSeparator As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents StatusIconMenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents TipsLabel As System.Windows.Forms.Label
 End Class

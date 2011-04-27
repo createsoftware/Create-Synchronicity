@@ -159,3 +159,4 @@ MD5=Assegurar a integridade do backup (MD5 checksum)
 GROUP=Agrupar
 COMPARE_SIZE=Comparar o tamanho de ficheiro
 MORE=Mais (Apenas utilizadores experientes)
+->NO_PROFILES=

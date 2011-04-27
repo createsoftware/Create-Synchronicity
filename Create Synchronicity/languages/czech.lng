@@ -159,3 +159,4 @@ CATCHUP_MISSED_BACKUPS_TAG=Signalizuje co dělat jestliže počítač byl vypnut
 ->GROUP=
 ->COMPARE_SIZE=
 ->MORE=
+->NO_PROFILES=

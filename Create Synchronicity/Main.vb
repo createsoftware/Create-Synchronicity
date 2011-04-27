@@ -8,6 +8,7 @@ Module Main
     Friend MainFormInstance As MainForm
 
     Friend MsgLoop As MessageLoop
+    Friend Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
 
     <STAThread()> _
     Sub Main()
@@ -37,10 +38,10 @@ End Module
 
 Friend NotInheritable Class MessageLoop
     Inherits ApplicationContext
-    Public ExitNeeded As Boolean = False
+    Public ExitNeeded As Boolean '= False
 
-    Private Blocker As Threading.Mutex = Nothing
-    Dim ScheduledProfiles As List(Of SchedulerEntry) = Nothing
+    Private Blocker As Threading.Mutex '= Nothing
+    Dim ScheduledProfiles As List(Of SchedulerEntry) '= Nothing
 
 #Region "Main program loop & first run"
     Sub New()
@@ -77,7 +78,7 @@ Friend NotInheritable Class MessageLoop
 
         ' Look for updates
         If (Not CommandLine.NoUpdates) And ProgramConfig.GetProgramSetting(Of Boolean)(ConfigOptions.AutoUpdates, False) Then
-            Dim UpdateThread As New Threading.Thread(AddressOf Updates.SilentCheck)
+            Dim UpdateThread As New Threading.Thread(AddressOf Updates.CheckForUpdates)
             UpdateThread.Start()
         End If
 

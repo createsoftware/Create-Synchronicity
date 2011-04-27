@@ -10,9 +10,9 @@ Option Strict On
 
 Public Class SettingsForm
     Dim Handler As ProfileHandler
-    Dim ProcessingNodes As Boolean = False 'Some background activity is occuring, don't record events.
-    Dim InhibitAutocheck As Boolean = False 'Record events, but don't treat them as user input.
-    Dim ClickedRightTreeView As Boolean = False
+    Dim ProcessingNodes As Boolean '= False 'Some background activity is occuring, don't record events.
+    Dim InhibitAutocheck As Boolean '= False 'Record events, but don't treat them as user input.
+    Dim ClickedRightTreeView As Boolean '= False
 
     Dim NewProfile As Boolean
     Dim PrevLeft As String = "-1" 'Initiate to an invalid path value to force reloading.

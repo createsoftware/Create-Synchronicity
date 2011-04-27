@@ -39,7 +39,7 @@ Friend NotInheritable Class LogHandler
     Sub New(ByVal _LogName As String)
         IO.Directory.CreateDirectory(ProgramConfig.LogRootDir)
 
-        Disposed = False
+        'Disposed = False
         LogName = _LogName
         Errors = New List(Of ErrorItem)
         Log = New List(Of LogItem)

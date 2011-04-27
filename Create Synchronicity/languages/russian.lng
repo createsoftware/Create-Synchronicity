@@ -162,3 +162,4 @@ CATCHUP_MISSED_BACKUPS_TAG=Показывает, что делать, если �
 ->GROUP=
 ->COMPARE_SIZE=
 ->MORE=
+->NO_PROFILES=

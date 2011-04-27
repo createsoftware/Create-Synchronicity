@@ -159,3 +159,4 @@ MD5=Assurer l'intégrité des copies (somme de contrôle MD5)
 GROUP=Groupe
 COMPARE_SIZE=Comparer les tailles de fichiers
 MORE=Plus (reservé aux experts)
+NO_PROFILES=Vous n'avez paramétré aucun profil. Cliquez sur "{0}" pour en créer un.

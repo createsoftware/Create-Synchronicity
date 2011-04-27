@@ -30,11 +30,9 @@ Public Class SynchronizeForm
     Dim ScanThread As Threading.Thread
     Dim SyncThread As Threading.Thread
 
-    Private Delegate Sub Action() 'LATER: replace with .Net 4.0 standards.
     Private Delegate Sub TaskDoneCall(ByVal Id As Integer)
     Private Delegate Sub SetLabelCall(ByVal Id As Integer, ByVal Text As String)
-    Private Delegate Sub SetMaxCall(ByVal Id As Integer, ByVal Max As Integer)
-    Private Delegate Sub IncrementCall(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Delegate Sub SetIntCall(ByVal Id As Integer, ByVal Max As Integer)
 
     Friend Event SyncFinished(ByVal Name As String, ByVal Completed As Boolean)
 
@@ -77,7 +75,7 @@ Public Class SynchronizeForm
 
         Me.CreateHandle()
         Translation.TranslateControl(Me)
-        Me.Icon = ProgramConfig.GetIcon()
+        Me.Icon = ProgramConfig.Icon
         Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(Of String)(ConfigOptions.Source), Handler.GetSetting(Of String)(ConfigOptions.Destination)) 'Feature requests #3037548, #3055740
 
 #If LINUX Then
@@ -494,7 +492,7 @@ Public Class SynchronizeForm
 
     Private Sub Sync()
         Dim TaskDoneCallback As New TaskDoneCall(AddressOf TaskDone)
-        Dim SetMaxCallback As New SetMaxCall(AddressOf SetMax)
+        Dim SetMaxCallback As New SetIntCall(AddressOf SetMax)
 
         Dim Left As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Source))
         Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ConfigOptions.Destination))
@@ -511,7 +509,7 @@ Public Class SynchronizeForm
 
     '"Source" is "current side", with the corresponding side set to "Side"
     Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
-        Dim IncrementCallback As New IncrementCall(AddressOf Increment)
+        Dim IncrementCallback As New SetIntCall(AddressOf Increment)
         Dim SetLabelCallback As New SetLabelCall(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
@@ -924,8 +922,7 @@ Public Class SynchronizeForm
     End Function
 
     Private Shared Function Md5(ByVal Path As String) As String
-        Dim CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
-        Using DataStream As New IO.StreamReader(Path)
+        Using DataStream As New IO.StreamReader(Path), CryptObject As New System.Security.Cryptography.MD5CryptoServiceProvider()
             Return Convert.ToBase64String(CryptObject.ComputeHash(DataStream.BaseStream))
         End Using
     End Function
