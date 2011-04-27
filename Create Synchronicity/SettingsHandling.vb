@@ -295,7 +295,7 @@ NotInheritable Class ProfileHandler
     Public Sub New(ByVal Name As String)
         ProfileName = Name
         LoadConfigFile()
-        If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(Of String)(ConfigOptions.RightSubFolders, "*") 'TODO: Check types (Nothing)
+        If GetSetting(Of Boolean)(ConfigOptions.MayCreateDestination, False) And GetSetting(Of String)(ConfigOptions.RightSubFolders) Is Nothing Then SetSetting(Of String)(ConfigOptions.RightSubFolders, "*")
     End Sub
 
     Function LoadConfigFile() As Boolean
