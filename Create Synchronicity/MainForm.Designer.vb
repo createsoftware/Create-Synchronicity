@@ -483,7 +483,7 @@ Partial Class MainForm
         Me.TipsLabel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.TipsLabel.Location = New System.Drawing.Point(0, 234)
         Me.TipsLabel.Name = "TipsLabel"
-        Me.TipsLabel.Size = New System.Drawing.Size(355, 28)
+        Me.TipsLabel.Size = New System.Drawing.Size(355, 35)
         Me.TipsLabel.TabIndex = 4
         Me.TipsLabel.Text = "\NO_PROFILES"
         Me.TipsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
