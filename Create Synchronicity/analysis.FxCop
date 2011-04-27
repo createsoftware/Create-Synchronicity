@@ -108,11 +108,11 @@
          </Type>
          <Type Name="ConfigHandler">
           <Members>
-           <Member Name="#GetIcon()">
+           <Member Name="#.ctor()">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-27 10:31:26Z">
               <Issue>
-               <Item>'ConfigHandler.GetIcon()'</Item>
+               <Item>'ConfigHandler.New()'</Item>
                <Item>'Exception'</Item>
               </Issue>
              </Message>
@@ -535,6 +535,19 @@
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, ParamArray Object())'</Item>
                <Item>'MainForm.MainForm_FormClosing(Object, FormClosingEventArgs)'</Item>
+               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
+               <Item>'CultureInfo.CurrentCulture()'</Item>
+               <Item>'CultureInfo.InvariantCulture()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ReloadProfilesList()">
+            <Messages>
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-27 10:31:26Z">
+              <Issue Name="IFormatProviderAlternateString">
+               <Item>'String.Format(String, Object)'</Item>
+               <Item>'MainForm.ReloadProfilesList()'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>

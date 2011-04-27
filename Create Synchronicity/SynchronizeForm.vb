@@ -24,7 +24,7 @@ Public Class SynchronizeForm
 
     Dim Status As StatusData
     Dim ColumnSorter As ListViewColumnSorter
-    Dim Preview As Boolean, PreviewFinished As Boolean
+    Dim Preview As Boolean 'Should show a preview.
 
     Dim FullSyncThread As Threading.Thread
     Dim ScanThread As Threading.Thread
@@ -49,8 +49,6 @@ Public Class SynchronizeForm
         Quiet = _Quiet
         Catchup = _Catchup
         Preview = DisplayPreview
-        PreviewFinished = Not Preview
-
         SyncBtn.Enabled = False
         SyncBtn.Visible = Preview
 
@@ -266,7 +264,7 @@ Public Class SynchronizeForm
     End Sub
 #End Region
 
-#Region " Processes interaction "
+#Region " Interface "
     Private Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
         Dim StatusText As String = Text
         If Text.Length > 30 Then
@@ -319,7 +317,7 @@ Public Class SynchronizeForm
         Select Case Id
             Case 1
                 Status.CurrentStep = StatusData.SyncStep.SyncLR
-                If Not PreviewFinished Then
+                If Preview Then
                     UpdatePreviewList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
@@ -383,14 +381,7 @@ Public Class SynchronizeForm
 
     Private Sub UpdatePreviewList()
         PreviewList.Visible = True
-
-        If Not PreviewList.Items.Count = 0 Then
-            For Each C As ColumnHeader In PreviewList.Columns
-                C.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
-            Next
-        End If
-
-        PreviewFinished = True
+        PreviewList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
         If Not Status.Cancel Then SyncBtn.Enabled = True
     End Sub
 
