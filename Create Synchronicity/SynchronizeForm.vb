@@ -265,7 +265,15 @@ Public Class SynchronizeForm
 #End Region
 
 #Region " Interface "
+#If LINUX Then
+    Private LastUpdate As Date = Date.MinValue
+#End If
+
     Private Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
+#If LINUX Then
+        If (Date.Now - LastUpdate).TotalMilliseconds < 100 Then Exit Sub
+        LastUpdate = Date.Now
+#End If
         Dim StatusText As String = Text
         If Text.Length > 30 Then
             StatusText = "..." & Text.Substring(Text.Length - 30, 30)
@@ -360,7 +368,8 @@ Public Class SynchronizeForm
                         End If
                     End If
                 Else
-                    If Quiet Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
+                    'LATER: Add ballon to say the sync was cancelled.
+                    If Quiet And Not Status.Cancel Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                 End If
 
                 SyncingTimer.Stop()
@@ -381,7 +390,7 @@ Public Class SynchronizeForm
 
     Private Sub UpdatePreviewList()
         PreviewList.Visible = True
-        PreviewList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+        If PreviewList.Items.Count > 0 Then PreviewList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
         If Not Status.Cancel Then SyncBtn.Enabled = True
     End Sub
 

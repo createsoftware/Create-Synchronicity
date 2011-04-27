@@ -321,7 +321,7 @@ Friend NotInheritable Class MessageLoop
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
                 'LATER: Customizable time span?
-                If Handler.GetSetting(Of Boolean)(ProfileSetting.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And NewEntry.NextRun - LastRun > Handler.Scheduler.GetInterval() + OneDay Then
+                If Handler.GetSetting(Of Boolean)(ProfileSetting.CatchUpSync, False) And LastRun <> ScheduleInfo.DATE_NEVER And (NewEntry.NextRun - LastRun) > (Handler.Scheduler.GetInterval() + OneDay) Then
                     ConfigHandler.LogAppEvent("Scheduler: Profile " & Name & " was last executed on " & LastRun.ToString & ", marked for catching up.")
                     NewEntry.NextRun = ScheduleInfo.DATE_CATCHUP
                     NewEntry.CatchUp = True

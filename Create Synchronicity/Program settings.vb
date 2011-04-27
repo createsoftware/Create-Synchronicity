@@ -192,7 +192,7 @@ NotInheritable Class ConfigHandler
         Try
             IO.File.WriteAllText(MainConfigFile, ConfigStrB.ToString) 'IO.File.WriteAllText overwrites the file.
         Catch
-            Interaction.ShowDebug("Unable to save main config file.", , MessageBoxIcon.Error)
+            Interaction.ShowDebug("Unable to save main config file.")
         End Try
     End Sub
 

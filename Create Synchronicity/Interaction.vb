@@ -67,7 +67,7 @@ Friend Module Interaction
     End Sub
 
     <Diagnostics.Conditional("Debug")>
-    Public Sub ShowDebug(ByVal Text As String, Optional ByVal Caption As String = "", Optional ByVal Icon As MessageBoxIcon = MessageBoxIcon.Warning)
+    Public Sub ShowDebug(ByVal Text As String, Optional ByVal Caption As String = "")
 #If DEBUG Then
         ShowMsg(Text, Caption, MessageBoxButtons.OK, MessageBoxIcon.Warning)
 #End If

@@ -127,7 +127,7 @@ NotInheritable Class ProfileHandler
         If Configuration.ContainsKey(ProfileSetting.CompressionExt) AndAlso Configuration(ProfileSetting.CompressionExt) <> "" Then
             If Array.IndexOf({".gz", ".bz2"}, Configuration(ProfileSetting.CompressionExt)) < 0 Then
                 IsValid = False
-                InvalidListing.Add(String.Format("Unknown compression extension, or missing ""."": {0}", Configuration(ProfileSetting.CompressionExt)))
+                InvalidListing.Add("Unknown compression extension, or missing ""."":" & Configuration(ProfileSetting.CompressionExt))
             End If
 
             If Not IO.File.Exists(ProgramConfig.CompressionDll) Then
@@ -183,12 +183,11 @@ NotInheritable Class ProfileHandler
         Configuration(SettingName) = Value.ToString
     End Sub
 
-    Sub CopySetting(Of T)(ByVal SettingName As String, ByRef SettingField As T, ByVal LoadSetting As Boolean)
-        'Passes the current value as default answer.
-        If LoadSetting Then
-            SettingField = GetSetting(Of T)(SettingName, SettingField)
+    Sub CopySetting(Of T)(ByVal Key As String, ByRef Value As T, ByVal Load As Boolean)
+        If Load Then
+            Value = GetSetting(Of T)(Key, Value) 'Passes the current value as default answer.
         Else
-            Configuration(SettingName) = If(SettingField IsNot Nothing, SettingField.ToString, Nothing)
+            Configuration(Key) = If(Value IsNot Nothing, Value.ToString, Nothing)
         End If
     End Sub
 
