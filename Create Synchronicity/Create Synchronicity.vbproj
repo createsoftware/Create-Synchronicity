@@ -140,17 +140,17 @@
     <Compile Include="AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompressionInterface.vb" />
+    <Compile Include="Compression interface.vb" />
     <Compile Include="Interaction.vb" />
-    <Compile Include="IOInterface.vb" />
+    <Compile Include="Internationalization.vb" />
+    <Compile Include="IO interface.vb" />
     <Compile Include="LanguageForm.Designer.vb">
       <DependentUpon>LanguageForm.vb</DependentUpon>
     </Compile>
     <Compile Include="LanguageForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LanguageHandling.vb" />
-    <Compile Include="LogHandling.vb" />
+    <Compile Include="Logs.vb" />
     <Compile Include="Main.vb" />
     <Compile Include="MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
@@ -179,14 +179,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="SettingsHandling.vb" />
     <Compile Include="SynchronizeForm.Designer.vb">
       <DependentUpon>SynchronizeForm.vb</DependentUpon>
     </Compile>
     <Compile Include="SynchronizeForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SyncingClass.vb" />
+    <Compile Include="Syncing structures.vb" />
     <Compile Include="Updates.vb" />
   </ItemGroup>
   <ItemGroup>
