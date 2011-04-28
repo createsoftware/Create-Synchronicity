@@ -17,22 +17,22 @@ Public Class SynchronizeForm
     Dim IncludedPatterns As New List(Of FileNamePattern)
     Dim ExcludedPatterns As New List(Of FileNamePattern)
     Dim ExcludedDirPatterns As New List(Of FileNamePattern)
+    Dim Label(4) As String
 
     Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
     Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
-    Dim NoStop As Boolean = CommandLine.NoStop
+    Dim Preview As Boolean 'Should show a preview.
 
     Dim Status As StatusData
     Dim ColumnSorter As ListViewColumnSorter
-    Dim Preview As Boolean 'Should show a preview.
 
     Dim FullSyncThread As Threading.Thread
     Dim ScanThread As Threading.Thread
     Dim SyncThread As Threading.Thread
 
-    Private Delegate Sub TaskDoneCall(ByVal Id As Integer)
-    Private Delegate Sub SetLabelCall(ByVal Id As Integer, ByVal Text As String)
-    Private Delegate Sub SetIntCall(ByVal Id As Integer, ByVal Max As Integer)
+    Private Delegate Sub TaskDoneCall(ByVal Id As StatusData.SyncStep)
+    Private Delegate Sub SetLabelCall(ByVal Id As StatusData.SyncStep, ByVal Text As String)
+    Private Delegate Sub SetIntCall(ByVal Id As StatusData.SyncStep, ByVal Max As Integer)
 
     Friend Event SyncFinished(ByVal Name As String, ByVal Completed As Boolean)
 
@@ -380,7 +380,7 @@ Public Class SynchronizeForm
 
                 Log.SaveAndDispose(Handler.GetSetting(Of String)(ProfileSetting.Source), Handler.GetSetting(Of String)(ProfileSetting.Destination), Status)
 
-                If (Quiet And Not Me.Visible) Or NoStop Then
+                If (Quiet And Not Me.Visible) Or CommandLine.NoStop Then
                     Me.Close()
                 Else
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
