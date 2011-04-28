@@ -40,6 +40,7 @@ End Module
 
 NotInheritable Class ProfileHandler
     Public ProfileName As String
+    Public IsNewProfile As Boolean
     Public Scheduler As New ScheduleInfo()
     Public Configuration As New Dictionary(Of String, String)
     Public LeftCheckedNodes As New Dictionary(Of String, Boolean)
@@ -50,7 +51,7 @@ NotInheritable Class ProfileHandler
 
     Public Sub New(ByVal Name As String)
         ProfileName = Name
-        LoadConfigFile()
+        IsNewProfile = Not LoadConfigFile()
         If GetSetting(Of Boolean)(ProfileSetting.MayCreateDestination, False) And GetSetting(Of String)(ProfileSetting.RightSubFolders) Is Nothing Then SetSetting(Of String)(ProfileSetting.RightSubFolders, "*")
     End Sub
 
