@@ -1,4 +1,4 @@
-﻿# Create Synchronicity Dutch Language file
+# Create Synchronicity Dutch Language file
 # Translation by John Van Amstel
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
@@ -120,7 +120,7 @@ VIEW_LOG=Bekijk logbestand
 WAITING=Wachtend...
 WARNING=Waarschuwing
 WARNING_SWAP=Wisselen van linker en rechter mappen vereist herladen mappenstructuur. Alle niet-opgeslagen wijzigingen gaan verloren. Doorgaan?
-WELCOME_MSG=Welkom bij Create Synchronicity! Wilt u het programma te controleren op updates bij het opstarten?
+WELCOME_MSG=Welkom bij Create Synchronicity! Wilt u het programma op updates laten controleren bij het opstarten?
 YES=Ja
 SCHEDULE_WARNING=Waarschuwing: Om geplande acties mogelijk te maken, moet Create Synchronicity zich registreren als een opstartprogramma . De synchronisatie zal niet plaatsvinden als u het automatisch opstarten uitzet, of als uw sessie wordt afgesloten op het geplande tijdstip .
 SCHEDULE_ENABLE=Schakel geplande acties in voor dit profiel,
@@ -154,9 +154,9 @@ CATCHUP_MISSED_BACKUPS_TAG=Geeft aan wat te doen als de computer is uitgeschakel
 CATCHING_UP=Create Synchronicity werkt "{0}" bij (laatste keer {1} dag(en), {2} (u)ur(en) geleden ({3})).
 FOLDER_FAILED=Map "{0}" kon niet aangemaakt worden ({1}).
 CREATE_DEST=Creëer doelmap dynamisch
-->UPDATE=Updaten
-->MD5=
-->GROUP=
-->COMPARE_SIZE=
-->MORE=
-->NO_PROFILES=
+UPDATE=Updaten
+MD5=Verzeker backup integriteit (MD5 checksum)
+GROUP=Groep
+COMPARE_SIZE=Vergelijk bestandsgrootte
+MORE=Meer (enkel experts)
+NO_PROFILES=Je hebt geen profiel. Klik "{0}" om een te creëren.
