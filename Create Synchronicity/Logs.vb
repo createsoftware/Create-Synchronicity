@@ -136,7 +136,7 @@ Friend NotInheritable Class LogHandler
             Dim Archives As New List(Of Text.StringBuilder)
             Archives.Add(New Text.StringBuilder())
 
-            If Not NewLog Then
+            If Not NewLog And Not Debug Then
                 Using LogReader As New IO.StreamReader(ProgramConfig.GetLogPath(LogName))
                     While Not LogReader.EndOfStream
                         Dim Line As String = LogReader.ReadLine()
