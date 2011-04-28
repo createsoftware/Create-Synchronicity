@@ -9,29 +9,31 @@
 Option Strict On
 
 Public Class SynchronizeForm
-    Dim Log As LogHandler
-    Dim Handler As ProfileHandler
+    Private Log As LogHandler
+    Private Handler As ProfileHandler
 
-    Dim ValidFiles As New Dictionary(Of String, Boolean)
-    Dim SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
-    Dim IncludedPatterns As New List(Of FileNamePattern)
-    Dim ExcludedPatterns As New List(Of FileNamePattern)
-    Dim ExcludedDirPatterns As New List(Of FileNamePattern)
-    Dim Label(4) As String
+    Private ValidFiles As New Dictionary(Of String, Boolean)
+    Private SyncingList As New Dictionary(Of SideOfSource, List(Of SyncingItem))
+    Private IncludedPatterns As New List(Of FileNamePattern)
+    Private ExcludedPatterns As New List(Of FileNamePattern)
+    Private ExcludedDirPatterns As New List(Of FileNamePattern)
 
-    Dim Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
-    Dim Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
-    Dim Preview As Boolean 'Should show a preview.
+    Private Labels() As String = {"", "", "", ""}
+    Private StatusLabel As String = ""
+    Private Lock As New Object()
 
-    Dim Status As StatusData
-    Dim ColumnSorter As ListViewColumnSorter
+    Private Quiet As Boolean 'This Quiet parameter is not a duplicate ; it is used when eg the scheduler needs to tell the form to keep quiet, although the "quiet" command-line flag wasn't used.
+    Private Catchup As Boolean 'Indicates whether this operation was started due to catchup rules.
+    Private Preview As Boolean 'Should show a preview.
 
-    Dim FullSyncThread As Threading.Thread
-    Dim ScanThread As Threading.Thread
-    Dim SyncThread As Threading.Thread
+    Private Status As StatusData
+    Private ColumnSorter As ListViewColumnSorter
+
+    Private FullSyncThread As Threading.Thread
+    Private ScanThread As Threading.Thread
+    Private SyncThread As Threading.Thread
 
     Private Delegate Sub TaskDoneCall(ByVal Id As StatusData.SyncStep)
-    Private Delegate Sub SetLabelCall(ByVal Id As StatusData.SyncStep, ByVal Text As String)
     Private Delegate Sub SetIntCall(ByVal Id As StatusData.SyncStep, ByVal Max As Integer)
 
     Friend Event SyncFinished(ByVal Name As String, ByVal Completed As Boolean)
@@ -242,7 +244,7 @@ Public Class SynchronizeForm
         Status.TimeElapsed = (DateTime.Now - Status.StartTime) + New TimeSpan(1000000) ' ie +0.1s
 
         Dim EstimateString As String = ""
-        If Status.CurrentStep = StatusData.SyncStep.SyncLR And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 Then
+        If Status.CurrentStep = StatusData.SyncStep.SyncLR And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 And Status.BytesCopied > 500 Then
             Dim RemainingSeconds As Double = (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds
             'RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
             EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, CInt(RemainingSeconds))))
@@ -261,19 +263,18 @@ Public Class SynchronizeForm
             FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
             FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate
         End If
+
+        SyncLock Lock
+            Step1StatusLabel.Text = Labels(1)
+            Step2StatusLabel.Text = Labels(2)
+            Step3StatusLabel.Text = Labels(3)
+            Interaction.StatusIcon.Text = StatusLabel
+        End SyncLock
     End Sub
 #End Region
 
 #Region " Interface "
-#If LINUX Then
-    Private LastUpdate As Date = Date.MinValue
-#End If
-
     Private Sub UpdateLabel(ByVal Id As StatusData.SyncStep, ByVal Text As String)
-#If LINUX Then
-        If (Date.Now - LastUpdate).TotalMilliseconds < 100 Then Exit Sub
-        LastUpdate = Date.Now
-#End If
         Dim StatusText As String = Text
         If Text.Length > 30 Then
             StatusText = "..." & Text.Substring(Text.Length - 30, 30)
@@ -281,15 +282,17 @@ Public Class SynchronizeForm
 
         Select Case Id
             Case StatusData.SyncStep.Scan
-                Step1StatusLabel.Text = Text
-                Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_1_STATUS"), StatusText)
+                StatusText = String.Format(Translation.Translate("\STEP_1_STATUS"), StatusText)
             Case StatusData.SyncStep.SyncLR
-                Step2StatusLabel.Text = Text
-                Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_2_STATUS"), Step2ProgressBar.Value, Step2ProgressBar.Maximum, StatusText)
+                StatusText = String.Format(Translation.Translate("\STEP_2_STATUS"), Step2ProgressBar.Value, Step2ProgressBar.Maximum, StatusText)
             Case StatusData.SyncStep.SyncRL
-                Step3StatusLabel.Text = Text
-                Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_3_STATUS"), Step3ProgressBar.Value, Step3ProgressBar.Maximum, StatusText)
+                StatusText = String.Format(Translation.Translate("\STEP_3_STATUS"), Step3ProgressBar.Value, Step3ProgressBar.Maximum, StatusText)
         End Select
+
+        SyncLock Lock
+            Labels(Id) = Text
+            StatusLabel = StatusText
+        End SyncLock
     End Sub
 
     Private Function GetProgressBar(ByVal Id As StatusData.SyncStep) As ProgressBar
@@ -321,24 +324,24 @@ Public Class SynchronizeForm
 
         SetMax(Id, 100, True)
         UpdateLabel(Id, Translation.Translate("\FINISHED"))
+        UpdateStatuses()
 
         Select Case Id
             Case StatusData.SyncStep.Scan
+                SyncingTimer.Stop()
                 Status.CurrentStep = StatusData.SyncStep.SyncLR
                 If Preview Then
                     UpdatePreviewList()
                     StopBtn.Text = StopBtn.Tag.ToString.Split(";"c)(1)
                 End If
-                UpdateStatuses()
-                SyncingTimer.Stop()
 
             Case StatusData.SyncStep.SyncLR
                 Status.CurrentStep = StatusData.SyncStep.SyncRL
 
             Case StatusData.SyncStep.SyncRL
+                SyncingTimer.Stop()
                 Status.CurrentStep = StatusData.SyncStep.Done
 
-                UpdateStatuses()
                 If Log.Errors.Count > 0 Or Status.Failed Then
                     PreviewList.Visible = True
                     PreviewList.Items.Clear()
@@ -372,7 +375,6 @@ Public Class SynchronizeForm
                     If Quiet And Not Status.Cancel Then Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_OK"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
                 End If
 
-                SyncingTimer.Stop()
                 ' Set last run only if the profile hasn't failed, and has synced completely.
                 ' Checking for Status.Cancel allows to resync if eg. computer was stopped during sync.
                 ' EndAll() sets Status.Cancel to true, but if the sync completes successfully, this part executes before the call to EndAll 
@@ -508,16 +510,15 @@ Public Class SynchronizeForm
     End Sub
 
     '"Source" is "current side", with the corresponding side set to "Side"
-    Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As Integer)
+    Private Sub Do_Task(ByVal Side As SideOfSource, ByRef ListOfActions As List(Of SyncingItem), ByVal Source As String, ByVal Destination As String, ByVal CurrentStep As StatusData.SyncStep)
         Dim IncrementCallback As New SetIntCall(AddressOf Increment)
-        Dim SetLabelCallback As New SetLabelCall(AddressOf UpdateLabel)
 
         For Each Entry As SyncingItem In ListOfActions
             Dim SourcePath As String = Source & Entry.Path
             Dim DestPath As String = Destination & Entry.Path
 
             Try
-                Me.Invoke(SetLabelCallback, New Object() {CurrentStep, If(Entry.Action = TypeOfAction.Delete, SourcePath, DestPath)})
+                UpdateLabel(CurrentStep, If(Entry.Action = TypeOfAction.Delete, SourcePath, DestPath))
 
                 Select Case Entry.Type
                     Case TypeOfItem.File
@@ -623,11 +624,9 @@ Public Class SynchronizeForm
     Private Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
-        Dim SetLabelCallback As New SetLabelCall(AddressOf UpdateLabel)
-
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
-        Me.Invoke(SetLabelCallback, New Object() {1, Src_FilePath})
+        UpdateLabel(StatusData.SyncStep.Scan, Src_FilePath)
 
         Dim PropagateUpdates As Boolean = Handler.GetSetting(Of Boolean)(ProfileSetting.PropagateUpdates, True)
         Dim EmptyDirectories As Boolean = Handler.GetSetting(Of Boolean)(ProfileSetting.ReplicateEmptyDirectories, True)
@@ -716,11 +715,9 @@ Public Class SynchronizeForm
         If Not HasAcceptedDirname(Folder) Then Exit Sub
 
         'Here, Source is set to be the right folder, and dest to be the left folder
-        Dim LabelDelegate As New SetLabelCall(AddressOf UpdateLabel)
-
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
-        Me.Invoke(LabelDelegate, New Object() {1, Src_FilePath})
+        UpdateLabel(StatusData.SyncStep.Scan, Src_FilePath)
 
         'Dim PropagateUpdates As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.PropagateUpdates, True)
         'Dim EmptyDirectories As Boolean = Handler.GetSetting(Of Boolean)(ConfigOptions.ReplicateEmptyDirectories, False)
