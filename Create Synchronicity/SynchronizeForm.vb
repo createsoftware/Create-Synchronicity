@@ -269,7 +269,7 @@ Public Class SynchronizeForm
     Private LastUpdate As Date = Date.MinValue
 #End If
 
-    Private Sub UpdateLabel(ByVal Id As Integer, ByVal Text As String)
+    Private Sub UpdateLabel(ByVal Id As StatusData.SyncStep, ByVal Text As String)
 #If LINUX Then
         If (Date.Now - LastUpdate).TotalMilliseconds < 100 Then Exit Sub
         LastUpdate = Date.Now
@@ -280,35 +280,35 @@ Public Class SynchronizeForm
         End If
 
         Select Case Id
-            Case 1
+            Case StatusData.SyncStep.Scan
                 Step1StatusLabel.Text = Text
                 Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_1_STATUS"), StatusText)
-            Case 2
+            Case StatusData.SyncStep.SyncLR
                 Step2StatusLabel.Text = Text
                 Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_2_STATUS"), Step2ProgressBar.Value, Step2ProgressBar.Maximum, StatusText)
-            Case 3
+            Case StatusData.SyncStep.SyncRL
                 Step3StatusLabel.Text = Text
                 Interaction.StatusIcon.Text = String.Format(Translation.Translate("\STEP_3_STATUS"), Step3ProgressBar.Value, Step3ProgressBar.Maximum, StatusText)
         End Select
     End Sub
 
-    Private Function GetProgressBar(ByVal Id As Integer) As ProgressBar
+    Private Function GetProgressBar(ByVal Id As StatusData.SyncStep) As ProgressBar
         Select Case Id
-            Case 1
+            Case StatusData.SyncStep.Scan
                 Return Step1ProgressBar
-            Case 2
+            Case StatusData.SyncStep.SyncLR
                 Return Step2ProgressBar
             Case Else
                 Return Step3ProgressBar
         End Select
     End Function
 
-    Private Sub Increment(ByVal Id As Integer, ByVal Progress As Integer)
+    Private Sub Increment(ByVal Id As StatusData.SyncStep, ByVal Progress As Integer)
         Dim CurBar As ProgressBar = GetProgressBar(Id)
         If CurBar.Value + Progress < CurBar.Maximum Then CurBar.Value += Progress
     End Sub
 
-    Private Sub SetMax(ByVal Id As Integer, ByVal MaxValue As Integer, Optional ByVal Finished As Boolean = False) 'Careful: MaxValue is an Integer.
+    Private Sub SetMax(ByVal Id As StatusData.SyncStep, ByVal MaxValue As Integer, Optional ByVal Finished As Boolean = False) 'Careful: MaxValue is an Integer.
         Dim CurBar As ProgressBar = GetProgressBar(Id)
 
         CurBar.Style = ProgressBarStyle.Blocks
@@ -316,14 +316,14 @@ Public Class SynchronizeForm
         CurBar.Value = If(Finished, MaxValue, 0)
     End Sub
 
-    Private Sub TaskDone(ByVal Id As Integer)
+    Private Sub TaskDone(ByVal Id As StatusData.SyncStep)
         If Not Status.CurrentStep = Id Then Exit Sub 'Prevents infinite exit loop.
 
         SetMax(Id, 100, True)
         UpdateLabel(Id, Translation.Translate("\FINISHED"))
 
         Select Case Id
-            Case 1
+            Case StatusData.SyncStep.Scan
                 Status.CurrentStep = StatusData.SyncStep.SyncLR
                 If Preview Then
                     UpdatePreviewList()
@@ -332,10 +332,10 @@ Public Class SynchronizeForm
                 UpdateStatuses()
                 SyncingTimer.Stop()
 
-            Case 2
+            Case StatusData.SyncStep.SyncLR
                 Status.CurrentStep = StatusData.SyncStep.SyncRL
 
-            Case 3
+            Case StatusData.SyncStep.SyncRL
                 Status.CurrentStep = StatusData.SyncStep.Done
 
                 UpdateStatuses()
@@ -441,7 +441,7 @@ Public Class SynchronizeForm
         Status.Cancel = Status.Cancel Or (Status.CurrentStep <> StatusData.SyncStep.Done)
         FullSyncThread.Abort()
         ScanThread.Abort() : SyncThread.Abort()
-        TaskDone(1) : TaskDone(2) : TaskDone(3)
+        TaskDone(StatusData.SyncStep.Scan) : TaskDone(StatusData.SyncStep.SyncLR) : TaskDone(StatusData.SyncStep.SyncRL)
     End Sub
 #End Region
 
@@ -485,7 +485,7 @@ Public Class SynchronizeForm
                 Context.Action = TypeOfAction.Copy
                 Init_Synchronization(Handler.RightCheckedNodes, Context)
         End Select
-        Me.Invoke(TaskDoneCallback, 1)
+        Me.Invoke(TaskDoneCallback, StatusData.SyncStep.Scan)
 
         'NOTE: [to sysadmins] (March 13, 2010) --> Moved to FAQ (http://synchronicity.sourceforge.net/faq.html)
     End Sub
@@ -498,13 +498,13 @@ Public Class SynchronizeForm
         Dim Right As String = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ProfileSetting.Destination))
 
         Me.Invoke(New Action(AddressOf LaunchTimer))
-        Me.Invoke(SetMaxCallback, New Object() {2, SyncingList(SideOfSource.Left).Count})
-        Do_Task(SideOfSource.Left, SyncingList(SideOfSource.Left), Left, Right, 2)
-        Me.Invoke(TaskDoneCallback, 2)
+        Me.Invoke(SetMaxCallback, New Object() {StatusData.SyncStep.SyncLR, SyncingList(SideOfSource.Left).Count})
+        Do_Task(SideOfSource.Left, SyncingList(SideOfSource.Left), Left, Right, StatusData.SyncStep.SyncLR)
+        Me.Invoke(TaskDoneCallback, StatusData.SyncStep.SyncLR)
 
-        Me.Invoke(SetMaxCallback, New Object() {3, SyncingList(SideOfSource.Right).Count})
-        Do_Task(SideOfSource.Right, SyncingList(SideOfSource.Right), Right, Left, 3)
-        Me.Invoke(TaskDoneCallback, 3)
+        Me.Invoke(SetMaxCallback, New Object() {StatusData.SyncStep.SyncRL, SyncingList(SideOfSource.Right).Count})
+        Do_Task(SideOfSource.Right, SyncingList(SideOfSource.Right), Right, Left, StatusData.SyncStep.SyncRL)
+        Me.Invoke(TaskDoneCallback, StatusData.SyncStep.SyncRL)
     End Sub
 
     '"Source" is "current side", with the corresponding side set to "Side"
