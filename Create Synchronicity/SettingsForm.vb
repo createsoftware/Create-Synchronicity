@@ -14,7 +14,6 @@ Public Class SettingsForm
     Dim InhibitAutocheck As Boolean '= False 'Record events, but don't treat them as user input.
     Dim ClickedRightTreeView As Boolean '= False
 
-    Dim NewProfile As Boolean
     Dim PrevLeft As String = "-1" 'Initiate to an invalid path value to force reloading.
     Dim PrevRight As String = "-1" 'These values are used to check whether the folder tree should be reloaded.
 
@@ -33,7 +32,7 @@ Public Class SettingsForm
     'Path handling: Always trim traliing path separator chars: it makes everything much simpler. Only exception: '/' in Linux
 
 #Region " Events "
-    Public Sub New(ByVal Name As String, ByVal _NewProfile As Boolean)
+    Public Sub New(ByVal Name As String)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
 #If CONFIG = "Linux" Then
@@ -42,7 +41,6 @@ Public Class SettingsForm
 
         ' Add any initialization after the InitializeComponent() call.
         Handler = New ProfileHandler(Name)
-        NewProfile = _NewProfile
     End Sub
 
     Private Sub Settings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -52,7 +50,7 @@ Public Class SettingsForm
         RightView.PathSeparator = ProgramSetting.DirSep
         MoreLabel.Visible = ProgramConfig.GetProgramSetting(Of Boolean)(ProgramSetting.ExpertMode, False)
 
-        If Not NewProfile Then UpdateSettings(True)
+        If Not Handler.IsNewProfile Then UpdateSettings(True)
         Me.Text = String.Format(Translation.Translate("\PROFILE_SETTINGS"), Handler.ProfileName)
     End Sub
 
