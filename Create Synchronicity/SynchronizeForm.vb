@@ -209,10 +209,10 @@ Public Class SynchronizeForm
         Left = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ProfileSetting.Source)) & CurItem.SubItems(3).Text
         Right = ProfileHandler.TranslatePath(Handler.GetSetting(Of String)(ProfileSetting.Destination)) & CurItem.SubItems(3).Text
 
-        Select Case CurItem.Tag.ToString
-            Case "LR"
+        Select Case CType(CurItem.Tag, StatusData.SyncStep)
+            Case StatusData.SyncStep.SyncLR
                 Source = Left : Dest = Right
-            Case "RL"
+            Case StatusData.SyncStep.SyncRL
                 Source = Right : Dest = Left
             Case Else
                 'In errors list
@@ -403,7 +403,7 @@ Public Class SynchronizeForm
         ListItem.SubItems.Add(Item.FormatDirection(Side))
         ListItem.SubItems.Add(Item.Path)
 
-        ListItem.Tag = If(Side = SideOfSource.Left, "LR", "RL")
+        ListItem.Tag = If(Side = SideOfSource.Left, StatusData.SyncStep.SyncLR, StatusData.SyncStep.SyncRL)
 
         Select Case Item.Action
             Case TypeOfAction.Copy
