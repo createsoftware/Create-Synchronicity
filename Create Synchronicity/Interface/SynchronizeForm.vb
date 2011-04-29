@@ -171,6 +171,7 @@ Public Class SynchronizeForm
     Private Sub StatusIcon_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.Visible = Not Me.Visible
         Me.WindowState = FormWindowState.Normal
+        If Me.Visible Then Me.Activate()
     End Sub
 
     Private Sub SynchronizeForm_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
