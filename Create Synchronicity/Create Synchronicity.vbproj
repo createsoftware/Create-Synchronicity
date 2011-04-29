@@ -134,43 +134,43 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutForm.designer.vb">
+    <Compile Include="Interface\AboutForm.designer.vb">
       <DependentUpon>AboutForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="AboutForm.vb">
+    <Compile Include="Interface\AboutForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Compression interface.vb" />
     <Compile Include="Interaction.vb" />
     <Compile Include="Internationalization.vb" />
     <Compile Include="IO interface.vb" />
-    <Compile Include="LanguageForm.Designer.vb">
+    <Compile Include="Interface\LanguageForm.Designer.vb">
       <DependentUpon>LanguageForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="LanguageForm.vb">
+    <Compile Include="Interface\LanguageForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Logs.vb" />
     <Compile Include="Main.vb" />
-    <Compile Include="MainForm.Designer.vb">
+    <Compile Include="Interface\MainForm.Designer.vb">
       <DependentUpon>MainForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.vb">
+    <Compile Include="Interface\MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Profile settings.vb" />
     <Compile Include="Program settings.vb" />
     <Compile Include="Revision.vb" />
-    <Compile Include="SchedulingForm.Designer.vb">
+    <Compile Include="Interface\SchedulingForm.Designer.vb">
       <DependentUpon>SchedulingForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="SchedulingForm.vb">
+    <Compile Include="Interface\SchedulingForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.vb">
+    <Compile Include="Interface\SettingsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsForm.Designer.vb">
+    <Compile Include="Interface\SettingsForm.Designer.vb">
       <DependentUpon>SettingsForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
@@ -179,36 +179,36 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="SynchronizeForm.Designer.vb">
+    <Compile Include="Interface\SynchronizeForm.Designer.vb">
       <DependentUpon>SynchronizeForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="SynchronizeForm.vb">
+    <Compile Include="Interface\SynchronizeForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Syncing structures.vb" />
     <Compile Include="Updates.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutForm.resx">
+    <EmbeddedResource Include="Interface\AboutForm.resx">
       <DependentUpon>AboutForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LanguageForm.resx">
+    <EmbeddedResource Include="Interface\LanguageForm.resx">
       <DependentUpon>LanguageForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Interface\MainForm.resx">
       <DependentUpon>MainForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SchedulingForm.resx">
+    <EmbeddedResource Include="Interface\SchedulingForm.resx">
       <DependentUpon>SchedulingForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
+    <EmbeddedResource Include="Interface\SettingsForm.resx">
       <DependentUpon>SettingsForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SynchronizeForm.resx">
+    <EmbeddedResource Include="Interface\SynchronizeForm.resx">
       <DependentUpon>SynchronizeForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
