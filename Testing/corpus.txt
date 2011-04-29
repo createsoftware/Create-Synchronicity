@@ -1,0 +1,7 @@
+These test sets are not included in this repository for obvious reasons of size. 
+
+Here's a list of the sets used; all compressed files should be extracted before running the tests:
+
+Set											Size		Files		Source
+linux-2.6.38.4.tar.bz2												http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.38.4.tar.bz2
+Fedora-15-Beta-x86_64-DVD.iso\Packages		3.12 GB		~3k			http://download.fedoraproject.org/pub/fedora/linux/releases/test/15-Beta/Fedora/x86_64/iso/Fedora-15-Beta-x86_64-DVD.iso\Packages
