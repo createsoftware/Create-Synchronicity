@@ -41,7 +41,7 @@ Friend NotInheritable Class MessageLoop
     Public ExitNeeded As Boolean '= False
 
     Private Blocker As Threading.Mutex '= Nothing
-    Dim ScheduledProfiles As List(Of SchedulerEntry) '= Nothing
+    Dim ScheduledProfiles As New List(Of SchedulerEntry) '= Nothing
 
 #Region "Main program loop & first run"
     Sub New()
@@ -89,11 +89,13 @@ Friend NotInheritable Class MessageLoop
                 Interaction.ToggleStatusIcon(True)
 
                 If CommandLine.RunAs = CommandLine.RunMode.Queue Then
+                    MainFormInstance.ApplicationTimer.Interval = 1000
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf StartQueue
                 ElseIf CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
+                    MainFormInstance.ApplicationTimer.Interval = 15000
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf Scheduling_Tick
                 End If
-                MainFormInstance.ApplicationTimer.Start()
+                MainFormInstance.ApplicationTimer.Start() 'First tick fires after ApplicationTimer.Interval milliseconds.
             Else
                 AddHandler MainFormInstance.FormClosed, AddressOf ReloadMainForm
                 MainFormInstance.Show()
@@ -259,20 +261,9 @@ Friend NotInheritable Class MessageLoop
     End Sub
 
     Private Sub Scheduling_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        If ScheduledProfiles Is Nothing Then
-            ProgramConfig.CanGoOn = False 'Stop tick events from happening
-            MainFormInstance.ApplicationTimer.Interval = 15000 'First tick was forced by the very low ticking interval.
-            ScheduledProfiles = New List(Of SchedulerEntry)
-
-            ConfigHandler.LogAppEvent("Scheduler: Started application timer.")
-            ReloadProfilesScheduler(ScheduledProfiles)
-
-            ProgramConfig.CanGoOn = True
-        End If
-
         If ProgramConfig.CanGoOn = False Then Exit Sub 'Don't start next sync yet.
 
-        ReloadProfilesScheduler(ScheduledProfiles)
+        ReloadScheduledProfiles()
         If ScheduledProfiles.Count = 0 Then
             ConfigHandler.LogAppEvent("Scheduler: No profiles left to run, exiting.")
             Application.Exit()
@@ -298,7 +289,15 @@ Friend NotInheritable Class MessageLoop
         Return (Item.Name = Needle)
     End Function
 
-    Private Sub ReloadProfilesScheduler(ByVal ProfilesToRun As List(Of SchedulerEntry))
+    'Logic of this function:
+    ' A new entry is created. The need for catching up is calculated regardless of the current state of the list.
+    ' Then, a corresponding entry (same name) is searched for. If not found, then the new entry is simply added to the list.
+    ' OOH, if a corresponding entry is found, then
+    '    If it's already late, or if changes would postpone it, then nothing happens.
+    '    But if it's not late, and the change will bring the sync forward, then the new entry superseedes the previous one.
+    '       Note: In the latter case, if current entry is marked as failed, then the next run time is loaded from it
+    '             (that's to avoid infinite loops when eg. the backup medium is unplugged)
+    Private Sub ReloadScheduledProfiles()
         ReloadProfiles() 'Needed! This allows to detect config changes.
 
         For Each Profile As KeyValuePair(Of String, ProfileHandler) In Profiles
@@ -308,15 +307,6 @@ Friend NotInheritable Class MessageLoop
 
             If Handler.Scheduler.Frequency <> ScheduleInfo.Freq.Never Then
                 Dim NewEntry As New SchedulerEntry(Name, Handler.Scheduler.NextRun(), False, False)
-
-                'Logic of this function:
-                ' A new entry is created. The need for catching up is calculated regardless of the current state of the list.
-                ' Then, a corresponding entry (same name) is searched for. If not found, then the new entry is simply added to the list.
-                ' OOH, if a corresponding entry is found, then
-                '    If it's already late, or if changes would postpone it, then nothing happens.
-                '    But if it's not late, and the change will bring the sync forward, then the new entry superseedes the previous one.
-                '       Note: In the latter case, if current entry is marked as failed, then the next run time is loaded from it
-                '             (that's to avoid infinite loops when eg. the backup medium is unplugged)
 
                 '<catchup>
                 Dim LastRun As Date = Handler.GetLastRun()
@@ -329,34 +319,34 @@ Friend NotInheritable Class MessageLoop
                 '</catchup>
 
                 Needle = Name
-                Dim ProfileIndex As Integer = ProfilesToRun.FindIndex(New Predicate(Of SchedulerEntry)(AddressOf EqualityPredicate))
+                Dim ProfileIndex As Integer = ScheduledProfiles.FindIndex(New Predicate(Of SchedulerEntry)(AddressOf EqualityPredicate))
                 If ProfileIndex <> -1 Then
-                    Dim CurEntry As SchedulerEntry = ProfilesToRun(ProfileIndex)
+                    Dim CurEntry As SchedulerEntry = ScheduledProfiles(ProfileIndex)
 
                     If NewEntry.NextRun <> CurEntry.NextRun And CurEntry.NextRun >= Date.Now() Then 'Don't postpone queued late backups
                         NewEntry.HasFailed = CurEntry.HasFailed
                         If CurEntry.HasFailed Then NewEntry.NextRun = CurEntry.NextRun
 
-                        ProfilesToRun.RemoveAt(ProfileIndex)
-                        ProfilesToRun.Add(NewEntry)
+                        ScheduledProfiles.RemoveAt(ProfileIndex)
+                        ScheduledProfiles.Add(NewEntry)
                         ConfigHandler.LogAppEvent("Scheduler: Re-registered profile for delayed run on " & NewEntry.NextRun.ToString & ": " & Name)
                     End If
                 Else
-                    ProfilesToRun.Add(NewEntry)
+                    ScheduledProfiles.Add(NewEntry)
                     ConfigHandler.LogAppEvent("Scheduler: Registered profile for delayed run on " & NewEntry.NextRun.ToString & ": " & Name)
                 End If
             End If
         Next
 
         'Remove deleted or disabled profiles
-        For ProfileIndex As Integer = ProfilesToRun.Count - 1 To 0 Step -1
-            If Not Profiles.ContainsKey(ProfilesToRun(ProfileIndex).Name) OrElse Profiles(ProfilesToRun(ProfileIndex).Name).Scheduler.Frequency = ScheduleInfo.Freq.Never Then
-                ProfilesToRun.RemoveAt(ProfileIndex)
+        For ProfileIndex As Integer = ScheduledProfiles.Count - 1 To 0 Step -1
+            If Not Profiles.ContainsKey(ScheduledProfiles(ProfileIndex).Name) OrElse Profiles(ScheduledProfiles(ProfileIndex).Name).Scheduler.Frequency = ScheduleInfo.Freq.Never Then
+                ScheduledProfiles.RemoveAt(ProfileIndex)
             End If
         Next
 
         'Tracker #3000728
-        ProfilesToRun.Sort(Function(First As SchedulerEntry, Second As SchedulerEntry) First.NextRun.CompareTo(Second.NextRun))
+        ScheduledProfiles.Sort(Function(First As SchedulerEntry, Second As SchedulerEntry) First.NextRun.CompareTo(Second.NextRun))
     End Sub
 #End Region
 

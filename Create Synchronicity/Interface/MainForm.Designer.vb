@@ -437,10 +437,6 @@ Partial Class MainForm
         Me.AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.AboutLinkLabel.VisitedLinkColor = System.Drawing.Color.Blue
         '
-        'ApplicationTimer
-        '
-        Me.ApplicationTimer.Interval = 2000
-        '
         'StatusIconMenu
         '
         Me.StatusIconMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripHeader, Me.HeaderSeparator, Me.ExitToolStripMenuItem})
