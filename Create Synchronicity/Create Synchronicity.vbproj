@@ -19,7 +19,7 @@
     <OptionInfer>Off</OptionInfer>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ApplicationIcon>create-synchronicity-icon.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\program icons\create-synchronicity-icon.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -312,8 +312,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="create-synchronicity-icon-16x16.ico" />
-    <Content Include="create-synchronicity-icon.ico" />
+    <EmbeddedResource Include="Icons\program icons\create-synchronicity-icon-16x16.ico" />
+    <Content Include="Icons\program icons\create-synchronicity-icon.ico" />
     <Content Include="languages\local-names.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
