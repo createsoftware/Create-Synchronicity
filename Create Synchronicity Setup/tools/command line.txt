@@ -1,1 +1,0 @@
-D:\Documents\Clément\Programmes\Visual Basic\Visual Studio\Create Synchronicity\trunk\Create Synchronicity Setup\tools>Paraffin.exe -dir "..\..\Create Synchronicity\bin\Release" -custom CreateSynchronicity -alias "$(var.Create_Synchronicity.TargetPath)" -ext "vshost.exe" -guids -multiple test.wxs
