@@ -92,7 +92,7 @@ Friend NotInheritable Class MessageLoop
                     MainFormInstance.ApplicationTimer.Interval = 1000
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf StartQueue
                 ElseIf CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-                    MainFormInstance.ApplicationTimer.Interval = 15000
+                    MainFormInstance.ApplicationTimer.Interval = 5000
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf Scheduling_Tick
                 End If
                 MainFormInstance.ApplicationTimer.Start() 'First tick fires after ApplicationTimer.Interval milliseconds.
@@ -243,7 +243,7 @@ Friend NotInheritable Class MessageLoop
             Application.Exit()
         Else
             Dim SyncForm As New SynchronizeForm(ProfilesQueue.Dequeue(), CommandLine.ShowPreview, CommandLine.Quiet, False)
-            AddHandler SyncForm.SyncFinished, Sub(Name As String, Completed As Boolean) ProcessProfilesQueue()
+            AddHandler SyncForm.SyncFinished, Sub(Name As String, Completed As Boolean) MainFormInstance.ApplicationTimer.Start() 'Wait for 5 seconds before moving on.
             SyncForm.StartSynchronization(False)
         End If
     End Sub
