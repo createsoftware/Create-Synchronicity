@@ -257,13 +257,13 @@ Public Class SynchronizeForm
         Else
             Status.Speed = Status.BytesCopied / Status.TimeElapsed.TotalSeconds
             Speed.Text = FormatSize(Status.Speed) & "/s"
-
-            Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
-            FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
-            FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate & " (" & FormatSize(Status.BytesCopied) & ")"
-            FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
-            FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate
         End If
+
+        Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
+        FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
+        FilesCreated.Text = Status.CreatedFiles & "/" & Status.FilesToCreate & " (" & FormatSize(Status.BytesCopied) & ")"
+        FoldersDeleted.Text = Status.DeletedFolders & "/" & Status.FoldersToDelete
+        FoldersCreated.Text = Status.CreatedFolders & "/" & Status.FoldersToCreate
 
         SyncLock Lock
             Step1StatusLabel.Text = Labels(1)
