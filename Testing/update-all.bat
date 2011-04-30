@@ -1,5 +1,6 @@
+xcopy /Y /E "..\Create Synchronicity\bin\Release" "bin"
 cd vlc
-..\git\bin\git pull
+..\bin\git\bin\git pull
 cd ..\linux-2.6
-..\git\bin\git pull
+..\bin\git\bin\git pull
 cd ..

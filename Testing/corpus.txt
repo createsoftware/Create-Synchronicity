@@ -1,7 +1,11 @@
-These test sets are not included in this repository for obvious reasons of size. 
+To ensure maximum reliability, Create Synchronicity is systematically tested against a corpus of various files before every new releases. These test complement the continuous testing that occurs during development.
+The tests amount to about 50k files, and 4.3 GB; all are freely accessible online.
 
-Here's a list of the sets used; all compressed files should be extracted before running the tests:
-
-Set											Size		Files		Source
-linux-2.6.38.4.tar.bz2												http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.38.4.tar.bz2
+Here is a description of the corpus used:
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Name										Size		Files		Source
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+linux-2.6									882 MB		~36k		git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git
+subversion									82.2 MB		~6k			http://svn.apache.org/repos/asf/subversion/trunk
+vlc											255 MB		~3k			git://git.videolan.org/vlc.git
 Fedora-15-Beta-x86_64-DVD.iso\Packages		3.12 GB		~3k			http://download.fedoraproject.org/pub/fedora/linux/releases/test/15-Beta/Fedora/x86_64/iso/Fedora-15-Beta-x86_64-DVD.iso\Packages

@@ -1,1 +1,0 @@
-.\fdiff\fdiff.bat Fedora-15-Beta-x86_64-DVD destination\Fedora-15-Beta-x86_64-DVD fedora-15
