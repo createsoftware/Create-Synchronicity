@@ -244,20 +244,19 @@ Public Class SynchronizeForm
     Private Sub UpdateStatuses()
         Status.TimeElapsed = (DateTime.Now - Status.StartTime) + New TimeSpan(1000000) ' ie +0.1s
 
-        Dim EstimateString As String = ""
-        If Status.CurrentStep = StatusData.SyncStep.SyncLR And (Not ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Turbo, True)) And Status.TimeElapsed.TotalSeconds > 60 And Status.BytesCopied > 500 Then
-            Dim RemainingSeconds As Double = (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds
-            'RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
-            EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, CInt(RemainingSeconds))))
-        End If
-        ElapsedTime.Text = FormatTimespan(Status.TimeElapsed) & EstimateString
-
         If Status.CurrentStep = StatusData.SyncStep.Scan Then
             Speed.Text = Math.Round(Status.FilesScanned / Status.TimeElapsed.TotalSeconds).ToString & " files/s"
         Else
             Status.Speed = Status.BytesCopied / Status.TimeElapsed.TotalSeconds
             Speed.Text = FormatSize(Status.Speed) & "/s"
         End If
+
+        Dim EstimateString As String = ""
+        If Status.CurrentStep = StatusData.SyncStep.SyncLR And Status.TimeElapsed.TotalSeconds > 60 And ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Forecast, True) Then
+            Dim RemainingSeconds As Double = Math.Min(Integer.MaxValue / 2, (Status.BytesScanned / (1 + Status.Speed)) - Status.TimeElapsed.TotalSeconds)
+            EstimateString = String.Format(" [/ ~{0}]", FormatTimespan(New TimeSpan(0, 0, CInt(RemainingSeconds)))) ' LATER: RemainingSeconds = 120 * Math.Ceiling(RemainingSeconds / 120)
+        End If
+        ElapsedTime.Text = FormatTimespan(Status.TimeElapsed) & EstimateString
 
         Done.Text = Status.ActionsDone & "/" & Status.TotalActionsCount
         FilesDeleted.Text = Status.DeletedFiles & "/" & Status.FilesToDelete
@@ -670,7 +669,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status.FilesScanned += 1
-                If Not ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Turbo, True) Then Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
+                If ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Forecast, True) Then Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
             Next
         Catch Ex As Exception
 #If DEBUG Then

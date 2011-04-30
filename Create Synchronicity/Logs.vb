@@ -132,7 +132,7 @@ Friend NotInheritable Class LogHandler
             Dim NewLog As Boolean = Not IO.File.Exists(ProgramConfig.GetLogPath(LogName))
 
             'Load the contents of the previous log, excluding the closing tags
-            Dim ArchivesCount As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ProgramSetting.MaxLogEntries, 7)
+            Dim MaxArchivesCount As Integer = ProgramConfig.GetProgramSetting(Of Integer)(ProgramSetting.MaxLogEntries, 7)
             Dim Archives As New List(Of Text.StringBuilder)
             Archives.Add(New Text.StringBuilder())
 
@@ -142,7 +142,7 @@ Friend NotInheritable Class LogHandler
                         Dim Line As String = LogReader.ReadLine()
                         If Line.Contains("<h2>") Then
                             Archives.Add(New Text.StringBuilder())
-                            If Archives.Count > ArchivesCount Then Archives.RemoveAt(0) 'Don't store more than ConfigOptions.MaxLogEntries in memory
+                            If Archives.Count > MaxArchivesCount Then Archives.RemoveAt(0) 'Don't store more than ConfigOptions.MaxLogEntries in memory
                         End If
                         If Not Line.Contains("<h1>") And Not Line.Contains("</body>") And Not Line.Contains("</html>") Then Archives(Archives.Count - 1).AppendLine(Line)
                     End While
