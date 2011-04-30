@@ -92,7 +92,7 @@ Friend NotInheritable Class MessageLoop
                     MainFormInstance.ApplicationTimer.Interval = 1000
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf StartQueue
                 ElseIf CommandLine.RunAs = CommandLine.RunMode.Scheduler Then
-                    MainFormInstance.ApplicationTimer.Interval = 5000
+                    MainFormInstance.ApplicationTimer.Interval = 15000
                     AddHandler MainFormInstance.ApplicationTimer.Tick, AddressOf Scheduling_Tick
                 End If
                 MainFormInstance.ApplicationTimer.Start() 'First tick fires after ApplicationTimer.Interval milliseconds.
@@ -213,6 +213,7 @@ Friend NotInheritable Class MessageLoop
     End Sub
 
     Private Sub StartQueue(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        MainFormInstance.ApplicationTimer.Interval = 5000 'Wait 5s between profiles k and k+1, k > 0
         MainFormInstance.ApplicationTimer.Stop()
         ProcessProfilesQueue()
     End Sub
