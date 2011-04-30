@@ -1,0 +1,1 @@
+.\fdiff\fdiff.bat %1 destination\%1 %1
