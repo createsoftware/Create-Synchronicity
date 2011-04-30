@@ -108,7 +108,7 @@ Public Class SettingsForm
 
     Private Sub SwapButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SwapButton.Click
         If Interaction.ShowMsg(Translation.Translate("\WARNING_SWAP"), "\WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
-            Dim FromTextBox_Text As String = FromTextBox.Text 'TODO: Better swapping?
+            Dim FromTextBox_Text As String = FromTextBox.Text 'LATER: Better swapping?
             FromTextBox.Text = ToTextBox.Text
             ToTextBox.Text = FromTextBox_Text
             ReloadTrees(False)

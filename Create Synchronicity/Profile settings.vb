@@ -181,7 +181,7 @@ NotInheritable Class ProfileHandler
     End Sub
 
     Sub SetSetting(Of T)(ByVal SettingName As String, ByVal Value As T)
-        Configuration(SettingName) = Value.ToString
+        Configuration(SettingName) = Value.ToString 'LATER: There might be a problem here, when serializing dates (locale-dependent problems).
     End Sub
 
     Sub CopySetting(Of T)(ByVal Key As String, ByRef Value As T, ByVal Load As Boolean)
@@ -208,7 +208,7 @@ NotInheritable Class ProfileHandler
         Dim Opts() As String = GetSetting(Of String)(ProfileSetting.Scheduling, "").Split(";".ToCharArray, StringSplitOptions.RemoveEmptyEntries)
 
         If Opts.GetLength(0) = ProfileSetting.SchedulingSettingsCount Then
-            Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4)) 'TODO check for parameters type.
+            Scheduler = New ScheduleInfo(Opts(0), Opts(1), Opts(2), Opts(3), Opts(4))
         Else
             Scheduler = New ScheduleInfo() With {.Frequency = ScheduleInfo.Freq.Never} 'NOTE: Wrong strings default to never
         End If

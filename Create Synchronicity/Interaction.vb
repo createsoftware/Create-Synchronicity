@@ -95,7 +95,7 @@ Friend Module Interaction
     End Sub
 End Module
 
-Public NotInheritable Class ListViewColumnSorter
+Friend NotInheritable Class ListViewColumnSorter
     Implements System.Collections.IComparer
 
     Public Order As SortOrder
