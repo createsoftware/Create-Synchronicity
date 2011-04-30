@@ -7,7 +7,7 @@
 #Web site:		http://synchronicity.sourceforge.net.
 
 !include MUI2.nsh
-!define	/file	VERSION		"..\..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\code\version.txt"
+!define	/file	VERSION		"..\..\..\..\..\..\Sites Web\Sourceforge\Synchronicity\code\version-string.txt"
 
 !define 		COMPANY		"Create Software"
 !define 		PRODUCTNAME	"Create Synchronicity"

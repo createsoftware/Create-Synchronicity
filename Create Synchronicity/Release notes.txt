@@ -2,7 +2,7 @@
 * Information
 Languages:          English, French, German, Portuguese, Italian, Spanish, 
                     Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
-                    Estonian, Korean, Hungarian
+                    Estonian, Korean, Chinese, Hungarian
 Created on:         June 3, 2009
 Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
@@ -31,28 +31,29 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
 
--- Version 5.2 Beta (5.1.99) --
+-- Version 5.2 --
+Apr. 30, 2011 - SYN: Create Synchronicity 5.2 bundles improves to the threading engine (~+12% in scanning performance), 7 new expert settings, 4 new translations, a few bug fixes, and a wealth of discrete updates. 
 Apr. 24, 2011 - UPD: Improved settings parsing.
 Apr. 24, 2011 - UPD: Canceling a catching up, or shutting down while catching up, does not mark the profile as caught up.
 Apr. 24, 2011 - UPD: Better exception handling.
-Apr. 23, 2011 - UPD: Reworked threading system.
+Apr. 23, 2011 - UPD: !Reworked threading system.
 Apr. 23, 2011 - NEW: Improved error reporting.
 Apr. 12, 2011 - NEW: !Hungarian translation, by Lajos Toldy. Köszönöm!
-Apr. 12, 2011 - NEW: (Hidden setting) Estimate remaining time.
-Apr. 07, 2011 - UPD: Better executable signining.
-Apr. 01, 2011 - NEW: Optional text-only logs.
+Apr. 12, 2011 - NEW: (Expert setting) Estimate remaining time (experimental).
+Apr. 07, 2011 - UPD: Private key binary signining.
+Apr. 01, 2011 - NEW: (Expert setting) Optional text-only logs.
 Apr. 01, 2011 - UPD: Rewrite part of the settings handling engine, enforcing stronger type checking.
 Mar. 05, 2011 - FIX: Check for partially locked files before copying.
-Feb. 13, 2011 - NEW: Copy integrity validation using md5 checksums.
-Feb. 13, 2011 - NEW: (Hidden setting) On-the-fly BZip2 compression.
+Feb. 13, 2011 - NEW: (Expert setting) Copy integrity validation using md5 checksums.
+Feb. 13, 2011 - NEW: (Expert setting) On-the-fly BZip2 compression.
 Feb. 12, 2011 - NEW: !Chinese (simplified) translation, by ycysuk. 谢谢!
-Feb. 11, 2011 - NEW: (Hidden setting) On-the-fly GZip compression.
+Feb. 11, 2011 - NEW: (Expert setting) On-the-fly GZip compression.
 Feb. 03, 2011 - NEW: Pressing Ctrl+L in main window will display a list of profiles instead of a tile.
-Feb. 02, 2011 - NEW: (Hidden setting) Show diff for modified files.
-Jan. 26, 2011 - NEW: (Hidden setting) Compare file size in addition to last modified date.
+Feb. 02, 2011 - NEW: (Expert setting) Show diff for modified files.
+Jan. 26, 2011 - NEW: (Expert setting) Compare file size in addition to last modified date.
 Jan. 21, 2011 - NEW: !Korean translation, by S.G.Park. 감사합니다!
 Jan. 07, 2011 - NEW: !Bulgarian translation. благодаря!
-Dec. 24, 2010 - NEW: !Automatic log cleaning.
+Dec. 24, 2010 - NEW: !Automatic log cleaning. Default set to keeping 7 log sections. 
 Dec. 23, 2010 - FIX: Fix catching-up interval miscalculation for monthly backups, spotted by Tim Coysh. Thanks!
 
 -- Version 5.1 --

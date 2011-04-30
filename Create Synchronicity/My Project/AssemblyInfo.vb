@@ -22,7 +22,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Create Synchronicity synchronizes and backups files and folders quickly and easily.")> 
 <Assembly: AssemblyCompany("Create Software")> 
 <Assembly: AssemblyProduct("Create Synchronicity")> 
-<Assembly: AssemblyCopyright("Create Software 2011 - GNU GPL")> 
+<Assembly: AssemblyCopyright("Create Software 2009-2011")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -41,6 +41,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.1.99.0")> 
-<Assembly: AssemblyFileVersion("5.1.99.0")> 
+<Assembly: AssemblyVersion("5.2.0.0")> 
+<Assembly: AssemblyFileVersion("5.2.0.0")> 
 <Assembly: NeutralResourcesLanguageAttribute("")> 
