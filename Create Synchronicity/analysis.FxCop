@@ -636,26 +636,26 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#ReloadProfilesScheduler(System.Collections.Generic.List`1&lt;CS.SchedulerEntry&gt;)">
+           <Member Name="#ReloadScheduledProfiles()">
             <Messages>
-             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-30 15:42:47Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'Date.ToString()'</Item>
-               <Item>'MessageLoop.ReloadProfilesScheduler(List(Of SchedulerEntry))'</Item>
+               <Item>'MessageLoop.ReloadScheduledProfiles()'</Item>
                <Item>'Date.ToString(IFormatProvider)'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
               <Issue Name="IFormatProviderAlternateString">
                <Item>'Date.ToString()'</Item>
-               <Item>'MessageLoop.ReloadProfilesScheduler(List(Of SchedulerEntry))'</Item>
+               <Item>'MessageLoop.ReloadScheduledProfiles()'</Item>
                <Item>'Date.ToString(IFormatProvider)'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
               <Issue Name="IFormatProviderAlternateString">
                <Item>'Date.ToString()'</Item>
-               <Item>'MessageLoop.ReloadProfilesScheduler(List(Of SchedulerEntry))'</Item>
+               <Item>'MessageLoop.ReloadScheduledProfiles()'</Item>
                <Item>'Date.ToString(IFormatProvider)'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
@@ -935,13 +935,6 @@
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
-              <Issue Name="IFormatProviderAlternateString">
-               <Item>'String.Format(String, Object)'</Item>
-               <Item>'ProfileHandler.ValidateConfigFile(Boolean, Boolean, Boolean, ByRef String)'</Item>
-               <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
-               <Item>'CultureInfo.CurrentCulture()'</Item>
-               <Item>'CultureInfo.InvariantCulture()'</Item>
-              </Issue>
              </Message>
              <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
               <Issue Name="IFormatProviderAlternateString">
@@ -993,28 +986,14 @@
          </Type>
          <Type Name="SettingsForm">
           <Members>
-           <Member Name="#.ctor(System.String,System.Boolean)">
+           <Member Name="#.ctor(System.String)">
             <Messages>
-             <Message Id="Name" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
+             <Message Id="Name" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-30 15:42:47Z">
               <Issue Name="MemberParameter">
-               <Item>'SettingsForm.New(String, Boolean)'</Item>
+               <Item>'SettingsForm.New(String)'</Item>
                <Item>Name</Item>
                <Item>'Name'</Item>
                <Item>name</Item>
-              </Issue>
-             </Message>
-             <Message Id="New" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2011-04-21 17:23:20Z">
-              <Issue Name="MemberParameter">
-               <Item>'SettingsForm.New(String, Boolean)'</Item>
-               <Item>New</Item>
-               <Item>'_NewProfile'</Item>
-               <Item>new</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="IdentifiersShouldNotContainUnderscores" Category="Microsoft.Naming" CheckId="CA1707" Created="2011-04-21 17:23:20Z">
-              <Issue Name="MemberParameter">
-               <Item>'SettingsForm.New(String, Boolean)'</Item>
-               <Item>'_NewProfile'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -1142,15 +1121,15 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#Do_Task(CS.SideOfSource,System.Collections.Generic.List`1&lt;CS.SyncingItem&gt;&amp;,System.String,System.String,System.Int32)">
+           <Member Name="#Do_Task(CS.SideOfSource,System.Collections.Generic.List`1&lt;CS.SyncingItem&gt;&amp;,System.String,System.String,CS.StatusData+SyncStep)">
             <Messages>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-21 17:23:20Z">
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2011-04-30 15:42:47Z">
               <Issue>
-               <Item>'SynchronizeForm.Do_Task(SideOfSource, ByRef List(Of SyncingItem), String, String, Integer)'</Item>
+               <Item>'SynchronizeForm.Do_Task(SideOfSource, ByRef List(Of SyncingItem), String, String, StatusData.SyncStep)'</Item>
                <Item>'Exception'</Item>
               </Issue>
               <Issue>
-               <Item>'SynchronizeForm.Do_Task(SideOfSource, ByRef List(Of SyncingItem), String, String, Integer)'</Item>
+               <Item>'SynchronizeForm.Do_Task(SideOfSource, ByRef List(Of SyncingItem), String, String, StatusData.SyncStep)'</Item>
                <Item>'Exception'</Item>
               </Issue>
              </Message>
@@ -1417,19 +1396,19 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#TaskDone(System.Int32)">
+           <Member Name="#TaskDone(CS.StatusData+SyncStep)">
             <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-30 15:42:47Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object)'</Item>
-               <Item>'SynchronizeForm.TaskDone(Integer)'</Item>
+               <Item>'SynchronizeForm.TaskDone(StatusData.SyncStep)'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object)'</Item>
-               <Item>'SynchronizeForm.TaskDone(Integer)'</Item>
+               <Item>'SynchronizeForm.TaskDone(StatusData.SyncStep)'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
@@ -1437,28 +1416,28 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#UpdateLabel(System.Int32,System.String)">
+           <Member Name="#UpdateLabel(CS.StatusData+SyncStep,System.String)">
             <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-30 15:42:47Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object)'</Item>
-               <Item>'SynchronizeForm.UpdateLabel(Integer, String)'</Item>
+               <Item>'SynchronizeForm.UpdateLabel(StatusData.SyncStep, String)'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
              </Message>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-21 17:23:20Z">
+             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2011-04-30 15:42:47Z">
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object, Object, Object)'</Item>
-               <Item>'SynchronizeForm.UpdateLabel(Integer, String)'</Item>
+               <Item>'SynchronizeForm.UpdateLabel(StatusData.SyncStep, String)'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
               </Issue>
               <Issue Name="IFormatProviderAlternateString">
                <Item>'String.Format(String, Object, Object, Object)'</Item>
-               <Item>'SynchronizeForm.UpdateLabel(Integer, String)'</Item>
+               <Item>'SynchronizeForm.UpdateLabel(StatusData.SyncStep, String)'</Item>
                <Item>'String.Format(IFormatProvider, String, ParamArray Object())'</Item>
                <Item>'CultureInfo.CurrentCulture()'</Item>
                <Item>'CultureInfo.InvariantCulture()'</Item>
