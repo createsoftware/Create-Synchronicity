@@ -2,7 +2,7 @@
 * Information
 Languages:          English, French, German, Portuguese, Italian, Spanish, 
                     Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
-                    Estonian, Korean, Chinese, Hungarian
+                    Estonian, Polish, Bulgarian, Korean, Chinese, Hungarian
 Created on:         June 3, 2009
 Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
