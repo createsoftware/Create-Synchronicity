@@ -49,9 +49,9 @@ Friend NotInheritable Class LanguageHandler
 
     Dim Strings As Dictionary(Of String, String)
 
-    Public Function Translate(ByVal Code As String, Optional ByVal Default_Value As String = "") As String
-        If Code = Nothing OrElse Code = "" Then Return Default_Value
-        Return If(Strings.ContainsKey(Code), Strings(Code), Code)
+    Public Function Translate(ByVal Code As String, Optional ByVal DefaultValue As String = "") As String
+        If Code = Nothing OrElse Code = "" Then Return DefaultValue
+        Return If(Strings.ContainsKey(Code), Strings(Code), If(DefaultValue = "", Code, DefaultValue))
     End Function
 
     Public Sub TranslateControl(ByVal Ctrl As Control)

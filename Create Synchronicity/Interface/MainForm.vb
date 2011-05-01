@@ -36,7 +36,7 @@ Public Class MainForm
         BuildIcons()
         Me.Icon = ProgramConfig.Icon
         Me.ExitToolStripMenuItem.Image = Me.DeleteToolStripMenuItem.Image
-        Me.ExitToolStripMenuItem.Text = Translation.Translate("\CANCEL_CLOSE").Split(";"c)(1)
+        Me.ExitToolStripMenuItem.Text = Translation.Translate("\CANCEL_CLOSE", ";").Split(";"c)(1)
 
         Translation.TranslateControl(Me)
         Translation.TranslateControl(Me.ActionsMenu)
