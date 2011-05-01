@@ -1,6 +1,6 @@
 -rw-rw-rw-   1 Clément Pit--Claudel 0 7,6K 2011-04-30 16:00 AUTHORS
 -rw-rw-rw-   1 Clément Pit--Claudel 0 3,4K 2011-04-30 16:00 bootstrap
--rw-rw-rw-   1 Clément Pit--Claudel 0 143K 2011-04-30 16:00 configure.ac
+-rw-rw-rw-   1 Clément Pit--Claudel 0 144K 2011-05-01 00:40 configure.ac
 -rw-rw-rw-   1 Clément Pit--Claudel 0  19K 2011-04-30 16:00 COPYING
 -rw-rw-rw-   1 Clément Pit--Claudel 0 3,0K 2011-04-30 16:00 HACKING
 -rw-rw-rw-   1 Clément Pit--Claudel 0 1,7K 2011-04-30 16:00 INSTALL
@@ -461,7 +461,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0  30K 2011-04-30 16:00 vlc_common.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 6,5K 2011-04-30 16:00 vlc_config.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  12K 2011-04-30 16:00 vlc_config_cat.h
--rw-rw-rw-  1 Clément Pit--Claudel 0  14K 2011-04-30 16:00 vlc_configuration.h
+-rw-rw-rw-  1 Clément Pit--Claudel 0  13K 2011-05-01 00:40 vlc_configuration.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 3,1K 2011-04-30 16:00 vlc_cpu.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 8,5K 2011-04-30 16:00 vlc_demux.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 4,0K 2011-04-30 16:00 vlc_dialog.h
@@ -503,7 +503,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0 3,0K 2011-04-30 16:00 vlc_picture_fifo.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 4,3K 2011-04-30 16:00 vlc_picture_pool.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  16K 2011-04-30 16:00 vlc_playlist.h
--rw-rw-rw-  1 Clément Pit--Claudel 0  19K 2011-04-30 16:00 vlc_plugin.h
+-rw-rw-rw-  1 Clément Pit--Claudel 0  19K 2011-05-01 00:40 vlc_plugin.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 2,1K 2011-04-30 16:00 vlc_probe.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 1,5K 2011-04-30 16:00 vlc_rand.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 6,4K 2011-04-30 16:00 vlc_services_discovery.h
@@ -620,7 +620,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0  447 2011-04-30 16:00 xsize.m4
 -rw-rw-rw-   1 Clément Pit--Claudel 0 1,2K 2011-04-30 16:00 common.am
 -rw-rw-rw-   1 Clément Pit--Claudel 0 1,8K 2011-04-30 16:00 genmf
--rw-rw-rw-   1 Clément Pit--Claudel 0  18K 2011-04-30 16:00 LIST
+-rw-rw-rw-   1 Clément Pit--Claudel 0  18K 2011-05-01 00:40 LIST
 -rw-rw-rw-   1 Clément Pit--Claudel 0 1,4K 2011-04-30 16:00 list.sh
 -rw-rw-rw-   1 Clément Pit--Claudel 0 1,4K 2011-04-30 16:00 Makefile.am
 -rw-rw-rw-  1 Clément Pit--Claudel 0  258 2011-04-30 16:00 Modules.am
@@ -628,7 +628,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0  23K 2011-04-30 16:00 decklink.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0  13K 2011-04-30 16:00 eyetv.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 1,5K 2011-04-30 16:00 fs.h
--rw-rw-rw-  1 Clément Pit--Claudel 0 4,3K 2011-04-30 16:00 Modules.am
+-rw-rw-rw-  1 Clément Pit--Claudel 0 4,3K 2011-05-01 00:40 Modules.am
 -rw-rw-rw-  1 Clément Pit--Claudel 0  15K 2011-04-30 16:00 qtcapture.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 2,7K 2011-04-30 16:00 clpi.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  154 2011-04-30 16:00 Modules.am
@@ -834,7 +834,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0 3,8K 2011-04-30 16:00 output.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  26K 2011-04-30 16:00 output.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 5,2K 2011-04-30 16:00 playlist.h
--rw-rw-rw-  1 Clément Pit--Claudel 0  60K 2011-04-30 16:00 playlist.m
+-rw-rw-rw-  1 Clément Pit--Claudel 0  60K 2011-05-01 00:40 playlist.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 4,4K 2011-04-30 16:00 playlistinfo.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  19K 2011-04-30 16:00 playlistinfo.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 2,1K 2011-04-30 16:00 prefs.h
@@ -852,12 +852,12 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0 2,2K 2011-04-30 16:00 SPMediaKeyTap.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 9,8K 2011-04-30 16:00 SPMediaKeyTap.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 4,2K 2011-04-30 16:00 vout.h
--rw-rw-rw-  1 Clément Pit--Claudel 0  34K 2011-04-30 16:00 vout.m
+-rw-rw-rw-  1 Clément Pit--Claudel 0  34K 2011-05-01 01:12 vout.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0  13K 2011-04-30 16:00 voutgl.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 6,3K 2011-04-30 16:00 wizard.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  88K 2011-04-30 16:00 wizard.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 2,3K 2011-04-30 16:00 dialogProvider.h
--rw-rw-rw-  1 Clément Pit--Claudel 0  35K 2011-04-30 16:00 dialogProvider.m
+-rw-rw-rw-  1 Clément Pit--Claudel 0  35K 2011-05-01 00:40 dialogProvider.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0  465 2011-04-30 16:00 Modules.am
 -rw-rw-rw-  1 Clément Pit--Claudel 0 1,9K 2011-04-30 16:00 VLCLoginPanel.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 6,3K 2011-04-30 16:00 VLCLoginPanel.m
@@ -883,7 +883,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0  10K 2011-04-30 16:00 extensions_manager.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 3,2K 2011-04-30 16:00 extensions_manager.hpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 1,7K 2011-04-30 16:00 HACKING
--rw-rw-rw-  1 Clément Pit--Claudel 0  36K 2011-04-30 16:00 input_manager.cpp
+-rw-rw-rw-  1 Clément Pit--Claudel 0  36K 2011-05-01 00:40 input_manager.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 8,3K 2011-04-30 16:00 input_manager.hpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0  41K 2011-04-30 16:00 main_interface.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 7,8K 2011-04-30 16:00 main_interface.hpp
@@ -1298,7 +1298,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0 3,5K 2011-04-30 16:00 scaled_bitmap.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 2,1K 2011-04-30 16:00 scaled_bitmap.hpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 4,4K 2011-04-30 16:00 skin_common.hpp
--rw-rw-rw-  1 Clément Pit--Claudel 0  17K 2011-04-30 16:00 skin_main.cpp
+-rw-rw-rw-  1 Clément Pit--Claudel 0  17K 2011-05-01 00:40 skin_main.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 7,1K 2011-04-30 16:00 theme.cpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0 4,0K 2011-04-30 16:00 theme.hpp
 -rw-rw-rw-  1 Clément Pit--Claudel 0  21K 2011-04-30 16:00 theme_loader.cpp
@@ -1440,7 +1440,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0 5,3K 2011-04-30 16:00 filter_picture.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0 9,2K 2011-04-30 16:00 gradfun.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  12K 2011-04-30 16:00 mmx.h
--rw-rw-rw-  1 Clément Pit--Claudel 0 4,0K 2011-04-30 16:00 Modules.am
+-rw-rw-rw-  1 Clément Pit--Claudel 0 3,8K 2011-05-01 00:40 Modules.am
 -rw-rw-rw-  1 Clément Pit--Claudel 0 1,9K 2011-04-30 16:00 mosaic.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  24K 2011-04-30 16:00 remoteosd_rfbproto.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  12K 2011-04-30 16:00 yadif.h
@@ -1488,9 +1488,6 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0  13K 2011-04-30 16:00 README.txt
 -rw-rw-rw-  1 Clément Pit--Claudel 0 6,2K 2011-04-30 16:00 dynamicoverlay.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  174 2011-04-30 16:00 Modules.am
--rw-rw-rw-  1 Clément Pit--Claudel 0 2,9K 2011-04-30 16:00 arm_colorconv.h
--rw-rw-rw-  1 Clément Pit--Claudel 0 9,7K 2011-04-30 16:00 arm_colorconv.S
--rw-rw-rw-  1 Clément Pit--Claudel 0 1,6K 2011-04-30 16:00 arm_jit_swscale.h
 -rw-rw-rw-  1 Clément Pit--Claudel 0  15K 2011-04-30 16:00 ios.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0  17K 2011-04-30 16:00 macosx.m
 -rw-rw-rw-  1 Clément Pit--Claudel 0 3,5K 2011-04-30 16:00 Modules.am
@@ -1558,7 +1555,7 @@
 -rw-rw-rw-  1 Clément Pit--Claudel 0  679K 2011-04-30 16:00 oc.po
 -rw-rw-rw-  1 Clément Pit--Claudel 0  753K 2011-04-30 16:00 pa.po
 -rw-rw-rw-  1 Clément Pit--Claudel 0  856K 2011-04-30 16:00 pl.po
--rw-rw-rw-  1 Clément Pit--Claudel 0   37K 2011-04-30 16:00 POTFILES.in
+-rw-rw-rw-  1 Clément Pit--Claudel 0   37K 2011-05-01 00:40 POTFILES.in
 -rw-rw-rw-  1 Clément Pit--Claudel 0   140 2011-04-30 16:00 POTFILES.skip
 -rw-rw-rw-  1 Clément Pit--Claudel 0  606K 2011-04-30 16:00 ps.po
 -rw-rw-rw-  1 Clément Pit--Claudel 0  846K 2011-04-30 16:00 pt_BR.po
