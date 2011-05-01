@@ -249,7 +249,7 @@ Friend NotInheritable Class MessageLoop
         End If
     End Sub
 
-    Private Sub ScheduledProfileCompleted(ByVal ProfileName As String, ByVal Completed As Boolean) 'FIXME: Test this
+    Private Sub ScheduledProfileCompleted(ByVal ProfileName As String, ByVal Completed As Boolean)
         If Completed Then ConfigHandler.LogAppEvent("Scheduler: " & ProfileName & " completed successfully.")
         If Not Profiles.ContainsKey(ProfileName) Then Exit Sub
 

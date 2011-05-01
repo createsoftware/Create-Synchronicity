@@ -291,7 +291,7 @@ NotInheritable Class ProfileHandler
 
     Public Function GetLastRun() As Date
         Try
-            Return GetSetting(Of Date)(ProfileSetting.LastRun, ScheduleInfo.DATE_NEVER) 'TODO: Check conversion
+            Return GetSetting(Of Date)(ProfileSetting.LastRun, ScheduleInfo.DATE_NEVER) 'NOTE: Conversion seems ok, but there might be locale-dependent problems arising.
         Catch
             Return ScheduleInfo.DATE_NEVER
         End Try

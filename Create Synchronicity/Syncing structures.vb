@@ -86,7 +86,7 @@ Structure SyncingItem
     Function FormatAction() As String
         Select Case Action
             Case TypeOfAction.Copy
-                Return If(IsUpdate, Translation.Translate("\UPDATE"), Translation.Translate("\CREATE")) 'FIXME: s/\UPDATE/\CREATE if translations are not ok.
+                Return If(IsUpdate, Translation.Translate("\UPDATE"), Translation.Translate("\CREATE"))
             Case TypeOfAction.Delete
                 Return Translation.Translate("\DELETE")
             Case Else
