@@ -365,6 +365,7 @@ Public Class SynchronizeForm
 
                     If Quiet Then 'TODO: Show ballon tip every time? -> Remember to modify init function to show icon if so.
                         If Status.Failed Then
+                            System.Threading.Thread.Sleep(5000) 'Wait a little before failing
                             Interaction.ShowBalloonTip(Status.FailureMsg)
                         Else
                             Interaction.ShowBalloonTip(String.Format(Translation.Translate("\SYNCED_W_ERRORS"), Handler.ProfileName), ProgramConfig.GetLogPath(Handler.ProfileName))
@@ -443,7 +444,7 @@ Public Class SynchronizeForm
         Status.Cancel = Status.Cancel Or (Status.CurrentStep <> StatusData.SyncStep.Done)
         FullSyncThread.Abort()
         ScanThread.Abort() : SyncThread.Abort()
-        TaskDone(StatusData.SyncStep.Scan) : TaskDone(StatusData.SyncStep.SyncLR) : TaskDone(StatusData.SyncStep.SyncRL)
+        TaskDone(StatusData.SyncStep.Scan) : TaskDone(StatusData.SyncStep.SyncLR) : TaskDone(StatusData.SyncStep.SyncRL) 'This call will sleep for 5s after displaying its failure message if the backup failed.
     End Sub
 #End Region
 

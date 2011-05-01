@@ -2,8 +2,8 @@
 --         Local         --
 - Code -
 * Fix remaining TODOs
-* Update version.txt (!Needed by installer!)
-* Update DEBUG and RELEASE versions numbers
+* Update version-string.txt (!Needed by installer!)
+* Update version numbers
 * Update release notes, add a "SYN:" entry
 * Test program on guest session
 * Tag
@@ -23,3 +23,6 @@
 * Upload website, version.txt, .htaccess, and PAD file
 * Send recap e-mail, post news on SF
 * Post twitter news
+
+--         Later         --
+* Update version.txt
