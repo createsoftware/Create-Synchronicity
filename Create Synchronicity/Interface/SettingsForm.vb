@@ -381,9 +381,9 @@ Public Class SettingsForm
                         Tree.Nodes(0).Nodes.Add(GetFileOrFolderName(Dir))
                     Next
 
-                    'No need to expand root here, since children were already added.
-                    LoadCheckState(Tree, CheckedNodes)
+                    'Expanding root is crucial here, since children were already added, but not their subchildren, and expand only works on node which already have subchildren.
                     Tree.Nodes(0).Expand()
+                    LoadCheckState(Tree, CheckedNodes)
                 Catch Ex As Exception
                     Tree.Nodes.Clear() 'TODO: When does this happen?
                     Tree.Enabled = False

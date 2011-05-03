@@ -32,7 +32,7 @@ NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modifica
 --------------------------
 
 -- Version 5.2 --
-May. 01, 2011 - SYN: Create Synchronicity 5.2 bundles improvements to the threading engine (~+12% in scanning performance), 7 new expert settings, 4 new translations, a few bug fixes, and a wealth of discrete updates. 
+May. 03, 2011 - SYN: Create Synchronicity 5.2 bundles improvements to the threading engine (~+12% in scanning performance), 7 new expert settings, 4 new translations, a few bug fixes, and a wealth of discrete updates.
 Apr. 24, 2011 - UPD: Improved settings parsing.
 Apr. 24, 2011 - UPD: Canceling a catching up, or shutting down while catching up, does not mark the profile as caught up.
 Apr. 24, 2011 - UPD: Better exception handling.
