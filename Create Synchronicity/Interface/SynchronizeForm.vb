@@ -111,7 +111,7 @@ Public Class SynchronizeForm
         Status.Failed = Not IsValid
 
         If IsValid Then
-            'ProgramConfig.IncrementSyncsCount() 'TODO: Enable. Problem of concurrent savings of the main config file.
+            ProgramConfig.IncrementSyncsCount()
             If Preview Then
                 PreviewList.Items.Clear()
                 ScanThread.Start()
@@ -768,7 +768,7 @@ Public Class SynchronizeForm
         If Count > 0 Then
             AddPreviewItem(SyncingList(Side)(SyncingList(Side).Count - 1), Side)
         ElseIf Count < 0 Then
-            PreviewList.Items.RemoveAt(PreviewList.Items.Count - 1)
+            PreviewList.Items.RemoveAt(PreviewList.Items.Count - 1) 'The callers already take care of updating the folders counts correctly.
         End If
     End Sub
 

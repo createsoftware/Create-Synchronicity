@@ -60,6 +60,7 @@ NotInheritable Class ConfigHandler
     Public CompressionDll As String
     Public LocalNamesFile As String
     Public MainConfigFile As String
+    Public StatsFile As String
 
     Public CanGoOn As Boolean = True 'To check whether a synchronization is already running (in scheduler mode only, queuing uses callbacks).
 
@@ -72,13 +73,14 @@ NotInheritable Class ConfigHandler
         ConfigRootDir = GetUserFilesRootDir() & ProgramSetting.ConfigFolderName
         LanguageRootDir = Application.StartupPath & ProgramSetting.DirSep & "languages"
 
+        StatsFile = ConfigRootDir & ProgramSetting.DirSep & "syncs-count.txt"
         LocalNamesFile = LanguageRootDir & ProgramSetting.DirSep & "local-names.txt"
         MainConfigFile = ConfigRootDir & ProgramSetting.DirSep & ProgramSetting.SettingsFileName
         CompressionDll = Application.StartupPath & ProgramSetting.DirSep & ProgramSetting.DllName
 
         Try
             Icon = Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath)
-        Catch
+        Catch Ex As ArgumentException
             Icon = Drawing.Icon.FromHandle((New Drawing.Bitmap(32, 32)).GetHicon)
         End Try
     End Sub
@@ -224,18 +226,14 @@ NotInheritable Class ConfigHandler
         End If
     End Sub
 
-#If 0 Then
-    ' This method requires saving mainconfig.ini, thus overwriting customizations made when the scheduler was running. Problem.
     Public Sub IncrementSyncsCount()
-        Dim Count As Integer
         Try
-            Count = GetProgramSetting(ConfigOptions.SyncsCount, "0")
+            Dim Count As Integer
+            If IO.File.Exists(StatsFile) Then Integer.TryParse(IO.File.ReadAllText(StatsFile), Count)
+            IO.File.WriteAllText(StatsFile, (Count + 1).ToString)
         Catch
-            Count = 0
         End Try
-        SetProgramSetting(Of Integer)(ConfigOptions.SyncsCount, Count + 1)
     End Sub
-#End If
 End Class
 
 Structure CommandLine
