@@ -16,4 +16,5 @@ portuguese;português;pt
 russian;русский язык;ru
 spanish;español;es
 swedish;svenska;sv
+chinese (traditional);中文;zh
 chinese (simplified);中文;zh

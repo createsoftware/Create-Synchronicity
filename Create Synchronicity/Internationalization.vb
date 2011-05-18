@@ -114,7 +114,7 @@ Friend NotInheritable Class LanguageHandler
         Dim ProgramLanguageIndex As Integer = -1
         Dim DefaultLanguageIndex As Integer = -1
         Dim CurProgramLanguage As String = ProgramConfig.GetProgramSetting(Of String)(ProgramSetting.Language, "")
-        Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName
+        Dim LanguageCode As String = Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName 'FIXME: Currently traditional and simplified chinese have the same codes. 
 
         LanguagesComboBox.Items.Clear()
         For Each File As String In IO.Directory.GetFiles(ProgramConfig.LanguageRootDir, "*.lng")

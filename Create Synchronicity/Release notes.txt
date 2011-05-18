@@ -2,7 +2,8 @@
 * Information
 Languages:          English, French, German, Portuguese, Italian, Spanish, 
                     Swedish, Dutch, Czech, Indonesian, Hebrew, Danish, Russian,
-                    Estonian, Polish, Bulgarian, Korean, Chinese, Hungarian
+                    Estonian, Polish, Bulgarian, Korean, Chinese (Simplified),
+                    Hungarian, Chinese (Traditional).
 Created on:         June 3, 2009
 Created by:         Clément Pit--Claudel (Create Software)
 Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
@@ -30,6 +31,8 @@ SVN Server:         https://synchronicity.svn.sourceforge.net/svnroot/synchronic
 * Change Log
 NEW: New feature; FIX: Bug fixed; UPD: Update/Improvement; !: Important modification, SYN: Synopsis 
 --------------------------
+
+May. 18, 2011 - UPD: !Chinese (traditional) translation. Thanks!
 
 -- Version 5.2, 5.2.1 --
 May. 03, 2011 - SYN: Create Synchronicity 5.2 bundles improvements to the threading engine (~+12% in scanning performance), 7 new expert settings, 4 new translations, a few bug fixes, and a wealth of discrete updates.

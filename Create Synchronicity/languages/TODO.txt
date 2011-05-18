@@ -1,12 +1,13 @@
 bulgarian:6
 chinese (simplified):5
+chinese (traditional):0
 czech:9
 danish:6
 deutsch:1
-dutch:6
-english:1
+dutch:0
+english:0
 estonian:9
-francais:1
+francais:0
 hebrew:25
 hungarian:1
 indonesian:6
