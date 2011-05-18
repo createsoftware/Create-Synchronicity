@@ -9,7 +9,7 @@ Special thanks:     Mauricio Leyzaola, Christian Eibler, Alexander Barnes,
                     Dr. Beau Webber - Lab-Tools Ltd, John Lundy, William Cook,
                     Carl Almond, Timothy Wessels, Jim Ogden, Jim Maxwell, 
                     Jim Lakusta, Doug Hall, Klaus Becker, Ralphie Retana Jr.,
-                    MJ Raatz, Hal Berman
+                    MJ Raatz, Hal Berman, The GD Workshop
 Patches:            U.N. Owen
 Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Rojo,
                     Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
