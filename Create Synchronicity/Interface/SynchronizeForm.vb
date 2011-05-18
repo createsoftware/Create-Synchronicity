@@ -858,7 +858,7 @@ Public Class SynchronizeForm
         If Handler.GetSetting(Of Boolean)(ProfileSetting.StrictDateComparison, True) Then
             If SourceFATTime = DestFATTime Then Return False
         Else
-            If Math.Abs((SourceFATTime - DestFATTime).TotalSeconds) <= 4 Then Return False 'Note: NTFSToFATTime introduces additional fuzzyness (justifies the <= ('=')).
+            If Math.Abs((SourceFATTime - DestFATTime).TotalSeconds) <= 4 Then Return False 'Note: NTFSToFATTime introduces additional fuzziness (justifies the <= ('=')).
         End If
 
         If SourceFATTime < DestFATTime AndAlso (Not Handler.GetSetting(Of Boolean)(ProfileSetting.StrictMirror, False)) Then Return False
