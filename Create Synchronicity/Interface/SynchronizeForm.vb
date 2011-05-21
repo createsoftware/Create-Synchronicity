@@ -18,7 +18,7 @@ Public Class SynchronizeForm
     Private ExcludedPatterns As New List(Of FileNamePattern)
     Private ExcludedDirPatterns As New List(Of FileNamePattern)
 
-    Private Labels() As String = {"", "", "", ""}
+    Private Labels() As String = Nothing
     Private StatusLabel As String = ""
     Private Lock As New Object()
 
@@ -77,6 +77,8 @@ Public Class SynchronizeForm
         Translation.TranslateControl(Me)
         Me.Icon = ProgramConfig.Icon
         Me.Text = String.Format(Me.Text, Handler.ProfileName, Handler.GetSetting(Of String)(ProfileSetting.Source), Handler.GetSetting(Of String)(ProfileSetting.Destination)) 'Feature requests #3037548, #3055740
+
+        Labels = New String() {"", Step1StatusLabel.Text, Step2StatusLabel.Text, Step3StatusLabel.Text}
 
 #If LINUX Then
         Step1ProgressBar.MarqueeAnimationSpeed = 5000
