@@ -1,5 +1,5 @@
 ﻿# Create Synchronicity Spanish Language file
-# Translation by Teo Rojo, Jaime Roquero, Mauricio Leyzaola
+# Translation by Teo Rojo, Jaime Roquero, Mauricio Leyzaola, Juan Pablo Ahumada
 # Tag outdated strings with "->". For example, write "->ID=Translation" if the string ID needs to be retranslated from English.
 #
 # SCH_WAITING should be less than 64 chars long, including profile name and date.
@@ -10,7 +10,7 @@ ACTION=Acción
 ACTIONS=Acciones
 ADVANCED_OPTS=Opciones avanzadas
 ALL_FILES=Copiar todos los archivos
-BUG_REPORT=\Enviar una errata/
+BUG_REPORT=\Enviar una error/
 CANCEL=Cancelar
 CANCEL_CLOSE=Cancelar;Cerrar
 CHANGE_SETTINGS=Cambiar opciones
@@ -154,9 +154,9 @@ CATCHUP_MISSED_BACKUPS_TAG=Indica que hacer si el equipo estuvo fuera de línea 
 CATCHING_UP=Create Synchronicity se está poniendo al día "{0}" (última ejecución hace {1} día(s), {2} hora(s) ({3})).
 FOLDER_FAILED=No se puede crear el directorio "{0}" ({1}).
 CREATE_DEST=Crear de forma dinámica el directorio destino
--UPDATE=Actualizar
-->MD5=
-->GROUP=
-->COMPARE_SIZE=
-->MORE=
-->NO_PROFILES=
+UPDATE=Actualización
+MD5=Asegurar integridad del respaldo (método MD5)
+GROUP=Grupo
+COMPARE_SIZE=Comparar tamaño de archivo
+MORE=Más (sólo expertos)
+NO_PROFILES=No tienes perfiles. Haz click en "{0}" para crear uno

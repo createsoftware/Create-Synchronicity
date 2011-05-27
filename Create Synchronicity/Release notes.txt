@@ -17,8 +17,8 @@ Translations:       Clément Pit--Claudel, Florian Haag, André Modesto, Teo Roj
                     Pedro Silva, Marco Medri, Jaime Roquero, Hampus Bengtsson,
                     John Van Amstel, Mauricio Leyzaola, Jiří Stuchlík, Sergio
                     Chiapperini, Gush Katif Laad, Bjørn Karlstrøm, Andres Aule,
-                    S.G.Park, Marco C., Marco Salvagno, Lajos Toldy,
-                    Elfalem Alemu
+                    S. G. Park, Marco C., Marco Salvagno, Lajos Toldy,
+                    Elfalem Alemu, Juan Pablo Ahumada
 
 * Technical information
 License:            GNU GPL v3 or later (see "COPYING")
