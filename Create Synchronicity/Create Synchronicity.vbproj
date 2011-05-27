@@ -218,6 +218,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Create Synchronicity.pfx" />
+    <None Include="languages\amharic.lng">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="languages\bulgarian.lng">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
