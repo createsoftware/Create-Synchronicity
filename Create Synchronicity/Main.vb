@@ -115,7 +115,7 @@ Friend NotInheritable Class MessageLoop
         ConfigHandler.LogAppEvent("Program exited")
 
 #If Debug And 0 Then
-        VariousTests()
+        SynchronizeForm.Check_NTFSToFATTime()
 #End If
     End Sub
 

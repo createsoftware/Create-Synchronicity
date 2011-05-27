@@ -927,9 +927,95 @@ Public Class SynchronizeForm
         End Using
     End Function
 
+    'TODO: This could be a useful function for NAS drives known to round NTFS timestamps, but currently only DLink does, and they do it incorrectly (there's a bug in their drivers)
+    Private Shared Function RoundToSecond(ByVal NTFSTime As Date) As Date
+        Return (New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second).AddSeconds(If(NTFSTime.Millisecond > 500, 1, 0)))
+    End Function
+
     Private Shared Function NTFSToFATTime(ByVal NTFSTime As Date) As Date
-        'Return NTFSTime.AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))).AddMilliseconds(-NTFSTime.Millisecond)
         Return (New Date(NTFSTime.Year, NTFSTime.Month, NTFSTime.Day, NTFSTime.Hour, NTFSTime.Minute, NTFSTime.Second).AddSeconds(If(NTFSTime.Millisecond = 0, NTFSTime.Second Mod 2, 2 - (NTFSTime.Second Mod 2))))
     End Function
+#End Region
+
+#Region "Tests"
+#If DEBUG Then
+    Structure DatePair
+        Dim Ntfs, FAT As Date
+
+        <Diagnostics.DebuggerStepThrough()>
+        Sub New(ByVal NtfsTime As Date, ByVal FatTime As Date)
+            Ntfs = NtfsTime
+            FAT = FatTime
+        End Sub
+    End Structure
+
+    Public Shared Sub Check_NTFSToFATTime()
+        Check_StaticFATTimes()
+        Check_HardwareFATTimes()
+    End Sub
+
+    Public Shared Sub Check_StaticFATTimes()
+        System.Diagnostics.Debug.WriteLine("Starting hardcoded NTFS -> FAT tests")
+        Dim Tests As New List(Of DatePair) From {New DatePair(#7:31:00 AM#, #7:31:00 AM#), New DatePair(#7:31:00 AM#.AddMilliseconds(1), #7:31:02 AM#), New DatePair(#7:31:01 AM#, #7:31:02 AM#), New DatePair(#7:31:01 AM#.AddMilliseconds(999), #7:31:02 AM#)}
+        For Each Test As DatePair In Tests
+            Dim Actual As Date = NTFSToFATTime(Test.Ntfs)
+            Dim Result As String = String.Format("Check_NTFSToFATTime: {0} -> {1} ({2} expected) --> {3}", Test.Ntfs, Actual, Test.FAT, If(Actual = Test.FAT, "Ok", "Failed"))
+            System.Diagnostics.Debug.WriteLine(Result)
+        Next
+        System.Diagnostics.Debug.WriteLine("Done!")
+    End Sub
+
+    Private Shared Function FormatDate(ByVal Value As Date) As String
+        Return Value.ToString("hh:mm:ss.fff")
+    End Function
+
+    Public Shared Sub Check_HardwareFATTimes()
+        Using LogWriter As New IO.StreamWriter("C:\FatTimes.txt", False)
+            LogWriter.WriteLine("Starting dynamic NTFS -> FAT tests")
+            Dim Source As String = "C:\NtfsTests", Destination As String = "Z:\NtfsTests"
+            If IO.Directory.Exists(Source) Then IO.Directory.Delete(Source, True)
+            If IO.Directory.Exists(Destination) Then IO.Directory.Delete(Destination, True)
+
+            IO.Directory.CreateDirectory(Source)
+            IO.Directory.CreateDirectory(Destination)
+
+            Dim BaseDate As Date = Date.Today.AddHours(8)
+            Dim FormatString As String = "{0,-15}{1,-15}{2,-15}{3,-15}{4,-15}{5,-15}{6,-15}"
+
+            LogWriter.WriteLine(String.Format(FormatString, "Input", "Source", "Dest (Created)", "Dest (Copied)", "ForecastedDate", "Rounded", "Equal?"))
+
+            For ms As Integer = 0 To 61000 Step 71
+                Dim InputDate As Date = BaseDate.AddMilliseconds(ms)
+                Dim SourcePath As String = IO.Path.Combine(Source, ms.ToString)
+                Dim DestPath_Created As String = IO.Path.Combine(Destination, ms.ToString & "-created")
+                Dim DestPath_Copied As String = IO.Path.Combine(Destination, ms.ToString & "-copied")
+                IO.File.Create(SourcePath).Close()
+                IO.File.Create(DestPath_Created).Close()
+
+                IO.File.SetLastWriteTime(SourcePath, InputDate)
+                IO.File.SetLastWriteTime(DestPath_Created, InputDate)
+                IO.File.Copy(SourcePath, DestPath_Copied)
+
+                Dim SourceDate As Date = IO.File.GetLastWriteTime(SourcePath)
+                Dim DestCreatedDate As Date = IO.File.GetLastWriteTime(DestPath_Created)
+                Dim DestCopiedDate As Date = IO.File.GetLastWriteTime(DestPath_Copied)
+                Dim ForecastedDate As Date = NTFSToFATTime(InputDate)
+                Dim RoundedDate As Date = RoundToSecond(InputDate)
+                Dim Equal As Boolean = InputDate = SourceDate And DestCreatedDate = DestCopiedDate And DestCopiedDate = ForecastedDate
+
+                IO.File.Delete(SourcePath)
+                IO.File.Delete(DestPath_Copied)
+                IO.File.Delete(DestPath_Created)
+
+                LogWriter.WriteLine(FormatString, FormatDate(InputDate), FormatDate(SourceDate), FormatDate(DestCreatedDate), FormatDate(DestCopiedDate), FormatDate(ForecastedDate), FormatDate(RoundedDate), Equal)
+            Next
+
+            IO.Directory.Delete(Source, True)
+            IO.Directory.Delete(Destination, True)
+
+            LogWriter.WriteLine("Done!")
+        End Using
+    End Sub
+#End If
 #End Region
 End Class
