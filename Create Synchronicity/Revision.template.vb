@@ -1,3 +1,3 @@
 ﻿Module Revision
-    Public Const Build As Integer = $WCREV$ + 1
+    Public Const Build As Integer = $WCREV$
 End Module
