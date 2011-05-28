@@ -845,8 +845,11 @@ Public Class SynchronizeForm
     Private Function SourceIsMoreRecent(ByVal Source As String, ByVal Destination As String) As Boolean 'Assumes Source and Destination exist.
         If (Not Handler.GetSetting(Of Boolean)(ProfileSetting.PropagateUpdates, True)) Then Return False
 
+        Log.LogInfo(String.Format("SourceIsMoreRecent: {0}, {1}", Source, Destination))
+
         Dim SourceFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Source)).AddHours(Handler.GetSetting(Of Integer)(ProfileSetting.TimeOffset, 0))
         Dim DestFATTime As Date = NTFSToFATTime(IO.File.GetLastWriteTimeUtc(Destination))
+        Log.LogInfo(String.Format("SourceIsMoreRecent: S:({0}, {1}); D:({2}, {3})", FormatDate(IO.File.GetLastWriteTimeUtc(Source)), FormatDate(SourceFATTime), FormatDate(IO.File.GetLastWriteTimeUtc(Destination)), FormatDate(DestFATTime)))
 
         If Handler.GetSetting(Of Boolean)(ProfileSetting.FuzzyDstCompensation, False) Then
             Dim HoursDiff As Integer = CInt((SourceFATTime - DestFATTime).TotalHours)
@@ -938,6 +941,12 @@ Public Class SynchronizeForm
 #End Region
 
 #Region "Tests"
+    Private Shared Function FormatDate(ByVal Value As Date) As String
+#If DEBUG Then
+        Return Value.ToString("hh:mm:ss.fff")
+#End If
+    End Function
+
 #If DEBUG Then
     Structure DatePair
         Dim Ntfs, FAT As Date
@@ -964,10 +973,6 @@ Public Class SynchronizeForm
         Next
         System.Diagnostics.Debug.WriteLine("Done!")
     End Sub
-
-    Private Shared Function FormatDate(ByVal Value As Date) As String
-        Return Value.ToString("hh:mm:ss.fff")
-    End Function
 
     Public Shared Sub Check_HardwareFATTimes()
         Using LogWriter As New IO.StreamWriter("C:\FatTimes.txt", False)
