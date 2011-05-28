@@ -958,7 +958,7 @@ Public Class SynchronizeForm
 #Region "Tests"
     Private Shared Function FormatDate(ByVal Value As Date) As String
 #If DEBUG Then
-        Return Value.ToString("hh:mm:ss.fff")
+        Return Value.ToString("yyyy/MM/dd hh:mm:ss.fff")
 #End If
     End Function
 
