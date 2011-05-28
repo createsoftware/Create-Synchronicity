@@ -89,6 +89,15 @@ Public Class SynchronizeForm
     Sub StartSynchronization(ByVal CalledShowModal As Boolean)
         ProgramConfig.CanGoOn = False
 
+#If DEBUG Then
+        Log.LogInfo("Synchronization started.")
+        Log.LogInfo("Profile settings:")
+        For Each Pair As KeyValuePair(Of String, String) In Handler.Configuration
+            Log.LogInfo(String.Format("    {0,-50}: {1}", Pair.Key, Pair.Value))
+        Next
+        Log.LogInfo("Done.")
+#End If
+
         If Quiet Then
             Me.Visible = False
 
@@ -570,7 +579,7 @@ Public Class SynchronizeForm
 
     Private Sub Init_Synchronization(ByRef FoldersList As Dictionary(Of String, Boolean), ByVal Context As SyncingAction)
         For Each Folder As String In FoldersList.Keys
-            Log.LogInfo(String.Format("=> Scanning top-level folders from side {0}: Folder ""{1}""", Context.SourcePath, Folder))
+            Log.LogInfo(String.Format("=> Scanning ""{0}"" top level folders: ""{1}""", Context.SourcePath, Folder))
             If IO.Directory.Exists(CombinePathes(Context.SourcePath, Folder)) Then
                 If Context.Action = TypeOfAction.Copy Then
                     'FIXED-BUG: Every ancestor of this folder should be added too.
@@ -597,14 +606,14 @@ Public Class SynchronizeForm
     End Sub
 
     Private Sub AddValidAncestors(ByVal Folder As String)
-        Log.LogInfo(String.Format("Folder ""{0}"" is a top level folder, adding it's ancestors.", Folder))
+        Log.LogInfo(String.Format("AddValidAncestors: Folder ""{0}"" is a top level folder, adding it's ancestors.", Folder))
         Dim CurrentAncestor As New System.Text.StringBuilder
         Dim Ancestors As New List(Of String)(Folder.Split(New Char() {ProgramSetting.DirSep}, StringSplitOptions.RemoveEmptyEntries))
 
         For Depth As Integer = 0 To (Ancestors.Count - 1) - 1 'The last ancestor is the folder itself, and will be added in SearchForChanges.
             CurrentAncestor.Append(ProgramSetting.DirSep).Append(Ancestors(Depth))
             AddValidFile(CurrentAncestor.ToString)
-            Log.LogInfo(String.Format("Folder ""{0}"" is an ancestor of a top level folder, has been marked valid, and will not be deleted.", CurrentAncestor.ToString))
+            Log.LogInfo(String.Format("AddValidAncestors: [Valid folder] ""{0}""", CurrentAncestor.ToString))
         Next
     End Sub
 
@@ -626,6 +635,7 @@ Public Class SynchronizeForm
     ' to the status of the destination directory.
     Private Sub SearchForChanges(ByVal Folder As String, ByVal Recursive As Boolean, ByVal Context As SyncingAction)
         If Not HasAcceptedDirname(Folder) Then Exit Sub
+        Log.LogInfo(String.Format("=> Scanning folder ""{0}"" for new or updated files.", Folder))
 
         Dim Src_FilePath As String = CombinePathes(Context.SourcePath, Folder)
         Dim Dest_FilePath As String = CombinePathes(Context.DestinationPath, Folder)
@@ -640,10 +650,10 @@ Public Class SynchronizeForm
 
         If IsSingularity Then
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action, False))
-            Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will be copied.", Dest_FilePath, Folder))
+            Log.LogInfo(String.Format("SearchForUpdates: [New folder] ""{0}"" ({1})", Dest_FilePath, Folder))
         Else
             AddValidFile(Folder)
-            Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] added to the list, will not be deleted.", Dest_FilePath, Folder))
+            Log.LogInfo(String.Format("SearchForUpdates: [Valid folder] ""{0}"" ({1})", Dest_FilePath, Folder))
         End If
 
         InitialCount = ValidFiles.Count
@@ -661,14 +671,14 @@ Public Class SynchronizeForm
                     Dim RelativeFilePath As String = SourceFile.Substring(Context.SourcePath.Length)
                     If Not DestinationExists OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
                         AddToSyncingList(Context.Source, New SyncingItem(RelativeFilePath, TypeOfItem.File, Context.Action, DestinationExists), Suffix)
-                        Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will be copied.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
+                        Log.LogInfo(String.Format("SearchForUpdates: [Update] ""{0}"" ({1}).", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
                         AddValidFile(RelativeFilePath & Suffix)
-                        Log.LogInfo(String.Format("""{0}"" ({1}) added to the list, will not be deleted.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
+                        Log.LogInfo(String.Format("SearchForUpdates: [Valid] ""{0}"" ({1})", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
                     End If
                 Else
-                    Log.LogInfo(String.Format("""{0}"" ({1}) NOT added to the list, will be deleted, since its extension is not valid.", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
+                    Log.LogInfo(String.Format("SearchForUpdates: [Invalid filename] ""{0}"" ({1})", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
                 End If
 
                 Status.FilesScanned += 1
@@ -731,9 +741,9 @@ Public Class SynchronizeForm
                 Dim RelativeFName As String = File.Substring(Context.SourcePath.Length)
                 If Not IsValidFile(RelativeFName) Then
                     AddToSyncingList(Context.Source, New SyncingItem(RelativeFName, TypeOfItem.File, Context.Action, False))
-                    Log.LogInfo(String.Format("""{0}"" ({1}) does NOT belong to the list, so will be deleted.", File, RelativeFName))
+                    Log.LogInfo(String.Format("Cleanup: [Delete] ""{0}"" ({1})", File, RelativeFName))
                 Else
-                    Log.LogInfo(String.Format("""{0}"" ({1}) belongs to the list, so won't be deleted.", File, RelativeFName))
+                    Log.LogInfo(String.Format("Cleanup: [Keep] ""{0}"" ({1})", File, RelativeFName))
                 End If
 
                 Status.FilesScanned += 1
@@ -761,7 +771,7 @@ Public Class SynchronizeForm
 
         ' Folder.Length = 0 <=> This is the root folder, not to be deleted.
         If Folder.Length <> 0 AndAlso Not IsValidFile(Folder) Then
-            Log.LogInfo(String.Format("""{0}"" ({1}) [Folder] does NOT belong to the list, so will be deleted.", Dest_FilePath, Folder))
+            Log.LogInfo(String.Format("Cleanup: [Delete folder] ""{0}"" ({1}).", Dest_FilePath, Folder))
             AddToSyncingList(Context.Source, New SyncingItem(Folder, TypeOfItem.Folder, Context.Action, False))
         End If
     End Sub
@@ -777,6 +787,8 @@ Public Class SynchronizeForm
     Private Sub CopyFile(ByVal SourceFile As String, ByVal DestFile As String)
         Dim Compression As Boolean = CompressionEnabled()
         If Compression Then DestFile &= Handler.GetSetting(Of String)(ProfileSetting.CompressionExt, "")
+
+        Log.LogInfo(String.Format("CopyFile: Source: {0}, Destination: {1}", SourceFile, DestFile))
 
         If IO.File.Exists(DestFile) Then IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal)
         If Compression Then
@@ -799,15 +811,17 @@ Public Class SynchronizeForm
         End If
 
         If Handler.GetSetting(Of Integer)(ProfileSetting.TimeOffset, 0) <> 0 Then 'Updating attributes is needed.
-            Log.LogInfo("DST: """ & DestFile & """ has been copied with attributes " & IO.File.GetAttributes(DestFile) & " , now setting attributes to Normal before setting Last Write Time")
+            Log.LogInfo("CopyFile: DST: Setting attributes to normal; current attributes: " & IO.File.GetAttributes(DestFile))
             IO.File.SetAttributes(DestFile, IO.FileAttributes.Normal) 'Tracker #2999436
-            Log.LogInfo("DST: Attributes set to" & IO.File.GetAttributes(DestFile) & " on """ & DestFile & """, now setting last write time.")
-            'Reading must happen through IO.File.GetLastWriteTimeUtc(DestFile), because it is possible that after the copy IO.File.GetLastWriteTimeUtc(SourceFile) !=  IO.File.GetLastWriteTimeUtc(DestFile) (even by one hour)
+            Log.LogInfo("CopyFile: DST: Setting last write time")
+            'Reading must happen through IO.File.GetLastWriteTimeUtc(DestFile), because after the copy IO.File.GetLastWriteTimeUtc(SourceFile) may differ from IO.File.GetLastWriteTimeUtc(DestFile) (rounding, DST, ...)
             IO.File.SetLastWriteTimeUtc(DestFile, IO.File.GetLastWriteTimeUtc(DestFile).AddHours(Handler.GetSetting(Of Integer)(ProfileSetting.TimeOffset, 0)))
+            Log.LogInfo("CopyFile: DST: Last write time set to " & IO.File.GetLastWriteTimeUtc(DestFile))
         End If
 
-        Log.LogInfo("CopyFile: now setting attributes on """ & DestFile & """")
+        Log.LogInfo("CopyFile: Setting attributes to " & IO.File.GetAttributes(SourceFile))
         IO.File.SetAttributes(DestFile, IO.File.GetAttributes(SourceFile))
+        Log.LogInfo("CopyFile: Attributes set to " & IO.File.GetAttributes(DestFile))
 
         Status.CreatedFiles += 1
         If Not Compression Then Status.BytesCopied += GetSize(SourceFile)
@@ -865,6 +879,7 @@ Public Class SynchronizeForm
         Else
             If Math.Abs((SourceFATTime - DestFATTime).TotalSeconds) <= 4 Then Return False 'Note: NTFSToFATTime introduces additional fuzziness (justifies the <= ('=')).
         End If
+        Log.LogInfo("SourceIsMoreRecent: Filetimes differ")
 
         If SourceFATTime < DestFATTime AndAlso (Not Handler.GetSetting(Of Boolean)(ProfileSetting.StrictMirror, False)) Then Return False
 
