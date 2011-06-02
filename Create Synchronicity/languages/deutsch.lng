@@ -159,4 +159,4 @@ MD5=Sicherung mit MD5-Prüfsumme überprüfen
 GROUP=Gruppe
 COMPARE_SIZE=Dateigröße vergleichen
 MORE=Mehr (für erfahrene Benutzer)
-->NO_PROFILES=
+NO_PROFILES=Es sind keine Profile vorhanden. Bitte "{0}" klicken, um eins zu erzeugen.
