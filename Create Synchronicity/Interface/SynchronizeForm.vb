@@ -671,7 +671,7 @@ Public Class SynchronizeForm
                     Dim RelativeFilePath As String = SourceFile.Substring(Context.SourcePath.Length)
                     If Not DestinationExists OrElse (PropagateUpdates AndAlso SourceIsMoreRecent(SourceFile, DestinationFile)) Then
                         AddToSyncingList(Context.Source, New SyncingItem(RelativeFilePath, TypeOfItem.File, Context.Action, DestinationExists), Suffix)
-                        Log.LogInfo(String.Format("SearchForUpdates: [Update] ""{0}"" ({1}).", SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
+                        Log.LogInfo(String.Format("SearchForUpdates: {0} ""{1}"" ({2}).", If(DestinationExists, "[Update]", "[New File]"), SourceFile, SourceFile.Substring(Context.SourcePath.Length)))
                     Else
                         'Adds an entry to not delete this when cleaning up the other side.
                         AddValidFile(RelativeFilePath & Suffix)
@@ -682,7 +682,7 @@ Public Class SynchronizeForm
                 End If
 
                 Status.FilesScanned += 1
-                If ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Forecast, True) Then Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
+                If ProgramConfig.GetProgramSetting(Of Boolean)(ProfileSetting.Forecast, False) Then Status.BytesScanned += GetSize(SourceFile) 'Degrades performance.
             Next
         Catch Ex As Exception
 #If DEBUG Then
